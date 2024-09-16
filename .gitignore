@@ -1,0 +1,8 @@
+*.bak 
+*.user
+.idea
+.idea/*
+db.sqlite3
+
+
+
