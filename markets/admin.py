@@ -1,3 +1,7 @@
 from django.contrib import admin
+from markets.models import Markets
 
-# Register your models here.
+
+@admin.register(Markets)
+class CategoryAdmin(admin.ModelAdmin):
+    list_display = ['market_name']
