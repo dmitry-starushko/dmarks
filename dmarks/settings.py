@@ -73,11 +73,11 @@ WSGI_APPLICATION = 'dmarks.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'market',
-        'USER': 'market',
-        # 'PASSWORD': 'y5d2ZhChFm',
-        'HOST': '192.168.0.198',
-        'PORT': 5432,
+        'NAME': os.environ.get('PGBASE'),
+        'USER': os.environ.get('PGUSER'),
+        'PASSWORD': os.environ.get('PGPASSW'),
+        'HOST': os.environ.get('PGHOST'),
+        'PORT': int(os.environ.get('PGPORT')),
     }
 }
 
