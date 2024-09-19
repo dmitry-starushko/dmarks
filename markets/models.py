@@ -25,6 +25,9 @@ class Booking(models.Model):
         db_table = 'booking'
         db_table_comment = 'Бронирование торговых мест'
 
+    def __str__(self):
+        return f'Бронирование {self.id}'
+
 
 class ChangeLog(models.Model):
     date_change = models.DateTimeField()
@@ -37,16 +40,22 @@ class ChangeLog(models.Model):
         db_table = 'change_log'
         db_table_comment = 'Журнал внесенных изменений'
 
+    def __str__(self):
+        return f'Запись журнала изменений {self.id}'
+
 
 class ContractStatusType(models.Model):
     id = models.SmallAutoField(primary_key=True)
     type_name = models.CharField(db_comment='Наименование типа специализации торгового места')
-    descr = models.TextField(blank=True, null=True, db_comment='Опсиание')
+    descr = models.TextField(blank=True, null=True, db_comment='Описание')
 
     class Meta:
         managed = True
         db_table = 'contract_status_type'
         db_table_comment = 'Типы статусов договоров'
+
+    def __str__(self):
+        return f'{self.type_name}'
 
 
 class GlobalConfig(models.Model):
@@ -59,6 +68,9 @@ class GlobalConfig(models.Model):
         db_table = 'global_config'
         db_table_comment = 'Глобальная конфигурация системы'
 
+    def __str__(self):
+        return f'{self.param_name}'
+
 
 class Help(models.Model):
     header = models.CharField(max_length=1000, db_comment='Заголовок')
@@ -70,6 +82,9 @@ class Help(models.Model):
         managed = True
         db_table = 'help'
         db_table_comment = 'Помощь'
+
+    def __str__(self):
+        return f'{self.header}'
 
 
 class ImportData(models.Model):
@@ -87,6 +102,9 @@ class ImportData(models.Model):
         managed = True
         db_table = 'import_data'
         db_table_comment = 'Данные о загрузке xml файлов (импорт из 1С)\r\nid - это номер транзакции импорта. Он один в started, stopped, imported\r\nStarted после удачной загрузки файла начинается испорт данных в таблицу\r\nImported - при удачной загрузке\r\nStopped - при возникновении ошибки (exception)\r\nЕсли статус остается Stared после завершения импорта - считать импор неудашимся, посольку удавшийся импорт идентифицирует статус Imported'
+
+    def __str__(self):
+        return f'{self.id}'
 
 
 class ImportMarkets(models.Model):
@@ -150,6 +168,9 @@ class ImportMarkets(models.Model):
         managed = True
         db_table = 'import_markets'
         db_table_comment = 'Временная таблица для импорта рынка'
+
+    def __str__(self):
+        return f'{self.id}'
 
 
 class ImportTradePlace(models.Model):
@@ -220,6 +241,9 @@ class ImportTradePlace(models.Model):
         db_table = 'import_trade_place'
         db_table_comment = 'Импорт - торговые места'
 
+    def __str__(self):
+        return f'{self.id}'
+
 
 class Locality(models.Model):
     locality_name = models.CharField(db_comment='Наименование населенного пункта')
@@ -232,6 +256,9 @@ class Locality(models.Model):
         db_table = 'locality'
         db_table_comment = 'Населенные пункты'
 
+    def __str__(self):
+        return f'{self.locality_name}'
+
 
 class LocalityType(models.Model):
     id = models.SmallAutoField(primary_key=True)
@@ -243,6 +270,9 @@ class LocalityType(models.Model):
         db_table = 'locality_type'
         db_table_comment = 'Типы населенных пунктов'
 
+    def __str__(self):
+        return f'{self.type_name}'
+
 
 class MarketFireProtection(models.Model):
     fp_name = models.CharField(db_comment='Наименование противопожарной системы')
@@ -252,6 +282,9 @@ class MarketFireProtection(models.Model):
         managed = True
         db_table = 'market_fire_protection'
         db_table_comment = 'Наличие и состав противопожарных систем'
+
+    def __str__(self):
+        return f'{self.fp_name}'
 
 
 class MarketProfitability(models.Model):
@@ -264,6 +297,9 @@ class MarketProfitability(models.Model):
         db_table = 'market_profitability'
         db_table_comment = 'Категория рентабельности рынка'
 
+    def __str__(self):
+        return f'{self.profitability_name}'
+
 
 class MarketType(models.Model):
     id = models.SmallAutoField(primary_key=True)
@@ -274,6 +310,9 @@ class MarketType(models.Model):
         managed = True
         db_table = 'market_type'
         db_table_comment = 'Типы рынков'
+
+    def __str__(self):
+        return f'{self.type_name}'
 
 
 class Markets(models.Model):
@@ -327,6 +366,9 @@ class Markets(models.Model):
         db_table = 'markets'
         db_table_comment = 'Информация о рынках'
 
+    def __str__(self):
+        return f'{self.market_name}'
+
 
 class Migration(models.Model):
     version = models.CharField(primary_key=True, max_length=180)
@@ -335,6 +377,9 @@ class Migration(models.Model):
     class Meta:
         managed = True
         db_table = 'migration'
+
+    def __str__(self):
+        return f'{self.id}'
 
 
 class Renter(models.Model):
@@ -350,6 +395,9 @@ class Renter(models.Model):
         db_table = 'renter'
         db_table_comment = 'Информация об арендаторах'
 
+    def __str__(self):
+        return f'{self.renter_name}'
+
 
 class RenterType(models.Model):
     id = models.SmallAutoField(primary_key=True)
@@ -360,6 +408,9 @@ class RenterType(models.Model):
         managed = True
         db_table = 'renter_type'
         db_table_comment = 'Тип арендатора'
+
+    def __str__(self):
+        return f'{self.type_name}'
 
 
 class StreetType(models.Model):
@@ -372,6 +423,9 @@ class StreetType(models.Model):
         db_table = 'street_type'
         db_table_comment = 'Типы улиц'
 
+    def __str__(self):
+        return f'{self.type_name}'
+
 
 class SvgSchema(models.Model):
     svg_schema = models.TextField(blank=True, null=True, db_comment='svg объекта')
@@ -383,6 +437,9 @@ class SvgSchema(models.Model):
     class Meta:
         managed = True
         db_table = 'svg_schema'
+
+    def __str__(self):
+        return f'Схема рынка "{self.market}"'
 
 
 class TradeContract(models.Model):
@@ -398,6 +455,9 @@ class TradeContract(models.Model):
         managed = True
         db_table = 'trade_contract'
         db_table_comment = 'Информация о договорах аренды'
+
+    def __str__(self):
+        return f'Контракт {self.id}'
 
 
 class TradePlace(models.Model):
@@ -452,6 +512,9 @@ class TradePlace(models.Model):
         db_table = 'trade_place'
         db_table_comment = 'Торговые места'
 
+    def __str__(self):
+        return f'ТМ {self.id}'
+
 
 class TradePlaceType(models.Model):
     id = models.SmallAutoField(primary_key=True)
@@ -464,6 +527,9 @@ class TradePlaceType(models.Model):
         db_table = 'trade_place_type'
         db_table_comment = 'Типы занятости торгового места'
 
+    def __str__(self):
+        return f'{self.type_name}'
+
 
 class TradeSector(models.Model):
     id = models.SmallAutoField(primary_key=True)
@@ -475,11 +541,14 @@ class TradeSector(models.Model):
         db_table = 'trade_sector'
         db_table_comment = 'Сектора рынков'
 
+    def __str__(self):
+        return f'Сектор {self.sector_name}'
+
 
 class TradeSpecType(models.Model):
     id = models.SmallAutoField(primary_key=True)
     type_name = models.CharField(db_comment='Наименование типа специализации торгового места')
-    descr = models.TextField(blank=True, null=True, db_comment='Опсиание')
+    descr = models.TextField(blank=True, null=True, db_comment='Описание')
     color = models.CharField(max_length=7, blank=True, null=True, db_comment='Цвет в формате #ffffff')
 
     class Meta:
@@ -487,17 +556,23 @@ class TradeSpecType(models.Model):
         db_table = 'trade_spec_type'
         db_table_comment = 'Типы специализации торгового места'
 
+    def __str__(self):
+        return f'{self.type_name}'
+
 
 class TradeType(models.Model):
     id = models.SmallAutoField(primary_key=True)
     type_name = models.CharField(db_comment='Наименование типа торгового места')
     type_num = models.SmallIntegerField(blank=True, null=True, db_comment='Код типа объекта')
-    descr = models.TextField(blank=True, null=True, db_comment='Опсиание')
+    descr = models.TextField(blank=True, null=True, db_comment='Описание')
 
     class Meta:
         managed = True
         db_table = 'trade_type'
         db_table_comment = 'Типы торгового места'
+
+    def __str__(self):
+        return f'{self.type_name}'
 
 
 class User(models.Model):
@@ -520,6 +595,9 @@ class User(models.Model):
         managed = True
         db_table = 'user'
 
+    def __str__(self):
+        return f'{self.username}'
+
 
 class UserLogin(models.Model):
     uid = models.IntegerField()
@@ -528,3 +606,6 @@ class UserLogin(models.Model):
     class Meta:
         managed = True
         db_table = 'user_login'
+
+    def __str__(self):
+        return f'{self.id}'
