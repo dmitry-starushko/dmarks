@@ -2,9 +2,15 @@
 from decimal import Decimal
 
 
+class MkMixin:
+    @property
+    def mk_sewerage(self):
+        return self.infr_sewerage_type if self.infr_sewerage else "отсутствует"
+
+
 class TpMixin:
     @property
-    def internet_connection_type(self):
+    def tp_internet_connection(self):
         match self.impr_internet, self.impr_internet_type_id:
             case False, _:
                 return "отсутствует"
@@ -18,41 +24,41 @@ class TpMixin:
                 return "ошибка в данных"
 
     @property
-    def cost_power_supply(self):
+    def tp_power_supply_cost(self):
         return self.pay_electricity if self.impr_electricity else Decimal(0)
 
     @property
-    def cost_internet(self):
+    def tp_internet_cost(self):
         return self.pay_internet if self.impr_internet else Decimal(0)
 
     @property
-    def cost_heat_supply(self):
+    def tp_heat_supply_cost(self):
         return self.pay_heat_supply if self.impr_heat_supply else Decimal(0)
 
     @property
-    def cost_air_conditioning(self):
+    def tp_air_conditioning_cost(self):
         return self.pay_air_conditioning if self.impr_air_conditioning else Decimal(0)
 
     @property
-    def cost_plumbing(self):
+    def tp_plumbing_cost(self):
         return self.pay_plumbing if self.impr_plumbing else Decimal(0)
 
     @property
-    def cost_drains(self):
+    def tp_drains_cost(self):
         return self.pay_drains if self.impr_drains else Decimal(0)
 
     @property
-    def cost_add_equipment(self):
+    def tp_add_equipment_cost(self):
         return self.pay_add_equipment if self.impr_add_equipment else Decimal(0)
 
     @property
-    def cost_fridge(self):
+    def tp_fridge_cost(self):
         return self.pay_fridge if self.impr_fridge else Decimal(0)
 
     @property
-    def cost_shopwindows(self):
+    def tp_shopwindows_cost(self):
         return self.pay_shopwindows if self.impr_shopwindows else Decimal(0)
 
     @property
-    def cost_sewerage(self):
+    def tp_sewerage_cost(self):
         return self.pay_sewerage if self.impr_sewerage else Decimal(0)

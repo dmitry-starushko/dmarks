@@ -7,7 +7,7 @@
 # Feel free to rename the models, but don't rename db_table values or field names.
 
 from django.db import models
-from markets.models_mixins import TpMixin
+from markets.models_mixins import TpMixin, MkMixin
 
 
 class Booking(models.Model):
@@ -108,7 +108,7 @@ class ImportData(models.Model):
         return f'{self.id}'
 
 
-class ImportMarket(models.Model):
+class ImportMarket(MkMixin, models.Model):
     id_transaction = models.IntegerField(db_comment='id транзакции')
     market_name = models.CharField(max_length=500, db_comment='Наименование рынка')
     internal_id = models.CharField(max_length=50, blank=True, null=True, db_comment='Внутренний код рынка')
@@ -316,7 +316,7 @@ class MarketType(models.Model):
         return f'{self.type_name}'
 
 
-class Market(models.Model):
+class Market(MkMixin, models.Model):
     market_name = models.CharField(max_length=1000, db_comment='Наименование рынка')
     internal_id = models.CharField(max_length=50, blank=True, null=True, db_comment='Внутренний код рынка')
     market_type = models.ForeignKey(MarketType, models.DO_NOTHING, db_comment='id - тип рынка')
