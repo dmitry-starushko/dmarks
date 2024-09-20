@@ -108,7 +108,7 @@ class ImportData(models.Model):
         return f'{self.id}'
 
 
-class ImportMarkets(models.Model):
+class ImportMarket(models.Model):
     id_transaction = models.IntegerField(db_comment='id транзакции')
     market_name = models.CharField(max_length=500, db_comment='Наименование рынка')
     internal_id = models.CharField(max_length=50, blank=True, null=True, db_comment='Внутренний код рынка')
@@ -176,7 +176,7 @@ class ImportMarkets(models.Model):
 
 class ImportTradePlace(TpMixin, models.Model):
     id_transaction = models.IntegerField()
-    market = models.ForeignKey('Markets', models.DO_NOTHING, blank=True, null=True, db_comment='Уникальный идентификатор рынка')
+    market = models.ForeignKey('Market', models.DO_NOTHING, blank=True, null=True, db_comment='Уникальный идентификатор рынка')
     trade_type = models.ForeignKey('TradeType', models.DO_NOTHING, db_comment='Тип торгового места')
     meas_area = models.FloatField(blank=True, null=True, db_comment='Площадь места')
     meas_length = models.FloatField(blank=True, null=True, db_comment='Длина места')
@@ -316,7 +316,7 @@ class MarketType(models.Model):
         return f'{self.type_name}'
 
 
-class Markets(models.Model):
+class Market(models.Model):
     market_name = models.CharField(max_length=1000, db_comment='Наименование рынка')
     internal_id = models.CharField(max_length=50, blank=True, null=True, db_comment='Внутренний код рынка')
     market_type = models.ForeignKey(MarketType, models.DO_NOTHING, db_comment='id - тип рынка')
@@ -430,7 +430,7 @@ class StreetType(models.Model):
 
 class SvgSchema(models.Model):
     svg_schema = models.TextField(blank=True, null=True, db_comment='svg объекта')
-    market = models.ForeignKey(Markets, models.DO_NOTHING, blank=True, null=True, db_comment='id рынка')
+    market = models.ForeignKey(Market, models.DO_NOTHING, blank=True, null=True, db_comment='id рынка')
     descr = models.TextField(blank=True, null=True, db_comment='Описание')
     source_file = models.CharField(blank=True, null=True, db_comment='Имя загруженного файла')
     floor = models.CharField(blank=True, null=True, db_comment='Этаж схемы объекта')
@@ -462,7 +462,7 @@ class TradeContract(models.Model):
 
 
 class TradePlace(TpMixin, models.Model):
-    market = models.ForeignKey(Markets, models.DO_NOTHING, db_comment='Уникальный идентификатор рынка\r\n')
+    market = models.ForeignKey(Market, models.DO_NOTHING, db_comment='Уникальный идентификатор рынка\r\n')
     trade_type = models.ForeignKey('TradeType', models.DO_NOTHING, db_comment='Тип торгового места')
     meas_area = models.FloatField(blank=True, null=True, db_comment='Площадь места')
     meas_length = models.FloatField(blank=True, null=True, db_comment='Длина места')

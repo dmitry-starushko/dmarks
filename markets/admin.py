@@ -1,7 +1,7 @@
 from django.contrib import admin
-from markets.models import Markets
+from markets.models import Market
 
 
-@admin.register(Markets)
+@admin.register(Market)
 class CategoryAdmin(admin.ModelAdmin):
     list_display = ['market_name']

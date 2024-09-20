@@ -122,7 +122,7 @@ class Migration(migrations.Migration):
             },
         ),
         migrations.CreateModel(
-            name='Markets',
+            name='Market',
             fields=[
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('market_name', models.CharField(db_comment='Наименование рынка', max_length=1000)),
@@ -526,7 +526,7 @@ class Migration(migrations.Migration):
             },
         ),
         migrations.CreateModel(
-            name='ImportMarkets',
+            name='ImportMarket',
             fields=[
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('id_transaction', models.IntegerField(db_comment='id транзакции')),
