@@ -7,6 +7,7 @@
 # Feel free to rename the models, but don't rename db_table values or field names.
 
 from django.db import models
+from markets.models_mixins import TpMixin
 
 
 class Booking(models.Model):
@@ -125,10 +126,10 @@ class ImportMarkets(models.Model):
     info_statement_files = models.JSONField(blank=True, null=True, db_comment='Формы заявлений - файлы')
     info_contracts = models.TextField(blank=True, null=True, db_comment='Информация о типовых договорах')
     info_contracts_files = models.JSONField(blank=True, null=True, db_comment='Формы типовых договоров - файлы')
-    info_contracts_req = models.TextField(blank=True, null=True, db_comment='Информация о требованиях для оформления догворов/талонов')
-    info_contracts_req_files = models.JSONField(blank=True, null=True, db_comment='Требованиях для оформления догворов/талонов - файлы')
+    info_contracts_req = models.TextField(blank=True, null=True, db_comment='Информация о требованиях для оформления договоров/талонов')
+    info_contracts_req_files = models.JSONField(blank=True, null=True, db_comment='Требованиях для оформления договоров/талонов - файлы')
     info_constitutive = models.TextField(blank=True, null=True, db_comment='Информация о копиях правоустанавливающих документов дочернего предприятия')
-    info_constitutive_files = models.JSONField(blank=True, null=True, db_comment='Копияи правоустанавливающих документов дочернего предприятия - файлы')
+    info_constitutive_files = models.JSONField(blank=True, null=True, db_comment='Копии правоустанавливающих документов дочернего предприятия - файлы')
     info_other_docs = models.TextField(blank=True, null=True, db_comment='Информация о других документах')
     info_other_docs_files = models.JSONField(blank=True, null=True, db_comment='Другие документы - файлы')
     geo_city_name = models.CharField(blank=True, null=True, db_comment='Город, если нет в базе')
@@ -138,7 +139,7 @@ class ImportMarkets(models.Model):
     geo_house = models.CharField(max_length=50, blank=True, null=True, db_comment='Дом')
     phone = models.CharField(max_length=255, blank=True, null=True, db_comment='Телефоны')
     email = models.CharField(max_length=255, blank=True, null=True, db_comment='Электронные адреса')
-    shedule = models.CharField(blank=True, null=True, db_comment='График работы')
+    schedule = models.CharField(blank=True, null=True, db_column='shedule', db_comment='График работы')
     ads = models.TextField(blank=True, null=True, db_comment='Реклама')
     market_square = models.FloatField(blank=True, null=True, db_comment='Общая площадь рынка')
     market_count = models.IntegerField(blank=True, null=True, db_comment='Кол-во торговых мест')
@@ -173,7 +174,7 @@ class ImportMarkets(models.Model):
         return f'{self.id}'
 
 
-class ImportTradePlace(models.Model):
+class ImportTradePlace(TpMixin, models.Model):
     id_transaction = models.IntegerField()
     market = models.ForeignKey('Markets', models.DO_NOTHING, blank=True, null=True, db_comment='Уникальный идентификатор рынка')
     trade_type = models.ForeignKey('TradeType', models.DO_NOTHING, db_comment='Тип торгового места')
@@ -197,15 +198,15 @@ class ImportTradePlace(models.Model):
     trade_spec_type_rec = models.CharField(blank=True, null=True, db_comment='Специализация торгового места (рекомендованная)')
     trade_spec_type_act = models.CharField(blank=True, null=True, db_comment='Специализация торгового места (фактическая)')
     street_vending = models.BooleanField(blank=True, null=True, db_comment='Возможность выносной торговли')
-    contract_date_start = models.DateField(blank=True, null=True, db_comment='Дата начала догвора')
-    contract_date_end = models.DateField(blank=True, null=True, db_comment='Дата окончания догвора')
+    contract_date_start = models.DateField(blank=True, null=True, db_comment='Дата начала договора')
+    contract_date_end = models.DateField(blank=True, null=True, db_comment='Дата окончания договора')
     contract_status_type = models.ForeignKey(ContractStatusType, models.DO_NOTHING, blank=True, null=True, db_comment='Статус договора')
-    contract_copy_info = models.CharField(blank=True, null=True, db_comment='Информация о копии догвора')
+    contract_copy_info = models.CharField(blank=True, null=True, db_comment='Информация о копии договора')
     contract_copy_files = models.JSONField(blank=True, null=True, db_comment='Файлы договора')
     receiv_state = models.BooleanField(blank=True, null=True, db_comment='Наличие дебиторской задолженности на текущий месяц')
     receiv_amount = models.DecimalField(max_digits=12, decimal_places=2, blank=True, null=True, db_comment='Размер дебиторской задолженности')
     pay_electricity = models.DecimalField(max_digits=12, decimal_places=2, blank=True, null=True, db_comment='Оплата электричества')
-    pay_heat_supplay = models.DecimalField(max_digits=12, decimal_places=2, blank=True, null=True, db_comment='Оплата услуг теплоснабжения')
+    pay_heat_supply = models.DecimalField(max_digits=12, decimal_places=2, blank=True, null=True, db_column='pay_heat_supplay', db_comment='Оплата услуг теплоснабжения')
     pay_air_conditioning = models.DecimalField(max_digits=12, decimal_places=2, blank=True, null=True, db_comment='Оплата за кондиционер')
     pay_plumbing = models.DecimalField(max_digits=12, decimal_places=2, blank=True, null=True, db_comment='Оплата услуг водоснабжения')
     pay_sewerage = models.DecimalField(max_digits=12, decimal_places=2, blank=True, null=True, db_comment='Оплата услуг водоотведения')
@@ -234,7 +235,7 @@ class ImportTradePlace(models.Model):
     tp_id_internal = models.IntegerField(blank=True, null=True, db_comment='id рынка, который импортировался успешно в таблицу trade_place')
     descr = models.TextField(blank=True, null=True, db_comment='Описание импортируемой записи')
     contract_rent = models.ForeignKey('TradeContract', models.DO_NOTHING, blank=True, null=True, db_comment='Информация о договорах аренды')
-    renter = models.ForeignKey('Renter', models.DO_NOTHING, blank=True, null=True, db_comment='id - текущий арендатель')
+    renter = models.ForeignKey('Renter', models.DO_NOTHING, blank=True, null=True, db_comment='id - текущий арендатор')
 
     class Meta:
         managed = True
@@ -247,7 +248,7 @@ class ImportTradePlace(models.Model):
 
 class Locality(models.Model):
     locality_name = models.CharField(db_comment='Наименование населенного пункта')
-    locality_type = models.ForeignKey('LocalityType', models.DO_NOTHING, blank=True, null=True, db_comment='Тип населеного пункта')
+    locality_type = models.ForeignKey('LocalityType', models.DO_NOTHING, blank=True, null=True, db_comment='Тип населенного пункта')
     descr = models.TextField(blank=True, null=True, db_comment='Описание')
     parent = models.ForeignKey('self', models.DO_NOTHING, blank=True, null=True, db_comment='Родительская запись. Иерархическое подчинение')
 
@@ -345,7 +346,7 @@ class Markets(models.Model):
     geo_house = models.CharField(max_length=50, blank=True, null=True, db_comment='Дом')
     phone = models.CharField(max_length=255, blank=True, null=True, db_comment='Телефоны')
     email = models.CharField(max_length=255, blank=True, null=True, db_comment='Электронные адреса')
-    shedule = models.TextField(blank=True, null=True, db_comment='График работы')
+    schedule = models.TextField(blank=True, null=True, db_column='shedule', db_comment='График работы')
     ads = models.TextField(blank=True, null=True, db_comment='Реклама')
     market_square = models.FloatField(blank=True, null=True, db_comment='Общая площадь рынка')
     market_count = models.IntegerField(blank=True, null=True, db_comment='Кол-во торговых мест')
@@ -460,7 +461,7 @@ class TradeContract(models.Model):
         return f'Контракт {self.id}'
 
 
-class TradePlace(models.Model):
+class TradePlace(TpMixin, models.Model):
     market = models.ForeignKey(Markets, models.DO_NOTHING, db_comment='Уникальный идентификатор рынка\r\n')
     trade_type = models.ForeignKey('TradeType', models.DO_NOTHING, db_comment='Тип торгового места')
     meas_area = models.FloatField(blank=True, null=True, db_comment='Площадь места')
@@ -486,7 +487,7 @@ class TradePlace(models.Model):
     receiv_state = models.BooleanField(blank=True, null=True, db_comment='Наличие дебиторской задолженности на текущий месяц')
     receiv_amount = models.DecimalField(max_digits=12, decimal_places=2, blank=True, null=True, db_comment='Размер дебиторской задолженности')
     pay_electricity = models.DecimalField(max_digits=12, decimal_places=2, blank=True, null=True, db_comment='Оплата электричества')
-    pay_heat_supplay = models.DecimalField(max_digits=12, decimal_places=2, blank=True, null=True, db_comment='Оплата услуг теплоснабжения')
+    pay_heat_supply = models.DecimalField(max_digits=12, decimal_places=2, blank=True, null=True, db_column='pay_heat_supplay', db_comment='Оплата услуг теплоснабжения')
     pay_air_conditioning = models.DecimalField(max_digits=12, decimal_places=2, blank=True, null=True, db_comment='Оплата за кондиционер')
     pay_plumbing = models.DecimalField(max_digits=12, decimal_places=2, blank=True, null=True, db_comment='Оплата услуг водоснабжения')
     pay_sewerage = models.DecimalField(max_digits=12, decimal_places=2, blank=True, null=True, db_comment='Оплата услуг водоотведения')
