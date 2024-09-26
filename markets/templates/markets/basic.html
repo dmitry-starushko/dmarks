@@ -49,18 +49,22 @@
     {% block header %}
     <div class="container position-relative d-flex align-items-center justify-content-between">
         <div class="header-logo-block">
+            {% block header-icons %}
             <a href="https://dt-dnr.ru" class="logo">
                 <img src="{% static 'svg/logo/dt.svg' %}" alt="Донтех">
             </a>
             <a href="{% url 'markets:index' %}" class="logo">
                 <img src="{% static 'svg/logo/dm.svg' %}" alt="Рынки Донбасса">
             </a>
+            {% endblock %}
         </div>
         <div class="header-text">РЫНКИ ДОНБАССА</div>
         <nav id="navmenu" class="navmenu">
             <ul>
+                {% block navigation %}
                 <li><a href="{% url 'markets:index' %}" class="active">Главная</a></li>
                 <li><a href="{% url 'markets:contacts' %}">Контакты</a></li>
+                {% endblock %}
             </ul>
             <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
         </nav>
