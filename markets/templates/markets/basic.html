@@ -60,8 +60,8 @@
         <div class="header-text">РЫНКИ ДОНБАССА</div>
         <nav id="navmenu" class="navmenu">
             <ul>
-                <li><a href="main.html" class="active">Главная</a></li>
-                <li><a href="contact.html">Контакты</a></li>
+                <li><a href="{% url 'markets:index' %}" class="active">Главная</a></li>
+                <li><a href="{% url 'markets:pure' %}">Контакты</a></li>
             </ul>
             <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
         </nav>
