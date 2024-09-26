@@ -1,6 +1,7 @@
 {% extends 'markets/basic.html' %}
 {% load static %}
-{% block header-scripts %} {{block.super}}
+{% block header-scripts %}
+{{block.super}}
 <script src="{% static 'vendor/openlayer/ol.js' %}"></script>
 {% endblock %}
 {% block content %}
@@ -27,6 +28,7 @@
     </div>
 </section>
 {% endblock %}
-{% block dom-loaded-script %} {{block.super}}
+{% block dom-loaded-script %}
+{{block.super}}
 {% include 'markets/js/index.js' %}
 {% endblock %}
