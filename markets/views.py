@@ -19,10 +19,10 @@ class IndexView(View, BasicContextProvider):
         return render(request, self.template_name, super().basic_context())
 
 
-class PureView(View, BasicContextProvider):
+class ContactsView(View, BasicContextProvider):
     @property
     def template_name(self):
-        return 'markets/pure.html'
+        return 'markets/contacts.html'
 
     def get(self, request):
         return render(request, self.template_name, super().basic_context() | {'page_title': 'Просто страница'})
