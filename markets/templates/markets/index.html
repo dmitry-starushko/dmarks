@@ -24,7 +24,30 @@
         <div class="tab-pane fade show active" id="map" role="tabpanel" aria-labelledby="home-tab">
             <div id="map"></div>
         </div>
-        <div class="tab-pane fade" id="maplist" role="tabpanel" aria-labelledby="profile-tab">321</div>
+        <div class="tab-pane fade" id="maplist" role="tabpanel" aria-labelledby="profile-tab">
+<!--            TODO delete next table-->
+            <h3 style="color:red">Список в виде таблицы -- временный, для ссылок на страницы рынков, здесь будет грид с карточками</h3>
+            <table>
+                <tr>
+                    <th>№пп</th>
+                    <th>&nbsp;</th>
+                    <th>Название</th>
+                    <th>Альтернативное название</th>
+                    <th>Широта</th>
+                    <th>Долгота</th>
+                </tr>
+                {% for market in markets %}
+                <tr>
+                    <td>{{forloop.counter}}</td>
+                    <td>&nbsp;</td>
+                    <td><a href="{% url 'markets:market_details' mpk=market.id show='info' %}">{{market.market_name}}</a></td>
+                    <td>{{market.additional_name}}</td>
+                    <td>{{market.lat}}</td>
+                    <td>{{market.lng}}</td>
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
     </div>
 </section>
 {% endblock %}
