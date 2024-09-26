@@ -122,7 +122,7 @@
         class="bi bi-arrow-up-short"></i></a>
 <!-- Preloader -->
 <div id="preloader"></div>
-{% block extern-body-scripts %}
+{% block extern-body-scripts %} <!-- TODO переместить в блок dom-loaded-script -->
 <script src="{% static 'js/main.js' %}"></script>
 {% endblock %}
 </body>
