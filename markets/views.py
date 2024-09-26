@@ -3,6 +3,7 @@ from django.shortcuts import render
 
 
 class BasicContextProvider:
+    @property
     def basic_context(self):
         return {
             'page_title': 'Рынки Донбасса',
@@ -16,7 +17,7 @@ class IndexView(View, BasicContextProvider):
         return 'markets/index.html'
 
     def get(self, request):
-        return render(request, self.template_name, super().basic_context())
+        return render(request, self.template_name, self.basic_context)
 
 
 class ContactsView(View, BasicContextProvider):
@@ -25,4 +26,4 @@ class ContactsView(View, BasicContextProvider):
         return 'markets/contacts.html'
 
     def get(self, request):
-        return render(request, self.template_name, super().basic_context() | {'page_title': 'Просто страница'})
+        return render(request, self.template_name, self.basic_context | {'page_title': 'Просто страница'})
