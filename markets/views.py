@@ -26,4 +26,4 @@ class ContactsView(View, BasicContextProvider):
         return 'markets/contacts.html'
 
     def get(self, request):
-        return render(request, self.template_name, self.basic_context | {'page_title': 'Просто страница'})
+        return render(request, self.template_name, self.basic_context | {'page_title': 'Здесь будут контакты'})
