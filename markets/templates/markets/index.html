@@ -1,2 +1,33 @@
 {% extends 'markets/basic.html' %}
+{% load static %}
 {% block title %}{{page_title}}{% endblock %}
+{% block header-scripts %} {{block.super}}
+<script src="{% static 'vendor/openlayer/ol.js' %}"></script>
+{% endblock %}
+{% block content %}
+<section class="container main-map-section">
+    <ul class="nav nav-tabs" id="main-tab-map" role="tablist">
+        <li class="nav-item" role="presentation">
+            <button class="nav-link active" id="tab-map" data-bs-toggle="tab" data-bs-target="#map"
+                    type="button" role="tab" aria-controls="home" aria-selected="true"><i class="bi bi-map"></i>
+                КАРТА
+            </button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="tab-map-list" data-bs-toggle="tab" data-bs-target="#maplist"
+                    type="button" role="tab" aria-controls="profile" aria-selected="false"><i
+                    class="bi bi-list-task"></i> СПИСОК
+            </button>
+        </li>
+    </ul>
+    <div class="tab-content" id="main-tab-map-content">
+        <div class="tab-pane fade show active" id="map" role="tabpanel" aria-labelledby="home-tab">
+            <div id="map"></div>
+        </div>
+        <div class="tab-pane fade" id="maplist" role="tabpanel" aria-labelledby="profile-tab">321</div>
+    </div>
+</section>
+{% endblock %}
+{% block dom-loaded-script %} {{block.super}}
+{% include 'markets/js/index.js' %}
+{% endblock %}
