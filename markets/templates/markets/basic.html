@@ -40,7 +40,9 @@
     {% endblock %}
     <script>
         document.addEventListener('DOMContentLoaded', (event) => {
-        {% block dom-loaded-script %}{% endblock %}
+        {% block dom-loaded-script %}
+        {% include 'markets/js/basic.js' %}
+        {% endblock %}
         });
     </script>
 </head>
