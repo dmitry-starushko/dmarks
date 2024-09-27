@@ -10,3 +10,6 @@
 .vs/
 obj/
 bin/
+/.gitignore
+/.gitignore
+/initial-data.json
