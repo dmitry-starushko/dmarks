@@ -59,7 +59,7 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'dmarks.wsgi.application'
 
-"""DATABASES = {
+DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': os.environ.get('PGBASE'),
@@ -68,9 +68,9 @@ WSGI_APPLICATION = 'dmarks.wsgi.application'
         'HOST': os.environ.get('PGHOST'),
         'PORT': int(os.environ.get('PGPORT')),
     }
-}"""
+}
 
-DATABASES = {
+"""DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'market',
@@ -79,7 +79,7 @@ DATABASES = {
         'HOST': 'localhost',
         'PORT': '5432',
     }
-}
+}"""
 
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': ['rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'],
