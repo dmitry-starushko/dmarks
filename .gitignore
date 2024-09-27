@@ -13,3 +13,5 @@ bin/
 /.gitignore
 /.gitignore
 /initial-data.json
+/dmarks/settings.py
+/.gitignore
