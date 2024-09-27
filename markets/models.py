@@ -368,7 +368,7 @@ class Market(MkMixin, models.Model):
         db_table_comment = 'Информация о рынках'
 
     def __str__(self):
-        return f'{self.market_name}'
+        return f'{self.market_name}:{self.additional_name}'
 
 
 class Migration(models.Model):
