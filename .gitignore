@@ -16,3 +16,4 @@ bin/
 /dmarks/settings.py
 /.gitignore
 /dmarks/settings.py
+/.env
