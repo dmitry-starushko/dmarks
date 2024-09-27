@@ -10,10 +10,9 @@
 .vs/
 obj/
 bin/
-/.gitignore
+env/
 /.gitignore
 /initial-data.json
 /dmarks/settings.py
 /.gitignore
-/dmarks/settings.py
 /.env
