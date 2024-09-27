@@ -2,3 +2,7 @@
 {% block content %}
 <h1>{{text}}</h1>
 {% endblock %}
+{% block dom-loaded-script %}
+alert('hello from contacts!');
+{{block.super}}
+{% endblock %}
