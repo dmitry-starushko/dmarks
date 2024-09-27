@@ -32,7 +32,6 @@
     {% endblock %}
     {% endblock %}
     {% block header-scripts %}
-    <script src="{% static 'js/jquery.js' %}"></script>
     <script src="{% static 'vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
     <script src="{% static 'vendor/php-email-form/validate.js' %}"></script>
     <script src="{% static 'vendor/aos/aos.js' %}"></script>
@@ -88,7 +87,7 @@
     {% block footer %}
     <div class="container footer-top">
         <div class="footer-top-panel d-flex justify-content-between">
-            <button class="btn btn-main mb-3 foot-collapse" type="button" aria-expanded="false">О проекте</button>
+            <button class="btn btn-main mb-3 foot-collapse" type="button" aria-expanded="false" id="about-btn">О проекте</button>
             <div class="header-right-icons">
                 <a href="#" class="foot-collapse" title="Закрыть" id="close-footer" hidden><i
                         class="bi bi-x-circle"></i></a>
