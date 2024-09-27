@@ -1,7 +1,7 @@
-/*$(".foot-collapse").click(function(){
+$(".foot-collapse").click(function(){
         $(".collapse").collapse('toggle');
         document.getElementById("close-footer").hidden = !document.getElementById("close-footer").hidden;
-    });*/
+    });
     var map = new ol.Map({
       layers: [
         new ol.layer.Tile({
