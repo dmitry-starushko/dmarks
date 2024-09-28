@@ -6,3 +6,13 @@
 
 
 
+
+.vs/
+obj/
+bin/
+env/
+/.gitignore
+/initial-data.json
+/dmarks/settings.py
+/.gitignore
+/.env
