@@ -3,6 +3,8 @@
 .idea
 .idea/*
 *.sqlite3
+__pycache__
+__pycache__/*
 
 .vs/
 obj/
