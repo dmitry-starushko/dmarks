@@ -42,6 +42,12 @@
   --nav-dropdown-hover-color: #465367; /* Similar to --nav-hover-color, this color is applied to dropdown navigation links when they are hovered over. */
 }
 
+/* Cards colors */
+:root {
+  --card-border-color: #339999;
+  --card-border-hover-color: #ff0000;
+}
+
 /* Color Presets - These classes override global colors when applied to any section or element, providing reuse of the sam color scheme. */
 
 .light-background {
@@ -69,6 +75,7 @@ body {
   color: var(--default-color);
   background-color: var(--background-color);
   font-family: var(--default-font);
+  background-image: url("/static/bitmaps/bkgs/bkg_001.webp");
 }
 
 a {
@@ -497,7 +504,6 @@ h6 {
 }
 
 .tab-content .tab-pane {
-  padding: 7px;
   background-color: var(--back-color-tabs);
   border-radius: 0px 0px 10px 10px;
 }
@@ -517,6 +523,146 @@ h6 {
   background-color: var(--nav-color);
 }*/
 
+/*--------------------------------------------------------------
+# Main map
+--------------------------------------------------------------*/
+.main-map {
+padding: 5px;
+}
+
+/*--------------------------------------------------------------
+# Market Cards
+--------------------------------------------------------------*/
+.market-cards {
+  display: flex;
+  flex-wrap: wrap;
+  background-color: #c4c4c5;
+}
+
+.market-card {
+   flex: 0 1 24%;
+   background-color: #fff;
+   margin: 5px;
+   padding: 5px;
+   border: 2px solid color-mix(in srgb, var(--card-border-color), transparent 50%);
+   border-radius: 5px;
+   transition: ease-in-out 0.4s;
+   height: 150px;
+   max-height: 250px;
+}
+
+.market-card:hover {
+  border-color: color-mix(in srgb, var(--card-border-hover-color), transparent 50%);
+  transform: translateY(-5px);
+}
+
+/* Responsive media queries */
+
+@media screen and (max-width: 1100px) {
+  .market-card {
+    width: 40%;
+  }
+  .market-card {
+    flex: 0 1 48%;
+  }
+}
+
+@media screen and (max-width: 720px) {
+  .market-cards {
+    width: 100%;
+  }
+
+  .heading {
+    padding: 20px;
+    font-size: 30px;
+  }
+
+  .market-card {
+    flex: 0 1 100%;
+  }
+}
+
+
+.market-card-title {
+  text-align: left;
+  padding: 5px 10px;
+  font-weight: bold;
+  font-size: 0.9em;
+  /*max-height: 2em;*/
+}
+
+.market-card-body {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 70%;
+}
+
+.market-card-img {
+  padding: 5px;
+  max-width: 100px;
+}
+
+.market-card-img img{
+  display: block;
+  margin: 0 auto;
+  max-width: 100%;
+  height: auto;
+}
+
+.market-card-content {
+  background-color: #a3a3a3;
+  padding: 5px;;
+  flex: 2;
+  border-radius: 3px;
+  position: relative;
+  height: 100%;
+}
+
+.market-card-text {
+  color: #fff;
+  font-size: .8em;
+}
+
+.market-card-icons {
+  bottom: 0px;
+  display: flex;
+  align-items: center;
+  justify-content: end;
+  /*width: 100%;*/
+  position: absolute;
+  right: 5px;
+  bottom: 5px;
+}
+
+.market-card-icons a {
+  background: color-mix(in srgb, var(--default-color), transparent 94%);
+  transition: ease-in-out 0.3s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50px;
+  width: 30px;
+  height: 30px;
+}
+
+.market-card-icons a i {
+  color: color-mix(in srgb, var(--default-color), transparent 20%);
+  font-size: 16px;
+  margin: 0 2px;
+}
+
+.market-card-icons a:hover {
+  background: var(--accent-color);
+}
+
+.market-card-icons a:hover i {
+  color: var(--contrast-color);
+}
+
+.market-card-icons a+a {
+  margin-left: 8px;
+}
 
 
 /*--------------------------------------------------------------
@@ -775,7 +921,7 @@ h6 {
 section,
 .section {
   color: var(--default-color);
-  background-color: var(--background-color);
+  /*background-color: var(--background-color);*/
   padding: 40px 0;
   scroll-margin-top: 90px;
   overflow: clip;

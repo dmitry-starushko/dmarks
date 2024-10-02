@@ -5,10 +5,10 @@
 <script src="{% static 'vendor/openlayer/ol.js' %}"></script>
 {% endblock %}
 {% block content %}
-<section class="container main-map-section">
+<section class="main-map-section">
     <ul class="nav nav-tabs" id="main-tab-map" role="tablist">
         <li class="nav-item" role="presentation">
-            <button class="nav-link active" id="tab-map" data-bs-toggle="tab" data-bs-target="#map"
+            <button class="nav-link active" id="tab-map" data-bs-toggle="tab" data-bs-target="#map-div"
                     type="button" role="tab" aria-controls="home" aria-selected="true"><i class="bi bi-map"></i>
                 КАРТА
             </button>
@@ -21,11 +21,40 @@
         </li>
     </ul>
     <div class="tab-content" id="main-tab-map-content">
-        <div class="tab-pane fade show active" id="map" role="tabpanel" aria-labelledby="home-tab">
-            <div id="map"></div>
+        <div class="tab-pane fade show active" id="map-div" role="tabpanel" aria-labelledby="home-tab">
+            <div class="main-map">
+                <div id="map"></div>
+            </div>
         </div>
         <div class="tab-pane fade" id="maplist" role="tabpanel" aria-labelledby="profile-tab">
 <!--            TODO delete next table-->
+
+            <div class="market-cards">
+                {% for market in markets %}
+                    <div class="market-card">
+                        <div class="market-card-title">
+                            {{market.market_name|add:", "|add:market.additional_name|truncatechars:32 }}
+                        </div>
+                        <div class="market-card-body">
+                            <div class="market-card-img">
+                                <img src="/static/bitmaps/imgs/m0001.jpg" />
+                            </div>
+                            <div class="market-card-content">
+                                <div class="market-card-text">{{market.geo_index}}, {{market.geo_full_address}}</div>
+                                <div class="market-card-icons">
+                                    <a href="">
+                                        <i class="bi bi-geo-alt-fill"></i>
+                                    </a>
+                                    <a href="{% url 'markets:market_details' mpk=market.id show='info' %}">
+                                        <i class="bi bi-eye-fill"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+
             <h3 style="color:red">Список в виде таблицы -- временный, для ссылок на страницы рынков, здесь будет грид с карточками</h3>
             <table>
                 <tr>
