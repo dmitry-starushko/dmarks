@@ -1,4 +1,7 @@
 {% extends 'markets/basic.html' %}
+{% load aux_tags %}
 {% block content %}
 <h1>{{text}}</h1>
+{{'## Пример текста с *markdown* разметкой'|markdown}}
+{{'**Пример** текста с *markdown* разметкой'|markdown}}
 {% endblock %}
