@@ -10,6 +10,14 @@ from django.db import models
 from markets.models_mixins import TpMixin, MkMixin
 
 
+class DbItem(models.Model):
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        abstract: bool = True
+
+
 class Booking(models.Model):
     trade_place = models.ForeignKey('TradePlace', models.DO_NOTHING, db_comment='Идентификатор торогового места')
     descr = models.TextField(blank=True, null=True, db_comment='Описание')
@@ -361,6 +369,7 @@ class Market(MkMixin, models.Model):
     additional_name = models.CharField(max_length=1000, blank=True, null=True, db_comment='Дополнительное наименование')
     geo_index = models.CharField(max_length=10, blank=True, null=True, db_comment='Индекс')
     geo_full_address = models.CharField(blank=True, null=True, db_comment='Полный адрес через запятую')
+    images: models.QuerySet
 
     class Meta:
         managed = True
@@ -610,3 +619,18 @@ class UserLogin(models.Model):
 
     def __str__(self):
         return f'{self.id}'
+
+
+# New tables in database --------------------------------------------------------------------------
+
+
+class MkImage(DbItem):
+    image = models.ImageField(upload_to='markets/%Y/%m/%d')                                    # картинка
+    market = models.ForeignKey(Market, related_name="images", on_delete=models.CASCADE)        # рынок
+
+    class Meta:
+        verbose_name = "Изображение"
+        verbose_name_plural = "Изображения"
+
+    def __str__(self):
+        return f'Фотография рынка #{self.market.id}'
