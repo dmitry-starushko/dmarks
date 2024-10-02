@@ -600,7 +600,7 @@ padding: 5px;
 
 .market-card-img {
   padding: 5px;
-  max-width: 100px;
+  max-width: 130px;
 }
 
 .market-card-img img{
@@ -612,7 +612,7 @@ padding: 5px;
 
 .market-card-content {
   background-color: #a3a3a3;
-  padding: 5px;;
+  padding: 5px;
   flex: 2;
   border-radius: 3px;
   position: relative;
