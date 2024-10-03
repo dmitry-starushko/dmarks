@@ -25,6 +25,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'markets.apps.MarketsConfig',
+    'easy_thumbnails',
     'rest_framework',
 ]
 
