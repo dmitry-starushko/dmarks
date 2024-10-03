@@ -1,5 +1,6 @@
 {% extends 'markets/basic.html' %}
 {% load static %}
+{% load thumbnail %}
 {% block header-scripts %}
 {{block.super}}
 <script src="{% static 'vendor/openlayer/ol.js' %}"></script>
@@ -35,12 +36,24 @@
                         <div class="market-card-title">
                             {{market.market_name|add:", "|add:market.additional_name|truncatechars:32 }}
                         </div>
+                        <!--div class="market-card-title">
+                            {{market.market_name|add:", "|add:market.additional_name }}
+                        </div-->
                         <div class="market-card-body">
                             <div class="market-card-img">
-                                <img src="/static/bitmaps/imgs/m0001.jpg" />
+                                {% thumbnail market.images.0 200x200 upscale as thumb %}
+                                <img src="{{ thumb.url }}"
+                                     width="{{ thumb.width }}"
+                                     height="{{ thumb.height }}" />
+                                {{ thumb }}
+                                123
+                                <!--img src="{% thumbnail market.images.0 300x0 %}" /-->
+                                <!--img src="/static/bitmaps/imgs/m0001_130.jpg" /-->
                             </div>
                             <div class="market-card-content">
-                                <div class="market-card-text">{{market.geo_index}}, {{market.geo_full_address}}</div>
+                                <div class="market-card-text">{{market.geo_index}}, {{market.geo_full_address}}
+                                    {{market.images.0}}
+                                </div>
                                 <div class="market-card-icons">
                                     <a href="">
                                         <i class="bi bi-geo-alt-fill"></i>
@@ -55,7 +68,7 @@
                 {% endfor %}
             </div>
 
-            <h3 style="color:red">Список в виде таблицы -- временный, для ссылок на страницы рынков, здесь будет грид с карточками</h3>
+            <!--h3 style="color:red">Список в виде таблицы -- временный, для ссылок на страницы рынков, здесь будет грид с карточками</h3>
             <table>
                 <tr>
                     <th>№пп</th>
@@ -75,7 +88,7 @@
                     <td>{{market.lng}}</td>
                 </tr>
                 {% endfor %}
-            </table>
+            </table-->
         </div>
     </div>
 </section>
