@@ -45,7 +45,7 @@
                         </div-->
                         <div class="market-card-body">
                             <div class="market-card-img">
-                                {% thumbnail market.images.all.0.image|default:'static/svg/logo/dm.svg' 100x100 crop as thumb %}
+                                {% thumbnail market.images.all.0.image 100x100 crop as thumb %}
                                 <a href="{% url 'markets:market_details' mpk=market.id show='info' %}">
                                     <img src="{{ thumb.url }}" />
                                 </a>
@@ -54,9 +54,7 @@
                                 <!--img src="/static/bitmaps/imgs/m0001_130.jpg" /-->
                             </div>
                             <div class="market-card-content">
-                                <div class="market-card-text">{{market.geo_index}}, {{market.geo_full_address}}
-                                    {{market.images.0}}
-                                </div>
+                                <div class="market-card-text">{{market.geo_index}}, {{market.geo_full_address}}</div>
                                 <div class="market-card-icons">
                                     <a href="">
                                         <i class="bi bi-geo-alt-fill"></i>
