@@ -45,9 +45,8 @@
                         </div-->
                         <div class="market-card-body">
                             <div class="market-card-img">
-                                {% thumbnail market.images.all.0.image 100x100 crop as thumb %}
                                 <a href="{% url 'markets:market_details' mpk=market.id show='info' %}">
-                                    <img src="{{ thumb.url }}" />
+                                    <img src="{% thumbnail market.image 100x100 crop %}" />
                                 </a>
 
                                 <!--img src="{% thumbnail market.images.0 300x0 %}" /-->
