@@ -7,6 +7,7 @@
 # Feel free to rename the models, but don't rename db_table values or field names.
 
 from django.db import models
+from django.conf import settings
 from markets.models_mixins import TpMixin, MkMixin
 
 
@@ -370,6 +371,11 @@ class Market(MkMixin, models.Model):
     geo_index = models.CharField(max_length=10, blank=True, null=True, db_comment='Индекс')
     geo_full_address = models.CharField(blank=True, null=True, db_comment='Полный адрес через запятую')
     images: models.QuerySet
+
+    @property
+    def image(self):
+        first_img = self.images.first()
+        return first_img.image if first_img else settings.DEF_MK_IMG
 
     class Meta:
         managed = True

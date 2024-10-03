@@ -2,9 +2,5 @@
 {% load thumbnail %}
 {% block content %}
 <h1>Страница с данными [{{market}}]</h1>
-{% if market.images.all %}
-<img src="{% thumbnail market.images.all.0.image 300x300 crop %}">
-{% else %}
-<p>Нет картинки</p>
-{% endif %}
+<img src="{% thumbnail market.image 300x300 crop %}">
 {% endblock %}
