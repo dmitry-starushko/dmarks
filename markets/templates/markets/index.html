@@ -1,6 +1,10 @@
 {% extends 'markets/basic.html' %}
 {% load static %}
 {% load thumbnail %}
+{% block header-styles %}
+{{block.super}}
+<link href="{% static 'css/mcards.css' %}" rel="stylesheet">
+{% endblock %}
 {% block header-scripts %}
 {{block.super}}
 <script src="{% static 'vendor/openlayer/ol.js' %}"></script>
@@ -41,12 +45,11 @@
                         </div-->
                         <div class="market-card-body">
                             <div class="market-card-img">
-                                {% thumbnail market.images.0 200x200 upscale as thumb %}
-                                <img src="{{ thumb.url }}"
-                                     width="{{ thumb.width }}"
-                                     height="{{ thumb.height }}" />
-                                {{ thumb }}
-                                123
+                                {% thumbnail market.images.all.0.image|default:'static/svg/logo/dm.svg' 100x100 crop as thumb %}
+                                <a href="{% url 'markets:market_details' mpk=market.id show='info' %}">
+                                    <img src="{{ thumb.url }}" />
+                                </a>
+
                                 <!--img src="{% thumbnail market.images.0 300x0 %}" /-->
                                 <!--img src="/static/bitmaps/imgs/m0001_130.jpg" /-->
                             </div>
