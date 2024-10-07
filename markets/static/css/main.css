@@ -77,6 +77,9 @@ body {
   font-family: var(--default-font);
   background-image: url("/static/bitmaps/bkgs/bkg_001.webp");
   background-attachment: fixed;
+  /*height: 100%;
+  padding:0;
+  margin: 0;*/
 }
 
 a {
@@ -99,6 +102,26 @@ h6 {
   color: var(--heading-color);
   font-family: var(--heading-font);
 }
+
+/* Main body
+------------------------------*/
+.main {
+ max-height: -moz-calc(100% - 150px); /* Firefox */
+ max-height: -webkit-calc(100% - 150px); /* Chrome, Safari */
+ max-height: calc(100% - 150px); /* IE9+ and future browsers */
+ /*height: 100vh;*/
+ /*background-color: yellow;*/
+ /*height: 80vh;*/
+ position: absolute;
+ /*top: 0;
+ bottom: 0;*/
+ left: 0;
+ right: 0;
+ /*padding: 3em 0;*/
+ overflow: hidden;
+ display: flex;
+}
+
 
 /* PHP Email Form Messages
 ------------------------------*/
@@ -162,6 +185,7 @@ h6 {
   padding: 10px 0;
   transition: all 0.5s;
   z-index: 997;
+  min-height: 60px;
 }
 
 .header-logo-block{  
@@ -523,9 +547,16 @@ h6 {
   color: #707070;
 }
 
+section.main-map-section .tab-content
+{
+ /*max-height: 100px;*/
+}
+
 .tab-content .tab-pane {
   background-color: var(--back-color-tabs);
   border-radius: 0px 0px 10px 10px;
+  padding: 3px;
+  overflow: auto;
 }
 
 .btn-main {
@@ -542,13 +573,6 @@ h6 {
 /*.btn-main {
   background-color: var(--nav-color);
 }*/
-
-/*--------------------------------------------------------------
-# Main map
---------------------------------------------------------------*/
-.main-map {
-padding: 5px;
-}
 
 
 /*--------------------------------------------------------------
@@ -571,6 +595,7 @@ padding: 5px;
   bottom: 0;
   width: 100%;
   padding: 10px 0px;
+  min-height: 80px;
 }
 
 .footer .footer-top {
@@ -808,7 +833,7 @@ section,
 .section {
   color: var(--default-color);
   /*background-color: var(--background-color);*/
-  padding: 40px 0;
+  padding: 20px 0;
   scroll-margin-top: 90px;
   overflow: clip;
 }
@@ -820,6 +845,46 @@ section,
     scroll-margin-top: 66px;
   }
 }
+
+/*--------------------------------------------------------------
+# Global Section Flex
+--------------------------------------------------------------*/
+@media screen and (min-height: 1201px) {
+    .section-block {
+      height: 85vh;
+    }
+}
+
+@media screen and (max-height: 1200px) {
+    .section-block {
+      height: 80vh;
+    }
+}
+
+@media screen and (max-height: 1000px) {
+    .section-block {
+      height: 70vh;
+    }
+}
+
+@media screen and (max-height: 800px) {
+    .section-block {
+      height: 68vh;
+    }
+}
+
+@media screen and (max-height: 700px) {
+    .section-block {
+        height: 60vh;
+    }
+}
+
+@media screen and (max-height: 600px) {
+    .section-block {
+        height: 50vh;
+    }
+}
+
 
 /*--------------------------------------------------------------
 # Global Section Titles

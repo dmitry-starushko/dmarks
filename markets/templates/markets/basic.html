@@ -28,7 +28,7 @@
     <link href="{% static 'vendor/bootstrap-icons/bootstrap-icons.css' %}" rel="stylesheet">
     <link href="{% static 'vendor/aos/aos.css" rel="stylesheet' %}">
     <link href="{% static 'vendor/swiper/swiper-bundle.min.css' %}" rel="stylesheet">
-    <link href="{% static 'vendor/openlayer/ol.css' %}" rel="stylesheet">
+    <link href="{% static 'css/support.css' %}" rel="stylesheet">
     <link href="{% static 'css/main.css' %}" rel="stylesheet">
     {% endblock %}
     {% endblock %}
@@ -75,12 +75,15 @@
             <a href="#" class="search" title="Поиск"><i class="bi bi-search"></i></a>
             <a href="#" class="sign-in" title="Вход в ЛК"><i class="bi bi-box-arrow-in-right"></i><i
                     class="bi bi-person"></i></a>
+            <a href="#" class="help" title="Помощь">
+                <i class="bi bi-question-circle"></i>
+            </a>
         </div>
     </div>
     {% endblock %}
 </header>
 <main class="main">
-    <div class="container">
+    <div class="container main-content">
         {% block content %}
         {% endblock %}
     </div>
@@ -131,5 +134,11 @@
 {% block extern-body-scripts %} <!-- TODO переместить в блок dom-loaded-script -->
 <script src="{% static 'js/main.js' %}"></script>
 {% endblock %}
+<!-- Support Icon -->
+<div class="support-div">
+    <div class="support-button">
+        <img src="/static/svg/icons/headset.svg" />
+    </div>
+</div>
 </body>
 </html>

@@ -2,7 +2,7 @@
     var map = new ol.Map({
       layers: [
         new ol.layer.Tile({
-          source: new ol.source.OSM({
+          source: new ol.source.XYZ({
              url: 'https://opensm.donmarkets.ru/ru/{z}/{x}/{y}.png',
              attributions:
                 '<a href="httsps://donmarkets.ru">Рынки Донбасса</a> карты' ,
@@ -11,7 +11,7 @@
        })
      ],
      target: 'map',
-     controls: ol.control.defaults({
+     controls: ol.control.defaults.defaults({
         attributionOptions: /** @type {olx.control.AttributionOptions} */ ({
           collapsible: false
         })
@@ -24,3 +24,13 @@
        minZoom:8
     })
  });
+
+
+
+    //var viewHeight = $(window).height();
+    /*var header = $("div[data-role='header']:visible:visible");
+    var navbar = $("div[data-role='navbar']:visible:visible");
+    var content = $("div[data-role='content']:visible:visible");
+    var contentHeight = viewHeight - header.outerHeight() - navbar.outerHeight();
+    content.height(contentHeight);
+    map.updateSize();*/
