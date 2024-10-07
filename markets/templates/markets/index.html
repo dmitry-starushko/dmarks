@@ -3,6 +3,7 @@
 {% load thumbnail %}
 {% block header-styles %}
 {{block.super}}
+<link href="{% static 'vendor/openlayer/ol.css' %}" rel="stylesheet">
 <link href="{% static 'css/mcards.css' %}" rel="stylesheet">
 {% endblock %}
 {% block header-scripts %}
@@ -27,14 +28,14 @@
     </ul>
     <div class="tab-content" id="main-tab-map-content">
         <div class="tab-pane fade show active" id="map-div" role="tabpanel" aria-labelledby="home-tab">
-            <div class="main-map">
+            <div class="main-map section-block">
                 <div id="map"></div>
             </div>
         </div>
         <div class="tab-pane fade" id="maplist" role="tabpanel" aria-labelledby="profile-tab">
 <!--            TODO delete next table-->
 
-            <div class="market-cards">
+            <div class="market-cards section-block">
                 {% for market in markets %}
                     <div class="market-card">
                         <div class="market-card-title">

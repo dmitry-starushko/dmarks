@@ -26,10 +26,10 @@
     /*height: calc(100% - 200px); /* IE9+ and future browsers */
 }
 
-/*#map {
+#map {
     width: 100%;
-    height: 500px;
-}*/
+    height: 100%;
+}
 
 /*--------------------------------------------------------------
 # Market Cards
