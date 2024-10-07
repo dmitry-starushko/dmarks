@@ -25,6 +25,9 @@
     })
  });
 
+{% for item in items %}
+alert('Рынок {{item.market_name}}: {{item.lng}}' + '-' + '{{item.lat}}');
+{% endfor %}
 
 
     //var viewHeight = $(window).height();

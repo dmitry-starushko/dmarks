@@ -97,5 +97,5 @@
 {% endblock %}
 {% block dom-loaded-script %}
 {{block.super}}
-{% include 'markets/js/index.js' %}
+{% include 'markets/js/index.js' with items=markets %}
 {% endblock %}
