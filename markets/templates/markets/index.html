@@ -9,8 +9,44 @@
 {% block header-scripts %}
 {{block.super}}
 <script src="{% static 'vendor/openlayer/ol.js' %}"></script>
+<!--script src="{% static 'js/map.js' %}"></script-->
 {% endblock %}
 {% block content %}
+
+
+<div style="display: none">
+ <!-- Шаблон маркера -->
+ <img id="map-marker" class="map-marker toggle" width="30" src="/static/svg/icons/map-marker.svg" alt="Marker" />
+
+
+ <!-- Шаблон попапа -->
+ <div id="map-popup" class="popup">
+   <p id="title"></p>
+ </div>
+
+<div id="popup-market-card" class="popup-market-card">
+    <div id="popup-market-card-title" class="popup-market-card-title">
+
+    </div>
+    <div class="popup-market-card-body">
+        <div id="popup-market-card-img" class="popup-market-card-img">
+            <a id="popup-market-url" href="">
+                <img id="popup-market-img" src="" />
+            </a>
+        </div>
+        <div class="popup-market-card-content">
+            <div id="popup-market-card-text" class="popup-market-card-text"></div>
+            <div class="popup-market-card-icons">
+                <a href="">
+                    <i class="bi bi-eye-fill"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+</div>
+
 <section class="main-map-section">
     <ul class="nav nav-tabs" id="main-tab-map" role="tablist">
         <li class="nav-item" role="presentation">
@@ -97,5 +133,5 @@
 {% endblock %}
 {% block dom-loaded-script %}
 {{block.super}}
-{% include 'markets/js/index.js' %}
+{% include 'markets/js/index.js' with items=markets %}
 {% endblock %}
