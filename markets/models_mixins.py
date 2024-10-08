@@ -1,11 +1,28 @@
 # Миксин для корректного определения типа интернет-подключения
 from decimal import Decimal
+from django.conf import settings
 
 
 class MkMixin:
     @property
     def mk_sewerage(self):
         return self.infr_sewerage_type if self.infr_sewerage else "отсутствует"
+
+    @property
+    def mk_market_name(self):
+        return settings.DISP_RE.sub(' ', self.market_name)
+
+    @property
+    def mk_additional_name(self):
+        return settings.DISP_RE.sub(' ', self.additional_name)
+
+    @property
+    def mk_geo_full_address(self):
+        return settings.DISP_RE.sub(' ', self.geo_full_address)
+
+    @property
+    def mk_full_name(self):
+        return f"{self.mk_market_name}, {self.mk_additional_name}"
 
 
 class TpMixin:

@@ -75,7 +75,7 @@
                 {% for market in markets %}
                     <div class="market-card">
                         <div class="market-card-title">
-                            {{market.market_name|add:", "|add:market.additional_name|truncatechars:32 }}
+                            {{market.mk_full_name|truncatechars:32}}
                         </div>
                         <!--div class="market-card-title">
                             {{market.market_name|add:", "|add:market.additional_name }}
@@ -91,7 +91,7 @@
                                 <!--img src="/static/bitmaps/imgs/m0001_130.jpg" /-->
                             </div>
                             <div class="market-card-content">
-                                <div class="market-card-text">{{market.geo_index}}, {{market.geo_full_address}}</div>
+                                <div class="market-card-text">{{market.geo_index}}, {{market.mk_geo_full_address}}</div>
                                 <div class="market-card-icons">
                                     <a href="">
                                         <i class="bi bi-geo-alt-fill"></i>

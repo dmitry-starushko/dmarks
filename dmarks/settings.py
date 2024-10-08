@@ -1,4 +1,5 @@
 import os
+import re
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -128,3 +129,5 @@ DEF_MK_IMG = 'markets/logo_rd_100.png'
 USE_THOUSAND_SEPARATOR = True
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+DISP_RE = re.compile('[^а-яА-ЯёЁ0-9.,«»()\-]+')
