@@ -190,7 +190,8 @@ const mappopupOverlay = new ol.Overlay({
 map.addOverlay(mappopupOverlay);
 
  map.addEventListener("click", function (event) {
-     mappopup.style.display = '';
+     //mappopup.style.display = '';
+     hide(mappopup, 200);
  });
 
 
@@ -244,8 +245,9 @@ function createMarker(position, title, text, img, url) {
 	mappopupOverlay.setPosition(position);
     mappopup.querySelector("#popup-market-card-title").textContent = title;
     mappopup.querySelector("#popup-market-card-text").textContent = text;
-    mappopup.querySelector("#popup-market-card-img").textContent = "<img src='{% thumbnail " . img . " 100x100 crop %}' />";
-    show(mappopup, 500);
+    //mappopup.querySelector("#popup-market-card-img").textContent = "<img src='/media/markets/logo_rd_100.png.100x100_q85_crop.png'>";
+    mappopup.querySelector("#popup-market-img").setAttribute('src', '/media/markets/logo_rd_100.png.100x100_q85_crop.png');
+    show(mappopup, 200);
 
  });
 
@@ -283,18 +285,20 @@ var hide = function (elem, timing) {
 	timing = timing ? timing : 350;
 
 	// Give the element a height to change from
-	elem.style.height = elem.scrollHeight + 'px';
+	//elem.style.height = elem.scrollHeight + 'px';
 	//elem.style.height = '0';
 
 	// Set the height back to 0
 	window.setTimeout(function () {
-		elem.style.height = '0';
-	}, 1);
+		elem.style.height = '0px';
+	}, 50);
 
 	// When the transition is complete, hide it
 	window.setTimeout(function () {
-		elem.classList.remove('is-visible');
+		elem.style.display = 'none'; //  Hide it again
 	}, timing);
+
+
 
 };
 
