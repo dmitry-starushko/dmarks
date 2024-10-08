@@ -326,14 +326,13 @@ var toggle = function (elem, timing) {
 /*createMarker(mposition, '123');*/
 
 {% for item in items %}
-/*alert('Рынок {{item.market_name}}: {{item.lng}}' + '-' + '{{item.lat}}');*/
-//console.log('{{item.geo_index|add:", "|add:item.geo_full_address}}'.replace(/(\r\n|\n|\r)/gm, ""));
-//console.log("{{item.image}}");
+
+console.log('{% thumbnail item.image 100x100 crop %}');
+
 createMarker(["{{item.lng}}".replace(',', '.'), "{{item.lat}}".replace(',', '.')],
             '{{item.market_name|add:", "|add:item.additional_name|truncatechars:32}}',
-            '{{item.geo_index|add:", "|add:item.geo_full_address}}',
+            '{{item.geo_index|add:", "|add:item.mk_geo_full_address}}',
             '{{item.image}}', '{{item.url}}');
-
 {% endfor %}
 
 
