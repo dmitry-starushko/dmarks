@@ -124,7 +124,7 @@ MEDIA_URL = 'media/'
 
 MEDIA_ROOT = BASE_DIR / 'media'
 
-DEF_MK_IMG = 'markets/logo_rd_100.png'
+DEF_MK_IMG = 'markets/def-mk-img.webp'
 
 USE_THOUSAND_SEPARATOR = True
 
