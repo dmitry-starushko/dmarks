@@ -151,6 +151,7 @@ var map = new ol.Map({
     })
  });
 
+
  //map.addLayer(markerLayer);
 
 /*const mposition = [37,902, 48,038];
@@ -187,6 +188,10 @@ const mappopupOverlay = new ol.Overlay({
  offset: [0, -25],
 });
 map.addOverlay(mappopupOverlay);
+
+ map.addEventListener("click", function (event) {
+     mappopup.style.display = '';
+ });
 
 
 // Функция создания маркеров
