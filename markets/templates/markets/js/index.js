@@ -330,8 +330,8 @@ var toggle = function (elem, timing) {
 console.log('{% thumbnail item.image 100x100 crop %}');
 
 createMarker(["{{item.lng}}".replace(',', '.'), "{{item.lat}}".replace(',', '.')],
-            '{{item.market_name|add:", "|add:item.additional_name|truncatechars:32}}',
-            '{{item.geo_index|add:", "|add:item.mk_geo_full_address}}',
+            '{{item.mk_full_name | truncatechars:32}}',
+            '{{item.mk_full_address}}',
             '{{item.image}}', '{{item.url}}');
 {% endfor %}
 

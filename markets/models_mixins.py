@@ -21,8 +21,16 @@ class MkMixin:
         return settings.DISP_RE.sub(' ', self.geo_full_address)
 
     @property
+    def mk_geo_index(self):
+        return settings.DISP_RE.sub(' ', self.geo_index)
+
+    @property
     def mk_full_name(self):
         return f"{self.mk_market_name}, {self.mk_additional_name}"
+
+    @property
+    def mk_full_address(self):
+        return f"{self.mk_geo_index}, {self.mk_geo_full_address}"
 
 
 class TpMixin:
