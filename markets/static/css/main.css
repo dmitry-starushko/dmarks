@@ -120,6 +120,7 @@ h6 {
  /*padding: 3em 0;*/
  overflow: hidden;
  display: flex;
+ height: 100%;
 }
 
 
@@ -531,6 +532,16 @@ h6 {
   }
 }
 
+.main-content{
+    width: 100%;
+    /*height: 100%;
+    /*background-color: green;*/
+    /*display: flex;
+    padding-bottom: 20px;*/
+    /*justify-content: center;
+    align-items: center;*/
+}
+
 
 /*--------------------------------------------------------------
 # Main section
@@ -539,7 +550,14 @@ h6 {
 .nav-tabs .nav-item.show .nav-link, .nav-tabs .nav-link.active {
   border-top: 2px solid var(--active-color);
   color: #000;
-  /*border-bottom: 1px dashed gray;*/
+}
+
+.nav-tabs .nav-item {
+  border-right: 1px solid gray;
+}
+
+.nav-tabs .nav-item button.nav-link i{
+  margin-right: 15px;
 }
 
 .nav-tabs .nav-link {
@@ -849,9 +867,9 @@ section,
 /*--------------------------------------------------------------
 # Global Section Flex
 --------------------------------------------------------------*/
-@media screen and (min-height: 1201px) {
+/*@media screen and (min-height: 1201px) {
     .section-block {
-      height: 85vh;
+      height: 80vh;
     }
 }
 
@@ -883,7 +901,7 @@ section,
     .section-block {
         height: 50vh;
     }
-}
+}*/
 
 
 /*--------------------------------------------------------------

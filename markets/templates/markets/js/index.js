@@ -246,7 +246,9 @@ function createMarker(position, title, text, img, url) {
     mappopup.querySelector("#popup-market-card-title").textContent = title;
     mappopup.querySelector("#popup-market-card-text").textContent = text;
     //mappopup.querySelector("#popup-market-card-img").textContent = "<img src='/media/markets/logo_rd_100.png.100x100_q85_crop.png'>";
-    mappopup.querySelector("#popup-market-img").setAttribute('src', '/media/markets/logo_rd_100.png.100x100_q85_crop.png');
+    mappopup.querySelector("#popup-market-img").setAttribute('src', img);
+    mappopup.querySelector("#popup-market-url").setAttribute('href', url);
+    mappopup.querySelector("#popup-market-url-icon").setAttribute('href', url);
     show(mappopup, 200);
 
  });
@@ -332,7 +334,7 @@ console.log('{% thumbnail item.image 100x100 crop %}');
 createMarker(["{{item.lng}}".replace(',', '.'), "{{item.lat}}".replace(',', '.')],
             '{{item.mk_full_name | truncatechars:32}}',
             '{{item.mk_full_address}}',
-            '{{item.image}}', '{{item.url}}');
+            '{% thumbnail item.image 100x100 crop %}', "{% url 'markets:market_details' mpk=item.id show='info' %}");
 {% endfor %}
 
 

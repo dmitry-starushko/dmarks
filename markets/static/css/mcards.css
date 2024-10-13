@@ -1,16 +1,7 @@
-.main-content{
-    width: 100%;
-    /*height: 100%;
-    /*background-color: green;*/
-    display: flex;
-    padding-bottom: 20px;
-    /*justify-content: center;
-    align-items: center;*/
-}
-
 .main-map-section {
     width: 100%;
     overflow: inherit;
+    /*height: 80vh;*/
 }
 
 /*--------------------------------------------------------------
@@ -49,35 +40,47 @@
     /*max-height: calc(100% - 150px); /* IE9+ and future browsers */
 }
 
-/*@media screen and (min-height: 1201px) {
-    .market-cards {
+@media screen and (min-height: 1201px) {
+    .section-block {
       height: 80vh;
     }
 }
 
 @media screen and (max-height: 1200px) {
-    .market-cards {
+    .section-block {
+      height: 80vh;
+    }
+}
+
+@media screen and (max-height: 1100px) {
+    .section-block {
       height: 75vh;
     }
 }
 
 @media screen and (max-height: 1000px) {
-    .market-cards {
+    .section-block {
       height: 70vh;
     }
 }
 
 @media screen and (max-height: 800px) {
-    .market-cards {
-      height: 60vh;
+    .section-block {
+      height: 68vh;
+    }
+}
+
+@media screen and (max-height: 700px) {
+    .section-block {
+        height: 60vh;
     }
 }
 
 @media screen and (max-height: 600px) {
-    .market-cards {
-        height: 55vh;
+    .section-block {
+        height: 50vh;
     }
-}*/
+}
 
 .market-card {
    flex: 1 1 24%;

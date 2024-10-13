@@ -1,6 +1,79 @@
 {% extends 'markets/basic.html' %}
+{% load static %}
 {% load thumbnail %}
+{% block header-styles %}
+{{block.super}}
+<link href="{% static 'css/mkdetails.css' %}" rel="stylesheet">
+{% endblock %}
 {% block content %}
-<h1>Страница с данными [{{market}}]</h1>
-<img src="{% thumbnail market.image 300x300 crop %}">
+
+<section class="market-details-section">
+    <div class="market-details-section-title"><h3>{{market.mk_full_name}}</h3></div>
+    <div class="market-details-content">
+        <ul class="nav nav-tabs" id="mkdetails-tabs" role="tablist">
+            <li class="nav-item" role="presentation">
+                <button class="nav-link active" id="mkdetails-info" data-bs-toggle="tab" data-bs-target="#mkdetails-info-tab"
+                        type="button" role="tab" aria-controls="info" aria-selected="true"><i class="bi bi-info-circle"></i>
+                    ИНФОРМАЦИЯ
+                </button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="mkdetails-tp" data-bs-toggle="tab" data-bs-target="#mkdetails-tp-tab"
+                        type="button" role="tab" aria-controls="tp" aria-selected="false"><i
+                        class="bi bi-list-ul"></i>ТОРГОВЫЕ МЕСТА
+                </button>
+            </li>
+                        <li class="nav-item" role="presentation">
+                <button class="nav-link" id="mkdetails-scheme3d" data-bs-toggle="tab" data-bs-target="#mkdetails-scheme3d-tab"
+                        type="button" role="tab" aria-controls="scheme3d" aria-selected="false"><i
+                        class="bi bi-box"></i>ВИД 3D
+                </button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="mkdetails-scheme" data-bs-toggle="tab" data-bs-target="#mkdetails-scheme-tab"
+                        type="button" role="tab" aria-controls="scheme" aria-selected="false"><i
+                        class="bi bi-circle-square"></i>СХЕМА
+                </button>
+            </li>
+        </ul>
+        <div class="tab-content" id="mkdetails-tabs-content">
+            <div class="tab-pane fade show active" id="mkdetails-info-tab" role="tabpanel" aria-labelledby="info-tab">
+                <div class="mkdetails-section-info section-block">
+                    <div class="mkdetails-section-info-main">
+                        <img src="{% thumbnail market.image 200x200 crop %}">
+                        <div class="mkdetails-short-info">
+                            {{market.market_type_id}}
+                        </div>
+                        <div class="mkdetails-big-info">
+                            {{market.ads}}
+                        </div>
+                    </div>
+                    <div class="mkdetails-section-info-slide" id="dragSlide"></div>
+                    <div class="mkdetails-section-info-detail">777</div>
+                </div>
+            </div>
+            <div class="tab-pane fade" id="mkdetails-tp-tab" role="tabpanel" aria-labelledby="tp-tab">
+                <div class="section-block">
+
+                </div>
+            </div>
+            <div class="tab-pane fade" id="mkdetails-scheme3d-tab" role="tabpanel" aria-labelledby="scheme3d-tab">
+                <div class="section-block">
+
+                </div>
+            </div>
+            <div class="tab-pane fade" id="mkdetails-scheme-tab" role="tabpanel" aria-labelledby="scheme-tab">
+                <div class="section-block">
+12343
+                </div>
+            </div>
+        </div>
+    </div>
+
+</section>
+{% endblock %}
+
+{% block dom-loaded-script %}
+{{block.super}}
+{% include 'markets/js/mkdetails.js' %}
 {% endblock %}
