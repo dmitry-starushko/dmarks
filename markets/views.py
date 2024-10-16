@@ -1,8 +1,7 @@
 from django.views import View
 from django.shortcuts import render
-
 from markets.models import Market
-
+# from transmutation import Svg3DTM
 
 class BasicContextProvider:
     @property
