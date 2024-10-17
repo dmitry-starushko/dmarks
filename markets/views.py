@@ -44,3 +44,15 @@ class MarketDetailsView(View, BasicContextProvider):
         return render(request, self.template_name, self.basic_context | {
             'market': Market.objects.get(pk=mpk)
         })
+
+
+class Scheme3DView(View, BasicContextProvider):
+    @property
+    def template_name(self):
+        return 'markets/scheme3d.html'
+
+    @on_exception_returns(HttpResponseBadRequest)
+    def get(self, request, scheme_pk):
+        return render(request, self.template_name, self.basic_context | {
+            'scheme_pk': scheme_pk
+        })
