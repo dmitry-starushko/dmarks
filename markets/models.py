@@ -445,7 +445,7 @@ class StreetType(models.Model):
 
 class SvgSchema(models.Model):
     svg_schema = models.TextField(blank=True, null=True, db_comment='svg объекта')
-    market = models.ForeignKey(Market, models.DO_NOTHING, blank=True, null=True, db_comment='id рынка')
+    market = models.ForeignKey(Market, models.DO_NOTHING, related_name="schemes", blank=True, null=True, db_comment='id рынка')  # TODO models.CASCADE
     descr = models.TextField(blank=True, null=True, db_comment='Описание')
     source_file = models.CharField(blank=True, null=True, db_comment='Имя загруженного файла')
     floor = models.CharField(blank=True, null=True, db_comment='Этаж схемы объекта')
