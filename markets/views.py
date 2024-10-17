@@ -1,7 +1,9 @@
+from django.http import HttpResponseBadRequest
 from django.views import View
 from django.shortcuts import render
+from markets.decorators import on_exception_returns
 from markets.models import Market
-# from transmutation import Svg3DTM
+
 
 class BasicContextProvider:
     @property
@@ -37,6 +39,7 @@ class MarketDetailsView(View, BasicContextProvider):
     def template_name(self):
         return 'markets/market-details.html'
 
+    @on_exception_returns(HttpResponseBadRequest)
     def get(self, request, mpk, show):
         return render(request, self.template_name, self.basic_context | {
             'market': Market.objects.get(pk=mpk)
