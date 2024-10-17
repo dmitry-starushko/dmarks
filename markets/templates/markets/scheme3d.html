@@ -1,7 +1,11 @@
 {% extends 'markets/basic.html' %}
 {% load static %}
+{% block header-styles %}
+{{block.super}}
+<link href="{% static 'css/v3d.css' %}" rel="stylesheet">
+{% endblock %}
 {% block content %}
-<div id="3d-view">
+<div id="3d-view" class="v3d">
     <p>Здесь будет 3D-вид для схемы #{{scheme_pk}}</p>
 </div>
 {% endblock %}
