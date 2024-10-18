@@ -1,10 +1,5 @@
-{# alert("Версия three.js: ".concat(THREE.REVISION, " (рисуем схему {{sch_pk}} в div #{{div_id}})")); #}
 const v3d = document.getElementById("{{div_id}}");
-const width = window.innerWidth, height = window.innerHeight;
-alert(`${v3d.clientWidth} ${v3d.clientHeight}`);
-
-// init
-
+const width = v3d.clientWidth, height = v3d.clientHeight;
 const camera = new THREE.PerspectiveCamera( 70, width / height, 0.01, 10 );
 camera.position.z = 1;
 const scene = new THREE.Scene();
@@ -15,9 +10,7 @@ scene.add(mesh);
 const renderer = new THREE.WebGLRenderer({ antialias: true });
 renderer.setSize(width, height);
 renderer.setAnimationLoop(animate);
-document.body.appendChild(renderer.domElement);
-
-// animation
+v3d.appendChild(renderer.domElement);
 
 function animate(time) {
 	mesh.rotation.x = time / 2000;
