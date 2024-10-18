@@ -4,8 +4,17 @@
 {{block.super}}
 <link href="{% static 'css/v3d.css' %}" rel="stylesheet">
 {% endblock %}
+{% block dom-loaded-scripts-imports %}
+{{block.super}}
+import * as THREE from "{% static 'js/three/three.module.js' %}";
+{% endblock %}
+{% block dom-loaded-scripts %}
+{{block.super}}
+alert("Версия three.js: ".concat(THREE.REVISION));
+{% endblock %}
 {% block content %}
 <div id="3d-view" class="v3d">
     <p>Здесь будет 3D-вид для схемы #{{scheme_pk}}</p>
 </div>
 {% endblock %}
+

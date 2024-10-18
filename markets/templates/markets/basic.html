@@ -37,10 +37,12 @@
     <script src="{% static 'vendor/aos/aos.js' %}"></script>
     <script src="{% static 'vendor/swiper/swiper-bundle.min.js' %}"></script>
     {% endblock %}
-    <script>
+    <script type="module">
+        {% block dom-loaded-scripts-imports %}
+        {% endblock %}
         document.addEventListener('DOMContentLoaded', (event) => {
-            {% block dom-loaded-script %}
-            {# -- runs on DOM loaded -- #}
+            {% block dom-loaded-scripts %}
+            {# -- JS code in this block runs on DOM loaded -- #}
             {% include 'markets/js/basic.js' %}
             {% endblock %}
         });
@@ -130,7 +132,7 @@
             class="bi bi-arrow-up-short"></i></a>
     {# -- Preloader -- #}
     <div id="preloader"></div>
-    {% block extern-body-scripts %} <!-- TODO переместить в блок dom-loaded-script -->
+    {% block extern-body-scripts %} <!-- TODO переместить в блок dom-loaded-scripts -->
     <script src="{% static 'js/main.js' %}"></script>
     {% endblock %}
     {# -- Support Icon -- #}
