@@ -7,13 +7,17 @@
 {% block header-scripts %}
 {{block.super}}
 <script type="importmap">
-{ {# TODO 'three' #} }
+{ "imports": {
+    "three": "{% static 'js/three/three.module.js' %}",
+    "gltf_loader": "{% static 'js/three/gltf_loader/GLTFLoader.js' %}"
+  }
+}
 </script>
 {% endblock %}
 {% block dom-loaded-scripts-imports %}
 {{block.super}}
-import * as THREE from "{% static 'js/three/three.module.js' %}";
-import {GLTFLoader} from "{% static 'js/three/GLTFLoader.js' %}";
+import * as THREE from "three";
+import {GLTFLoader} from "gltf_loader";
 {% endblock %}
 {% block dom-loaded-scripts %}
 {{block.super}}
