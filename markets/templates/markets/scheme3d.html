@@ -10,11 +10,10 @@ import * as THREE from "{% static 'js/three/three.module.js' %}";
 {% endblock %}
 {% block dom-loaded-scripts %}
 {{block.super}}
-alert("Версия three.js: ".concat(THREE.REVISION));
+{% include 'markets/js/v3d.js' with div_id='v3d' sch_pk=scheme_pk %}
 {% endblock %}
 {% block content %}
-<div id="3d-view" class="v3d">
-    <p>Здесь будет 3D-вид для схемы #{{scheme_pk}}</p>
+<div id="v3d" class="v3d">
 </div>
 {% endblock %}
 

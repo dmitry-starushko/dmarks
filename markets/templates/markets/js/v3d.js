@@ -1,0 +1,1 @@
+alert("Версия three.js: ".concat(THREE.REVISION, " (рисуем схему {{sch_pk}} в div #{{div_id}})"));
