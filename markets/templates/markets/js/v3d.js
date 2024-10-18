@@ -5,10 +5,12 @@ camera.position.z = 1;
 camera.position.x = 1;
 const scene = new THREE.Scene();
 scene.background = new THREE.Color(0xaaaaaa)
+{% comment %}
 const geometry = new THREE.BoxGeometry(0.2, 0.2, 0.2);
 const material = new THREE.MeshNormalMaterial();
 const mesh = new THREE.Mesh(geometry, material);
 scene.add(mesh);
+{% endcomment %}
 const loader = new GLTFLoader();
 loader.load(
     "{% url 'api:schemes_take_gltf' scheme_pk=1359 %}",
@@ -21,9 +23,7 @@ renderer.setAnimationLoop(animate);
 v3d.appendChild(renderer.domElement);
 
 function animate(time) {
-	mesh.rotation.x = time / 2000;
-	mesh.rotation.y = time / 1000;
-
+	{# mesh.rotation.x = time / 2000; 	mesh.rotation.y = time / 1000; #}
 	camera.position.x = 2138+time / 500;
 	camera.position.y = 7;
 	camera.position.z = 1261+time / 500;
