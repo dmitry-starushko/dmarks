@@ -5,4 +5,5 @@ app_name = 'markets'
 
 urlpatterns = [
     path('schemes/<int:scheme_pk>/gltf', views.TakeGltfView.as_view(), name='schemes_take_gltf'),
+    path('schemes/<int:scheme_pk>/svg', views.TakeSvgView.as_view(), name='schemes_take_svg'),
 ]
