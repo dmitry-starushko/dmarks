@@ -4,6 +4,12 @@
 {{block.super}}
 <link href="{% static 'css/v3d.css' %}" rel="stylesheet">
 {% endblock %}
+{% block header-scripts %}
+{{block.super}}
+<script type="importmap">
+{ {# TODO 'three' #} }
+</script>
+{% endblock %}
 {% block dom-loaded-scripts-imports %}
 {{block.super}}
 import * as THREE from "{% static 'js/three/three.module.js' %}";
