@@ -8,8 +8,9 @@
 {{block.super}}
 <script type="importmap">
 { "imports": {
-    "three": "{% static 'js/three/three.module.js' %}",
-    "gltf_loader": "{% static 'js/three/gltf_loader/GLTFLoader.js' %}"
+    "three": "{% static 'js/three/three.module.js' %}"
+    ,"gltf_loader": "{% static 'js/three/gltf_loader/GLTFLoader.js' %}"
+    ,"view3d": "{% static 'js/view3d.module.js' %}"
   }
 }
 </script>
@@ -17,7 +18,8 @@
 {% block dom-loaded-scripts-imports %}
 {{block.super}}
 import * as THREE from "three";
-import {GLTFLoader} from "gltf_loader";
+import { GLTFLoader } from "gltf_loader";
+import { v3d_test } from "view3d";
 {% endblock %}
 {% block dom-loaded-scripts %}
 {{block.super}}

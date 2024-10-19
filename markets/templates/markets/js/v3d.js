@@ -26,12 +26,13 @@ loader.load(
         const ground = gltf.scene.getObjectByName("ground");
 
         if(ground) {
+            console.log("ground!")
             const bbx_min = ground.geometry.boundingBox.min;
             const bbx_max = ground.geometry.boundingBox.max;
             const gcx = 0.5 * (bbx_min.x + bbx_max.x);
             const gcz = 0.5 * (bbx_min.z + bbx_max.z);
-            const ab_light = new THREE.AmbientLight(0xffffffff);
-            scene.add(ab_light);
+//            const ab_light = new THREE.AmbientLight(0xffffffff);
+//            scene.add(ab_light);
             const dir_light = new THREE.DirectionalLight( 0xffffff, 10 );
             let dir_light_t = new THREE.Object3D();
             dir_light_t.position.set(dir_light.position.x+1,0,dir_light.position.z+1);
