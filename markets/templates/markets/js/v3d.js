@@ -14,7 +14,7 @@ scene.add(mesh);
 const loader = new GLTFLoader();
 loader.load(
     "{% url 'api:schemes_take_gltf' scheme_pk=sch_pk %}",
-    function(gltf) {
+    gltf => {
         scene.add(gltf.scene);
 
 //        scene.traverse(obj => {
@@ -42,8 +42,12 @@ loader.load(
             camera.position.set(gcx, 7.0, gcz);
         }
     },
-    function(progress) { console.log((progress.loaded / progress.total) * 100 + "% loaded"); },
-    function(error) { console.error(error); });
+    progress => {
+        console.log((progress.loaded / progress.total) * 100 + "% loaded");
+    },
+    error => {
+        console.error(error);
+    });
 
 const renderer = new THREE.WebGLRenderer({ antialias: true });
 renderer.shadowMap.enabled = true;

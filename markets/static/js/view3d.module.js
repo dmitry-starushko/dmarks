@@ -1,8 +1,8 @@
-//import * as THREE from "three";
-//import {GLTFLoader} from "gltf_loader";
+import * as THREE from "three";
+import {GLTFLoader} from "gltf_loader";
 
 function v3d_test() {
-    alert(`It works!`);
+    alert(THREE.REVISION);
 }
 
 export { v3d_test };
