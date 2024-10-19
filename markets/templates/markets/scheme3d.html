@@ -19,11 +19,11 @@
 {{block.super}}
 import * as THREE from "three";
 import { GLTFLoader } from "gltf_loader";
-import { v3d_test } from "view3d";
+import { View3D } from "view3d";
 {% endblock %}
 {% block dom-loaded-scripts %}
 {{block.super}}
-v3d_test();
+const c = new View3D();
 {% include 'markets/js/v3d.js' with div_id='v3d' sch_pk=scheme_pk %}
 {% endblock %}
 {% block content %}
