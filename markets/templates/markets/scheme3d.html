@@ -23,8 +23,7 @@ import { View3D } from "view3d";
 {% endblock %}
 {% block dom-loaded-scripts %}
 {{block.super}}
-const c = new View3D();
-{% include 'markets/js/v3d.js' with div_id='v3d' sch_pk=scheme_pk %}
+const v3d = new View3D("v3d", "{% url 'api:schemes_take_gltf' scheme_pk=scheme_pk %}");
 {% endblock %}
 {% block content %}
 <div id="v3d" class="v3d"></div>
