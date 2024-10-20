@@ -30,12 +30,19 @@ class View3D {
                     camera.position.set(gcx, 20.0, gcz);
 
                     //  Тут будет раскраска торговых точек
-//                    scene.traverse(obj => {
+                    scene.traverse(obj => {
+//                        console.log(`${obj.name} : ${obj.constructor.name}`);
 //                        if(obj instanceof THREE.Mesh) {
-//                            console.log(obj.name);
+//                            console.log("    Mesh");
 //                            obj.material.color = new THREE.Color(0xff00ff);
 //                        }
-//                    });
+//                        if((obj instanceof THREE.Group) && obj.name.startsWith("outlet")) {
+//                            debugger;
+//                        }
+                        if((obj instanceof THREE.Group) && 'name' in obj.userData && obj.userData.name == "outlet") {
+                            console.log(`found outlet: ${obj.userData.id}`);
+                        }
+                    });
 
                     const renderer = new THREE.WebGLRenderer({ antialias: true });
                     renderer.shadowMap.enabled = true;
