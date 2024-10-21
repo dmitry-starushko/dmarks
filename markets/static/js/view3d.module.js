@@ -37,7 +37,6 @@ class View3D {
                         camera.rotation.y = time / 4000;
                         renderer.render(scene, camera);
                     });
-
                     v3d.appendChild(renderer.domElement);
                 } else {
                     const msg = "Неизвестная структура сцены";
