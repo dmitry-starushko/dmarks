@@ -19,8 +19,8 @@ class View3D {
                     const bbx_max = ground.geometry.boundingBox.max;
                     const gcx = 0.5 * (bbx_min.x + bbx_max.x);
                     const gcz = 0.5 * (bbx_min.z + bbx_max.z);
-        //            const ab_light = new THREE.AmbientLight(0xffffffff);
-        //            scene.add(ab_light);
+                    const ab_light = new THREE.AmbientLight(0xffffff);
+                    scene.add(ab_light);
                     const dir_light = new THREE.DirectionalLight( 0xffffff, 10 );
                     let dir_light_t = new THREE.Object3D();
                     dir_light_t.position.set(dir_light.position.x+1,0,dir_light.position.z+1);
@@ -28,21 +28,7 @@ class View3D {
                     dir_light.target = dir_light_t;
                     scene.add(dir_light);
                     camera.position.set(gcx, 20.0, gcz);
-
-                    //  Тут будет раскраска торговых точек
-                    scene.traverse(obj => {
-//                        console.log(`${obj.name} : ${obj.constructor.name}`);
-//                        if(obj instanceof THREE.Mesh) {
-//                            console.log("    Mesh");
-//                            obj.material.color = new THREE.Color(0xff00ff);
-//                        }
-//                        if((obj instanceof THREE.Group) && obj.name.startsWith("outlet")) {
-//                            debugger;
-//                        }
-                        if((obj instanceof THREE.Group) && 'name' in obj.userData && obj.userData.name == "outlet") {
-                            console.log(`found outlet: ${obj.userData.id}`);
-                        }
-                    });
+                    this.__init_scene__(scene);
 
                     const renderer = new THREE.WebGLRenderer({ antialias: true });
                     renderer.shadowMap.enabled = true;
@@ -67,6 +53,21 @@ class View3D {
                 alert(`Ошибка при создании сцены:\n${await(await fetch(gltf_url)).text()}`);
             }
         );
+    }
+
+    __init_scene__(scene) {
+        scene.traverse(obj => {
+            if((obj instanceof THREE.Group) && 'name' in obj.userData && obj.userData.name == "outlet") {
+                console.log(`found outlet: ${obj.userData.id}`);
+                obj.children.forEach((mesh, index) => {mesh.material = this.__clone_material__(mesh.material, new THREE.Color(index? "green" : "green"));});
+            }
+        });
+    }
+
+    __clone_material__(material, color) {
+        const new_material = Object.create(material);
+        if(color) { new_material.color = color; }
+        return new_material;
     }
 }
 
