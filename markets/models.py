@@ -543,11 +543,15 @@ class TradePlaceType(models.Model):
     type_name = models.CharField(db_comment='Наименование типа занятости торгового места')
     descr = models.TextField(blank=True, null=True, db_comment='Опиcание')
     color = models.CharField(max_length=7, blank=True, null=True, db_comment='Цвет в формате #ffffff')
+    wall_color = models.CharField(max_length=8, default='0xffffff', db_comment='Цвет стен ТМ в формате 0xffffff, для 3D')
+    roof_color = models.CharField(max_length=8, default='0xffffff', db_comment='Цвет крыш ТМ в формате 0xffffff, для 3D')
 
     class Meta:
         managed = True
         db_table = 'trade_place_type'
         db_table_comment = 'Типы занятости торгового места'
+        verbose_name = "Тип занятости ТМ"
+        verbose_name_plural = "Типы занятости ТМ"
 
     def __str__(self):
         return f'{self.type_name}'

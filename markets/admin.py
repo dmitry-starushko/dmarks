@@ -33,3 +33,9 @@ class ParamAdmin(admin.ModelAdmin):
     list_display = ['key', 'value', 'preload', 'description']
     ordering = ['key']
     search_fields = ['key', 'value']
+
+
+@admin.register(TradePlaceType)
+class TradePlaceTypeAdmin(admin.ModelAdmin):
+    list_display = ['type_name', 'descr', 'color']
+    ordering = ['type_name']
