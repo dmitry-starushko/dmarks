@@ -23,10 +23,7 @@ import { View3D } from "view3d";
 {% endblock %}
 {% block dom-loaded-scripts %}
 {{block.super}}
-{% for key, value in outlet_states.items %}
-console.log("{{key}} - {{value.title}} {{value.color}} {{value.wall_color}} {{value.roof_color}}");
-{% endfor %}
-const v3d = new View3D("v3d", "{% url 'api:schemes_take_gltf' scheme_pk=scheme_pk %}");
+const v3d = new View3D("v3d", "{% url 'api:schemes_take_gltf' scheme_pk=scheme_pk %}", {% include 'markets/js/outlet_paint_map.js' %});
 {% endblock %}
 {% block content %}
 <div id="v3d" class="v3d"></div>
