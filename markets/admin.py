@@ -37,5 +37,5 @@ class ParamAdmin(admin.ModelAdmin):
 
 @admin.register(TradePlaceType)
 class TradePlaceTypeAdmin(admin.ModelAdmin):
-    list_display = ['type_name', 'descr', 'color']
+    list_display = ['type_name', 'descr', 'color', 'wall_color', 'roof_color']
     ordering = ['type_name']
