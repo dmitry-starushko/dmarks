@@ -483,7 +483,7 @@ class TradeContract(models.Model):
 
 
 class TradePlace(TpMixin, models.Model):
-    market = models.ForeignKey(Market, models.DO_NOTHING, db_comment='Уникальный идентификатор рынка\r\n')
+    market = models.ForeignKey(Market, models.DO_NOTHING, related_name="trade_places", db_comment='Уникальный идентификатор рынка\r\n')
     trade_type = models.ForeignKey('TradeType', models.DO_NOTHING, db_comment='Тип торгового места')
     meas_area = models.FloatField(blank=True, null=True, db_comment='Площадь места')
     meas_length = models.FloatField(blank=True, null=True, db_comment='Длина места')

@@ -35,3 +35,14 @@ class TakeSvgView(APIView):
         response = HttpResponse()
         response.content = scheme.svg_schema
         return response
+
+
+class TakeOutletsView(APIView):
+    permission_classes = [AllowAny]
+
+    @staticmethod
+    @on_exception_returns(HttpResponseBadRequest)
+    def get(_, scheme_pk: int):
+        scheme = SvgSchema.objects.get(pk=scheme_pk)
+
+        return
