@@ -1,3 +1,4 @@
+from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.permissions import AllowAny
 from django.http.response import JsonResponse, HttpResponseBadRequest, HttpResponse
@@ -44,5 +45,7 @@ class TakeOutletsView(APIView):
     @on_exception_returns(HttpResponseBadRequest)
     def get(_, scheme_pk: int):
         scheme = SvgSchema.objects.get(pk=scheme_pk)
-
-        return
+        query = scheme.market.trade_places.values('location_number', 'trade_place_type_id')
+        return Response({
+            str(r['location_number']): int(r['trade_place_type_id']) for r in query
+        })

@@ -23,7 +23,13 @@ import { View3D } from "view3d";
 {% endblock %}
 {% block dom-loaded-scripts %}
 {{block.super}}
-const v3d = new View3D("v3d", "{% url 'api:schemes_take_gltf' scheme_pk=scheme_pk %}", {% include 'markets/js/outlet_paint_map.js' %});
+const v3d = new View3D(
+    "v3d",
+    "{% url 'api:schemes_take_gltf' scheme_pk=scheme_pk %}",
+    "{% url 'api:schemes_take_outlets' scheme_pk=scheme_pk %}",
+    {% include 'markets/js/outlet_paint_map.js' %},
+    {{parm_3d_decoration_color}},
+    {{parm_3d_ground_color}});
 {% endblock %}
 {% block content %}
 <div id="v3d" class="v3d"></div>

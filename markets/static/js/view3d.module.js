@@ -2,7 +2,7 @@ import * as THREE from "three";
 import {GLTFLoader} from "gltf_loader";
 
 class View3D {
-    constructor(parent_id, gltf_url, paint_map) {
+    constructor(parent_id, gltf_url, outlets_url, paint_map, decoration_color, ground_color) {
         const v3d = document.getElementById(parent_id);
         const width = v3d.clientWidth, height = v3d.clientHeight;
         const camera = new THREE.PerspectiveCamera(50, width / height, 0.01, 10000);
@@ -55,7 +55,7 @@ class View3D {
     }
 
     __init_scene__(scene, paint_map) {
-        alert(paint_map.get(1).title);
+//        alert(paint_map.get(1).title);
         scene.traverse(obj => {
             if((obj instanceof THREE.Group) && 'name' in obj.userData && obj.userData.name == "outlet") {
                 console.log(`found outlet: ${obj.userData.id}`);
