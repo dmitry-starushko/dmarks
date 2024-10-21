@@ -23,6 +23,7 @@ import { View3D } from "view3d";
 {% endblock %}
 {% block dom-loaded-scripts %}
 {{block.super}}
+{# alert("{{parm_free_outlet_roof_color}}"); #}
 const v3d = new View3D("v3d", "{% url 'api:schemes_take_gltf' scheme_pk=scheme_pk %}");
 {% endblock %}
 {% block content %}

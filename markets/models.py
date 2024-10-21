@@ -77,6 +77,8 @@ class GlobalConfig(models.Model):
         managed = True
         db_table = 'global_config'
         db_table_comment = 'Глобальная конфигурация системы'
+        verbose_name = "Настройка"
+        verbose_name_plural = "Настройки"
 
     def __str__(self):
         return f'{self.param_name}'
@@ -381,6 +383,8 @@ class Market(MkMixin, models.Model):
         managed = True
         db_table = 'markets'
         db_table_comment = 'Информация о рынках'
+        verbose_name = "Рынок"
+        verbose_name_plural = "Рынки"
 
     def __str__(self):
         return f'{self.market_name}:{self.additional_name}'
@@ -453,6 +457,8 @@ class SvgSchema(models.Model):
     class Meta:
         managed = True
         db_table = 'svg_schema'
+        verbose_name = "Схема"
+        verbose_name_plural = "Схемы"
 
     def __str__(self):
         return f'Схема рынка "{self.market}"'
@@ -640,3 +646,31 @@ class MkImage(DbItem):
 
     def __str__(self):
         return f'Фотография рынка #{self.market.id}'
+
+
+class Parameter(DbItem):
+    key = models.CharField(primary_key=True, max_length=50)                                     # -- ключ --
+    value = models.CharField(max_length=250)                                                    # -- значение --
+    preload = models.BooleanField(default=False)                                                # -- используется в контексте --
+    description = models.TextField(null=True, blank=True)                                       # -- описание --
+
+    def __str__(self):
+        return f'Параметр "{self.key}"'
+
+    class Meta:
+        verbose_name = "Параметр"
+        verbose_name_plural = "Параметры"
+
+    @staticmethod
+    def value_of(key, default=""):
+        try:
+            return Parameter.objects.get(pk=key).value
+        except Parameter.DoesNotExist:
+            return default
+
+    @staticmethod
+    def construct_from_value_of(key, constructor, default):
+        try:
+            return constructor(Parameter.objects.get(pk=key).value)
+        except (ValueError, Parameter.DoesNotExist):
+            return default

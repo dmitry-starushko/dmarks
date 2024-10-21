@@ -20,3 +20,16 @@ class MkImageAdmin(admin.ModelAdmin):
     list_display = ['market', 'image']
     list_filter = ['market']
     ordering = ['market']
+
+
+@admin.register(GlobalConfig)
+class GlobalConfigAdmin(admin.ModelAdmin):
+    list_display = ['param_name', 'param_data', 'descr']
+    ordering = ['param_name']
+
+
+@admin.register(Parameter)
+class ParamAdmin(admin.ModelAdmin):
+    list_display = ['key', 'value', 'preload', 'description']
+    ordering = ['key']
+    search_fields = ['key', 'value']
