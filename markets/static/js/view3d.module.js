@@ -1,11 +1,12 @@
 import * as THREE from "three";
-import {GLTFLoader} from "gltf_loader";
+import { GLTFLoader } from "gltf_loader";
+import { OrbitControls } from "orbit_controls";
 
 class View3D {
     constructor(parent_id, gltf_url, outlets_url, paint_map, ground_color, decoration_color, decoration_opacity) {
         const v3d = document.getElementById(parent_id);
         const width = v3d.clientWidth, height = v3d.clientHeight;
-        const camera = new THREE.PerspectiveCamera(50, width / height, 0.01, 10000);
+        const camera = new THREE.PerspectiveCamera(70, width / height, 0.01, 10000);
         const scene = new THREE.Scene();
         scene.background = new THREE.Color(0x11aabb)
         const loader = new GLTFLoader();
@@ -22,7 +23,7 @@ class View3D {
                     const gcz = 0.5 * (bbx_min.z + bbx_max.z);
                     const ab_light = new THREE.AmbientLight(0xffffff);
                     scene.add(ab_light);
-                    const dir_light = new THREE.DirectionalLight( 0xffffff, 10 );
+                    const dir_light = new THREE.DirectionalLight(0xffffff, 10);
                     let dir_light_t = new THREE.Object3D();
                     dir_light_t.position.set(dir_light.position.x+1,0,dir_light.position.z+1);
                     scene.add(dir_light_t);
@@ -30,16 +31,19 @@ class View3D {
                     scene.add(dir_light);
                     camera.position.set(gcx, 20.0, gcz);
                     const renderer = new THREE.WebGLRenderer({ antialias: true });
+                    const controls = new OrbitControls(camera, renderer.domElement);
+                    controls.target = new THREE.Vector3(gcx, -10.0, gcz);
 
                     renderer.shadowMap.enabled = true;
                     renderer.setSize(width, height);
                     renderer.setAnimationLoop(time => {
-                        camera.rotation.y = time / 4000;
+                        controls.update();
                         renderer.render(scene, camera);
                     });
                     v3d.appendChild(renderer.domElement);
 
                     const outlets = await (await fetch(outlets_url)).json();
+
                     this.__paint_scene__(scene, outlets, paint_map, decoration_color, decoration_opacity);
                 } else {
                     const msg = "Неизвестная структура сцены";
