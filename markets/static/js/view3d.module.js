@@ -2,7 +2,7 @@ import * as THREE from "three";
 import {GLTFLoader} from "gltf_loader";
 
 class View3D {
-    constructor(parent_id, gltf_url, outlets_url, paint_map, decoration_color, ground_color) {
+    constructor(parent_id, gltf_url, outlets_url, paint_map, ground_color, decoration_color, decoration_opacity) {
         const v3d = document.getElementById(parent_id);
         const width = v3d.clientWidth, height = v3d.clientHeight;
         const camera = new THREE.PerspectiveCamera(50, width / height, 0.01, 10000);
@@ -13,8 +13,9 @@ class View3D {
             gltf_url,
             async gltf => {
                 scene.add(gltf.scene);
-                const ground = gltf.scene.getObjectByName("ground");
+                const ground = scene.getObjectByName("ground");
                 if(ground && (ground instanceof THREE.Mesh)) {
+                    ground.material.color = new THREE.Color(ground_color);
                     const bbx_min = ground.geometry.boundingBox.min;
                     const bbx_max = ground.geometry.boundingBox.max;
                     const gcx = 0.5 * (bbx_min.x + bbx_max.x);
@@ -28,9 +29,8 @@ class View3D {
                     dir_light.target = dir_light_t;
                     scene.add(dir_light);
                     camera.position.set(gcx, 20.0, gcz);
-                    this.__init_scene__(scene, paint_map);
-
                     const renderer = new THREE.WebGLRenderer({ antialias: true });
+
                     renderer.shadowMap.enabled = true;
                     renderer.setSize(width, height);
                     renderer.setAnimationLoop(time => {
@@ -38,6 +38,9 @@ class View3D {
                         renderer.render(scene, camera);
                     });
                     v3d.appendChild(renderer.domElement);
+
+                    const outlets = await (await fetch(outlets_url)).json();
+                    this.__paint_scene__(scene, outlets, paint_map, decoration_color, decoration_opacity);
                 } else {
                     const msg = "Неизвестная структура сцены";
                     console.error(msg);
@@ -54,20 +57,39 @@ class View3D {
         );
     }
 
-    __init_scene__(scene, paint_map) {
-//        alert(paint_map.get(1).title);
+    __paint_scene__(scene, outlets, paint_map, decoration_color, decoration_opacity) {
+        let paint_deco = true;
         scene.traverse(obj => {
             if((obj instanceof THREE.Group) && 'name' in obj.userData && obj.userData.name == "outlet") {
-                console.log(`found outlet: ${obj.userData.id}`);
-                obj.children.forEach((mesh, index) => {mesh.material = this.__clone_material__(mesh.material, new THREE.Color(index? "green" : "green"));});
+                obj.children.forEach((mesh, index) => {
+                    const geometry = new THREE.EdgesGeometry(mesh.geometry);
+                    const material = new THREE.LineBasicMaterial({ color: "black" });
+                    const wireframe = new THREE.LineSegments(geometry, material);
+                    scene.add( wireframe );
+                });
+                if(obj.userData.id in outlets) {
+                    const paint_info = paint_map.get(outlets[obj.userData.id]);
+                    if(paint_info) {
+                        obj.children.forEach((mesh, index) => {
+                            mesh.material.color = new THREE.Color(index? paint_info.roof_color : paint_info.wall_color);
+                            mesh.material.metalness = 0.5;
+                        });
+                    } else console.error(`Вариант раскраски ТМ для состояния #${outlets[obj.userData.id]} не определён`);
+                } else {
+                    console.error(`Состояние ТМ #${obj.userData.id} неизвестно`);
+                    obj.children.forEach((mesh, index) => {
+                        mesh.material.color = new THREE.Color('gray');
+                    });
+                }
+            }
+            if(paint_deco && (obj instanceof THREE.Mesh) && obj.material.name == "decoration_material") {
+                obj.material.color = new THREE.Color(decoration_color);
+                obj.material.metalness = 0.25
+                obj.material.opacity = decoration_opacity;
+                obj.material.transparent = decoration_opacity < 1.0;
+                paint_deco = false;
             }
         });
-    }
-
-    __clone_material__(material, color) {
-        const new_material = Object.create(material);
-        if(color) { new_material.color = color; }
-        return new_material;
     }
 }
 

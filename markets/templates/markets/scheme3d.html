@@ -28,8 +28,9 @@ const v3d = new View3D(
     "{% url 'api:schemes_take_gltf' scheme_pk=scheme_pk %}",
     "{% url 'api:schemes_take_outlets' scheme_pk=scheme_pk %}",
     {% include 'markets/js/outlet_paint_map.js' %},
+    {{parm_3d_ground_color}},
     {{parm_3d_decoration_color}},
-    {{parm_3d_ground_color}});
+    {{parm_3d_decoration_opacity}});
 {% endblock %}
 {% block content %}
 <div id="v3d" class="v3d"></div>
