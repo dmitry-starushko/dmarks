@@ -17,22 +17,23 @@ class View3D {
                 const ground = scene.getObjectByName("ground");
                 if(ground && (ground instanceof THREE.Mesh)) {
                     ground.material.color = new THREE.Color(ground_color);
-                    const bbx_min = ground.geometry.boundingBox.min;
-                    const bbx_max = ground.geometry.boundingBox.max;
-                    const gcx = 0.5 * (bbx_min.x + bbx_max.x);
-                    const gcz = 0.5 * (bbx_min.z + bbx_max.z);
+                    const gc = new THREE.Vector3();
+                    ground.geometry.boundingBox.getCenter(gc);
+
                     const ab_light = new THREE.AmbientLight(0xffffff);
                     scene.add(ab_light);
+
                     const dir_light = new THREE.DirectionalLight(0xffffff, 10);
                     let dir_light_t = new THREE.Object3D();
-                    dir_light_t.position.set(dir_light.position.x+1,0,dir_light.position.z+1);
+                    dir_light_t.position.set(dir_light.position.x + 1, 0, dir_light.position.z + 1);
                     scene.add(dir_light_t);
                     dir_light.target = dir_light_t;
                     scene.add(dir_light);
-                    camera.position.set(gcx, 20.0, gcz);
+
+                    camera.position.set(gc.x, 20.0, gc.z);
                     const renderer = new THREE.WebGLRenderer({ antialias: true });
                     const controls = new OrbitControls(camera, renderer.domElement);
-                    controls.target = new THREE.Vector3(gcx, -10.0, gcz);
+                    controls.target = new THREE.Vector3(gc.x, -10.0, gc.z);
 
                     renderer.shadowMap.enabled = true;
                     renderer.setSize(width, height);
@@ -43,7 +44,6 @@ class View3D {
                     v3d.appendChild(renderer.domElement);
 
                     const outlets = await (await fetch(outlets_url)).json();
-
                     this.__paint_scene__(scene, outlets, paint_map, decoration_color, decoration_opacity);
                 } else {
                     const msg = "Неизвестная структура сцены";
@@ -95,6 +95,15 @@ class View3D {
             }
         });
     }
+
+//    __get_mesh_bbx_center__(mesh) {
+//        const bbx_min = mesh.geometry.boundingBox.min;
+//        const bbx_max = mesh.geometry.boundingBox.max;
+//        const cx = 0.5 * (bbx_min.x + bbx_max.x);
+//        const cy = 0.5 * (bbx_min.y + bbx_max.y);
+//        const cz = 0.5 * (bbx_min.z + bbx_max.z);
+//        return THREE.Vector3(cx, cy, cz);
+//    }
 }
 
 export { View3D };
