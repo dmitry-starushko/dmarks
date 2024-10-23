@@ -53,8 +53,20 @@ class View3D {
 
                     const raycaster = new THREE.Raycaster();
                     this._raycaster = raycaster;
-                    this._pointer = new THREE.Vector2();
+                    this._pointer = new THREE.Vector2(-1.0, -1.0);
                     this._targets = new Array();
+                    this._pointed = {
+                        _id: null,
+                        get id() {
+                            return this._id;
+                        },
+                        set id(value) {
+                            if(this._id !== value) {
+                                console.log(this.id, '->', value); // TODO notification
+                                this._id = value;
+                            }
+                        }
+                    };
 
                     const renderer = new THREE.WebGLRenderer({ antialias: true }); // -- camera positioning, renderer
                     this._renderer = renderer;
@@ -97,11 +109,13 @@ class View3D {
         }
         const pointed = this._raycaster.intersectObjects(this._targets);
         if(pointed.length) {
-//            console.log(pointed[0].object.parent.name);
+            this._pointed.id = pointed[0].object.parent.userData.id;
             pointed[0].object.parent.children.forEach(mesh => {
                 mesh.material.emissive.setHex(def_emissive_color);
                 mesh.material.emissiveIntensity = def_emissive_intensity;
             });
+        } else {
+            this._pointed.id = null;
         }
         this._renderer.render(this._scene, this._camera);
     }
@@ -125,7 +139,6 @@ class View3D {
         let paint_deco = true;
         this._scene.traverse(obj => {
             if((obj instanceof THREE.Group) && 'name' in obj.userData && obj.userData.name == "outlet") {
-                this._targets.push(obj);
                 obj.children.forEach((mesh, index) => {
                     const geometry = new THREE.EdgesGeometry(mesh.geometry);
                     const material = new THREE.LineBasicMaterial({ color: "black" });
@@ -133,6 +146,7 @@ class View3D {
                     this._scene.add(wireframe);
                 });
                 if(obj.userData.id in outlets) {
+                    this._targets.push(obj);
                     const paint_info = paint_map.get(outlets[obj.userData.id]);
                     if(paint_info) {
                         obj.children.forEach((mesh, index) => {
