@@ -14,10 +14,20 @@ const def_emissive_color = 0xffffff;
 const def_emissive_intensity = 0.7;
 
 class View3D {
-    constructor(parent_id, gltf_url, outlets_url, paint_map, ground_color, decoration_color, decoration_opacity) {
-        const v3d = document.getElementById(parent_id);
-        const width = v3d.clientWidth;
-        const height = v3d.clientHeight;
+    constructor(parent_id,
+                gltf_url,
+                outlets_url,
+                paint_map,
+                ground_color,
+                decoration_color,
+                decoration_opacity,
+                listener) {
+        const parent = document.getElementById(parent_id);
+        if(!parent) { throw `DOM element with id <${parent_id}> not found`; }
+        this._parent = parent;
+
+        const width = parent.clientWidth;
+        const height = parent.clientHeight;
         this._width = width; // TODO resize handler
         this._height = height;
 
@@ -56,25 +66,25 @@ class View3D {
                     this._pointer = new THREE.Vector2(-1.0, -1.0);
                     this._targets = new Array();
                     this._cursor = {
+                        _listener: listener ? listener : parent,
                         _id_point: null,
                         _id_down: null,
                         get id_point() { return this._id_point; },
                         set id_point(value) {
                             if(this._id_point !== value) {
-                                console.log("point", this.id_point, '->', value); // TODO notification instead log
                                 this._id_point = value;
+                                window.setTimeout(() => { this._listener.dispatchEvent(new CustomEvent("outlet_pointed", { detail: { id: value } })); });
                             }
                         },
                         get id_down() { return this._id_down; },
                         set id_down(value) {
                             if(this._id_down !== value) {
-                                console.log("down", this.id_down, '->', value); // TODO delete log
                                 this._id_down = value;
                             }
                         },
                         set id_click(value) {
                             if(this._id_down === value) {
-                                console.log("click on", value); // TODO notification instead log
+                                window.setTimeout(() => { this._listener.dispatchEvent(new CustomEvent("outlet_clicked", { detail: { id: value } })); });
                             }
                         }
                     };
@@ -84,7 +94,7 @@ class View3D {
                     renderer.shadowMap.enabled = true;
                     renderer.setSize(width, height);
                     this.__setup_raycasting__();
-                    v3d.appendChild(renderer.domElement);
+                    parent.appendChild(renderer.domElement);
 
                     const controls = new OrbitControls(camera, renderer.domElement); // -- controls
                     this._controls = controls;

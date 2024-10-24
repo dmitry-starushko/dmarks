@@ -32,6 +32,12 @@ const v3d = new View3D(
     {{parm_3d_ground_color}},
     {{parm_3d_decoration_color}},
     {{parm_3d_decoration_opacity}});
+document.getElementById("v3d").addEventListener("outlet_pointed", (e) => {
+    console.log(`pointed: ${e.detail.id}`);
+});
+document.getElementById("v3d").addEventListener("outlet_clicked", (e) => {
+    console.log(`clicked: ${e.detail.id}`);
+});
 {% endblock %}
 {% block content %}
 <div id="v3d" class="v3d"></div>
