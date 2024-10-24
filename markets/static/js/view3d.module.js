@@ -28,7 +28,7 @@ class View3D {
 
         const width = parent.clientWidth;
         const height = parent.clientHeight;
-        this._width = width; // TODO resize handler
+        this._width = width;
         this._height = height;
 
         const loader = new GLTFLoader();
@@ -100,10 +100,14 @@ class View3D {
                     this._controls = controls;
                     this.__reset_look_position__();
 
-                    renderer.setAnimationLoop(time => this.__render_loop__(time)); // -- view scene
+                    renderer.setAnimationLoop(time => this.__render_loop__(time)); // -- start render
                     const outlets = await (await fetch(outlets_url)).json(); // -- paint scene
                     this.__prepare_scene__(outlets, paint_map, decoration_color, decoration_opacity);
                     ground.material.color = new THREE.Color(ground_color);
+
+                    const resize_observer  = new ResizeObserver(_ => { this.__on_resize__(); });
+                    resize_observer.observe(parent);
+                    this._resize_observer = resize_observer;
                 } else {
                     const msg = "Неверная структура сцены";
                     console.error(msg);
@@ -198,6 +202,18 @@ class View3D {
                 paint_deco = false;
             }
         });
+    }
+
+    __on_resize__() {
+        const width = this._parent.clientWidth;
+        const height = this._parent.clientHeight;
+        if(width != this._width || height != this._height) {
+            this._width = width;
+            this._height = height;
+            this._camera.aspect = width / height;
+            this._camera.updateProjectionMatrix();
+            this._renderer.setSize(width, height);
+        }
     }
 }
 
