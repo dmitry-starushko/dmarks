@@ -35,8 +35,8 @@ class View3D {
 
                 const ground = scene.getObjectByName("ground");
                 if(ground && (ground instanceof THREE.Mesh)) {
-                    const gb = ground.geometry.boundingBox; // -- ground bounding box
-                    const gc = new THREE.Vector3(); // -- ground center
+                    const gb = ground.geometry.boundingBox; // -- ground params
+                    const gc = new THREE.Vector3();
                     gb.getCenter(gc);
                     this._ground_box = gb;
                     this._ground_center = gc;
@@ -55,15 +55,26 @@ class View3D {
                     this._raycaster = raycaster;
                     this._pointer = new THREE.Vector2(-1.0, -1.0);
                     this._targets = new Array();
-                    this._pointed = {
-                        _id: null,
-                        get id() {
-                            return this._id;
+                    this._cursor = {
+                        _id_point: null,
+                        _id_down: null,
+                        get id_point() { return this._id_point; },
+                        set id_point(value) {
+                            if(this._id_point !== value) {
+                                console.log("point", this.id_point, '->', value); // TODO notification instead log
+                                this._id_point = value;
+                            }
                         },
-                        set id(value) {
-                            if(this._id !== value) {
-                                console.log(this.id, '->', value); // TODO notification
-                                this._id = value;
+                        get id_down() { return this._id_down; },
+                        set id_down(value) {
+                            if(this._id_down !== value) {
+                                console.log("down", this.id_down, '->', value); // TODO delete log
+                                this._id_down = value;
+                            }
+                        },
+                        set id_click(value) {
+                            if(this._id_down === value) {
+                                console.log("click on", value); // TODO notification instead log
                             }
                         }
                     };
@@ -79,7 +90,7 @@ class View3D {
                     this._controls = controls;
                     this.__reset_look_position__();
 
-                    renderer.setAnimationLoop(time => this.__render_loop__(time));
+                    renderer.setAnimationLoop(time => this.__render_loop__(time)); // -- view scene
                     const outlets = await (await fetch(outlets_url)).json(); // -- paint scene
                     this.__prepare_scene__(outlets, paint_map, decoration_color, decoration_opacity);
                     ground.material.color = new THREE.Color(ground_color);
@@ -109,22 +120,29 @@ class View3D {
         }
         const pointed = this._raycaster.intersectObjects(this._targets);
         if(pointed.length) {
-            this._pointed.id = pointed[0].object.parent.userData.id;
+            this._cursor.id_point = pointed[0].object.parent.userData.id;
             pointed[0].object.parent.children.forEach(mesh => {
                 mesh.material.emissive.setHex(def_emissive_color);
                 mesh.material.emissiveIntensity = def_emissive_intensity;
             });
         } else {
-            this._pointed.id = null;
+            this._cursor.id_point = null;
         }
         this._renderer.render(this._scene, this._camera);
     }
 
     __setup_raycasting__() {
-        this._renderer.domElement.addEventListener("pointermove", event => {
+        const dom_element = this._renderer.domElement;
+        dom_element.addEventListener("pointermove", event => {
             const mx = event.offsetX;
             const my = event.offsetY;
             this._pointer.set(2.0 * mx / this._width - 1.0, -2.0 * my / this._height + 1.0);
+        });
+        dom_element.addEventListener("mousedown", event => {
+            this._cursor.id_down = this._cursor.id_point;
+        });
+        dom_element.addEventListener("click", event => {
+            this._cursor.id_click = this._cursor.id_point;
         });
     }
 
