@@ -12,6 +12,7 @@ const def_outlet_metallness = 0.5;
 const def_decoration_metallness = 0.25;
 const def_emissive_color = 0xffffff;
 const def_emissive_intensity = 0.7;
+const def_fog_density = 0.0;
 
 class View3D {
     constructor(parent_id,
@@ -36,9 +37,10 @@ class View3D {
             gltf_url,
             async gltf => {
                 const scene = new THREE.Scene();
-                this._scene = scene;
-                scene.background = new THREE.Color(def_scene_background_color);
                 scene.add(gltf.scene);
+                scene.background = new THREE.Color(def_scene_background_color);
+                if(def_fog_density > 0.0) { scene.fog = new THREE.FogExp2(ground_color, def_fog_density); }
+                this._scene = scene;
 
                 const camera = new THREE.PerspectiveCamera(def_camera_fov, width / height, def_camera_near, def_camera_far);
                 this._camera = camera;
