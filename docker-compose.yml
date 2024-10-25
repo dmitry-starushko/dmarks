@@ -1,0 +1,32 @@
+services:
+  db:
+    image: postgres:16.2
+    restart: always
+    environment:
+      - POSTGRES_DB=postgres
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+  nginx:
+    image: nginx:1.24.0
+    restart: always
+    volumes:
+      - ./config/nginx:/etc/nginx/templates
+      - ./dmarks:/code
+    ports:
+      - "80:80"
+    depends_on:
+      - web
+  web:
+    build: .
+    command: gunicorn --bind=web:8000 dmarks.wsgi
+    restart: always
+    volumes:
+      - ./dmarks:/code
+    environment:
+      - DJANGO_SETTINGS_MODULE=dmarks.settings.prod
+      - POSTGRES_DB=postgres
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    depends_on:
+      - db
+

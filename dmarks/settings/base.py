@@ -62,17 +62,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'dmarks.wsgi.application'
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': os.environ.get('PGBASE'),
-        'USER': os.environ.get('PGUSER'),
-        'PASSWORD': os.environ.get('PGPASSW'),
-        'HOST': os.environ.get('PGHOST'),
-        'PORT': int(os.environ.get('PGPORT')),
-    }
-}
-
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': ['rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'],
     'DEFAULT_RENDERER_CLASSES': ['rest_framework.renderers.JSONRenderer', 'rest_framework.renderers.BrowsableAPIRenderer'],
@@ -109,6 +98,16 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': os.environ.get('PGBASE'),
+        'USER': os.environ.get('PGUSER'),
+        'PASSWORD': os.environ.get('PGPASSW'),
+        'HOST': os.environ.get('PGHOST'),
+        'PORT': int(os.environ.get('PGPORT')),
+    }
+}
 
 LANGUAGE_CODE = 'ru-ru'
 
