@@ -97,6 +97,10 @@ class View3D {
                     parent.appendChild(renderer.domElement);
 
                     const controls = new OrbitControls(camera, renderer.domElement); // -- controls
+                    controls.enableDamping = true; // an animation loop is required when either damping or auto-rotation are enabled
+                    controls.dampingFactor = 0.15;
+                    controls.screenSpacePanning = false;
+                    controls.maxPolarAngle = Math.PI / 2.0;
                     this._controls = controls;
                     this.__reset_look_position__();
 
