@@ -1,3 +1,14 @@
 from .base import *
 
 DEBUG = True
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': os.environ.get('PGBASE'),
+        'USER': os.environ.get('PGUSER'),
+        'PASSWORD': os.environ.get('PGPASSW'),
+        'HOST': os.environ.get('PGHOST'),
+        'PORT': int(os.environ.get('PGPORT')),
+    }
+}
