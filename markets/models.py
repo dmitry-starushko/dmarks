@@ -5,10 +5,24 @@
 #   * Make sure each ForeignKey and OneToOneField has `on_delete` set to the desired behavior
 #   * Remove `managed = True` lines if you wish to allow Django to create, modify, and delete the table
 # Feel free to rename the models, but don't rename db_table values or field names.
-
+from django.core.validators import RegexValidator
 from django.db import models
 from django.conf import settings
 from markets.models_mixins import TpMixin, MkMixin
+
+
+class Validators:
+    @staticmethod
+    def _rxv(rx: str, msg: str):
+        return RegexValidator(regex=rx, message=msg)
+
+    @staticmethod
+    def css_color(value):
+        return Validators._rxv("^#[0-9a-fA-F]{6}$", "Ожидается значение в формате #ffffff")(value)
+
+    @staticmethod
+    def hex(value):
+        return Validators._rxv("^0x[0-9a-fA-F]{1,6}$", "Ожидается значение в формате 0xffffff")(value)
 
 
 class DbItem(models.Model):
@@ -542,9 +556,9 @@ class TradePlaceType(models.Model):
     id = models.SmallAutoField(primary_key=True)
     type_name = models.CharField(db_comment='Наименование типа занятости торгового места')
     descr = models.TextField(blank=True, null=True, db_comment='Опиcание')
-    color = models.CharField(max_length=7, blank=True, null=True, db_comment='Цвет в формате #ffffff')
-    wall_color = models.CharField(max_length=8, default='0xffffff', db_comment='Цвет стен ТМ в формате 0xffffff, для 3D')
-    roof_color = models.CharField(max_length=8, default='0xffffff', db_comment='Цвет крыш ТМ в формате 0xffffff, для 3D')
+    color = models.CharField(max_length=7, blank=True, null=True, validators=[Validators.css_color], db_comment='Цвет в формате #ffffff')
+    wall_color = models.CharField(max_length=8, default='0xffffff', validators=[Validators.hex], db_comment='Цвет стен ТМ в формате 0xffffff, для 3D')
+    roof_color = models.CharField(max_length=8, default='0xffffff', validators=[Validators.hex], db_comment='Цвет крыш ТМ в формате 0xffffff, для 3D')
 
     class Meta:
         managed = True
@@ -673,7 +687,7 @@ class Parameter(DbItem):
             return default
 
     @staticmethod
-    def construct_from_value_of(key, constructor, default):
+    def from_value_of(key, constructor, default):
         try:
             return constructor(Parameter.objects.get(pk=key).value)
         except (ValueError, Parameter.DoesNotExist):
