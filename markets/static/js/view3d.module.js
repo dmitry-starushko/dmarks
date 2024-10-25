@@ -12,7 +12,7 @@ const def_outlet_metallness = 0.5;
 const def_decoration_metallness = 0.25;
 const def_emissive_color = 0xffffff;
 const def_emissive_intensity = 0.7;
-const def_fog_density = 0.0;
+const def_fog_density = 0.001;
 
 class View3D {
     constructor(parent_id,
