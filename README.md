@@ -3,6 +3,7 @@
 
 - Ensure statics collected with `manage.py collectstatic`
 - Copy project to docker host
+- **Replace SECRET_KEY in `settings.prod.py` with NEW strong password and store it!** (for first time deploy only)
 - Set appropriate value for CSRF_TRUSTED_ORIGINS in `settings/prod.py` 
 - Then on docker host:  
     - `docker-compose up -d --build`

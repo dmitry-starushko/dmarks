@@ -29,8 +29,6 @@ class TakeGltfView(APIView):
             svg3dtm = Svg3DTM()
             gltf = svg3dtm.transmutate(scheme.svg_schema)
             redis.set(name=key, value=gltf, ex=settings.SCHEME_EXPIRE_SECONDS)
-        else:
-            print('redis!!!')
         response = JsonResponse({})
         response.content = gltf
         return response
@@ -46,8 +44,6 @@ class TakeSvgView(APIView):
         if (svg := redis.get(key)) is None:
             svg = SvgSchema.objects.get(pk=scheme_pk).svg_schema
             redis.set(name=key, value=svg, ex=settings.SCHEME_EXPIRE_SECONDS)
-        else:
-            print('redis!!!')
         response = HttpResponse()
         response.content = svg
         return response

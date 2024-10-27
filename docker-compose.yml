@@ -16,6 +16,11 @@ services:
       - "80:80"
     depends_on:
       - web
+  cache:
+    image: redis:7.4
+    restart: always
+    volumes:
+      - ./data/cache:/data
   web:
     build: .
     #--1-- command: gunicorn --bind=web:8000 dmarks.wsgi --workers 4 --threads 1 --log-file /code/gunicorn.log --log-level debug --preload
@@ -30,6 +35,10 @@ services:
       - POSTGRES_DB=postgres
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
+      - REDIS_HOST=cache
+      - REDIS_PORT=6379
+      - REDIS_DB=0
     depends_on:
       - db
+      - cache
 
