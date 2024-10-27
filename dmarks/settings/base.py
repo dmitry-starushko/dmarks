@@ -121,3 +121,11 @@ USE_THOUSAND_SEPARATOR = True
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 DISP_RE = re.compile('[^а-яА-ЯёЁ0-9.,«»()\\-]+')
+
+REDIS_HOST = os.environ.get('REDIS_HOST')
+
+REDIS_PORT = os.environ.get('REDIS_PORT')
+
+REDIS_DB = os.environ.get('REDIS_DB')
+
+SCHEME_EXPIRE_SECONDS = 600
