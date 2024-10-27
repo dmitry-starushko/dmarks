@@ -7,4 +7,3 @@ RUN pacman -Suy --noconfirm
 RUN pacman -S base-devel boost-libs postgresql-libs python python-pip --noconfirm
 RUN pip install --upgrade pip --break-system-packages --root-user-action=ignore
 RUN pip install -r addons/requirements.txt --break-system-packages --root-user-action=ignore
-RUN ln --symbolic --force /code/addons/libtransmutation.so.1.0.0 /code/transmutation.so

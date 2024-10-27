@@ -4,7 +4,7 @@ DEBUG = False
 
 ALLOWED_HOSTS = ['*']
 
-CSRF_TRUSTED_ORIGINS = ['http://*', 'https://*']
+CSRF_TRUSTED_ORIGINS = ['http://192.168.0.199/*']
 
 ADMINS = [
     ('Dmitry', 'dmitry@gmail.com'),
