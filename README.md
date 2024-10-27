@@ -1,5 +1,5 @@
 # DMarks NG Project
-##  Deploy
+##  How to deploy
 
 - Ensure statics collected with `manage.py collectstatic`
 - Copy project to docker host
@@ -11,3 +11,5 @@
     - `docker-compose exec web python manage.py createsuperuser`
     - `docker-compose exec web ln -sf addons/libtransmutation.so.1.0.0 transmutation.so`
     - `docker-compose restart`
+- or:
+    - `bash deploy`
