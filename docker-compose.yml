@@ -1,27 +1,30 @@
 services:
   db:
-    image: postgres:16.2
+    image: postgres:16.3
     restart: always
     environment:
       - POSTGRES_DB=postgres
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
   nginx:
-    image: nginx:1.24.0
+    image: nginx:1.27
     restart: always
     volumes:
       - ./config/nginx:/etc/nginx/templates
-      - ./dmarks:/code
+      - ./:/code
     ports:
       - "80:80"
     depends_on:
       - web
   web:
     build: .
-    command: gunicorn --bind=web:8000 dmarks.wsgi
+    #--1-- command: gunicorn --bind=web:8000 dmarks.wsgi --workers 4 --threads 1 --log-file /code/gunicorn.log --log-level debug --preload
+    #--2-- command: python manage.py runserver web:8000 --insecure
+    #--3-- command: uwsgi --http :8000 --wsgi-file /code/dmarks/wsgi.py --processes 4 --threads 1
+    command: gunicorn --bind=web:8000 dmarks.wsgi --workers 4 --threads 1 --log-file /code/gunicorn.log --log-level error --preload
     restart: always
     volumes:
-      - ./dmarks:/code
+      - ./:/code
     environment:
       - DJANGO_SETTINGS_MODULE=dmarks.settings.prod
       - POSTGRES_DB=postgres

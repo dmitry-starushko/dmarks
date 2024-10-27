@@ -1,8 +1,10 @@
-FROM python:3.12.6
+FROM archlinux:latest
 ENV PYTHONDONTWRITEBYTECODE=1
 ENV PYTHONUNBUFFERED=1
 WORKDIR /code
 COPY . /code/
-RUN pip install --upgrade pip
-RUN pip install -r addons/requirements.txt
-
+RUN pacman -Suy --noconfirm
+RUN pacman -S base-devel boost-libs postgresql-libs python python-pip --noconfirm
+RUN pip install --upgrade pip --break-system-packages --root-user-action=ignore
+RUN pip install -r addons/requirements.txt --break-system-packages --root-user-action=ignore
+RUN ln --symbolic --force /code/addons/libtransmutation.so.1.0.0 /code/transmutation.so

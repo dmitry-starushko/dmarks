@@ -120,4 +120,4 @@ USE_THOUSAND_SEPARATOR = True
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-DISP_RE = re.compile('[^а-яА-ЯёЁ0-9.,«»()\-]+')
+DISP_RE = re.compile("""[^а-яА-ЯёЁ0-9.,«»()\-]+""")
