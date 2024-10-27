@@ -10,6 +10,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'channels',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -19,6 +20,7 @@ INSTALLED_APPS = [
     'markets.apps.MarketsConfig',
     'easy_thumbnails',
     'rest_framework',
+    # 'channels',
 ]
 
 MIDDLEWARE = [
@@ -119,3 +121,5 @@ CACHES = {
         'LOCATION': f'redis://{REDIS_HOST}:{REDIS_PORT}',
     }
 }
+
+ASGI_APPLICATION = 'dmarks.asgi.application'
