@@ -14,8 +14,7 @@ from channels.auth import AuthMiddlewareStack
 import markets.routing
 
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'dmarks.settings')
-asgi_app = get_asgi_application()
 application = ProtocolTypeRouter({
-    'http': asgi_app,
+    'http': get_asgi_application(),
     'websocket': AuthMiddlewareStack(URLRouter(markets.routing.websocket_urlpatterns))
 })
