@@ -4,6 +4,23 @@
 {% block header-styles %}
 {{block.super}}
 <link href="{% static 'css/mkdetails.css' %}" rel="stylesheet">
+<link href="{% static 'css/v3d.css' %}" rel="stylesheet">
+{% endblock %}
+{% block header-scripts %}
+{{block.super}}
+<script type="importmap">
+{ "imports": {
+    "three": "{% static 'js/three/three.module.js' %}"
+    ,"gltf_loader": "{% static 'js/three/loader/GLTFLoader.js' %}"
+    ,"orbit_controls": "{% static 'js/three/controls/OrbitControls.js' %}"
+    ,"view3d": "{% static 'js/view3d.module.js' %}"
+  }
+}
+</script>
+{% endblock %}
+{% block dom-loaded-scripts-imports %}
+{{block.super}}
+import { View3D } from "view3d";
 {% endblock %}
 {% block content %}
 <section class="market-details-section">
@@ -123,7 +140,11 @@
             </div>
             <div class="tab-pane fade" id="mkdetails-scheme3d-tab" role="tabpanel" aria-labelledby="scheme3d-tab">
                 <div class="section-block">
-
+                    <div id="v3d" class="v3d">
+                        {% if not market.schemes.first %}
+                        <p>Список схем пуст</p>
+                        {% endif %}
+                    </div>
                 </div>
             </div>
             <div class="tab-pane fade" id="mkdetails-scheme-tab" role="tabpanel" aria-labelledby="scheme-tab">
@@ -133,11 +154,43 @@
             </div>
         </div>
     </div>
-
 </section>
 {% endblock %}
-
 {% block dom-loaded-scripts %}
 {{block.super}}
 {% include 'markets/js/mkdetails.js' %}
+{% if market.schemes.first %}
+const v3d = new View3D(
+    "v3d",
+    "{% url 'api:schemes_take_gltf' scheme_pk=market.schemes.first.id %}",
+    "{% url 'api:schemes_take_outlets' scheme_pk=market.schemes.first.id %}",
+    {% include 'markets/js/outlet_paint_map.js' %},
+    {{parm_3d_ground_color}},
+    {{parm_3d_decoration_color}},
+    {{parm_3d_decoration_opacity}});
+
+{#% comment %#}
+
+// -- Грубый колхоз с размерами -- надо через стили и вот это вот всё
+// -- Если включить тег comment выше и отрубить нижележащий код, 3д-вид будет иметь 0 высоту
+
+const v3d_observer = new ResizeObserver((entries) => {
+    const target = entries[0].target;
+    const v = document.getElementById("v3d");
+    v.setAttribute("style",`width:${target.clientWidth-10}px;height:${target.clientHeight-10}px;`);
+});
+v3d_observer.observe(document.getElementById("mkdetails-scheme3d-tab"));
+
+{#% endcomment %#}
+
+// -- Реакция на hover по ТМ
+document.getElementById("v3d").addEventListener("outlet_pointed", (e) => {
+    console.log(`pointed: ${e.detail.id}`);
+});
+
+// -- Реакция на клик по ТМ
+document.getElementById("v3d").addEventListener("outlet_clicked", (e) => {
+    console.log(`clicked: ${e.detail.id}`);
+});
+{% endif %}
 {% endblock %}
