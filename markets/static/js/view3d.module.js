@@ -178,7 +178,7 @@ class View3D {
         this._scene.traverse(obj => {
             if((obj instanceof THREE.Group) && 'name' in obj.userData && obj.userData.name == "outlet") {
                 obj.children.forEach((mesh, index) => {
-                    const geometry = new THREE.EdgesGeometry(mesh.geometry);
+                    const geometry = new THREE.EdgesGeometry(mesh.geometry, 30);
                     const material = new THREE.LineBasicMaterial({ color: "black" });
                     const wireframe = new THREE.LineSegments(geometry, material);
                     this._scene.add(wireframe);
