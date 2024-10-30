@@ -23,7 +23,7 @@
                         class="bi bi-list-ul"></i>ТОРГОВЫЕ МЕСТА
                 </button>
             </li>
-                        <li class="nav-item" role="presentation">
+            <li class="nav-item" role="presentation">
                 <button class="nav-link" id="mkdetails-scheme3d" data-bs-toggle="tab" data-bs-target="#mkdetails-scheme3d-tab"
                         type="button" role="tab" aria-controls="scheme3d" aria-selected="false"><i
                         class="bi bi-box"></i>ВИД 3D
@@ -40,16 +40,81 @@
             <div class="tab-pane fade show active" id="mkdetails-info-tab" role="tabpanel" aria-labelledby="info-tab">
                 <div class="mkdetails-section-info section-block">
                     <div class="mkdetails-section-info-main">
-                        <img src="{% thumbnail market.image 200x200 crop %}">
-                        <div class="mkdetails-short-info">
-                            {{market.market_type_id}}
+                        <div class="mkdetails-info-title">
+                            <div class="mkdetails-img-info">
+                                <img src="{% thumbnail market.image 200x200 crop %}">
+                            </div>
+                            <div class="mkdetails-short-info">
+                                Тип рынка: <strong>{{market.market_type}}</strong><br>
+                                Внутренний код рынка: <strong>{{market.internal_id}}</strong><br>
+                                Общая площадь рынка: <strong>{{market.market_square}}</strong><br>
+                                График работы: <strong>{{market.schedule}}</strong>
+                            </div>
                         </div>
                         <div class="mkdetails-big-info">
                             {{market.ads}}
                         </div>
                     </div>
+
                     <div class="mkdetails-section-info-slide" id="dragSlide"></div>
-                    <div class="mkdetails-section-info-detail">777</div>
+                    <div class="mkdetails-section-info-detail">
+                         <ul class="tree">
+                          <li>
+                            <details open>
+                              <summary>Детали</summary>
+                              <ul>
+                                <li>
+                                  <details open>
+                                    <summary>Описание инфраструктуры</summary>
+                                    <ul>
+                                        <li>Количество парковок: <strong>{{market.infr_parking}}</strong></li>
+                                        <li>Количество подъездов: <strong>{{market.infr_entrance}}</strong></li>
+                                        <li>Количество санузлов: <strong>{{market.infr_restroom}}</strong></li>
+                                        <li>Наличие водопровода: <strong>{{market.mk_water_supply}}</strong></li>
+                                        <li>Канализация: <strong>{{market.mk_sewerage}}</strong></li>
+                                        <li>Количество складских помещений: <strong>{{market.infr_storage}}</strong></li>
+                                        <li>Наличие и состав противопожарных систем: <strong>{{market.infr_fire_protection}}</strong></li>
+                                    </ul>
+                                  </details>
+                                </li>
+                                <li>
+                                  <details open>
+                                    <summary>Информация для заключения догворов аренды/приобретения разовго талона</summary>
+                                    <ul>
+                                        <li>Информация о формах заявлений: <strong>{{market.info_statement_forms}}</strong></li>
+                                        <li>Информация о типовых договорах: <strong>{{market.info_contracts}}</strong></li>
+                                        <li>Информация о требованиях для оформления договоров/талонов: <strong>{{market.info_contracts_req}}</strong></li>
+                                        <li>Информация о копиях правоустанавливающих документов дочернего предприятия: <strong>{{market.info_constitutive}}</strong></li>
+                                        <li>Информация о других документах: <strong>{{market.info_other_docs}}</strong></li>
+                                        <li>Информация для обращения граждан/ФЛП: <strong>{{market.citizen_appeal}}</strong></li>
+                                    </ul>
+                                  </details>
+                                </li>
+                                  <li>
+                                  <details open>
+                                    <summary>Информация о географическом расположении рынка</summary>
+                                    <ul>
+                                        <li>Город: <strong>{{market.geo_city}}</strong></li>
+                                        <li>Район города: <strong>{{market.geo_district}}</strong></li>
+                                        <li>{{market.geo_street_type.descr}}: <strong>{{market.geo_street}}</strong></li>
+                                        <li>Дом: <strong>{{market.geo_house}}</strong></li>
+                                    </ul>
+                                  </details>
+                                </li>
+                                  <li>
+                                  <details open>
+                                    <summary>Контактные данные</summary>
+                                    <ul>
+                                        <li>Телефон: <strong>{{market.phone}}</strong></li>
+                                        <li>Email: <strong>{{market.email}}</strong></li>
+                                    </ul>
+                                  </details>
+                                </li>
+                              </ul>
+                            </details>
+                          </li>
+                        </ul>
+                    </div>
                 </div>
             </div>
             <div class="tab-pane fade" id="mkdetails-tp-tab" role="tabpanel" aria-labelledby="tp-tab">

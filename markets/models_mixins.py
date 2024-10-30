@@ -9,6 +9,10 @@ class MkMixin:
         return self.infr_sewerage_type if self.infr_sewerage else "отсутствует"
 
     @property
+    def mk_water_supply(self):
+        return "есть" if self.infr_water_pipes else "отсутствует"
+
+    @property
     def mk_market_name(self):
         return settings.DISP_RE.sub(' ', self.market_name).strip()
 
