@@ -71,6 +71,7 @@
     /*width: 50%;*/
     /* Take the remaining width */
     flex: 1;
+    overflow-y:scroll;
 
     /* Misc */
     /*align-items: center;
@@ -158,7 +159,14 @@
   /*display: block;*/
   color: #0000ff;
   cursor: pointer;
+  transition: ease-in-out 0.2s;
 }
+
+.tree summary:hover {
+  font-weight: bold;
+  /*font-size: 1.02em;*/
+}
+
 /*
 .tree summary::marker,
 .tree summary::-webkit-details-marker {
