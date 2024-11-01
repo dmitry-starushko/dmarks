@@ -135,7 +135,31 @@ import { View3D } from "view3d";
             </div>
             <div class="tab-pane fade" id="mkdetails-tp-tab" role="tabpanel" aria-labelledby="tp-tab">
                 <div class="mkdetails-section-ionfo section-block">
-                    <div class="mkdetails-section-info-main"></div>
+                    <div class="mkdetails-section-info-main">
+                        <table class="table table-tp">
+                            <thead>
+                                <th>
+                                <td>Номер</td>
+                                <td>Этаж</td>
+                                <td>Специализация</td>
+                                <td>Занятость</td>
+                                <td>Цена аренды</td>
+                                </th>
+                            </thead>
+                            <tbody>
+                            {% for tp in market.trade_places.all %}
+                            <tr>
+                                <td>{{tp.location_number}}</td>
+                                <td>{{tp.location_floor}}</td>
+                                <td>{{tp.speciality_recommend}}</td>
+                                <td>{{tp.trade_place_type}}</td>
+                                <td></td>
+                            </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+
+                    </div>
                     <div class="mkdetails-section-info-slide" id="dragSlide"></div>
                     <div class="mkdetails-section-info-detail"></div>
                 </div>

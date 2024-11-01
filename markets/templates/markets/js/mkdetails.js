@@ -3,6 +3,8 @@
     const leftSide = resizer.previousElementSibling;
     const rightSide = resizer.nextElementSibling;
 
+    const resizerTP = document.getElementById('dragSlideTP');
+
     // The current position of mouse
     let x = 0;
     let y = 0;
