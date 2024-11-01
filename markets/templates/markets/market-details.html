@@ -190,7 +190,7 @@ document.getElementById("v3d").addEventListener("outlet_pointed", (e) => {
 
 // -- Реакция на клик по ТМ
 document.getElementById("v3d").addEventListener("outlet_clicked", (e) => {
-    console.log(`clicked: ${e.detail.id}`);
+    if(e.detail.id) alert(`clicked: ${e.detail.id}`);
 });
 {% endif %}
 {% endblock %}
