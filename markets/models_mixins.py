@@ -91,3 +91,7 @@ class TpMixin:
     @property
     def tp_sewerage_cost(self):
         return self.pay_sewerage if self.impr_sewerage else Decimal(0)
+
+    @property
+    def tp_recommended_specs(self):
+        return ', '.join(self.speciality_recommend) if self.speciality_recommend else 'не указаны'
