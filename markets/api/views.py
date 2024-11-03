@@ -21,7 +21,7 @@ class TakeGltfView(APIView):
     permission_classes = [AllowAny]
 
     @staticmethod
-    @on_exception_returns(HttpResponseBadRequest)
+    @on_exception_returns(HttpResponseBadRequest, 'scheme_pk')
     def get(_, scheme_pk: int):
         key = f'scheme:{scheme_pk}:gltf'
         if (gltf := redis.get(key)) is None:
@@ -38,7 +38,7 @@ class TakeSvgView(APIView):
     permission_classes = [AllowAny]
 
     @staticmethod
-    @on_exception_returns(HttpResponseBadRequest)
+    @on_exception_returns(HttpResponseBadRequest, 'scheme_pk')
     def get(_, scheme_pk: int):
         key = f'scheme:{scheme_pk}:svg'
         if (svg := redis.get(key)) is None:
@@ -53,7 +53,7 @@ class TakeOutletsView(APIView):
     permission_classes = [AllowAny]
 
     @staticmethod
-    @on_exception_returns(HttpResponseBadRequest)
+    @on_exception_returns(HttpResponseBadRequest, 'scheme_pk')
     def get(_, scheme_pk: int):
         scheme = SvgSchema.objects.get(pk=scheme_pk)
         query = scheme.market.trade_places.values('location_number', 'trade_place_type_id')

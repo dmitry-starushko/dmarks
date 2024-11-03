@@ -115,6 +115,8 @@ REDIS_DB = os.environ.get('REDIS_DB')
 
 SCHEME_EXPIRE_SECONDS = 600
 
+FAIL_EXPIRE_SECONDS = 600
+
 CACHES = {
     'default': {
         'BACKEND': 'django.core.cache.backends.redis.RedisCache',
