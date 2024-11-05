@@ -21,7 +21,7 @@ def restore_db_consistency():
     if rdc_is_running():
         return
     try:
-        redis.set(name=rdc_action, value=1, ex=3600)  # TODO exp. time to settings
+        redis.set(name=rdc_action, value=1, ex=1800)  # TODO exp. time to settings
         with rdc_lock:
             with transaction.atomic():
                 errors = dict()
@@ -61,7 +61,7 @@ def restore_db_consistency():
                                         tp.location_floor = sch.id
                                         tp.save()
                             else:
-                                err_list += [f'Номер торгового места не указан в SVG']
+                                err_list += [f'Номер ТМ не указан в SVG']
 
                 tps = [tp for tp in TradePlace.objects.filter(location_floor=None)]
                 tp_ids = ', '.join([f'#{tp.id} <{tp.location_number}>' for tp in tps])
