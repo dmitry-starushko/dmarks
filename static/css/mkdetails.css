@@ -9,6 +9,7 @@
 .market-details-content
 {
     height: 90%;
+    display: flex;
 }
 
 .market-details-section-title {
