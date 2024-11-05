@@ -705,3 +705,16 @@ class RdcError(DbItem):
         verbose_name = "Ошибка"
         verbose_name_plural = "Ошибки"
 
+
+class StuffAction(DbItem):
+    title = models.CharField(max_length=64)                                                     # -- название --
+    link = models.URLField(max_length=512, default="")                                          # -- ссылка --
+    description = models.TextField(null=True, blank=True)                                       # -- описание --
+
+    class Meta:
+        ordering = ["title"]
+        verbose_name = "Операция"
+        verbose_name_plural = "Операции"
+
+    def __str__(self):
+        return f'{self.title}'

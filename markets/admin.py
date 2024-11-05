@@ -1,4 +1,6 @@
 from django.contrib import admin
+from django.utils.html import format_html
+
 from markets.models import *
 
 
@@ -45,3 +47,12 @@ class TradePlaceTypeAdmin(admin.ModelAdmin):
 class RdcErrorAdmin(admin.ModelAdmin):
     list_display = ['object', 'text', 'created_at']
     list_filter = ['object']
+
+
+@admin.register(StuffAction)
+class StuffActionAdmin(admin.ModelAdmin):
+    list_display = ['action', 'description']
+
+    @staticmethod
+    def action(action):
+        return format_html('<a href="{}">{}</a>', action.link, action.title)

@@ -4,7 +4,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.permissions import AllowAny, IsAdminUser
 from django.http.response import JsonResponse, HttpResponseBadRequest, HttpResponse
-from markets.api.business import restore_db_consistency, rdc_is_running
+from markets.api.business import restore_db_consistency
 from markets.decorators import on_exception_returns
 from markets.models import SvgSchema
 from redis import Redis
@@ -70,9 +70,15 @@ class RestoreDatabaseConsistencyView(APIView):
     @staticmethod
     @on_exception_returns(HttpResponseBadRequest)
     def get(_):
-        if not rdc_is_running():
+        if not restore_db_consistency.launched():
             thread = Thread(target=restore_db_consistency, args=(), daemon=True)
             thread.start()
-            return Response({"status": "launched"})
+            return Response({
+                "status": "launched",
+                "comment": "this is very long action, be patient, please..."
+            })
         else:
-            return Response({"status": "already in progress"})
+            return Response({
+                "status": "action in progress",
+                "comment": "this is very, very long action, be patient, admin!"
+            })
