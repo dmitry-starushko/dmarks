@@ -1,8 +1,10 @@
+from threading import Thread
 from django.conf import settings
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from rest_framework.permissions import AllowAny
+from rest_framework.permissions import AllowAny, IsAdminUser
 from django.http.response import JsonResponse, HttpResponseBadRequest, HttpResponse
+from markets.api.business import restore_db_consistency, rdc_is_running
 from markets.decorators import on_exception_returns
 from markets.models import SvgSchema
 from redis import Redis
@@ -63,9 +65,14 @@ class TakeOutletsView(APIView):
 
 
 class RestoreDatabaseConsistencyView(APIView):
-    permission_classes = [AllowAny]
+    permission_classes = [IsAdminUser]
 
     @staticmethod
     @on_exception_returns(HttpResponseBadRequest)
     def get(_):
-        return Response({"status": "accepted"})
+        if not rdc_is_running():
+            thread = Thread(target=restore_db_consistency, args=(), daemon=True)
+            thread.start()
+            return Response({"status": "launched"})
+        else:
+            return Response({"status": "already in progress"})

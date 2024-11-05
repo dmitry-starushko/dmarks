@@ -475,7 +475,7 @@ class SvgSchema(models.Model):
         verbose_name_plural = "Схемы"
 
     def __str__(self):
-        return f'Схема рынка "{self.market}"'
+        return f'Схема #{self.id}, уровень "{self.floor}", рынок "{self.market}"'
 
 
 class TradeContract(models.Model):
@@ -692,3 +692,16 @@ class Parameter(DbItem):
             return constructor(Parameter.objects.get(pk=key).value)
         except (ValueError, Parameter.DoesNotExist):
             return default
+
+
+class RdcError(DbItem):
+    object = models.CharField(max_length=250)                                                   # -- источник --
+    text = models.TextField()                                                                   # -- проблема --
+
+    def __str__(self):
+        return f'Ошибка "{self.id}"'
+
+    class Meta:
+        verbose_name = "Ошибка"
+        verbose_name_plural = "Ошибки"
+

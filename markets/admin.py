@@ -39,3 +39,9 @@ class ParamAdmin(admin.ModelAdmin):
 class TradePlaceTypeAdmin(admin.ModelAdmin):
     list_display = ['type_name', 'descr', 'color', 'wall_color', 'roof_color']
     ordering = ['type_name']
+
+
+@admin.register(RdcError)
+class RdcErrorAdmin(admin.ModelAdmin):
+    list_display = ['object', 'text', 'created_at']
+    list_filter = ['object']
