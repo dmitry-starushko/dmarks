@@ -22,3 +22,5 @@ whitenoise~=6.7.0
 reportlab~=4.2.5
 svglib~=1.5.1
 uwsgi~=2.0.28
+django-pgtrigger~=4.13
+

@@ -60,3 +60,12 @@ class TakeOutletsView(APIView):
         return Response({
             str(r['location_number']): int(r['trade_place_type_id']) for r in query
         })
+
+
+class RestoreDatabaseConsistencyView(APIView):
+    permission_classes = [AllowAny]
+
+    @staticmethod
+    @on_exception_returns(HttpResponseBadRequest)
+    def get(_):
+        return Response({"status": "accepted"})

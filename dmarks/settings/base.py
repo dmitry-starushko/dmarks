@@ -18,6 +18,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'markets.apps.MarketsConfig',
+    'pgtrigger',
     'easy_thumbnails',
     'rest_framework',
     # 'channels',
