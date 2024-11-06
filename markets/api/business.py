@@ -13,7 +13,7 @@ def restore_db_consistency():
         svg3dtm = Svg3DTM()
 
         # -- Clear outlet's location floor
-        print(f'Подготовка к согласованию...')
+        print(f'Подготовка к обработке...')
         TradePlace.objects.update(location_floor=None)
 
         # -- Set outlet's location floors

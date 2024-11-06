@@ -582,7 +582,7 @@ class TradePlace(TpMixin, models.Model):
         verbose_name_plural = "Торговые места"
 
     def __str__(self):
-        return f'ТМ {self.id}'
+        return f'ТМ #{self.id}'
 
 
 class TradePlaceType(models.Model):
