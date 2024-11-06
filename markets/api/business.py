@@ -1,7 +1,7 @@
 from django.db import transaction
 from markets.decorators import globally_lonely_action
 from markets.models import TradePlace, SvgSchema, RdcError
-from xml.etree import ElementTree as ET
+from xml.etree import ElementTree as Et
 
 
 @globally_lonely_action
@@ -19,8 +19,8 @@ def restore_db_consistency():
             sch_title = str(sch)
             errors[sch_title] = (err_list := [])
             try:
-                tree = ET.fromstring(sch.svg_schema)
-            except ET.ParseError:
+                tree = Et.fromstring(sch.svg_schema)
+            except Et.ParseError:
                 err_list += ['Ошибка парсинга SVG']
                 continue
             tit = tree.iter()
