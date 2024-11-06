@@ -50,6 +50,8 @@ class Booking(models.Model):
         managed = True
         db_table = 'booking'
         db_table_comment = 'Бронирование торговых мест'
+        verbose_name = "Бронирование ТМ"
+        verbose_name_plural = "Бронирования ТМ"
 
     def __str__(self):
         return f'Бронирование {self.id}'
@@ -79,6 +81,8 @@ class ContractStatusType(models.Model):
         managed = True
         db_table = 'contract_status_type'
         db_table_comment = 'Типы статусов договоров'
+        verbose_name = "Тип статуса договора"
+        verbose_name_plural = "Типы статуса договора"
 
     def __str__(self):
         return f'{self.type_name}'
@@ -283,6 +287,8 @@ class Locality(models.Model):
         managed = True
         db_table = 'locality'
         db_table_comment = 'Населенные пункты'
+        verbose_name = "Локация"
+        verbose_name_plural = "Локации"
 
     def __str__(self):
         return f'{self.locality_name}'
@@ -297,6 +303,8 @@ class LocalityType(models.Model):
         managed = True
         db_table = 'locality_type'
         db_table_comment = 'Типы населенных пунктов'
+        verbose_name = "Тип локации"
+        verbose_name_plural = "Типы локаций"
 
     def __str__(self):
         return f'{self.type_name}'
@@ -310,6 +318,8 @@ class MarketFireProtection(models.Model):
         managed = True
         db_table = 'market_fire_protection'
         db_table_comment = 'Наличие и состав противопожарных систем'
+        verbose_name = "Тип противопожарной системы"
+        verbose_name_plural = "Типы противопожарных систем"
 
     def __str__(self):
         return f'{self.fp_name}'
@@ -324,6 +334,8 @@ class MarketProfitability(models.Model):
         managed = True
         db_table = 'market_profitability'
         db_table_comment = 'Категория рентабельности рынка'
+        verbose_name = "Категория рентабельности рынка"
+        verbose_name_plural = "Категории рентабельности рынка"
 
     def __str__(self):
         return f'{self.profitability_name}'
@@ -338,6 +350,8 @@ class MarketType(models.Model):
         managed = True
         db_table = 'market_type'
         db_table_comment = 'Типы рынков'
+        verbose_name = "Тип рынка"
+        verbose_name_plural = "Типы рынка"
 
     def __str__(self):
         return f'{self.type_name}'
@@ -430,6 +444,8 @@ class Renter(models.Model):
         managed = True
         db_table = 'renter'
         db_table_comment = 'Информация об арендаторах'
+        verbose_name = "Арендатор"
+        verbose_name_plural = "Арендаторы"
 
     def __str__(self):
         return f'{self.renter_name}'
@@ -444,6 +460,8 @@ class RenterType(models.Model):
         managed = True
         db_table = 'renter_type'
         db_table_comment = 'Тип арендатора'
+        verbose_name = "Тип арендатора"
+        verbose_name_plural = "Типы арендаторов"
 
     def __str__(self):
         return f'{self.type_name}'
@@ -458,6 +476,8 @@ class StreetType(models.Model):
         managed = True
         db_table = 'street_type'
         db_table_comment = 'Типы улиц'
+        verbose_name = "Тип улицы"
+        verbose_name_plural = "Типы улиц"
 
     def __str__(self):
         return f'{self.type_name}'
@@ -493,6 +513,8 @@ class TradeContract(models.Model):
         managed = True
         db_table = 'trade_contract'
         db_table_comment = 'Информация о договорах аренды'
+        verbose_name = "Договор аренды"
+        verbose_name_plural = "Договоры аренды"
 
     def __str__(self):
         return f'Контракт {self.id}'
@@ -553,6 +575,8 @@ class TradePlace(TpMixin, models.Model):
             Index(fields=["location_number"], include=["location_floor"], name='index_by_number'),
             Index(fields=["location_floor"], include=["location_number"], name='index_by_storey'),
         ]
+        verbose_name = "Торговое место"
+        verbose_name_plural = "Торговые места"
 
     def __str__(self):
         return f'ТМ {self.id}'
@@ -586,6 +610,8 @@ class TradeSector(models.Model):
         managed = True
         db_table = 'trade_sector'
         db_table_comment = 'Сектора рынков'
+        verbose_name = "Сектор"
+        verbose_name_plural = "Секторы"
 
     def __str__(self):
         return f'Сектор {self.sector_name}'
@@ -601,6 +627,8 @@ class TradeSpecType(models.Model):
         managed = True
         db_table = 'trade_spec_type'
         db_table_comment = 'Типы специализации торгового места'
+        verbose_name = "Тип специализации ТМ"
+        verbose_name_plural = "Типы специализации ТМ"
 
     def __str__(self):
         return f'{self.type_name}'
@@ -616,6 +644,8 @@ class TradeType(models.Model):
         managed = True
         db_table = 'trade_type'
         db_table_comment = 'Типы торгового места'
+        verbose_name = "Тип ТМ"
+        verbose_name_plural = "Типы ТМ"
 
     def __str__(self):
         return f'{self.type_name}'
@@ -640,6 +670,8 @@ class User(models.Model):
     class Meta:
         managed = True
         db_table = 'user'
+        verbose_name = "Пользователь"
+        verbose_name_plural = "Пользователи"
 
     def __str__(self):
         return f'{self.username}'
