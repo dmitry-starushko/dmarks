@@ -26,19 +26,24 @@ def on_exception_returns(response_class, name=None):
 
 
 def globally_lonely_action(function):
-    rdc_lock = Lock()
-    gla_name = f'g_l_a:launched:{function.__qualname__}'
+    gla_lock = Lock()
+    gla_name = f'GLA:{function.__qualname__}:launched'
+
+    def launched():
+        with gla_lock:
+            return redis.exists(gla_name)
 
     def proxy(*args, **kwargs):
-        with rdc_lock:
+        with gla_lock:
             if redis.exists(gla_name):
                 return None
             redis.set(name=gla_name, value=1, ex=1800)
         try:
             return function(*args, **kwargs)
         finally:
-            with rdc_lock:
+            with gla_lock:
                 redis.delete(gla_name)
-    proxy.launched = lambda: redis.exists(gla_name)
+
+    proxy.launched = launched
     return proxy
 

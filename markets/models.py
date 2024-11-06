@@ -8,6 +8,8 @@
 from django.core.validators import RegexValidator
 from django.db import models
 from django.conf import settings
+from django.db.models import Index
+
 from markets.models_mixins import TpMixin, MkMixin
 
 
@@ -243,7 +245,7 @@ class ImportTradePlace(TpMixin, models.Model):
     location_sector = models.ForeignKey('TradeSector', models.DO_NOTHING, blank=True, null=True, db_comment='id сектор торгового места')
     location_row = models.CharField(blank=True, null=True, db_comment='Ряд торгового места')
     location_floor = models.SmallIntegerField(blank=True, null=True, db_comment='Этаж торгового места')
-    location_number = models.CharField(blank=True, null=True, db_comment='Номер торгового места')
+    location_number = models.CharField(unique=True, blank=True, null=True, db_comment='Номер торгового места')
     renter_name = models.CharField(blank=True, null=True, db_comment='Наименование арендатора')
     legal_doc_info = models.CharField(blank=True, null=True, db_comment='Информация об уставных документах')
     legal_doc_files = models.JSONField(blank=True, null=True, db_comment='Уставные документы - файлы')
@@ -534,7 +536,7 @@ class TradePlace(TpMixin, models.Model):
     location_sector = models.ForeignKey('TradeSector', models.DO_NOTHING, db_comment='id сектор торгового места')
     location_row = models.CharField(blank=True, null=True, db_comment='Ряд торгового места')
     location_floor = models.SmallIntegerField(blank=True, null=True, db_comment='Этаж торгового места')
-    location_number = models.CharField(blank=True, null=True, db_comment='Номер торгового места')
+    location_number = models.CharField(unique=True, blank=True, null=True, db_comment='Номер торгового места')
     renter = models.ForeignKey(Renter, models.DO_NOTHING, blank=True, null=True, db_comment='id - текущий арендатор')
     additional = models.JSONField(blank=True, null=True, db_comment='Дополнительные поля')
     meas_width = models.FloatField(blank=True, null=True, db_comment='Ширина места')
@@ -547,6 +549,10 @@ class TradePlace(TpMixin, models.Model):
         managed = True
         db_table = 'trade_place'
         db_table_comment = 'Торговые места'
+        indexes = [
+            Index(fields=["location_number"], include=["location_floor"], name='index_by_number'),
+            Index(fields=["location_floor"], include=["location_number"], name='index_by_storey'),
+        ]
 
     def __str__(self):
         return f'ТМ {self.id}'

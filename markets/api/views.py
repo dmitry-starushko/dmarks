@@ -58,7 +58,7 @@ class TakeOutletsView(APIView):
     @on_exception_returns(HttpResponseBadRequest, 'scheme_pk')
     def get(_, scheme_pk: int):
         scheme = SvgSchema.objects.get(pk=scheme_pk)
-        query = scheme.market.trade_places.values('location_number', 'trade_place_type_id')
+        query = scheme.market.trade_places.filter(location_floor=int(scheme_pk)).values('location_number', 'trade_place_type_id')
         return Response({
             str(r['location_number']): int(r['trade_place_type_id']) for r in query
         })
@@ -70,15 +70,16 @@ class RestoreDatabaseConsistencyView(APIView):
     @staticmethod
     @on_exception_returns(HttpResponseBadRequest)
     def get(_):
-        if not restore_db_consistency.launched():
+        if restore_db_consistency.launched():
+            return Response({
+                "status": "action in progress",
+                "comment": "this is very, very long action, be patient, admin!"
+            })
+        else:
             thread = Thread(target=restore_db_consistency, args=(), daemon=True)
             thread.start()
             return Response({
                 "status": "launched",
                 "comment": "this is very long action, be patient, please..."
             })
-        else:
-            return Response({
-                "status": "action in progress",
-                "comment": "this is very, very long action, be patient, admin!"
-            })
+

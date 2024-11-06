@@ -10,10 +10,8 @@ def restore_db_consistency():
         errors = dict()
 
         # -- Clear outlet's location floor
-        print(f'Подготовка...')
-        for tp in TradePlace.objects.all():
-            tp.location_floor = None
-            tp.save()
+        print(f'Подготовка к согласованию...')
+        TradePlace.objects.update(location_floor=None)
 
         # -- Set outlet's location floors
         for sch in SvgSchema.objects.all():
@@ -38,8 +36,10 @@ def restore_db_consistency():
                             err_list += [f'В БД имеется более одного ТМ с номером <{pid}>: {tp_ids}']
                         else:
                             tp = tps[0]
-                            if tp.location_floor:
-                                err_list += [f'ТМ с номером <{pid}> уже помечено как относящееся к уровню #{tp.location_floor}']
+                            if sch.market_id != tp.market_id:
+                                err_list += [f'ТМ #{tp.id} <{pid}> относится к рынку "{tp.market}"']
+                            elif tp.location_floor:
+                                err_list += [f'ТМ #{tp.id} <{pid}> уже помечено как относящееся к уровню #{tp.location_floor}']
                             else:
                                 tp.location_floor = sch.id
                                 tp.save()
