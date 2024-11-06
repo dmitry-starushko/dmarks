@@ -6,8 +6,8 @@
 {{'**Пример** текста с *markdown* разметкой'|markdown}}
 {# Пример использования legend -- этот параметр доступен во всех шаблонах #}
 {% for k,v in legend.items %}
-<h2 style="color:{{v.wall_color_css}};">{{v.title}} -- в цвете стен</h2>
-<h2 style="color:{{v.roof_color_css}};">{{v.title}} -- в цвете крыши</h2>
+<h2 style="color:{{v.wall_color_css}};">#{{k}} {{v.title}} -- в цвете стен</h2>
+<h2 style="color:{{v.roof_color_css}};">#{{k}} {{v.title}} -- в цвете крыши</h2>
 {% endfor %}
 {% endblock %}
 {% block dom-loaded-scripts %}
