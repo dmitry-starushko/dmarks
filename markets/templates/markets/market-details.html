@@ -26,158 +26,263 @@ import { View3D } from "view3d";
 <section class="market-details-section">
     <div class="market-details-section-title"><h3>{{market.mk_full_name}}</h3></div>
     <div class="market-details-content">
-        <ul class="nav nav-tabs" id="mkdetails-tabs" role="tablist">
-            <li class="nav-item" role="presentation">
-                <button class="nav-link active" id="mkdetails-info" data-bs-toggle="tab" data-bs-target="#mkdetails-info-tab"
-                        type="button" role="tab" aria-controls="info" aria-selected="true"><i class="bi bi-info-circle"></i>
-                    ИНФОРМАЦИЯ
-                </button>
-            </li>
-            <li class="nav-item" role="presentation">
-                <button class="nav-link" id="mkdetails-tp" data-bs-toggle="tab" data-bs-target="#mkdetails-tp-tab"
-                        type="button" role="tab" aria-controls="tp" aria-selected="false"><i
-                        class="bi bi-list-ul"></i>ТОРГОВЫЕ МЕСТА
-                </button>
-            </li>
-            <li class="nav-item" role="presentation">
-                <button class="nav-link" id="mkdetails-scheme3d" data-bs-toggle="tab" data-bs-target="#mkdetails-scheme3d-tab"
-                        type="button" role="tab" aria-controls="scheme3d" aria-selected="false"><i
-                        class="bi bi-box"></i>ВИД 3D
-                </button>
-            </li>
-            <li class="nav-item" role="presentation">
-                <button class="nav-link" id="mkdetails-scheme" data-bs-toggle="tab" data-bs-target="#mkdetails-scheme-tab"
-                        type="button" role="tab" aria-controls="scheme" aria-selected="false"><i
-                        class="bi bi-circle-square"></i>СХЕМА
-                </button>
-            </li>
-        </ul>
-        <div class="tab-content" id="mkdetails-tabs-content">
-            <div class="tab-pane fade show active" id="mkdetails-info-tab" role="tabpanel" aria-labelledby="info-tab">
-                <div class="mkdetails-section-info section-block">
-                    <div class="mkdetails-section-info-main">
-                        <div class="mkdetails-info-title">
-                            <div class="mkdetails-img-info">
-                                <img src="{% thumbnail market.image 200x200 crop %}">
+        <div class="mkdetails-tabs-section" id="mkdetails-tabs-section">
+            <ul class="nav nav-tabs" id="mkdetails-tabs" role="tablist">
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link active" id="mkdetails-info" data-bs-toggle="tab" data-bs-target="#mkdetails-info-tab"
+                            type="button" role="tab" aria-controls="info" aria-selected="true"><i class="bi bi-info-circle"></i>
+                        ИНФОРМАЦИЯ
+                    </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="mkdetails-tp" data-bs-toggle="tab" data-bs-target="#mkdetails-tp-tab"
+                            type="button" role="tab" aria-controls="tp" aria-selected="false"><i
+                            class="bi bi-list-ul"></i>ТОРГОВЫЕ МЕСТА
+                    </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="mkdetails-scheme" data-bs-toggle="tab" data-bs-target="#mkdetails-scheme-tab"
+                            type="button" role="tab" aria-controls="scheme" aria-selected="false"><i
+                            class="bi bi-circle-square"></i>СХЕМА
+                    </button>
+                </li>
+            </ul>
+            <div class="tab-content" id="mkdetails-tabs-content">
+                <div class="tab-pane fade show active" id="mkdetails-info-tab" role="tabpanel" aria-labelledby="info-tab">
+                    <div class="mkdetails-section-info section-block">
+                        <div class="mkdetails-section-info-main">
+                            <div class="mkdetails-info-title">
+                                <div class="mkdetails-img-info">
+                                    <img src="{% thumbnail market.image 200x200 crop %}">
+                                </div>
+                                <div class="mkdetails-short-info">
+                                    Тип рынка: <strong>{{market.market_type}}</strong><br>
+                                    Внутренний код рынка: <strong>{{market.internal_id}}</strong><br>
+                                    Общая площадь рынка: <strong>{{market.market_square}}</strong><br>
+                                    График работы: <strong>{{market.schedule}}</strong>
+                                </div>
                             </div>
-                            <div class="mkdetails-short-info">
-                                Тип рынка: <strong>{{market.market_type}}</strong><br>
-                                Внутренний код рынка: <strong>{{market.internal_id}}</strong><br>
-                                Общая площадь рынка: <strong>{{market.market_square}}</strong><br>
-                                График работы: <strong>{{market.schedule}}</strong>
+                            <div class="mkdetails-big-info">
+                                {{market.ads}}
                             </div>
                         </div>
-                        <div class="mkdetails-big-info">
-                            {{market.ads}}
+
+                        <div class="mkdetails-section-info-slide" id="dragSlide"></div>
+                        <div class="mkdetails-section-info-detail">
+                             <ul class="tree">
+                              <li>
+                                <details open>
+                                  <summary>Детали</summary>
+                                  <ul>
+                                    <li>
+                                      <details open>
+                                        <summary>Описание инфраструктуры</summary>
+                                        <ul>
+                                            <li>Количество парковок: <strong>{{market.infr_parking}}</strong></li>
+                                            <li>Количество подъездов: <strong>{{market.infr_entrance}}</strong></li>
+                                            <li>Количество санузлов: <strong>{{market.infr_restroom}}</strong></li>
+                                            <li>Наличие водопровода: <strong>{{market.mk_water_supply}}</strong></li>
+                                            <li>Канализация: <strong>{{market.mk_sewerage}}</strong></li>
+                                            <li>Количество складских помещений: <strong>{{market.infr_storage}}</strong></li>
+                                            <li>Наличие и состав противопожарных систем: <strong>{{market.infr_fire_protection}}</strong></li>
+                                        </ul>
+                                      </details>
+                                    </li>
+                                    <li>
+                                      <details open>
+                                        <summary>Информация для заключения догворов аренды/приобретения разовго талона</summary>
+                                        <ul>
+                                            <li>Информация о формах заявлений: <strong>{{market.info_statement_forms}}</strong></li>
+                                            <li>Информация о типовых договорах: <strong>{{market.info_contracts}}</strong></li>
+                                            <li>Информация о требованиях для оформления договоров/талонов: <strong>{{market.info_contracts_req}}</strong></li>
+                                            <li>Информация о копиях правоустанавливающих документов дочернего предприятия: <strong>{{market.info_constitutive}}</strong></li>
+                                            <li>Информация о других документах: <strong>{{market.info_other_docs}}</strong></li>
+                                            <li>Информация для обращения граждан/ФЛП: <strong>{{market.citizen_appeal}}</strong></li>
+                                        </ul>
+                                      </details>
+                                    </li>
+                                      <li>
+                                      <details open>
+                                        <summary>Информация о географическом расположении рынка</summary>
+                                        <ul>
+                                            <li>Город: <strong>{{market.geo_city}}</strong></li>
+                                            <li>Район города: <strong>{{market.geo_district}}</strong></li>
+                                            <li>{{market.geo_street_type.descr}}: <strong>{{market.geo_street}}</strong></li>
+                                            <li>Дом: <strong>{{market.geo_house}}</strong></li>
+                                        </ul>
+                                      </details>
+                                    </li>
+                                      <li>
+                                      <details open>
+                                        <summary>Контактные данные</summary>
+                                        <ul>
+                                            <li>Телефон: <strong>{{market.phone}}</strong></li>
+                                            <li>Email: <strong>{{market.email}}</strong></li>
+                                        </ul>
+                                      </details>
+                                    </li>
+                                  </ul>
+                                </details>
+                              </li>
+                            </ul>
                         </div>
                     </div>
+                </div>
+                <div class="tab-pane fade" id="mkdetails-tp-tab" role="tabpanel" aria-labelledby="tp-tab">
+                    <div class="mkdetails-section-ionfo section-block">
+                        <div class="mkdetails-tp-section-info-main">
+                            <table class="table-tp table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th colspan="5">Купол, 1 этаж, гараж (3/6)</th>
+                                    </tr>
+                                    <tr>
+                                    <th>Номер</th>
+                                    <th>Этаж</th>
+                                    <th>Специализация</th>
+                                    <th>Занятость</th>
+                                    <th>Цена аренды</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                {% for tp in market.trade_places.all %}
+                                <tr>
+                                    <td>{{tp.location_number}}</td>
+                                    <td>{{tp.location_floor}}</td>
+                                    <td>{{tp.speciality_recommend}}</td>
+                                    <td>{{tp.trade_place_type}}</td>
+                                    <td></td>
+                                </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
 
-                    <div class="mkdetails-section-info-slide" id="dragSlide"></div>
-                    <div class="mkdetails-section-info-detail">
-                         <ul class="tree">
-                          <li>
-                            <details open>
-                              <summary>Детали</summary>
-                              <ul>
-                                <li>
-                                  <details open>
-                                    <summary>Описание инфраструктуры</summary>
-                                    <ul>
-                                        <li>Количество парковок: <strong>{{market.infr_parking}}</strong></li>
-                                        <li>Количество подъездов: <strong>{{market.infr_entrance}}</strong></li>
-                                        <li>Количество санузлов: <strong>{{market.infr_restroom}}</strong></li>
-                                        <li>Наличие водопровода: <strong>{{market.mk_water_supply}}</strong></li>
-                                        <li>Канализация: <strong>{{market.mk_sewerage}}</strong></li>
-                                        <li>Количество складских помещений: <strong>{{market.infr_storage}}</strong></li>
-                                        <li>Наличие и состав противопожарных систем: <strong>{{market.infr_fire_protection}}</strong></li>
-                                    </ul>
-                                  </details>
-                                </li>
-                                <li>
-                                  <details open>
-                                    <summary>Информация для заключения догворов аренды/приобретения разовго талона</summary>
-                                    <ul>
-                                        <li>Информация о формах заявлений: <strong>{{market.info_statement_forms}}</strong></li>
-                                        <li>Информация о типовых договорах: <strong>{{market.info_contracts}}</strong></li>
-                                        <li>Информация о требованиях для оформления договоров/талонов: <strong>{{market.info_contracts_req}}</strong></li>
-                                        <li>Информация о копиях правоустанавливающих документов дочернего предприятия: <strong>{{market.info_constitutive}}</strong></li>
-                                        <li>Информация о других документах: <strong>{{market.info_other_docs}}</strong></li>
-                                        <li>Информация для обращения граждан/ФЛП: <strong>{{market.citizen_appeal}}</strong></li>
-                                    </ul>
-                                  </details>
-                                </li>
-                                  <li>
-                                  <details open>
-                                    <summary>Информация о географическом расположении рынка</summary>
-                                    <ul>
-                                        <li>Город: <strong>{{market.geo_city}}</strong></li>
-                                        <li>Район города: <strong>{{market.geo_district}}</strong></li>
-                                        <li>{{market.geo_street_type.descr}}: <strong>{{market.geo_street}}</strong></li>
-                                        <li>Дом: <strong>{{market.geo_house}}</strong></li>
-                                    </ul>
-                                  </details>
-                                </li>
-                                  <li>
-                                  <details open>
-                                    <summary>Контактные данные</summary>
-                                    <ul>
-                                        <li>Телефон: <strong>{{market.phone}}</strong></li>
-                                        <li>Email: <strong>{{market.email}}</strong></li>
-                                    </ul>
-                                  </details>
-                                </li>
-                              </ul>
-                            </details>
-                          </li>
-                        </ul>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="tab-pane fade" id="mkdetails-tp-tab" role="tabpanel" aria-labelledby="tp-tab">
-                <div class="mkdetails-section-ionfo section-block">
-                    <div class="mkdetails-tp-section-info-main">
-                        <table class="table table-tp">
-                            <thead>
-                                <th>
-                                <td>Номер</td>
-                                <td>Этаж</td>
-                                <td>Специализация</td>
-                                <td>Занятость</td>
-                                <td>Цена аренды</td>
-                                </th>
-                            </thead>
-                            <tbody>
-                            {% for tp in market.trade_places.all %}
-                            <tr>
-                                <td>{{tp.location_number}}</td>
-                                <td>{{tp.location_floor}}</td>
-                                <td>{{tp.speciality_recommend}}</td>
-                                <td>{{tp.trade_place_type}}</td>
-                                <td></td>
-                            </tr>
-                            {% endfor %}
-                            </tbody>
-                        </table>
-
+                <div class="tab-pane fade" id="mkdetails-scheme-tab" role="tabpanel" aria-labelledby="scheme-tab">
+                    <div class="section-block">
+                        <div id="v3d" class="v3d">
+                            {% if not market.schemes.first %}
+                            <p>Список схем пуст</p>
+                            {% endif %}
+                        </div>
                     </div>
-                </div>
-            </div>
-            <div class="tab-pane fade" id="mkdetails-scheme3d-tab" role="tabpanel" aria-labelledby="scheme3d-tab">
-                <div class="section-block">
-                    <div id="v3d" class="v3d">
-                        {% if not market.schemes.first %}
-                        <p>Список схем пуст</p>
-                        {% endif %}
-                    </div>
-                </div>
-            </div>
-            <div class="tab-pane fade" id="mkdetails-scheme-tab" role="tabpanel" aria-labelledby="scheme-tab">
-                <div class="section-block">
-                12343
                 </div>
             </div>
         </div>
-        <div class="mkdetails-tp-section-info-detail">Right panel</div>
+        <div class="mkdetails-tp-section-info-detail" id="mkdetails-tp-section-info-detail">
+            <div class="mkdetails-tp-section-info-detail-body">
+                <div class="mkdetails-tp-section-info-detail-body-panel">
+                    <div class="mkdetails-tp-header-block" style="border-width:0 0 1px 0"></div>
+                    <a href="#" class="" title="Фильтр">
+                        <img src="{% static 'svg/icons/filter-outline.svg' %}" alt="Фильтр"/>
+                    </a>
+                    <a href="#" class="" title="Сброс фильтров">
+                        <img src="{% static 'svg/icons/filter-remove-outline.svg' %}" alt="Сброс фильтров"/>
+                    </a>
+                    <a href="#" class="" title="Полоэкранный режим">
+                        <img src="{% static 'svg/icons/fullscreen.svg' %}" alt="Полоэкранный режим"/>
+                    </a>
+                    <a href="#" class="" title="Выбор этажа">
+                        <img src="{% static 'svg/icons/layers.svg' %}" alt="Выбор этажа"/>
+                    </a>
+                    <a href="#" class="" title="Выбор легенды">
+                        <img src="{% static 'svg/icons/crosshairs-gps.svg' %}" alt="Выбор легенды"/>
+                    </a>
+                    <a href="#" class="" title="Сброс настроек">
+                        <img src="{% static 'svg/icons/undo.svg' %}" alt="Сброс настроек"/>
+                    </a>
+                    <a href="#" class="" title="3D">
+                        <img src="{% static 'svg/icons/cube-outline.svg' %}" alt="3D"/>
+                    </a>
+                </div>
+                <div class="mkdetails-tp-section-info-detail-body-info">
+                    <div class="mkdetails-tp-header-block">Торговое месо №001100512</div>
+                    <div class="mkdetails-tp-section-info-detail-body-info-descr">
+                        <p>Тип: <strong>павильон непродовольтсвенный (мелкророзничная торговля)</strong></p>
+                        <p>Занятость: <strong>Свободно</strong></p>
+                        <p>Возможность выносной торговли: <strong>Нет</strong></p>
+                    </div>
+                    <div class="mkdetails-tp-section-info-detail-body-info-tree">
+                        <ul class="tree">
+                              <li>
+                                <details open>
+                                  <summary>Детали</summary>
+                                  <ul>
+                                    <li>
+                                      <details open>
+                                        <summary>Физические параметры</summary>
+                                        <ul>
+                                            <li>Площадь: <strong>57,4</strong></li>
+                                            <li>Длина: <strong>10</strong></li>
+                                            <li>Ширина: <strong>5,74</strong></li>
+                                            <li>Высота: <strong>2,50</strong></li>
+                                        </ul>
+                                      </details>
+                                    </li>
+                                    <li>
+                                      <details open>
+                                        <summary>Благоустройство и оборуование</summary>
+                                        <ul>
+                                            <li>Электричество: <strong>Нет</strong></li>
+                                            <li>Теплоснабжение: <strong>Нет</strong></li>
+                                            <li>Кондиционирование: <strong>Нет</strong></li>
+                                            <li>Водопровод: <strong>Нет</strong></li>
+                                            <li>Канализация: <strong>Нет</strong></li>
+                                            <li>Стоки: <strong>Нет</strong></li>
+                                            <li>Интернет: <strong>Нет</strong></li>
+                                            <li>Тип подключения: <strong>Проводной</strong></li>
+                                        </ul>
+                                      </details>
+                                    </li>
+                                      <li>
+                                      <details open>
+                                        <summary>Информация о географическом расположении рынка</summary>
+                                        <ul>
+                                            <li>Город: <strong>{{market.geo_city}}</strong></li>
+                                            <li>Район города: <strong>{{market.geo_district}}</strong></li>
+                                            <li>{{market.geo_street_type.descr}}: <strong>{{market.geo_street}}</strong></li>
+                                            <li>Дом: <strong>{{market.geo_house}}</strong></li>
+                                        </ul>
+                                      </details>
+                                    </li>
+                                      <li>
+                                      <details open>
+                                        <summary>Контактные данные</summary>
+                                        <ul>
+                                            <li>Телефон: <strong>{{market.phone}}</strong></li>
+                                            <li>Email: <strong>{{market.email}}</strong></li>
+                                        </ul>
+                                      </details>
+                                    </li>
+                                  </ul>
+                                </details>
+                              </li>
+                            </ul>
+                    </div>
+                    <div class="mkdetails-tp-section-info-detail-body-info-booking">
+                        <a href="#" class="mkdetails-tp-section-info-detail-body-info-booking-button book-btn">
+                           <img src="{% static 'svg/icons/calendar-check.svg' %}" alt="Выбор легенды"/>
+                            Бронировать
+                        </a>
+                        <a href="#" class="mkdetails-tp-section-info-detail-body-info-booking-button-cancel book-btn">
+                           <img src="{% static 'svg/icons/undo-variant.svg' %}" alt="Выбор легенды"/>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="mkdetails-tp-section-info-detail-legend">
+                <div class="mkdetails-tp-header-block">Легенда - занятость мест</div>
+                <div class="mkdetails-tp-section-info-detail-legend-body">
+                    123
+                    {% for k,v in legend.items %}
+                    <h2 style="color:{{v.wall_color_css}};">#{{k}} {{v.title}} -- в цвете стен</h2>
+                    <h2 style="color:{{v.roof_color_css}};">#{{k}} {{v.title}} -- в цвете крыши</h2>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
     </div>
 </section>
 {% endblock %}
@@ -204,7 +309,7 @@ const v3d_observer = new ResizeObserver((entries) => {
     const v = document.getElementById("v3d");
     v.setAttribute("style",`width:${target.clientWidth-10}px;height:${target.clientHeight-10}px;`);
 });
-v3d_observer.observe(document.getElementById("mkdetails-scheme3d-tab"));
+v3d_observer.observe(document.getElementById("mkdetails-scheme-tab"));
 
 {#% endcomment %#}
 

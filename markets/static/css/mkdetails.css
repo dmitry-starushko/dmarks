@@ -9,6 +9,7 @@
 .market-details-content
 {
     height: 90%;
+    display: flex;
 }
 
 .market-details-section-title {
@@ -30,8 +31,12 @@
     flex-wrap: nowrap;
 }
 
+.mkdetails-tabs-section {
+    width: 100%;
+}
+
 #mkdetails-tabs-content, #mkdetails-tabs-content .tab-pane {
-    height: 98%;
+    height: 96%;
 }
 
 .mkdetails-section-info-main {
@@ -116,7 +121,8 @@
 .tree {
   --spacing: 1.5rem;
   --radius: 10px;
-  padding-left: 0;
+  padding-left: 0px;
+  margin-left: 0;
 }
 
 .tree li {
@@ -212,3 +218,165 @@
 .tree details[open] > summary::before {
   background-position: calc(-2 * var(--radius)) 0;
 }*/
+
+/*****table tm*******/
+.table-tp {
+    width: 100%;
+}
+.table-tp > thead
+{
+
+
+}
+
+.table-tp > thead {
+    text-align: center;
+    background: #ddd;
+    position: sticky;
+    top: -5px;
+    border: 1px solid black;
+}
+
+.table-tp > thead > tr, .table-tp > thead > tr > th {
+    border: 1px solid black;
+}
+
+.table-tp > tbody > tr {
+    cursor: pointer;
+}
+
+
+.table-tp tr:hover {
+    background-color: #ddd;
+}
+
+.mkdetails-tp-section-info-main {
+    padding: 5px;
+}
+
+.mkdetails-tp-header-block {
+    border: 1px solid black;
+    background-color: #ccc;
+    padding-left: 5px;
+    height: 25px;
+    width: 100%;
+}
+
+
+/**** right tp panel***/
+.mkdetails-tp-section-info-detail {
+    background-color: var(--background-color);
+    margin-top: 42px;
+    flex: 1;
+    width: 0%;
+    visibility: hidden;
+    padding: 7px 5px 5px 5px;
+    /*position: absolute;*/
+}
+
+.mkdetails-tp-section-info-detail-body {
+    display: flex;
+    height: 85%;
+}
+
+
+.mkdetails-tp-section-info-detail-body-panel {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    /*justify-content: center;*/
+    background-color: #dedede;
+    width: 50px;
+    height: 100%;
+    border: 1px solid black;
+    margin-right: 10px;
+}
+
+.mkdetails-tp-section-info-detail-body-panel > a {
+    margin: 5px 0 5px 0;
+}
+.mkdetails-tp-section-info-detail-body-panel > a > img {
+    transition: ease-in-out 0.3s;
+}
+
+.mkdetails-tp-section-info-detail-body-panel > a > img:hover {
+    filter: invert(74%) sepia(1%) saturate(1061%) hue-rotate(129deg) brightness(96%) contrast(79%);
+}
+
+.mkdetails-tp-section-info-detail-body-info
+{
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    /*border: 1px solid black;*/
+}
+
+.mkdetails-tp-section-info-detail-body-info-descr {
+    background-color: #33ffff;
+    padding: 5px;
+    border-style: solid;
+    border-color: black;
+    border-width: 0 1px;
+}
+
+.mkdetails-tp-section-info-detail-body-info-descr > p {
+    font-size: 12px;
+    margin: 0;
+    padding: 0;
+}
+
+.mkdetails-tp-section-info-detail-body-info-tree {
+    overflow-y:scroll;
+    height: 100%;
+    padding-left: 0;
+    border-style: solid;
+    border-color: black;
+    border-width: 0 1px 1px 1px;
+}
+
+.mkdetails-tp-section-info-detail-body-info-booking {
+    margin-top: 10px;
+    display: flex;
+}
+
+.book-btn {
+    border-radius: 5px;
+    padding: 5px;
+    transition: ease-in-out 0.3s;
+}
+
+.mkdetails-tp-section-info-detail-body-info-booking-button {
+    background-color: #00bcd4;
+    color: #fff;
+    width: 100%;
+    text-align: center;
+    position: relative;
+}
+
+.mkdetails-tp-section-info-detail-body-info-booking-button:hover {
+    background-color: #5cd4e3;
+}
+
+.mkdetails-tp-section-info-detail-body-info-booking-button > img {
+    position: absolute; left: 15px;
+}
+
+.mkdetails-tp-section-info-detail-body-info-booking-button-cancel {
+    background-color: #ff9966;
+    margin-left: 10px;
+}
+
+.mkdetails-tp-section-info-detail-body-info-booking-button-cancel:hover {
+    background-color: #ffbc9b;
+}
+
+.mkdetails-tp-section-info-detail-legend {
+    margin-top: 10px;
+}
+
+.mkdetails-tp-section-info-detail-legend-body {
+    background-color: #ebebeb;
+    border-style: solid;
+    border-color: black;
+    border-width: 0 1px 1px 1px;
+}
