@@ -4,7 +4,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.permissions import AllowAny, IsAdminUser
 from django.http.response import JsonResponse, HttpResponseBadRequest, HttpResponse
-from markets.api.business import restore_db_consistency
+from markets.api.business import restore_db_consistency, apply_filter
 from markets.decorators import on_exception_returns
 from markets.models import SvgSchema
 from transmutation import Svg3DTM
@@ -58,20 +58,23 @@ class TakeOutletsView(APIView):
         })
 
     @staticmethod
-    @on_exception_returns(HttpResponseBadRequest, 'scheme_pk')
+    @on_exception_returns(HttpResponseBadRequest)
     def post(request, scheme_pk: int):
         scheme = SvgSchema.objects.get(pk=scheme_pk)
         query = scheme.market.trade_places.filter(location_floor=int(scheme_pk))
         query = query.values(
             'location_number',
             'trade_place_type_id',
+            'location_floor',
         )
+        filters = request.data
+        for f_name, f_body in filters.items():
+            query = apply_filter(query, str(f_name), str(f_body))
         return Response({
             str(r['location_number']): {
+                'scheme_id': int(r['location_floor']),
                 'state': int(r['trade_place_type_id']),
-                # TODO other
-            }
-            for r in query
+            } for r in query
         })
 
 
