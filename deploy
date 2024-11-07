@@ -2,6 +2,8 @@ docker-compose up -d --build
 echo "Похоже, всё получилось. Начальная настройка проекта..."
 sleep 10
 docker-compose exec web ln -sf addons/libtransmutation.so.1.0.0 transmutation.so
+docker-compose restart
+sleep 10
 docker-compose exec web python manage.py migrate
 echo "Инициализация данных в БД..."
 docker-compose exec web python manage.py loaddata initial-data.json
