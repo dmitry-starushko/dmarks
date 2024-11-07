@@ -74,8 +74,8 @@
 
     function ShowRightPanel() {
             rightPanel.style.visibility = "visible";
-            rightPanel.style.width = "30%";
-            tabsSection.style.width = "70%";
+            rightPanel.style.width = "40%";
+            tabsSection.style.width = "60%";
     };
 
     document.getElementById('mkdetails-tp').onclick = ShowRightPanel;
