@@ -66,7 +66,7 @@ class OutletDetailsPartialView(View):
         return 'markets/partials/outlet-details.html'
 
     @on_exception_returns(HttpResponseBadRequest)
-    def get(self, request, outlet_pk):
+    def get(self, request, outlet_number):
         return render(request, self.template_name, {
-            'outlet': TradePlace.objects.get(pk=outlet_pk)
+            'outlet': TradePlace.objects.get(location_number=outlet_number)
         })

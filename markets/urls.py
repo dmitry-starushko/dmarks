@@ -9,5 +9,5 @@ urlpatterns = [
     path('market-details/<int:mpk>/<str:show>/', MarketDetailsView.as_view(), name='market_details'),
     path('test/<int:scheme_pk>/', Scheme3DView.as_view(), name='test_scheme_3d_view'),
     #  Partials
-    path('partials/outlet-details/<int:outlet_pk>/', OutletDetailsPartialView.as_view(), name='partials_outlet_details'),
+    path('partials/outlet-details/<str:outlet_number>/', OutletDetailsPartialView.as_view(), name='partials_outlet_details'),
 ]

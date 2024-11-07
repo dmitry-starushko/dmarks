@@ -3,7 +3,7 @@
 <div class="mkdetails-tp-section-info-detail-body-info-descr">
     <p>Тип: <strong>{{outlet.trade_type.type_name}}</strong></p>
     <p>Занятость: <strong>{{outlet.trade_place_type.type_name}}</strong></p>
-    <p>Возможность выносной торговли: <strong>Нет</strong></p>
+    <p>Возможность выносной торговли: <strong>{{outlet.street_vending | yesno:'есть,нет,неизвестно'}}</strong></p>
 </div>
 <div class="mkdetails-tp-section-info-detail-body-info-tree">
     <ul class="tree">
@@ -15,10 +15,10 @@
                   <details open>
                     <summary>Физические параметры</summary>
                     <ul>
-                        <li>Площадь: <strong>57,4</strong></li>
-                        <li>Длина: <strong>10</strong></li>
-                        <li>Ширина: <strong>5,74</strong></li>
-                        <li>Высота: <strong>2,50</strong></li>
+                        <li>Площадь: <strong>{{outlet.meas_area}}</strong></li>
+                        <li>Длина: <strong>{{outlet.meas_length}}</strong></li>
+                        <li>Ширина: <strong>{{outlet.meas_width}}</strong></li>
+                        <li>Высота: <strong>{{outlet.meas_height}}</strong></li>
                     </ul>
                   </details>
                 </li>
@@ -26,27 +26,28 @@
                   <details open>
                     <summary>Благоустройство и оборуование</summary>
                     <ul>
-                        <li>Электричество: <strong>Нет</strong></li>
-                        <li>Теплоснабжение: <strong>Нет</strong></li>
-                        <li>Кондиционирование: <strong>Нет</strong></li>
-                        <li>Водопровод: <strong>Нет</strong></li>
-                        <li>Канализация: <strong>Нет</strong></li>
-                        <li>Стоки: <strong>Нет</strong></li>
-                        <li>Интернет: <strong>Нет</strong></li>
-                        <li>Тип подключения: <strong>Проводной</strong></li>
+                        <li>Электричество: <strong>{{outlet.impr_electricity | yesno:'есть,нет,неизвестно'}}</strong></li>
+                        <li>Теплоснабжение: <strong>{{outlet.impr_heat_supply | yesno:'есть,нет,неизвестно'}}</strong></li>
+                        <li>Кондиционирование: <strong>{{impr_air_conditioning | yesno:'есть,нет,неизвестно'}}</strong></li>
+                        <li>Водопровод: <strong>{{outlet.impr_plumbing | yesno:'есть,нет,неизвестно'}}</strong></li>
+                        <li>Канализация: <strong>{{outlet.impr_sewerage | yesno:'есть,нет,неизвестно'}}</strong></li>
+                        <li>Стоки: <strong>{{outlet.impr_drains | yesno:'есть,нет,неизвестно'}}</strong></li>
+                        <li>Интернет: <strong>{{outlet.tp_internet_connection}}</strong></li>
+                        {#<li>Тип подключения: <strong>Проводной</strong></li>#}
                     </ul>
                   </details>
                 </li>
+                {% comment %}
                   <li>
-                  <details open>
-                    <summary>Информация о географическом расположении рынка</summary>
-                    <ul>
-                        <li>Город: <strong>{{market.geo_city}}</strong></li>
-                        <li>Район города: <strong>{{market.geo_district}}</strong></li>
-                        <li>{{market.geo_street_type.descr}}: <strong>{{market.geo_street}}</strong></li>
-                        <li>Дом: <strong>{{market.geo_house}}</strong></li>
-                    </ul>
-                  </details>
+                    <details open>
+                        <summary>Информация о географическом расположении рынка</summary>
+                        <ul>
+                            <li>Город: <strong>{{market.geo_city}}</strong></li>
+                            <li>Район города: <strong>{{market.geo_district}}</strong></li>
+                            <li>{{market.geo_street_type.descr}}: <strong>{{market.geo_street}}</strong></li>
+                            <li>Дом: <strong>{{market.geo_house}}</strong></li>
+                        </ul>
+                    </details>
                 </li>
                   <li>
                   <details open>
@@ -57,6 +58,7 @@
                     </ul>
                   </details>
                 </li>
+                {% endcomment %}
               </ul>
             </details>
           </li>

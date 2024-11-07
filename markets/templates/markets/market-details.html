@@ -197,7 +197,7 @@ import { View3D } from "view3d";
                         <img src="{% static 'svg/icons/cube-outline.svg' %}" alt="3D"/>
                     </a>
                 </div>
-                <div class="mkdetails-tp-section-info-detail-body-info">
+                <div id="outlet-info" class="mkdetails-tp-section-info-detail-body-info">
                     <div class="mkdetails-tp-header-block">Торговое месо №001100512</div>
                     <div class="mkdetails-tp-section-info-detail-body-info-descr">
                         <p>Тип: <strong>павильон непродовольтсвенный (мелкророзничная торговля)</strong></p>
@@ -322,8 +322,14 @@ document.getElementById("v3d").addEventListener("outlet_pointed", (e) => {
 });
 
 // -- Реакция на клик по ТМ
-document.getElementById("v3d").addEventListener("outlet_clicked", (e) => {
-    if(e.detail.id) alert(`clicked: ${e.detail.id}`);
+document.getElementById("v3d").addEventListener("outlet_clicked", async (e) => {
+    if(e.detail.id) {
+        let url = "{% url 'markets:partials_outlet_details' outlet_number='@@@' %}";
+        url = url.replace('@@@', e.detail.id);
+        document.getElementById("outlet-info").innerHTML = await(await fetch(url)).text();
+    } else {
+        document.getElementById("outlet-info").innerHTML = "";
+    }
 });
 {% endif %}
 {% endblock %}
