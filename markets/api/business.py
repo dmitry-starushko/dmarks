@@ -6,7 +6,7 @@ from xml.etree import ElementTree as Et
 from transmutation import Svg3DTM
 
 
-@globally_lonely_action
+@globally_lonely_action(None)
 def restore_db_consistency():
     with transaction.atomic():
         errors = dict()
