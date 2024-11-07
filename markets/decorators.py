@@ -12,7 +12,7 @@ def on_exception_returns(response_class, name=None):
         qln = function.__qualname__
 
         def proxy(*args, **kwargs):
-            fail_flag = f'{qln}:{name}:{kwargs[name]}' if name is not None and name in kwargs else None
+            fail_flag = f'{qln}:{name}:{kwargs[name]}:failed' if name is not None and name in kwargs else None
             try:
                 if fail_flag is not None and redis.exists(fail_flag):
                     raise ValueError(f'Processing failed: {name}={kwargs[name]}')
