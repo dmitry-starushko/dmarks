@@ -76,7 +76,7 @@ class TakeOutletsView(APIView):
 
 
 class RestoreDatabaseConsistencyView(APIView):
-    permission_classes = [IsAdminUser]
+    permission_classes = [AllowAny]
 
     @staticmethod
     @on_exception_returns(HttpResponseBadRequest)
