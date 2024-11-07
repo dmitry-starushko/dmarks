@@ -1,0 +1,73 @@
+{% load static %}
+<div class="mkdetails-tp-header-block">Торговое место №{{outlet.location_number}}</div>
+<div class="mkdetails-tp-section-info-detail-body-info-descr">
+    <p>Тип: <strong>{{outlet.trade_type.type_name}}</strong></p>
+    <p>Занятость: <strong>{{outlet.trade_place_type.type_name}}</strong></p>
+    <p>Возможность выносной торговли: <strong>Нет</strong></p>
+</div>
+<div class="mkdetails-tp-section-info-detail-body-info-tree">
+    <ul class="tree">
+          <li>
+            <details open>
+              <summary>Детали</summary>
+              <ul>
+                <li>
+                  <details open>
+                    <summary>Физические параметры</summary>
+                    <ul>
+                        <li>Площадь: <strong>57,4</strong></li>
+                        <li>Длина: <strong>10</strong></li>
+                        <li>Ширина: <strong>5,74</strong></li>
+                        <li>Высота: <strong>2,50</strong></li>
+                    </ul>
+                  </details>
+                </li>
+                <li>
+                  <details open>
+                    <summary>Благоустройство и оборуование</summary>
+                    <ul>
+                        <li>Электричество: <strong>Нет</strong></li>
+                        <li>Теплоснабжение: <strong>Нет</strong></li>
+                        <li>Кондиционирование: <strong>Нет</strong></li>
+                        <li>Водопровод: <strong>Нет</strong></li>
+                        <li>Канализация: <strong>Нет</strong></li>
+                        <li>Стоки: <strong>Нет</strong></li>
+                        <li>Интернет: <strong>Нет</strong></li>
+                        <li>Тип подключения: <strong>Проводной</strong></li>
+                    </ul>
+                  </details>
+                </li>
+                  <li>
+                  <details open>
+                    <summary>Информация о географическом расположении рынка</summary>
+                    <ul>
+                        <li>Город: <strong>{{market.geo_city}}</strong></li>
+                        <li>Район города: <strong>{{market.geo_district}}</strong></li>
+                        <li>{{market.geo_street_type.descr}}: <strong>{{market.geo_street}}</strong></li>
+                        <li>Дом: <strong>{{market.geo_house}}</strong></li>
+                    </ul>
+                  </details>
+                </li>
+                  <li>
+                  <details open>
+                    <summary>Контактные данные</summary>
+                    <ul>
+                        <li>Телефон: <strong>{{market.phone}}</strong></li>
+                        <li>Email: <strong>{{market.email}}</strong></li>
+                    </ul>
+                  </details>
+                </li>
+              </ul>
+            </details>
+          </li>
+        </ul>
+</div>
+<div class="mkdetails-tp-section-info-detail-body-info-booking">
+    <a href="#" class="mkdetails-tp-section-info-detail-body-info-booking-button book-btn">
+       <img src="{% static 'svg/icons/calendar-check.svg' %}" alt="Выбор легенды"/>
+        Бронировать
+    </a>
+    <a href="#" class="mkdetails-tp-section-info-detail-body-info-booking-button-cancel book-btn">
+       <img src="{% static 'svg/icons/undo-variant.svg' %}" alt="Выбор легенды"/>
+    </a>
+</div>
