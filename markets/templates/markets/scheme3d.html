@@ -34,7 +34,11 @@ document.getElementById("v3d").addEventListener("outlet_pointed", (e) => {
     console.log(`pointed: ${e.detail.id}`);
 });
 document.getElementById("v3d").addEventListener("outlet_clicked", (e) => {
-    console.log(`clicked: ${e.detail.id}`);
+    if(e.detail.id) {
+        console.log(`clicked: ${e.detail.id}`);
+    } else {
+        window.dispatchEvent(new CustomEvent("market_storey_changed", { detail: { gltf_url: "{% url 'api:schemes_take_gltf' scheme_pk=1578 %}", outlets_url: "{% url 'api:schemes_take_outlets' scheme_pk=1578 %}" } }));
+    }
 });
 {% endblock %}
 {% block content %}

@@ -7,4 +7,5 @@ urlpatterns = [
     path('schemes/<int:scheme_pk>/gltf', views.TakeGltfView.as_view(), name='schemes_take_gltf'),
     path('schemes/<int:scheme_pk>/svg', views.TakeSvgView.as_view(), name='schemes_take_svg'),
     path('schemes/<int:scheme_pk>/outlets', views.TakeOutletsView.as_view(), name='schemes_take_outlets'),
+    path('run/restore-db-consistency', views.RestoreDatabaseConsistencyView.as_view(), name='run_restore_db_consistency'),
 ]

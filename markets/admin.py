@@ -1,4 +1,5 @@
 from django.contrib import admin
+from django.utils.html import format_html
 from markets.models import *
 
 
@@ -35,7 +36,91 @@ class ParamAdmin(admin.ModelAdmin):
     search_fields = ['key', 'value']
 
 
+@admin.register(RdcError)
+class RdcErrorAdmin(admin.ModelAdmin):
+    list_display = ['object', 'text', 'created_at']
+    list_filter = ['object']
+
+
+@admin.register(StuffAction)
+class StuffActionAdmin(admin.ModelAdmin):
+    list_display = ['action', 'description']
+
+    @staticmethod
+    def action(action):
+        return format_html('<a href="{}">{}</a>', action.link, action.title)
+
+# -------------------------------------------------------------------------------------------------
+
+
+@admin.register(ContractStatusType)
+class ContractStatusTypeAdmin(admin.ModelAdmin):
+    list_display = ['type_name', 'descr']
+    ordering = ['type_name']
+
+
+@admin.register(Locality)
+class LocalityAdmin(admin.ModelAdmin):
+    list_display = ['locality_name', 'locality_type', 'descr', 'parent']
+    list_filter = ['parent']
+    ordering = ['locality_name']
+
+
+@admin.register(LocalityType)
+class LocalityTypeAdmin(admin.ModelAdmin):
+    list_display = ['type_name', 'descr']
+    ordering = ['type_name']
+
+
+@admin.register(MarketFireProtection)
+class MarketFireProtectionAdmin(admin.ModelAdmin):
+    list_display = ['fp_name', 'descr']
+    ordering = ['fp_name']
+
+
+@admin.register(MarketProfitability)
+class MarketFireProtectionAdmin(admin.ModelAdmin):
+    list_display = ['profitability_name', 'descr']
+    ordering = ['profitability_name']
+
+
+@admin.register(MarketType)
+class MarketTypeAdmin(admin.ModelAdmin):
+    list_display = ['type_name', 'descr']
+    ordering = ['type_name']
+
+
+@admin.register(RenterType)
+class RenterTypeAdmin(admin.ModelAdmin):
+    list_display = ['type_name', 'descr']
+    ordering = ['type_name']
+
+
+@admin.register(StreetType)
+class StreetTypeAdmin(admin.ModelAdmin):
+    list_display = ['type_name', 'descr']
+    ordering = ['type_name']
+
+
 @admin.register(TradePlaceType)
 class TradePlaceTypeAdmin(admin.ModelAdmin):
     list_display = ['type_name', 'descr', 'color', 'wall_color', 'roof_color']
+    ordering = ['type_name']
+
+
+@admin.register(TradeSector)
+class TradeSectorAdmin(admin.ModelAdmin):
+    list_display = ['sector_name', 'descr']
+    ordering = ['sector_name']
+
+
+@admin.register(TradeSpecType)
+class TradeSpecTypeAdmin(admin.ModelAdmin):
+    list_display = ['type_name', 'descr', 'color']
+    ordering = ['type_name']
+
+
+@admin.register(TradeType)
+class TradeTypeAdmin(admin.ModelAdmin):
+    list_display = ['type_name', 'type_num', 'descr']
     ordering = ['type_name']

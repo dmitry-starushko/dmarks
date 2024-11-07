@@ -18,6 +18,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'markets.apps.MarketsConfig',
+    'pgtrigger',
     'easy_thumbnails',
     'rest_framework',
     # 'channels',
@@ -114,6 +115,8 @@ REDIS_PORT = os.environ.get('REDIS_PORT')
 REDIS_DB = os.environ.get('REDIS_DB')
 
 SCHEME_EXPIRE_SECONDS = 600
+
+FAIL_EXPIRE_SECONDS = 600
 
 CACHES = {
     'default': {

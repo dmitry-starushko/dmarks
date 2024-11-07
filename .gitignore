@@ -1,5 +1,6 @@
 *.bak 
 *.user
+snippet*.*
 .idea
 .idea/*
 media

@@ -5,6 +5,7 @@ django-debug-toolbar~=4.4.6
 django-redisboard~=8.4.0
 django-money~=3.5.3
 djangorestframework~=3.15.2
+django-pgtrigger~=4.13
 channels~=3.0.5
 channels-redis~=4.1.0
 psycopg2~=2.9.9
@@ -22,3 +23,6 @@ whitenoise~=6.7.0
 reportlab~=4.2.5
 svglib~=1.5.1
 uwsgi~=2.0.28
+
+
+
