@@ -311,7 +311,7 @@ const v3d = new View3D(
 const v3d_observer = new ResizeObserver((entries) => {
     const target = entries[0].target;
     const v = document.getElementById("v3d");
-    v.setAttribute("style",`width:${target.clientWidth-10}px;height:${target.clientHeight-10}px;`);
+    v.setAttribute("style",`width:${target.clientWidth-8}px;height:${target.clientHeight-8}px;`);
 });
 v3d_observer.observe(document.getElementById("mkdetails-scheme-tab"));
 
