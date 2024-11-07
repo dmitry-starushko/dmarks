@@ -33,22 +33,22 @@
                         <li>Канализация: <strong>{{outlet.impr_sewerage | yesno:'есть,нет,неизвестно'}}</strong></li>
                         <li>Стоки: <strong>{{outlet.impr_drains | yesno:'есть,нет,неизвестно'}}</strong></li>
                         <li>Интернет: <strong>{{outlet.tp_internet_connection}}</strong></li>
-                        {#<li>Тип подключения: <strong>Проводной</strong></li>#}
+                        <li>Стенды, мебель: <strong>{{outlet.impr_add_equipment | yesno:'есть,нет,неизвестно'}}</strong></li>
+                        <li>Холодильные установки: <strong>{{outlet.impr_fridge | yesno:'есть,нет,неизвестно'}}</strong></li>
+                        <li>Витрины: <strong>{{outlet.impr_shopwindow | yesno:'есть,нет,неизвестно'}}</strong></li>
                     </ul>
                   </details>
                 </li>
-                {% comment %}
                   <li>
                     <details open>
-                        <summary>Информация о географическом расположении рынка</summary>
+                        <summary>Месторасположение ТМ</summary>
                         <ul>
-                            <li>Город: <strong>{{market.geo_city}}</strong></li>
-                            <li>Район города: <strong>{{market.geo_district}}</strong></li>
-                            <li>{{market.geo_street_type.descr}}: <strong>{{market.geo_street}}</strong></li>
-                            <li>Дом: <strong>{{market.geo_house}}</strong></li>
+                            <li>Сектор: <strong>{{outlet.location_sector}}</strong></li>
+                            <li>Этаж: <strong>{{outlet.location_floor}}</strong></li>
                         </ul>
                     </details>
                 </li>
+                  {% comment %}
                   <li>
                   <details open>
                     <summary>Контактные данные</summary>

@@ -146,8 +146,8 @@ import { View3D } from "view3d";
                                 </thead>
                                 <tbody>
                                 {% for tp in market.trade_places.all %}
-                                <tr>
-                                    <td>{{tp.location_number}}</td>
+                                <tr onclick="window.dispatchEvent(new CustomEvent('outlet_clicked', { detail: { id: '{{tp.location_number}}' }}));">
+                                    <td><div style="color:{{tp.trade_place_type.color}}">{{tp.location_number}}</div></td>
                                     <td>{{tp.location_floor}}</td>
                                     <td>{{tp.speciality_recommend}}</td>
                                     <td>{{tp.trade_place_type}}</td>
@@ -300,7 +300,8 @@ const v3d = new View3D(
     {% include 'markets/js/outlet_paint_map.js' %},
     {{parm_3d_ground_color}},
     {{parm_3d_decoration_color}},
-    {{parm_3d_decoration_opacity}});
+    {{parm_3d_decoration_opacity}},
+    window);
 
 {#% comment %#}
 
@@ -317,12 +318,12 @@ v3d_observer.observe(document.getElementById("mkdetails-scheme-tab"));
 {#% endcomment %#}
 
 // -- Реакция на hover по ТМ
-document.getElementById("v3d").addEventListener("outlet_pointed", (e) => {
+window.addEventListener("outlet_pointed", (e) => {
     console.log(`pointed: ${e.detail.id}`);
 });
 
 // -- Реакция на клик по ТМ
-document.getElementById("v3d").addEventListener("outlet_clicked", async (e) => {
+window.addEventListener("outlet_clicked", async (e) => {
     if(e.detail.id) {
         let url = "{% url 'markets:partials_outlet_details' outlet_number='@@@' %}";
         url = url.replace('@@@', e.detail.id);
@@ -331,5 +332,22 @@ document.getElementById("v3d").addEventListener("outlet_clicked", async (e) => {
         document.getElementById("outlet-info").innerHTML = "";
     }
 });
+
+
+/*document.querySelectorAll('#tablelisttp tr')
+    .forEach(e => e.addEventListener("click", async(e) => {
+        alert(e.id);
+}));
+document.getElementById("tablelisttp").addEventListener("click", async (e) => {
+    alert(e.id);
+    if(e.id) {
+        let url = "{% url 'markets:partials_outlet_details' outlet_number='@@@' %}";
+        url = url.replace('@@@', e.detail.id);
+        document.getElementById("outlet-info").innerHTML = await(await fetch(url)).text();
+    } else {
+        document.getElementById("outlet-info").innerHTML = "";
+    }
+});*/
+
 {% endif %}
 {% endblock %}
