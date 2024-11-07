@@ -57,6 +57,23 @@ class TakeOutletsView(APIView):
             str(r['location_number']): int(r['trade_place_type_id']) for r in query
         })
 
+    @staticmethod
+    @on_exception_returns(HttpResponseBadRequest, 'scheme_pk')
+    def post(request, scheme_pk: int):
+        scheme = SvgSchema.objects.get(pk=scheme_pk)
+        query = scheme.market.trade_places.filter(location_floor=int(scheme_pk))
+        query = query.values(
+            'location_number',
+            'trade_place_type_id',
+        )
+        return Response({
+            str(r['location_number']): {
+                'state': int(r['trade_place_type_id']),
+                # TODO other
+            }
+            for r in query
+        })
+
 
 class RestoreDatabaseConsistencyView(APIView):
     permission_classes = [IsAdminUser]
