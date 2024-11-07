@@ -2,7 +2,7 @@ from django.http import HttpResponseBadRequest
 from django.views import View
 from django.shortcuts import render
 from markets.decorators import on_exception_returns
-from markets.models import Market
+from markets.models import Market, TradePlace
 
 
 class BasicContextProvider:
@@ -55,4 +55,18 @@ class Scheme3DView(View, BasicContextProvider):
     def get(self, request, scheme_pk):
         return render(request, self.template_name, self.basic_context | {
             'scheme_pk': scheme_pk
+        })
+
+#  Partials ---------------------------------------------------------------------------------------
+
+
+class OutletDetailsPartialView(View):
+    @property
+    def template_name(self):
+        return 'markets/partials/outlet-details.html'
+
+    @on_exception_returns(HttpResponseBadRequest)
+    def get(self, request, outlet_number):
+        return render(request, self.template_name, {
+            'outlet': TradePlace.objects.get(location_number=outlet_number)
         })
