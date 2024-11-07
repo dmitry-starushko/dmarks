@@ -3,7 +3,11 @@ from django.db import transaction
 from markets.decorators import globally_lonely_action
 from markets.models import TradePlace, SvgSchema, RdcError, Validators
 from xml.etree import ElementTree as Et
-from transmutation import Svg3DTM
+try:  # To avoid deploy problems
+    from transmutation import Svg3DTM
+except ModuleNotFoundError:
+    class Svg3DTM:
+        pass
 
 
 @globally_lonely_action(None)
@@ -73,5 +77,5 @@ def restore_db_consistency():
                 RdcError.objects.create(object=key, text=err)
 
 
-def apply_filter(query, name: str, body: str):
+def apply_filter(query, filter_name: str, filter_body: str):
     return query

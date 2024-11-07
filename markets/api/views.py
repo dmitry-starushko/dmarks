@@ -7,8 +7,12 @@ from django.http.response import JsonResponse, HttpResponseBadRequest, HttpRespo
 from markets.api.business import restore_db_consistency, apply_filter
 from markets.decorators import on_exception_returns
 from markets.models import SvgSchema
-from transmutation import Svg3DTM
 from redis import Redis
+try:  # To avoid deploy problems
+    from transmutation import Svg3DTM
+except ModuleNotFoundError:
+    class Svg3DTM:
+        pass
 
 redis = Redis(host=settings.REDIS_HOST, port=settings.REDIS_PORT, db=settings.REDIS_DB)
 
