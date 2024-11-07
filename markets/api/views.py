@@ -52,7 +52,8 @@ class TakeOutletsView(APIView):
     @on_exception_returns(HttpResponseBadRequest, 'scheme_pk')
     def get(_, scheme_pk: int):
         scheme = SvgSchema.objects.get(pk=scheme_pk)
-        query = scheme.market.trade_places.filter(location_floor=int(scheme_pk)).values('location_number', 'trade_place_type_id')
+        # query = scheme.market.trade_places.filter(location_floor=int(scheme_pk)).values('location_number', 'trade_place_type_id') TODO restore
+        query = scheme.market.trade_places.values('location_number', 'trade_place_type_id')
         return Response({
             str(r['location_number']): int(r['trade_place_type_id']) for r in query
         })
