@@ -3,6 +3,8 @@
     const leftSide = resizer.previousElementSibling;
     const rightSide = resizer.nextElementSibling;
 
+    const resizerTP = document.getElementById('dragSlideTP');
+
     // The current position of mouse
     let x = 0;
     let y = 0;
@@ -56,3 +58,25 @@
 
     // Attach the handler
     resizer.addEventListener('mousedown', mouseDownHandler);
+
+
+
+    var rightPanel = document.getElementById('mkdetails-tp-section-info-detail');
+    var tabsSection = document.getElementById('mkdetails-tabs-section');
+
+
+    document.getElementById('mkdetails-info').addEventListener("click", () =>
+    {
+        rightPanel.style.visibility = "hidden";
+        rightPanel.style.width = "0";
+        tabsSection.style.width = "100%";
+    });
+
+    function ShowRightPanel() {
+            rightPanel.style.visibility = "visible";
+            rightPanel.style.width = "40%";
+            tabsSection.style.width = "60%";
+    };
+
+    document.getElementById('mkdetails-tp').onclick = ShowRightPanel;
+    document.getElementById('mkdetails-scheme').onclick = ShowRightPanel;
