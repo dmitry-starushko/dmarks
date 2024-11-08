@@ -95,3 +95,7 @@ class TpMixin:
     @property
     def tp_recommended_specs(self):
         return ', '.join(self.speciality_recommend) if self.speciality_recommend else 'не указаны'
+
+    @property
+    def tp_actual_specialization(self):
+        return self.speciality_actual if self.speciality_actual else 'не указана'

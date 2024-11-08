@@ -600,6 +600,14 @@ class TradePlaceType(models.Model):
         verbose_name = "Тип занятости ТМ"
         verbose_name_plural = "Типы занятости ТМ"
 
+    @property
+    def wall_color_css(self):
+        return f'#{hex(int(self.wall_color, 16))[2:]}'
+
+    @property
+    def roof_color_css(self):
+        return f'#{hex(int(self.roof_color, 16))[2:]}'
+
     def __str__(self):
         return f'{self.type_name}'
 

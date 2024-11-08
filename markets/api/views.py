@@ -1,10 +1,12 @@
 from threading import Thread
 from django.conf import settings
+from rest_framework.generics import ListAPIView
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.permissions import AllowAny, IsAdminUser
 from django.http.response import JsonResponse, HttpResponseBadRequest, HttpResponse
 from markets.api.business import restore_db_consistency, apply_filter
+from markets.api.serializers import TradePlaceSerializer
 from markets.decorators import on_exception_returns
 from markets.models import SvgSchema
 from redis import Redis
@@ -49,7 +51,7 @@ class TakeSvgView(APIView):
         return response
 
 
-class TakeOutletsView(APIView):
+class TakeSchemeOutletsStateView(APIView):
     permission_classes = [AllowAny]
 
     @staticmethod
@@ -61,25 +63,22 @@ class TakeOutletsView(APIView):
             str(r['location_number']): int(r['trade_place_type_id']) for r in query
         })
 
-    @staticmethod
+
+class TakeSchemeOutletsListView(ListAPIView):
+    permission_classes = [AllowAny]
+    serializer_class = TradePlaceSerializer
+
     @on_exception_returns(HttpResponseBadRequest)
-    def post(request, scheme_pk: int):
+    def post(self, request, *args, **kwargs):
+        return super().get(request, *args, **kwargs)
+
+    def get_queryset(self):
+        scheme_pk = int(self.kwargs['scheme_pk'])
         scheme = SvgSchema.objects.get(pk=scheme_pk)
-        query = scheme.market.trade_places.filter(location_floor=int(scheme_pk))
-        query = query.values(
-            'location_number',
-            'trade_place_type_id',
-            'location_floor',
-        )
-        filters = request.data
-        for f_name, f_body in filters.items():
-            query = apply_filter(query, str(f_name), str(f_body))
-        return Response({
-            str(r['location_number']): {
-                'scheme_id': int(r['location_floor']),
-                'state': int(r['trade_place_type_id']),
-            } for r in query
-        })
+        queryset = scheme.market.trade_places.filter(location_floor=scheme_pk)
+        for f_name, f_body in self.request.data.items():
+            queryset = apply_filter(queryset, f_name, f_body)
+        return queryset
 
 
 class RestoreDatabaseConsistencyView(APIView):
