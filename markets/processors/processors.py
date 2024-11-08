@@ -1,3 +1,4 @@
+from collections import OrderedDict
 from django.utils.safestring import mark_safe
 from markets.models import Parameter, TradePlaceType
 
@@ -9,7 +10,7 @@ def parameters_processor(_):
 
 
 def outlet_states_processor(_):
-    states = dict()
+    states = OrderedDict()
     for tpt in TradePlaceType.objects.all():
         states[tpt.id] = {
             'title': tpt.type_name,
