@@ -39,7 +39,7 @@ class DbItem(models.Model):
 
 
 class Booking(models.Model):
-    trade_place = models.ForeignKey('TradePlace', models.DO_NOTHING, db_comment='Идентификатор торогового места')
+    trade_place = models.ForeignKey('TradePlace', models.DO_NOTHING, db_comment='Идентификатор торгового места')
     descr = models.TextField(blank=True, null=True, db_comment='Описание')
     date_transaction = models.DateTimeField(db_comment='Дата создания записи')
     booking_status = models.TextField(db_comment='Статус бронирования')  # This field type is a guess.
@@ -51,6 +51,7 @@ class Booking(models.Model):
 
     class Meta:
         managed = True
+        ordering = ['-date_transaction']
         db_table = 'booking'
         db_table_comment = 'Бронирование торговых мест'
         verbose_name = "Бронирование ТМ"
@@ -82,6 +83,7 @@ class ContractStatusType(models.Model):
 
     class Meta:
         managed = True
+        ordering = ['type_name']
         db_table = 'contract_status_type'
         db_table_comment = 'Типы статусов договоров'
         verbose_name = "Тип статуса договора"
@@ -98,6 +100,7 @@ class GlobalConfig(models.Model):
 
     class Meta:
         managed = True
+        ordering = ['param_name']
         db_table = 'global_config'
         db_table_comment = 'Глобальная конфигурация системы'
         verbose_name = "Настройка"
@@ -135,6 +138,7 @@ class ImportData(models.Model):
 
     class Meta:
         managed = True
+        ordering = ['-date_transaction']
         db_table = 'import_data'
         db_table_comment = 'Данные о загрузке xml файлов (импорт из 1С)\r\nid - это номер транзакции импорта. Он один в started, stopped, imported\r\nStarted после удачной загрузки файла начинается испорт данных в таблицу\r\nImported - при удачной загрузке\r\nStopped - при возникновении ошибки (exception)\r\nЕсли статус остается Stared после завершения импорта - считать импор неудашимся, посольку удавшийся импорт идентифицирует статус Imported'
 
@@ -288,6 +292,7 @@ class Locality(models.Model):
 
     class Meta:
         managed = True
+        ordering = ['locality_name']
         db_table = 'locality'
         db_table_comment = 'Населенные пункты'
         verbose_name = "Локация"
@@ -304,6 +309,7 @@ class LocalityType(models.Model):
 
     class Meta:
         managed = True
+        ordering = ['type_name']
         db_table = 'locality_type'
         db_table_comment = 'Типы населенных пунктов'
         verbose_name = "Тип локации"
@@ -319,6 +325,7 @@ class MarketFireProtection(models.Model):
 
     class Meta:
         managed = True
+        ordering = ['fp_name']
         db_table = 'market_fire_protection'
         db_table_comment = 'Наличие и состав противопожарных систем'
         verbose_name = "Тип противопожарной системы"
@@ -335,6 +342,7 @@ class MarketProfitability(models.Model):
 
     class Meta:
         managed = True
+        ordering = ['profitability_name']
         db_table = 'market_profitability'
         db_table_comment = 'Категория рентабельности рынка'
         verbose_name = "Категория рентабельности рынка"
@@ -351,6 +359,7 @@ class MarketType(models.Model):
 
     class Meta:
         managed = True
+        ordering = ['type_name']
         db_table = 'market_type'
         db_table_comment = 'Типы рынков'
         verbose_name = "Тип рынка"
@@ -414,6 +423,7 @@ class Market(MkMixin, models.Model):
 
     class Meta:
         managed = True
+        ordering = ['market_name', 'additional_name']
         db_table = 'markets'
         db_table_comment = 'Информация о рынках'
         verbose_name = "Рынок"
@@ -445,6 +455,7 @@ class Renter(models.Model):
 
     class Meta:
         managed = True
+        ordering = ['renter_name']
         db_table = 'renter'
         db_table_comment = 'Информация об арендаторах'
         verbose_name = "Арендатор"
@@ -461,6 +472,7 @@ class RenterType(models.Model):
 
     class Meta:
         managed = True
+        ordering = ['type_name']
         db_table = 'renter_type'
         db_table_comment = 'Тип арендатора'
         verbose_name = "Тип арендатора"
@@ -477,6 +489,7 @@ class StreetType(models.Model):
 
     class Meta:
         managed = True
+        ordering = ['type_name']
         db_table = 'street_type'
         db_table_comment = 'Типы улиц'
         verbose_name = "Тип улицы"
@@ -487,6 +500,7 @@ class StreetType(models.Model):
 
 
 class SvgSchema(models.Model):
+    order = models.IntegerField(blank=False, null=False, default=0, db_comment='Поле для упорядочивания схем')
     svg_schema = models.TextField(blank=True, null=True, db_comment='svg объекта')
     market = models.ForeignKey(Market, models.DO_NOTHING, related_name="schemes", blank=True, null=True, db_comment='id рынка')  # TODO models.CASCADE
     descr = models.TextField(blank=True, null=True, db_comment='Описание')
@@ -495,6 +509,7 @@ class SvgSchema(models.Model):
 
     class Meta:
         managed = True
+        ordering = ['order']
         db_table = 'svg_schema'
         verbose_name = "Схема"
         verbose_name_plural = "Схемы"
@@ -572,6 +587,7 @@ class TradePlace(TpMixin, models.Model):
 
     class Meta:
         managed = True
+        ordering = ['location_number']
         db_table = 'trade_place'
         db_table_comment = 'Торговые места'
         indexes = [
@@ -582,7 +598,7 @@ class TradePlace(TpMixin, models.Model):
         verbose_name_plural = "Торговые места"
 
     def __str__(self):
-        return f'ТМ #{self.id}'
+        return f'ТМ #{self.id} <{self.location_number}>'
 
 
 class TradePlaceType(models.Model):
@@ -595,6 +611,7 @@ class TradePlaceType(models.Model):
 
     class Meta:
         managed = True
+        ordering = ['type_name']
         db_table = 'trade_place_type'
         db_table_comment = 'Типы занятости торгового места'
         verbose_name = "Тип занятости ТМ"
@@ -619,13 +636,14 @@ class TradeSector(models.Model):
 
     class Meta:
         managed = True
+        ordering = ['sector_name']
         db_table = 'trade_sector'
         db_table_comment = 'Сектора рынков'
         verbose_name = "Сектор"
         verbose_name_plural = "Секторы"
 
     def __str__(self):
-        return f'Сектор {self.sector_name}'
+        return f'{self.sector_name}'
 
 
 class TradeSpecType(models.Model):
@@ -636,6 +654,7 @@ class TradeSpecType(models.Model):
 
     class Meta:
         managed = True
+        ordering = ['type_name']
         db_table = 'trade_spec_type'
         db_table_comment = 'Типы специализации торгового места'
         verbose_name = "Тип специализации ТМ"
@@ -653,6 +672,7 @@ class TradeType(models.Model):
 
     class Meta:
         managed = True
+        ordering = ['type_name']
         db_table = 'trade_type'
         db_table_comment = 'Типы торгового места'
         verbose_name = "Тип ТМ"
@@ -680,6 +700,7 @@ class User(models.Model):
 
     class Meta:
         managed = True
+        ordering = ['username']
         db_table = 'user'
         verbose_name = "Пользователь"
         verbose_name_plural = "Пользователи"
@@ -704,8 +725,8 @@ class UserLogin(models.Model):
 
 
 class MkImage(DbItem):
-    image = models.ImageField(upload_to='markets/%Y/%m/%d')                                    # картинка
-    market = models.ForeignKey(Market, related_name="images", on_delete=models.CASCADE)        # рынок
+    image = models.ImageField(upload_to='markets/%Y/%m/%d')  # картинка
+    market = models.ForeignKey(Market, related_name="images", on_delete=models.CASCADE)  # рынок
 
     class Meta:
         verbose_name = "Изображение"
@@ -716,10 +737,10 @@ class MkImage(DbItem):
 
 
 class Parameter(DbItem):
-    key = models.CharField(primary_key=True, max_length=50)                                     # -- ключ --
-    value = models.CharField(max_length=250)                                                    # -- значение --
-    preload = models.BooleanField(default=False)                                                # -- используется в контексте --
-    description = models.TextField(null=True, blank=True)                                       # -- описание --
+    key = models.CharField(primary_key=True, max_length=50)  # -- ключ --
+    value = models.CharField(max_length=250)  # -- значение --
+    preload = models.BooleanField(default=False)  # -- используется в контексте --
+    description = models.TextField(null=True, blank=True)  # -- описание --
 
     def __str__(self):
         return f'Параметр "{self.key}"'
@@ -744,8 +765,8 @@ class Parameter(DbItem):
 
 
 class RdcError(DbItem):
-    object = models.CharField(max_length=250)                                                   # -- источник --
-    text = models.TextField()                                                                   # -- проблема --
+    object = models.CharField(max_length=250)  # -- источник --
+    text = models.TextField()  # -- проблема --
 
     def __str__(self):
         return f'Ошибка "{self.id}"'
@@ -756,9 +777,9 @@ class RdcError(DbItem):
 
 
 class StuffAction(DbItem):
-    title = models.CharField(max_length=64)                                                     # -- название --
-    link = models.URLField(max_length=512, default="")                                          # -- ссылка --
-    description = models.TextField(null=True, blank=True)                                       # -- описание --
+    title = models.CharField(max_length=64)  # -- название --
+    link = models.URLField(max_length=512, default="")  # -- ссылка --
+    description = models.TextField(null=True, blank=True)  # -- описание --
 
     class Meta:
         ordering = ["title"]

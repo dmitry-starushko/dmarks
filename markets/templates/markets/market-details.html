@@ -296,7 +296,7 @@ import { View3D } from "view3d";
 const v3d = new View3D(
     "v3d",
     "{% url 'api:schemes_take_gltf' scheme_pk=market.schemes.first.id %}",
-    "{% url 'api:schemes_take_outlets' scheme_pk=market.schemes.first.id %}",
+    "{% url 'api:schemes_take_outlets_state' scheme_pk=market.schemes.first.id %}",
     {% include 'markets/js/outlet_paint_map.js' %},
     {{parm_3d_ground_color}},
     {{parm_3d_decoration_color}},
