@@ -1,6 +1,7 @@
 import * as THREE from "three";
 import { GLTFLoader } from "gltf_loader";
 import { OrbitControls } from "orbit_controls";
+import { MapControls } from "map_controls";
 
 const def_camera_height = 75.0;
 const def_camera_fov = 60.0;
@@ -13,6 +14,8 @@ const def_decoration_metallness = 0.25;
 const def_emissive_color = 0xffffff;
 const def_emissive_intensity = 0.7;
 const def_fog_density = 0.001;
+const def_marker_color = 0xf46b12;
+const def_marker_metalness = 0.75;
 
 class View3D {
     constructor(parent_id,
@@ -72,14 +75,21 @@ class View3D {
                     scene.add(dir_light);
 
                     const raycaster = new THREE.Raycaster();
-                    const _listener = this._listener;
                     this._raycaster = raycaster;
                     this._pointer = new THREE.Vector2(-1.0, -1.0);
                     this._targets = new Array();
+
+                    this.__create_marker__();
+                    const _listener = this._listener;
+                    const _marker = this._marker;
+                    const _pointed_marker_position = this._pointed_marker_position;
+                    const _target_marker_position = this._target_marker_position;
                     this._cursor = {
                         _listener: _listener,
                         _id_point: null,
                         _id_down: null,
+                        _ch_count: 0,
+
                         get id_point() { return this._id_point; },
                         set id_point(value) {
                             if(this._id_point !== value) {
@@ -94,7 +104,9 @@ class View3D {
                             }
                         },
                         set id_click(value) {
-                            if(this._id_down === value) {
+                            if(this._id_down === value && this._ch_count > 0) {
+                                _target_marker_position.set(_pointed_marker_position.x, _pointed_marker_position.y, _pointed_marker_position.z);
+                                _marker.visible = !!value;
                                 window.setTimeout(() => { this._listener.dispatchEvent(new CustomEvent("outlet_clicked", { detail: { id: value } })); });
                             }
                         }
@@ -107,12 +119,31 @@ class View3D {
                     this.__setup_events__();
                     this._parent.appendChild(renderer.domElement);
 
-                    const controls = new OrbitControls(camera, renderer.domElement); // -- controls
-                    controls.enableDamping = true; // an animation loop is required when either damping or auto-rotation are enabled
-                    controls.dampingFactor = 0.15;
-                    controls.screenSpacePanning = false;
-                    controls.maxPolarAngle = Math.PI / 2.0;
-                    this._controls = controls;
+                    const orb_controls = new OrbitControls(camera, renderer.domElement); // -- controls
+                    orb_controls.enableDamping = true; // an animation loop is required when either damping or auto-rotation are enabled
+                    orb_controls.dampingFactor = 0.15;
+                    orb_controls.screenSpacePanning = false;
+                    orb_controls.maxPolarAngle = Math.PI / 2.0;
+                    orb_controls.enabled = false;
+
+                    const map_controls = new OrbitControls(camera, renderer.domElement); // -- controls
+                    map_controls.enableDamping = true; // an animation loop is required when either damping or auto-rotation are enabled
+                    map_controls.dampingFactor = 0.15;
+                    map_controls.screenSpacePanning = false;
+                    map_controls.enableRotate = false;
+                    map_controls.mouseButtons = {
+                        LEFT: THREE.MOUSE.PAN,
+                        MIDDLE: THREE.MOUSE.DOLLY,
+                        RIGHT: THREE.MOUSE.ROTATE
+                    }
+                    map_controls.enabled = false;
+                    this._avail_controls = [orb_controls, map_controls];
+                    for (const c of this._avail_controls) {
+                        c.addEventListener('start', ()=>{ this._cursor._ch_count = 10; });
+                        c.addEventListener('change', ()=>{ this._cursor._ch_count--; });
+                        c.addEventListener('end', ()=>{ });
+                    }
+                    this._controls = orb_controls;
                     this.__reset_look_position__();
 
                     renderer.setAnimationLoop(time => this.__render_loop__(time)); // -- start render
@@ -153,9 +184,21 @@ class View3D {
             pointed[0].object.parent.children.forEach(mesh => {
                 mesh.material.emissive.setHex(def_emissive_color);
                 mesh.material.emissiveIntensity = def_emissive_intensity;
+                const bb = mesh.geometry.boundingBox;
+                bb.getCenter(this._pointed_marker_position);
+                this._pointed_marker_position.y = bb.max.y + 1.0;
             });
         } else {
             this._cursor.id_point = null;
+        }
+        if(this._marker.visible) {
+            const f = 0.35;
+            this._marker.rotation.y = time / 300.0;
+            this._marker.position.set(
+                this._marker.position.x * (1-f) + this._target_marker_position.x * f,
+                this._marker.position.y * (1-f) + this._target_marker_position.y * f + 0.25 * Math.cos(time / 91.0),
+                this._marker.position.z * (1-f) + this._target_marker_position.z * f
+            );
         }
         this._renderer.render(this._scene, this._camera);
     }
@@ -182,13 +225,42 @@ class View3D {
                 this.__load_scene__(event.detail.gltf_url, event.detail.outlets_url);
             });
         }, opt);
+        window.addEventListener("toggle_3d_view", event => {
+            window.setTimeout(() => {
+                this.__toggle_controls__();
+            });
+        }, opt);
+        window.addEventListener("reset_3d_view", event => {
+            window.setTimeout(() => {
+                this.__reset_look_position__();
+            });
+        }, opt);
     }
 
     __reset_look_position__() {
         const gb = this._ground_box;
         const gc = this._ground_center;
-        this._camera.position.set(gb.min.x, def_camera_height, gb.min.z);
-        this._controls.target.set(gc.x, def_orb_tgt_height, gc.z);
+        const n = this._avail_controls.indexOf(this._controls);
+        if(n) { // Map
+            const gsz = new THREE.Vector3();
+            const ang = this._camera.fov * Math.PI / 360.0;
+            this._ground_box.getSize(gsz);
+            this._camera.position.set(gc.x, gsz.z ? 0.55 * gsz.z / Math.tan(ang) : def_camera_height, gc.z);
+            this._controls.target.set(gc.x, def_orb_tgt_height, gc.z);
+        } else { // Orbit
+            this._camera.position.set(gb.min.x, def_camera_height, gb.min.z);
+            this._controls.target.set(gc.x, def_orb_tgt_height, gc.z);
+        }
+        this._controls.enabled = true;
+    }
+
+    __toggle_controls__() {
+        for(const c of this._avail_controls) {
+            c.enabled = false;
+        }
+        let n = (this._avail_controls.indexOf(this._controls) + 1) % this._avail_controls.length;
+        this._controls = this._avail_controls[n];
+        this.__reset_look_position__();
     }
 
     __prepare_scene__(outlets) {
@@ -245,6 +317,37 @@ class View3D {
             this._parent.removeChild(this._renderer.domElement);
             this._renderer.dispose();
         } catch { }
+    }
+
+    __create_marker__() {
+        const length = 6, width = 3;
+        const shape = new THREE.Shape();
+        shape.moveTo( 0,0 );
+        shape.lineTo( width, length  );
+        shape.lineTo( 0, 2*length/3 );
+        shape.lineTo( -width, length  );
+        shape.lineTo( 0, 0 );
+
+        const extrudeSettings = {
+            steps: 2,
+            depth: 0.25,
+            bevelEnabled: true,
+            bevelThickness: 0.1,
+            bevelSize: 0.1,
+            bevelOffset: 0,
+            bevelSegments: 3
+        };
+
+        const geometry = new THREE.ExtrudeGeometry(shape, extrudeSettings);
+        const material = new THREE.MeshStandardMaterial({ color: def_marker_color, side: THREE.DoubleSide, metalness: def_marker_metalness });
+
+        const mesh = new THREE.Mesh(geometry, material);
+        mesh.visible = false;
+        mesh.position.set(this._ground_center.x, 1000, this._ground_center.z);
+        this._scene.add(mesh);
+        this._marker = mesh;
+        this._pointed_marker_position = new THREE.Vector3();
+        this._target_marker_position = new THREE.Vector3();
     }
 }
 

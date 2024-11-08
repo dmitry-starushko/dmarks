@@ -1,0 +1,7 @@
+docker-compose stop
+docker-compose build
+docker-compose up -d
+sleep 10
+docker-compose exec web ln -sf addons/libtransmutation.so.1.0.0 transmutation.so
+docker-compose exec web python manage.py migrate
+docker-compose restart
