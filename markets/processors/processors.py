@@ -14,10 +14,10 @@ def outlet_states_processor(_):
     for tpt in TradePlaceType.objects.all():
         states[tpt.id] = {
             'title': tpt.type_name,
-            'wall_color': tpt.wall_color,
-            'roof_color': tpt.roof_color,
-            'wall_color_css': f'#{hex(int(tpt.wall_color, 16))[2:]}',
-            'roof_color_css': f'#{hex(int(tpt.roof_color, 16))[2:]}',
+            'wall_color': mark_safe(tpt.wall_color),
+            'roof_color': mark_safe(tpt.roof_color),
+            'wall_color_css': mark_safe(f'#{hex(int(tpt.wall_color, 16))[2:]}'),
+            'roof_color_css': mark_safe(f'#{hex(int(tpt.roof_color, 16))[2:]}'),
         }
     return {
         'legend': states
