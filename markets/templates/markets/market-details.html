@@ -192,7 +192,7 @@ import { View3D } from "view3d";
                     <a href="#" class="" title="Выбор легенды">
                         <img src="{% static 'svg/icons/crosshairs-gps.svg' %}" alt="Выбор легенды"/>
                     </a>
-                    <a href="#" class="" title="Сброс настроек">
+                    <a href="#" class="" title="Сброс настроек" onclick="window.dispatchEvent(new CustomEvent('reset_3d_view'));">
                         <img src="{% static 'svg/icons/undo.svg' %}" alt="Сброс настроек"/>
                     </a>
                     <a href="#" class="" title="3D" onclick="window.dispatchEvent(new CustomEvent('toggle_3d_view'));">

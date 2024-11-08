@@ -221,7 +221,11 @@ class View3D {
         window.addEventListener("toggle_3d_view", event => {
             window.setTimeout(() => {
                 this.__toggle_controls__();
-//                this.__load_scene__(event.detail.gltf_url, event.detail.outlets_url);
+            });
+        }, opt);
+        window.addEventListener("reset_3d_view", event => {
+            window.setTimeout(() => {
+                this.__reset_look_position__();
             });
         }, opt);
     }
