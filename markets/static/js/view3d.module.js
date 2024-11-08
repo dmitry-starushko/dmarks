@@ -81,9 +81,7 @@ class View3D {
 
                     this.__create_marker__();
                     const _listener = this._listener;
-                    const _marker = this._marker;
                     const _pointed_marker_position = this._pointed_marker_position;
-                    const _target_marker_position = this._target_marker_position;
                     this._cursor = {
                         _listener: _listener,
                         _id_point: null,
@@ -105,9 +103,14 @@ class View3D {
                         },
                         set id_click(value) {
                             if(this._id_down === value && this._ch_count > 0) {
-                                _target_marker_position.set(_pointed_marker_position.x, _pointed_marker_position.y, _pointed_marker_position.z);
-                                _marker.visible = !!value;
-                                window.setTimeout(() => { this._listener.dispatchEvent(new CustomEvent("outlet_clicked", { detail: { id: value } })); });
+                                window.setTimeout(() => { this._listener.dispatchEvent(new CustomEvent("outlet_clicked", { detail: {
+                                    id: value,
+                                    marker: {
+                                        x: _pointed_marker_position.x,
+                                        y: _pointed_marker_position.y,
+                                        z: _pointed_marker_position.z
+                                    }
+                                }})); });
                             }
                         }
                     };
@@ -219,18 +222,27 @@ class View3D {
         dom_element.addEventListener("click", event => {
             this._cursor.id_click = this._cursor.id_point;
         }, opt);
-        window.addEventListener("market_storey_changed", event => {
+        this._listener.addEventListener("outlet_clicked", event => {
+            const marker = event.detail.marker;
+            if (marker) {
+                this._target_marker_position.set(marker.x, marker.y, marker.z);
+                this._marker.visible = !!event.detail.id;
+            } else {
+                console.log(`TODO externally clicked outlet ${event.detail.id}`);
+            }
+        }, opt);
+        this._listener.addEventListener("market_storey_changed", event => {
             window.setTimeout(() => {
                 this.__clear__();
                 this.__load_scene__(event.detail.gltf_url, event.detail.outlets_url);
             });
         }, opt);
-        window.addEventListener("toggle_3d_view", event => {
+        this._listener.addEventListener("toggle_3d_view", event => {
             window.setTimeout(() => {
                 this.__toggle_controls__();
             });
         }, opt);
-        window.addEventListener("reset_3d_view", event => {
+        this._listener.addEventListener("reset_3d_view", event => {
             window.setTimeout(() => {
                 this.__reset_look_position__();
             });

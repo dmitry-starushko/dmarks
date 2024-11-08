@@ -99,4 +99,3 @@ class RestoreDatabaseConsistencyView(APIView):
                 "status": "launched",
                 "comment": "this is very long action, be patient, please..."
             })
-
