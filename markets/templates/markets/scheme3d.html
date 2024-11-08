@@ -11,6 +11,7 @@
     "three": "{% static 'js/three/three.module.js' %}"
     ,"gltf_loader": "{% static 'js/three/loader/GLTFLoader.js' %}"
     ,"orbit_controls": "{% static 'js/three/controls/OrbitControls.js' %}"
+    ,"map_controls": "{% static 'js/three/controls/MapControls.js' %}"
     ,"view3d": "{% static 'js/view3d.module.js' %}"
   }
 }
@@ -37,7 +38,8 @@ document.getElementById("v3d").addEventListener("outlet_clicked", (e) => {
     if(e.detail.id) {
         console.log(`clicked: ${e.detail.id}`);
     } else {
-        window.dispatchEvent(new CustomEvent("market_storey_changed", { detail: { gltf_url: "{% url 'api:schemes_take_gltf' scheme_pk=1578 %}", outlets_url: "{% url 'api:schemes_take_outlets' scheme_pk=1578 %}" } }));
+        {#window.dispatchEvent(new CustomEvent("market_storey_changed", { detail: { gltf_url: "{% url 'api:schemes_take_gltf' scheme_pk=1578 %}", outlets_url: "{% url 'api:schemes_take_outlets_state' scheme_pk=1578 %}" } }));#}
+        window.dispatchEvent(new CustomEvent("toggle_3d_view", { detail: { } }));
     }
 });
 {% endblock %}

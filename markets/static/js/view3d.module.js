@@ -1,6 +1,7 @@
 import * as THREE from "three";
 import { GLTFLoader } from "gltf_loader";
 import { OrbitControls } from "orbit_controls";
+import { MapControls } from "map_controls";
 
 const def_camera_height = 75.0;
 const def_camera_fov = 60.0;
@@ -13,6 +14,8 @@ const def_decoration_metallness = 0.25;
 const def_emissive_color = 0xffffff;
 const def_emissive_intensity = 0.7;
 const def_fog_density = 0.001;
+const def_marker_color = 0xf46b12;
+const def_marker_metalness = 0.75;
 
 class View3D {
     constructor(parent_id,
@@ -114,12 +117,26 @@ class View3D {
                     this.__setup_events__();
                     this._parent.appendChild(renderer.domElement);
 
-                    const controls = new OrbitControls(camera, renderer.domElement); // -- controls
-                    controls.enableDamping = true; // an animation loop is required when either damping or auto-rotation are enabled
-                    controls.dampingFactor = 0.15;
-                    controls.screenSpacePanning = false;
-                    controls.maxPolarAngle = Math.PI / 2.0;
-                    this._controls = controls;
+                    const orb_controls = new OrbitControls(camera, renderer.domElement); // -- controls
+                    orb_controls.enableDamping = true; // an animation loop is required when either damping or auto-rotation are enabled
+                    orb_controls.dampingFactor = 0.15;
+                    orb_controls.screenSpacePanning = false;
+                    orb_controls.maxPolarAngle = Math.PI / 2.0;
+                    orb_controls.enabled = false;
+
+                    const map_controls = new OrbitControls(camera, renderer.domElement); // -- controls
+                    map_controls.enableDamping = true; // an animation loop is required when either damping or auto-rotation are enabled
+                    map_controls.dampingFactor = 0.15;
+                    map_controls.screenSpacePanning = false;
+                    map_controls.enableRotate = false;
+                    map_controls.mouseButtons = {
+                        LEFT: THREE.MOUSE.PAN,
+                        MIDDLE: THREE.MOUSE.DOLLY,
+                        RIGHT: THREE.MOUSE.ROTATE
+                    }
+                    map_controls.enabled = false;
+                    this._avail_controls = [orb_controls, map_controls];
+                    this._controls = orb_controls;
                     this.__reset_look_position__();
 
                     renderer.setAnimationLoop(time => this.__render_loop__(time)); // -- start render
@@ -168,7 +185,7 @@ class View3D {
             this._cursor.id_point = null;
         }
         if(this._marker.visible) {
-            const f = 0.25;
+            const f = 0.35;
             this._marker.rotation.y = time / 300.0;
             this._marker.position.set(
                 this._marker.position.x * (1-f) + this._target_marker_position.x * f,
@@ -201,13 +218,38 @@ class View3D {
                 this.__load_scene__(event.detail.gltf_url, event.detail.outlets_url);
             });
         }, opt);
+        window.addEventListener("toggle_3d_view", event => {
+            window.setTimeout(() => {
+                this.__toggle_controls__();
+//                this.__load_scene__(event.detail.gltf_url, event.detail.outlets_url);
+            });
+        }, opt);
     }
 
     __reset_look_position__() {
         const gb = this._ground_box;
         const gc = this._ground_center;
-        this._camera.position.set(gb.min.x, def_camera_height, gb.min.z);
-        this._controls.target.set(gc.x, def_orb_tgt_height, gc.z);
+        const n = this._avail_controls.indexOf(this._controls);
+        if(n) { // Map
+            const gsz = new THREE.Vector3();
+            const ang = this._camera.fov * Math.PI / 360.0;
+            this._ground_box.getSize(gsz);
+            this._camera.position.set(gc.x, gsz.z ? 0.55 * gsz.z / Math.tan(ang) : def_camera_height, gc.z);
+            this._controls.target.set(gc.x, def_orb_tgt_height, gc.z);
+        } else { // Orbit
+            this._camera.position.set(gb.min.x, def_camera_height, gb.min.z);
+            this._controls.target.set(gc.x, def_orb_tgt_height, gc.z);
+        }
+        this._controls.enabled = true;
+    }
+
+    __toggle_controls__() {
+        for(const c of this._avail_controls) {
+            c.enabled = false;
+        }
+        let n = (this._avail_controls.indexOf(this._controls) + 1) % this._avail_controls.length;
+        this._controls = this._avail_controls[n];
+        this.__reset_look_position__();
     }
 
     __prepare_scene__(outlets) {
@@ -286,7 +328,7 @@ class View3D {
         };
 
         const geometry = new THREE.ExtrudeGeometry(shape, extrudeSettings);
-        const material = new THREE.MeshBasicMaterial({ color: 0xf46b12, side: THREE.DoubleSide, metallness: 0.75 });
+        const material = new THREE.MeshStandardMaterial({ color: def_marker_color, side: THREE.DoubleSide, metalness: def_marker_metalness });
 
         const mesh = new THREE.Mesh(geometry, material);
         mesh.visible = false;
