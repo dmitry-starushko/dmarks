@@ -88,6 +88,8 @@ class View3D {
                         _listener: _listener,
                         _id_point: null,
                         _id_down: null,
+                        _ch_count: 0,
+
                         get id_point() { return this._id_point; },
                         set id_point(value) {
                             if(this._id_point !== value) {
@@ -102,7 +104,7 @@ class View3D {
                             }
                         },
                         set id_click(value) {
-                            if(this._id_down === value) {
+                            if(this._id_down === value && this._ch_count > 0) {
                                 _target_marker_position.set(_pointed_marker_position.x, _pointed_marker_position.y, _pointed_marker_position.z);
                                 _marker.visible = !!value;
                                 window.setTimeout(() => { this._listener.dispatchEvent(new CustomEvent("outlet_clicked", { detail: { id: value } })); });
@@ -136,6 +138,11 @@ class View3D {
                     }
                     map_controls.enabled = false;
                     this._avail_controls = [orb_controls, map_controls];
+                    for (const c of this._avail_controls) {
+                        c.addEventListener('start', ()=>{ this._cursor._ch_count = 10; });
+                        c.addEventListener('change', ()=>{ this._cursor._ch_count--; });
+                        c.addEventListener('end', ()=>{ });
+                    }
                     this._controls = orb_controls;
                     this.__reset_look_position__();
 
