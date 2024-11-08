@@ -49,7 +49,6 @@ class View3D {
                 scene.background = new THREE.Color(def_scene_background_color);
                 if(def_fog_density > 0.0) { scene.fog = new THREE.FogExp2(this._ground_color, def_fog_density); }
                 this._scene = scene;
-                this.__create_marker__();
 
                 const camera = new THREE.PerspectiveCamera(def_camera_fov, this._width / this._height, def_camera_near, def_camera_far);
                 this._camera = camera;
@@ -77,9 +76,11 @@ class View3D {
                     this._pointer = new THREE.Vector2(-1.0, -1.0);
                     this._targets = new Array();
 
+                    this.__create_marker__();
                     const _listener = this._listener;
                     const _marker = this._marker;
-                    const _marker_position = this._marker_position;
+                    const _pointed_marker_position = this._pointed_marker_position;
+                    const _target_marker_position = this._target_marker_position;
                     this._cursor = {
                         _listener: _listener,
                         _id_point: null,
@@ -99,7 +100,7 @@ class View3D {
                         },
                         set id_click(value) {
                             if(this._id_down === value) {
-                                _marker.position.set(_marker_position.x, _marker_position.y, _marker_position.z);
+                                _target_marker_position.set(_pointed_marker_position.x, _pointed_marker_position.y, _pointed_marker_position.z);
                                 _marker.visible = !!value;
                                 window.setTimeout(() => { this._listener.dispatchEvent(new CustomEvent("outlet_clicked", { detail: { id: value } })); });
                             }
@@ -160,14 +161,20 @@ class View3D {
                 mesh.material.emissive.setHex(def_emissive_color);
                 mesh.material.emissiveIntensity = def_emissive_intensity;
                 const bb = mesh.geometry.boundingBox;
-                bb.getCenter(this._marker_position);
-                this._marker_position.y = bb.max.y + 0.5;
+                bb.getCenter(this._pointed_marker_position);
+                this._pointed_marker_position.y = bb.max.y + 1.0;
             });
         } else {
             this._cursor.id_point = null;
         }
         if(this._marker.visible) {
-            this._marker.rotation.y = time/300;
+            const f = 0.25;
+            this._marker.rotation.y = time / 300.0;
+            this._marker.position.set(
+                this._marker.position.x * (1-f) + this._target_marker_position.x * f,
+                this._marker.position.y * (1-f) + this._target_marker_position.y * f + 0.25 * Math.cos(time / 91.0),
+                this._marker.position.z * (1-f) + this._target_marker_position.z * f
+            );
         }
         this._renderer.render(this._scene, this._camera);
     }
@@ -283,9 +290,11 @@ class View3D {
 
         const mesh = new THREE.Mesh(geometry, material);
         mesh.visible = false;
+        mesh.position.set(this._ground_center.x, 1000, this._ground_center.z);
         this._scene.add(mesh);
         this._marker = mesh;
-        this._marker_position = new THREE.Vector3();
+        this._pointed_marker_position = new THREE.Vector3();
+        this._target_marker_position = new THREE.Vector3();
     }
 }
 
