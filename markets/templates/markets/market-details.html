@@ -1,6 +1,7 @@
 {% extends 'markets/basic.html' %}
 {% load static %}
 {% load thumbnail %}
+{% load aux_tags %}
 {% block header-styles %}
 {{block.super}}
 <link href="{% static 'css/mkdetails.css' %}" rel="stylesheet">
@@ -63,7 +64,7 @@ import { View3D } from "view3d";
                                 </div>
                             </div>
                             <div class="mkdetails-big-info">
-                                {{market.ads}}
+                                {{market.ads | default:'*К сожалению, текст отсутствует*.' | markdown}}
                             </div>
                         </div>
 
