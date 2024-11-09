@@ -16,6 +16,7 @@ const def_emissive_intensity = 0.7;
 const def_fog_density = 0.001;
 const def_marker_color = 0xf46b12;
 const def_marker_metalness = 0.75;
+const def_marker_vdist = 1.0;
 
 class View3D {
     constructor(parent_id,
@@ -189,7 +190,7 @@ class View3D {
                 mesh.material.emissiveIntensity = def_emissive_intensity;
                 const bb = mesh.geometry.boundingBox;
                 bb.getCenter(this._pointed_marker_position);
-                this._pointed_marker_position.y = bb.max.y + 1.0;
+                this._pointed_marker_position.y = bb.max.y + def_marker_vdist;
             });
         } else {
             this._cursor.id_point = null;
@@ -223,17 +224,17 @@ class View3D {
             this._cursor.id_click = this._cursor.id_point;
         }, opt);
         this._listener.addEventListener("outlet_clicked", event => {
-            if ("marker" in event.detail) { // event from myself
+            if ("marker" in event.detail) { // -- event from myself
                 const marker = event.detail.marker;
                 this._target_marker_position.set(marker.x, marker.y, marker.z);
-            } else { // external event
+            } else { // -- external event
                 if(event.detail.id) {
                     for(const obj of this._targets) {
                         if(obj.userData.id === event.detail.id) {
                             obj.children.forEach(mesh => {
                                 const bb = mesh.geometry.boundingBox;
                                 bb.getCenter(this._target_marker_position);
-                                this._target_marker_position.y = bb.max.y + 1.0;
+                                this._target_marker_position.y = bb.max.y + def_marker_vdist;
                             });
                             break;
                         }
