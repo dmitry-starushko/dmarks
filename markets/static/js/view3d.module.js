@@ -40,6 +40,7 @@ class View3D {
         this._decoration_color = decoration_color;
         this._decoration_opacity = decoration_opacity;
         this._events_actl = new AbortController();
+        this._csrf_token = Cookies.get('csrftoken');
         this.__load_scene__(gltf_url, outlets_url);
     }
 
@@ -59,6 +60,9 @@ class View3D {
 
                 const ground = scene.getObjectByName("ground");
                 if(ground && (ground instanceof THREE.Mesh)) {
+                    this._gltf_url = gltf_url; // -- store for repaint
+                    this._outlets_url = outlets_url;
+
                     const gb = ground.geometry.boundingBox; // -- ground params
                     const gc = new THREE.Vector3();
                     gb.getCenter(gc);
@@ -78,7 +82,7 @@ class View3D {
                     const raycaster = new THREE.Raycaster();
                     this._raycaster = raycaster;
                     this._pointer = new THREE.Vector2(-1.0, -1.0);
-                    this._targets = new Array();
+                    this._targets = [];
 
                     this.__create_marker__();
                     const _listener = this._listener;
@@ -152,7 +156,8 @@ class View3D {
 
                     renderer.setAnimationLoop(time => this.__render_loop__(time)); // -- start render
                     const outlets = await (await fetch(outlets_url)).json(); // -- paint scene
-                    this.__prepare_scene__(outlets);
+                    this.__build_outlet_edges__();
+                    this.__paint_outlets__(outlets);
                     ground.material.color = new THREE.Color(this._ground_color);
 
                     const resize_observer  = new ResizeObserver(() => { this.__on_resize__(); });
@@ -259,6 +264,22 @@ class View3D {
                 this.__reset_look_position__();
             });
         }, opt);
+        this._listener.addEventListener("apply_outlet_filters", event => {
+            window.setTimeout(async () => {
+                const outlets = await (await fetch(
+                    this._outlets_url, {
+                        method: "POST",
+                        headers: {
+                            'Accept': 'application/json',
+                            'Content-Type': 'application/json',
+                            'X-CSRFToken': this._csrf_token,
+                        },
+                        body: JSON.stringify(event.detail.filters || {})
+                    }
+                )).json();
+                this.__paint_outlets__(outlets);
+            });
+        }, opt);
     }
 
     __reset_look_position__() {
@@ -287,8 +308,7 @@ class View3D {
         this.__reset_look_position__();
     }
 
-    __prepare_scene__(outlets) {
-        let paint_deco = true;
+    __build_outlet_edges__() {
         this._scene.traverse(obj => {
             if((obj instanceof THREE.Group) && 'name' in obj.userData && obj.userData.name == "outlet") {
                 obj.children.forEach((mesh, index) => {
@@ -297,6 +317,15 @@ class View3D {
                     const wireframe = new THREE.LineSegments(geometry, material);
                     this._scene.add(wireframe);
                 });
+            }
+        });
+    }
+
+    __paint_outlets__(outlets) {
+        let paint_deco = true;
+        this._targets = []
+        this._scene.traverse(obj => {
+            if((obj instanceof THREE.Group) && 'name' in obj.userData && obj.userData.name == "outlet") {
                 if(obj.userData.id in outlets) {
                     this._targets.push(obj);
                     const paint_info = this._paint_map.get(outlets[obj.userData.id]);

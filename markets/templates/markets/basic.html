@@ -32,10 +32,12 @@
     {% endblock %}
     {% block header-scripts %}
     {# -- Scripts -- #}
+    <script src="{% static 'js/js.cookie.min.js' %}"></script>
     <script src="{% static 'vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
     <script src="{% static 'vendor/php-email-form/validate.js' %}"></script>
     <script src="{% static 'vendor/aos/aos.js' %}"></script>
     <script src="{% static 'vendor/swiper/swiper-bundle.min.js' %}"></script>
+    <script>__csrf_token__ = Cookies.get('csrftoken');</script>
     {% endblock %}
     <script type="module">
         {% block dom-loaded-scripts-imports %}

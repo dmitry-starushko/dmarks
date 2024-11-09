@@ -30,16 +30,16 @@ const v3d = new View3D(
     {% include 'markets/js/outlet_paint_map.js' %},
     {{parm_3d_ground_color}},
     {{parm_3d_decoration_color}},
-    {{parm_3d_decoration_opacity}});
-document.getElementById("v3d").addEventListener("outlet_pointed", (e) => {
+    {{parm_3d_decoration_opacity}}, window);
+window.addEventListener("outlet_pointed", (e) => {
     console.log(`pointed: ${e.detail.id}`);
 });
-document.getElementById("v3d").addEventListener("outlet_clicked", (e) => {
+window.addEventListener("outlet_clicked", (e) => {
     if(e.detail.id) {
         console.log(`clicked: ${e.detail.id}`);
     } else {
         {#window.dispatchEvent(new CustomEvent("market_storey_changed", { detail: { gltf_url: "{% url 'api:schemes_take_gltf' scheme_pk=1578 %}", outlets_url: "{% url 'api:schemes_take_outlets_state' scheme_pk=1578 %}" } }));#}
-        window.dispatchEvent(new CustomEvent("toggle_3d_view", { detail: { } }));
+        window.dispatchEvent(new CustomEvent("apply_outlet_filters", { detail: { } }));
     }
 });
 {% endblock %}
