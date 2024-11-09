@@ -364,7 +364,6 @@ class View3D {
 
         const geometry = new THREE.ExtrudeGeometry(shape, extrudeSettings);
         const material = new THREE.MeshStandardMaterial({ color: def_marker_color, side: THREE.DoubleSide, metalness: def_marker_metalness });
-
         const mesh = new THREE.Mesh(geometry, material);
         mesh.visible = false;
         mesh.position.set(this._ground_center.x, 1000, this._ground_center.z);
