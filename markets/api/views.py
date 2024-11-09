@@ -6,9 +6,9 @@ from rest_framework.views import APIView
 from rest_framework.permissions import AllowAny, IsAdminUser
 from django.http.response import JsonResponse, HttpResponseBadRequest, HttpResponse
 from markets.api.business import restore_db_consistency, apply_filter
-from markets.api.serializers import TradePlaceSerializer, SchemeSerializer
+from markets.api.serializers import TradePlaceSerializer, SchemeSerializer, TradePlaceTypeSerializer, TradeSpecTypeSerializer
 from markets.decorators import on_exception_returns
-from markets.models import SvgSchema, Market
+from markets.models import SvgSchema, Market, TradePlaceType, TradeSpecType
 from redis import Redis
 try:  # To avoid deploy problems
     from transmutation import Svg3DTM
@@ -108,6 +108,35 @@ class TakeSchemeOutletsListView(ListAPIView):
         for f_name, f_body in self.request.data.items():
             queryset = apply_filter(queryset, f_name, f_body)
         return queryset
+
+# -- Info --
+
+
+class TakeLegendView(ListAPIView):
+    permission_classes = [AllowAny]
+    legends = [
+        {'title': 'По занятости',
+         'model': TradePlaceType,
+         'serializer_class': TradePlaceTypeSerializer},
+        {'title': 'По специализации',
+         'model': TradeSpecType,
+         'serializer_class': TradeSpecTypeSerializer}]
+
+    @on_exception_returns(HttpResponseBadRequest)
+    def get(self, request, *args, **kwargs):
+        legend = int(self.kwargs['legend']) % len(self.legends)
+        return Response({
+            'title': self.legends[legend]['title'],
+            'legend': super().get(request, *args, **kwargs).data
+        })
+
+    def get_queryset(self):
+        legend = int(self.kwargs['legend']) % len(self.legends)
+        return self.legends[legend]['model'].objects.all()
+
+    def get_serializer_class(self):
+        legend = int(self.kwargs['legend'])  % len(self.legends)
+        return self.legends[legend]['serializer_class']
 
 
 # -- Actions --
