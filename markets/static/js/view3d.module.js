@@ -223,13 +223,24 @@ class View3D {
             this._cursor.id_click = this._cursor.id_point;
         }, opt);
         this._listener.addEventListener("outlet_clicked", event => {
-            const marker = event.detail.marker;
-            if (marker) {
+            if ("marker" in event.detail) { // event from myself
+                const marker = event.detail.marker;
                 this._target_marker_position.set(marker.x, marker.y, marker.z);
-                this._marker.visible = !!event.detail.id;
-            } else {
-                console.log(`TODO externally clicked outlet ${event.detail.id}`);
+            } else { // external event
+                if(event.detail.id) {
+                    for(const obj of this._targets) {
+                        if(obj.userData.id === event.detail.id) {
+                            obj.children.forEach(mesh => {
+                                const bb = mesh.geometry.boundingBox;
+                                bb.getCenter(this._target_marker_position);
+                                this._target_marker_position.y = bb.max.y + 1.0;
+                            });
+                            break;
+                        }
+                    }
+                }
             }
+            this._marker.visible = !!event.detail.id;
         }, opt);
         this._listener.addEventListener("market_storey_changed", event => {
             window.setTimeout(() => {
