@@ -229,9 +229,11 @@ class View3D {
             this._cursor.id_click = this._cursor.id_point;
         }, opt);
         this._listener.addEventListener("outlet_clicked", event => {
+            let found = false;
             if ("marker" in event.detail) { // -- event from myself
                 const marker = event.detail.marker;
                 this._target_marker_position.set(marker.x, marker.y, marker.z);
+                found = !!event.detail.id;
             } else { // -- external event
                 if(event.detail.id) {
                     for(const obj of this._targets) {
@@ -241,12 +243,13 @@ class View3D {
                                 bb.getCenter(this._target_marker_position);
                                 this._target_marker_position.y = bb.max.y + def_marker_vdist;
                             });
+                            found = true;
                             break;
                         }
                     }
                 }
             }
-            this._marker.visible = !!event.detail.id;
+            this._marker.visible = found;
         }, opt);
         this._listener.addEventListener("market_storey_changed", event => {
             window.setTimeout(() => {

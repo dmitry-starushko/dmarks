@@ -11,9 +11,9 @@ class MarketAdmin(admin.ModelAdmin):
 
 @admin.register(SvgSchema)
 class SvgSchemaAdmin(admin.ModelAdmin):
-    list_display = ['id', 'market', 'floor', 'descr']
+    list_display = ['id', 'market', 'order', 'floor', 'descr']
     list_filter = ['market']
-    ordering = ['market', 'floor']
+    ordering = ['market', 'order']
 
 
 @admin.register(MkImage)
@@ -49,6 +49,7 @@ class StuffActionAdmin(admin.ModelAdmin):
     @staticmethod
     def action(action):
         return format_html('<a href="{}">{}</a>', action.link, action.title)
+
 
 # -------------------------------------------------------------------------------------------------
 
@@ -116,7 +117,7 @@ class TradeSectorAdmin(admin.ModelAdmin):
 
 @admin.register(TradeSpecType)
 class TradeSpecTypeAdmin(admin.ModelAdmin):
-    list_display = ['type_name', 'descr', 'color']
+    list_display = ['type_name', 'descr', 'color', 'wall_color', 'roof_color']
     ordering = ['type_name']
 
 
