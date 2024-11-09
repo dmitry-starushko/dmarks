@@ -1,5 +1,5 @@
 from rest_framework.serializers import ModelSerializer
-from markets.models import Market, TradePlace, TradePlaceType
+from markets.models import Market, TradePlace, TradePlaceType, SvgSchema
 
 
 class MarketSerializer(ModelSerializer):
@@ -18,7 +18,13 @@ class TradePlaceSerializer(ModelSerializer):
 
     class Meta:
         model = TradePlace
-        fields = ["location_number", "tp_actual_specialization", "price", "trade_place_type"]
+        fields = ["id", "location_number", "tp_actual_specialization", "price", "trade_place_type"]
+
+
+class SchemeSerializer(ModelSerializer):
+    class Meta:
+        model = SvgSchema
+        fields = ["id", "floor", "order", "descr"]
 
 
 

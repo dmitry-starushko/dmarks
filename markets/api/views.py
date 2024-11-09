@@ -6,9 +6,9 @@ from rest_framework.views import APIView
 from rest_framework.permissions import AllowAny, IsAdminUser
 from django.http.response import JsonResponse, HttpResponseBadRequest, HttpResponse
 from markets.api.business import restore_db_consistency, apply_filter
-from markets.api.serializers import TradePlaceSerializer
+from markets.api.serializers import TradePlaceSerializer, SchemeSerializer
 from markets.decorators import on_exception_returns
-from markets.models import SvgSchema
+from markets.models import SvgSchema, Market
 from redis import Redis
 try:  # To avoid deploy problems
     from transmutation import Svg3DTM
@@ -19,7 +19,27 @@ except ModuleNotFoundError:
 redis = Redis(host=settings.REDIS_HOST, port=settings.REDIS_PORT, db=settings.REDIS_DB)
 
 
-class TakeGltfView(APIView):
+# -- Markets API --
+
+
+class TakeMarketSchemesListView(ListAPIView):
+    permission_classes = [AllowAny]
+    serializer_class = SchemeSerializer
+
+    @on_exception_returns(HttpResponseBadRequest)
+    def get(self, request, *args, **kwargs):
+        return super().get(request, *args, **kwargs)
+
+    def get_queryset(self):
+        market_pk = int(self.kwargs['market_pk'])
+        market = Market.objects.get(pk=market_pk)
+        return market.schemes.all()
+
+
+# -- Scheme API --
+
+
+class TakeSchemeGltfView(APIView):
     permission_classes = [AllowAny]
 
     @staticmethod
@@ -36,7 +56,7 @@ class TakeGltfView(APIView):
         return response
 
 
-class TakeSvgView(APIView):
+class TakeSchemeSvgView(APIView):
     permission_classes = [AllowAny]
 
     @staticmethod
@@ -63,6 +83,17 @@ class TakeSchemeOutletsStateView(APIView):
             str(r['location_number']): int(r['trade_place_type_id']) for r in query
         })
 
+    @staticmethod
+    @on_exception_returns(HttpResponseBadRequest, 'scheme_pk')
+    def post(request, scheme_pk: int):
+        scheme = SvgSchema.objects.get(pk=scheme_pk)
+        query = scheme.market.trade_places.filter(location_floor=int(scheme_pk))
+        if request.data:
+            for f_name, f_body in request.data.items():
+                query = apply_filter(query, f_name, f_body)
+        query = query.values('location_number', 'trade_place_type_id')
+        return Response({ str(r['location_number']): int(r['trade_place_type_id']) for r in query })
+
 
 class TakeSchemeOutletsListView(ListAPIView):
     permission_classes = [AllowAny]
@@ -79,6 +110,9 @@ class TakeSchemeOutletsListView(ListAPIView):
         for f_name, f_body in self.request.data.items():
             queryset = apply_filter(queryset, f_name, f_body)
         return queryset
+
+
+# -- Actions --
 
 
 class RestoreDatabaseConsistencyView(APIView):
