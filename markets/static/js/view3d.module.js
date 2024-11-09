@@ -290,7 +290,7 @@ class View3D {
                     const paint_info = this._paint_map.get(outlets[obj.userData.id]);
                     if(paint_info) {
                         obj.children.forEach((mesh, index) => {
-                            mesh.material.color.setHex(index? paint_info.roof_color : paint_info.wall_color); //= new THREE.Color(index? paint_info.roof_color : paint_info.wall_color);
+                            mesh.material.color.setHex(index? paint_info.roof_color : paint_info.wall_color);
                             mesh.material.metalness = def_outlet_metallness;
                         });
                     } else console.error(`Вариант раскраски ТМ для состояния #${outlets[obj.userData.id]} не определён`);
