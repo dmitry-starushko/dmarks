@@ -6,7 +6,7 @@ from rest_framework.views import APIView
 from rest_framework.permissions import AllowAny, IsAdminUser
 from django.http.response import JsonResponse, HttpResponseBadRequest, HttpResponse
 from markets.api.business import restore_db_consistency, apply_filter
-from markets.api.serializers import TradePlaceSerializer, SchemeSerializer, TradePlaceTypeSerializer, TradeSpecTypeSerializer
+from markets.api.serializers import SchemeSerializer, TradePlaceTypeSerializer, TradeSpecTypeSerializer, TradePlaceSerializerO, TradePlaceSerializerS
 from markets.decorators import on_exception_returns
 from markets.models import SvgSchema, Market, TradePlaceType, TradeSpecType
 from redis import Redis
@@ -73,29 +73,32 @@ class TakeSchemeSvgView(APIView):
 
 class TakeSchemeOutletsStateView(APIView):
     permission_classes = [AllowAny]
+    legends = ['trade_place_type_id', 'trade_spec_type_id_act_id']
 
-    @staticmethod
     @on_exception_returns(HttpResponseBadRequest, 'scheme_pk')
-    def get(_, scheme_pk: int):
+    def get(self, _, scheme_pk: int, legend: int):
+        legend %= len(self.legends)
+        leg_field = self.legends[legend]
         scheme = SvgSchema.objects.get(pk=scheme_pk)
-        query = scheme.market.trade_places.filter(location_floor=int(scheme_pk)).values('location_number', 'trade_place_type_id')
-        return Response({str(r['location_number']): int(r['trade_place_type_id']) for r in query})
+        query = scheme.market.trade_places.filter(location_floor=int(scheme_pk)).values('location_number', leg_field)
+        return Response({str(r['location_number']): int(r[leg_field]) for r in query})
 
-    @staticmethod
     @on_exception_returns(HttpResponseBadRequest, 'scheme_pk')
-    def post(request, scheme_pk: int):
+    def post(self, request, scheme_pk: int, legend: int):
+        legend %= len(self.legends)
+        leg_field = self.legends[legend]
         scheme = SvgSchema.objects.get(pk=scheme_pk)
         query = scheme.market.trade_places.filter(location_floor=int(scheme_pk))
         if request.data:
             for f_name, f_body in request.data.items():
                 query = apply_filter(query, f_name, f_body)
-        query = query.values('location_number', 'trade_place_type_id')
-        return Response({str(r['location_number']): int(r['trade_place_type_id']) for r in query})
+        query = query.values('location_number', leg_field)
+        return Response({str(r['location_number']): int(r[leg_field]) for r in query})
 
 
 class TakeSchemeOutletsListView(ListAPIView):
     permission_classes = [AllowAny]
-    serializer_class = TradePlaceSerializer
+    legends = [TradePlaceSerializerO, TradePlaceSerializerS]
 
     @on_exception_returns(HttpResponseBadRequest)
     def post(self, request, *args, **kwargs):
@@ -108,6 +111,11 @@ class TakeSchemeOutletsListView(ListAPIView):
         for f_name, f_body in self.request.data.items():
             queryset = apply_filter(queryset, f_name, f_body)
         return queryset
+
+    def get_serializer_class(self):
+        legend = int(self.kwargs['legend']) % len(self.legends)
+        return self.legends[legend]
+
 
 # -- Info --
 
@@ -135,7 +143,7 @@ class TakeLegendView(ListAPIView):
         return self.legends[legend]['model'].objects.all()
 
     def get_serializer_class(self):
-        legend = int(self.kwargs['legend'])  % len(self.legends)
+        legend = int(self.kwargs['legend']) % len(self.legends)
         return self.legends[legend]['serializer_class']
 
 
