@@ -12,6 +12,7 @@ urlpatterns = [
     path('schemes/<int:scheme_pk>/outlets/list/<int:legend>', views.TakeSchemeOutletsListView.as_view(), name='schemes_take_outlets_list'),
     # --
     path('info/legends/<int:legend>', views.TakeLegendView.as_view(), name='info_take_legend'),
+    path('info/path', views.TakeURLView.as_view(), name='info_take_path'),
     path('info/urls', views.TakeURLsView.as_view(), name='info_take_urls'),
     # --
     path('run/restore-db-consistency', views.RestoreDatabaseConsistencyView.as_view(), name='run_restore_db_consistency'),

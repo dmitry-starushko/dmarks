@@ -1,6 +1,6 @@
 from threading import Thread
 from django.conf import settings
-from django.urls import reverse
+from django.urls import reverse, NoReverseMatch
 from rest_framework.generics import ListAPIView
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -120,6 +120,17 @@ class TakeSchemeOutletsListView(ListAPIView):
 
 # -- Info --
 
+class TakeURLView(APIView):
+    permission_classes = [AllowAny]
+
+    @staticmethod
+    @on_exception_returns(HttpResponseBadRequest)
+    def post(request):
+        data = request.data
+        url = reverse(data['path_name'], kwargs=data['args'])
+        return Response(url)
+
+
 class TakeURLsView(APIView):
     permission_classes = [AllowAny]
 
@@ -143,7 +154,6 @@ class TakeURLsView(APIView):
             if scheme_pk is not None else {}
         response |= {'url_legend': reverse('api:info_take_legend', kwargs={'legend': legend})} \
             if legend is not None else {}
-
         return JsonResponse(response)
 
 
