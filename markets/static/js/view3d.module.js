@@ -23,8 +23,6 @@ class View3D {
                 urls_url,
                 scheme_pk,
                 legend,
-//                outlets_url,
-//                paint_map,
                 ground_color,
                 decoration_color,
                 decoration_opacity,
@@ -33,23 +31,27 @@ class View3D {
         if(!parent) { throw `DOM element with id <${parent_id}> not found`; }
         const width = parent.clientWidth;
         const height = parent.clientHeight;
+        this._urls_url = urls_url,
         this._parent = parent;
         this._listener = listener ? listener : parent;
         this._width = width;
         this._height = height;
-        this._paint_map = paint_map;
         this._ground_color = ground_color;
         this._decoration_color = decoration_color;
         this._decoration_opacity = decoration_opacity;
         this._events_actl = new AbortController();
         this._csrf_token = Cookies.get('csrftoken');
-        this.__load_scene__(urls_url, outlets_url);
+        this.__load_scene__(scheme_pk, legend);
     }
 
-    __load_scene__(urls_url, outlets_url) {
+    async __load_scene__(scheme_pk, legend) {
+        this._scheme_pk = scheme_pk;
+        this._legend = legend;
+        await this.__take_urls__();
+
         const loader = new GLTFLoader();
         loader.load(
-            urls_url,
+            this._urls.url_scheme_gltf,
             async gltf => {
                 const scene = new THREE.Scene();
                 scene.add(gltf.scene);
@@ -62,9 +64,6 @@ class View3D {
 
                 const ground = scene.getObjectByName("ground");
                 if(ground && (ground instanceof THREE.Mesh)) {
-                    this._gltf_url = urls_url; // -- store for repaint
-                    this._outlets_url = outlets_url;
-
                     const gb = ground.geometry.boundingBox; // -- ground params
                     const gc = new THREE.Vector3();
                     gb.getCenter(gc);
@@ -157,10 +156,11 @@ class View3D {
                     this.__reset_look_position__();
 
                     renderer.setAnimationLoop(time => this.__render_loop__(time)); // -- start render
-                    const outlets = await (await fetch(outlets_url)).json(); // -- paint scene
+                    const outlets = await (await fetch(this._urls.url_scheme_outlets_state)).json(); // -- paint scene
+                    ground.material.color = new THREE.Color(this._ground_color);
+                    await this.__take_paint_map__();
                     this.__build_outlet_edges__();
                     this.__paint_outlets__(outlets);
-                    ground.material.color = new THREE.Color(this._ground_color);
 
                     const resize_observer  = new ResizeObserver(() => { this.__on_resize__(); });
                     resize_observer.observe(this._parent);
@@ -256,7 +256,7 @@ class View3D {
         this._listener.addEventListener("market_storey_changed", event => {
             window.setTimeout(() => {
                 this.__clear__();
-                this.__load_scene__(event.detail.urls_url, event.detail.outlets_url);
+                this.__load_scene__(event.detail.scheme_pk, this._legend);
             });
         }, opt);
         this._listener.addEventListener("toggle_3d_view", event => {
@@ -272,14 +272,33 @@ class View3D {
         this._listener.addEventListener("apply_outlet_filters", event => {
             window.setTimeout(async () => {
                 const outlets = await (await fetch(
-                    this._outlets_url, {
+                    this._urls.url_scheme_outlets_state, {
                         method: "POST",
                         headers: {
                             'Accept': 'application/json',
                             'Content-Type': 'application/json',
                             'X-CSRFToken': this._csrf_token,
                         },
-                        body: JSON.stringify(event.detail.filters || {})
+                        body: JSON.stringify(this._filters = (event.detail.filters || {}))
+                    }
+                )).json();
+                this.__paint_outlets__(outlets);
+            });
+        }, opt);
+        this._listener.addEventListener("next_legend", async event => {
+            this._legend++;
+            await this.__take_urls__();
+            await this.__take_paint_map__();
+            window.setTimeout(async () => {
+                const outlets = await (await fetch(
+                    this._urls.url_scheme_outlets_state, {
+                        method: "POST",
+                        headers: {
+                            'Accept': 'application/json',
+                            'Content-Type': 'application/json',
+                            'X-CSRFToken': this._csrf_token,
+                        },
+                        body: JSON.stringify(this._filters = (event.detail.filters || {}))
                     }
                 )).json();
                 this.__paint_outlets__(outlets);
@@ -405,6 +424,35 @@ class View3D {
         this._marker = mesh;
         this._pointed_marker_position = new THREE.Vector3();
         this._target_marker_position = new THREE.Vector3();
+    }
+
+    async __take_urls__() {
+        this._urls = await (await fetch(
+            this._urls_url, {
+                method: "POST",
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': this._csrf_token,
+                },
+                body: JSON.stringify({
+                    market_pk: 0,
+                    scheme_pk: this._scheme_pk,
+                    legend: this._legend
+                })
+            }
+        )).json();
+    }
+
+    async __take_paint_map__() {
+        const legend = await (await fetch(this._urls.url_legend)).json();
+        this._paint_map = new Map();
+        for(const item of legend.legend) {
+            this._paint_map.set(item.id, {
+                wall_color: item.wall_color,
+                roof_color: item.roof_color
+            });
+        }
     }
 }
 

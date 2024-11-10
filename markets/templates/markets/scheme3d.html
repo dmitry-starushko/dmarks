@@ -26,6 +26,8 @@ import { View3D } from "view3d";
 const v3d = new View3D(
     "v3d",
     "{% url 'api:info_take_urls' %}",
+    {{scheme_pk | stringformat:'d'}},
+    0,
     {{parm_3d_ground_color}},
     {{parm_3d_decoration_color}},
     {{parm_3d_decoration_opacity}},
@@ -37,8 +39,11 @@ window.addEventListener("outlet_clicked", (e) => {
     if(e.detail.id) {
         console.log(`clicked: ${e.detail.id}`);
     } else {
-        {#window.dispatchEvent(new CustomEvent("market_storey_changed", { detail: { gltf_url: "{% url 'api:schemes_take_gltf' scheme_pk=1578 %}", outlets_url: "{% url 'api:schemes_take_outlets_state' scheme_pk=1578 %}" } }));#}
+{% comment %}
+        window.dispatchEvent(new CustomEvent("market_storey_changed", { detail: { scheme_pk: 1574 } }));
         window.dispatchEvent(new CustomEvent("apply_outlet_filters", { detail: { } }));
+{% endcomment %}
+        window.dispatchEvent(new CustomEvent("next_legend", { detail: { } }));
     }
 });
 {% endblock %}
