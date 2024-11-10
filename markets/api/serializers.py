@@ -44,6 +44,7 @@ class TradePlaceSerializerS(TradePlaceSerializer):
         model = TradePlace
         fields = TradePlaceSerializer.Meta.fields + ['legend_id']
 
+
 class SchemeSerializer(ModelSerializer):
     class Meta:
         model = SvgSchema
