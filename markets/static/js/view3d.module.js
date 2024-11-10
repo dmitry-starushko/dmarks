@@ -20,9 +20,11 @@ const def_marker_vdist = 1.0;
 
 class View3D {
     constructor(parent_id,
-                gltf_url,
-                outlets_url,
-                paint_map,
+                urls_url,
+                scheme_pk,
+                legend,
+//                outlets_url,
+//                paint_map,
                 ground_color,
                 decoration_color,
                 decoration_opacity,
@@ -41,13 +43,13 @@ class View3D {
         this._decoration_opacity = decoration_opacity;
         this._events_actl = new AbortController();
         this._csrf_token = Cookies.get('csrftoken');
-        this.__load_scene__(gltf_url, outlets_url);
+        this.__load_scene__(urls_url, outlets_url);
     }
 
-    __load_scene__(gltf_url, outlets_url) {
+    __load_scene__(urls_url, outlets_url) {
         const loader = new GLTFLoader();
         loader.load(
-            gltf_url,
+            urls_url,
             async gltf => {
                 const scene = new THREE.Scene();
                 scene.add(gltf.scene);
@@ -60,7 +62,7 @@ class View3D {
 
                 const ground = scene.getObjectByName("ground");
                 if(ground && (ground instanceof THREE.Mesh)) {
-                    this._gltf_url = gltf_url; // -- store for repaint
+                    this._gltf_url = urls_url; // -- store for repaint
                     this._outlets_url = outlets_url;
 
                     const gb = ground.geometry.boundingBox; // -- ground params
@@ -174,7 +176,7 @@ class View3D {
             },
             async error => {
                 console.error(error);
-                alert(`Ошибка при создании сцены:\n${await(await fetch(gltf_url)).text()}`);
+                alert(`Ошибка при создании сцены:\n${await(await fetch(urls_url)).text()}`);
             }
         );
     }
@@ -254,7 +256,7 @@ class View3D {
         this._listener.addEventListener("market_storey_changed", event => {
             window.setTimeout(() => {
                 this.__clear__();
-                this.__load_scene__(event.detail.gltf_url, event.detail.outlets_url);
+                this.__load_scene__(event.detail.urls_url, event.detail.outlets_url);
             });
         }, opt);
         this._listener.addEventListener("toggle_3d_view", event => {

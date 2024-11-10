@@ -25,12 +25,11 @@ import { View3D } from "view3d";
 {{block.super}}
 const v3d = new View3D(
     "v3d",
-    "{% url 'api:schemes_take_gltf' scheme_pk=scheme_pk %}",
-    "{% url 'api:schemes_take_outlets_state' scheme_pk=scheme_pk %}",
-    {% include 'markets/js/outlet_paint_map.js' %},
+    "{% url 'api:info_take_urls' %}",
     {{parm_3d_ground_color}},
     {{parm_3d_decoration_color}},
-    {{parm_3d_decoration_opacity}}, window);
+    {{parm_3d_decoration_opacity}},
+    window);
 window.addEventListener("outlet_pointed", (e) => {
     console.log(`pointed: ${e.detail.id}`);
 });

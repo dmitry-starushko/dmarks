@@ -1,5 +1,6 @@
 from threading import Thread
 from django.conf import settings
+from django.urls import reverse
 from rest_framework.generics import ListAPIView
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -118,6 +119,25 @@ class TakeSchemeOutletsListView(ListAPIView):
 
 
 # -- Info --
+
+class TakeURLsView(APIView):
+    permission_classes = [AllowAny]
+
+    @staticmethod
+    @on_exception_returns(HttpResponseBadRequest)
+    def post(request):
+        data = request.data
+        market_pk = int(data['market_pk'])
+        scheme_pk = int(data['scheme_pk'])
+        legend = int(data['legend'])
+        return Response({
+            'url_market_schemes': reverse('api:markets_take_schemes', kwargs={'market_pk': market_pk}),
+            'url_scheme_outlets_state': reverse('api:schemes_take_outlets_state', kwargs={'scheme_pk': scheme_pk, 'legend': legend}),
+            'url_scheme_outlets_list': reverse('api:schemes_take_outlets_list', kwargs={'scheme_pk': scheme_pk, 'legend': legend}),
+            'url_scheme_gltf': reverse('api:schemes_take_gltf', kwargs={'scheme_pk': scheme_pk}),
+            'url_scheme_svg': reverse('api:schemes_take_svg', kwargs={'scheme_pk': scheme_pk}),
+            'url_legend': reverse('api:info_take_legend', kwargs={'legend': legend})
+        })
 
 
 class TakeLegendView(ListAPIView):
