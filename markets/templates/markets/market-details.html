@@ -189,7 +189,7 @@ import { View3D } from "view3d";
                     <a href="#" class="" title="Выбор этажа">
                         <img src="{% static 'svg/icons/layers.svg' %}" alt="Выбор этажа"/>
                     </a>
-                    <a href="#" class="" title="Выбор легенды">
+                    <a href="#" class="" title="Выбор легенды" onclick="window.dispatchEvent(new CustomEvent('next_legend'));">
                         <img src="{% static 'svg/icons/crosshairs-gps.svg' %}" alt="Выбор легенды"/>
                     </a>
                     <a href="#" class="" title="Сброс настроек" onclick="window.dispatchEvent(new CustomEvent('reset_3d_view'));">
@@ -295,15 +295,7 @@ import { View3D } from "view3d";
 {{block.super}}
 {% include 'markets/js/mkdetails.js' %}
 {% if market.schemes.first %}
-const v3d = new View3D(
-    "v3d",
-    "{% url 'api:schemes_take_gltf' scheme_pk=market.schemes.first.id %}",
-    "{% url 'api:schemes_take_outlets_state' scheme_pk=market.schemes.first.id %}",
-    {% include 'markets/js/outlet_paint_map.js' %},
-    {{parm_3d_ground_color}},
-    {{parm_3d_decoration_color}},
-    {{parm_3d_decoration_opacity}},
-    window);
+const v3d = new View3D("v3d", "{% url 'api:info_take_urls' %}", {{market.schemes.first.id | stringformat:'d'}}, 0, {{parm_3d_ground_color}}, {{parm_3d_decoration_color}}, {{parm_3d_decoration_opacity}}, window);
 
 {#% comment %#}
 

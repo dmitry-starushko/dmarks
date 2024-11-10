@@ -298,7 +298,7 @@ class View3D {
                             'Content-Type': 'application/json',
                             'X-CSRFToken': this._csrf_token,
                         },
-                        body: JSON.stringify(this._filters = (event.detail.filters || {}))
+                        body: JSON.stringify(this._filters || {})
                     }
                 )).json();
                 this.__paint_outlets__(outlets);
