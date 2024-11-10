@@ -60,6 +60,10 @@ class Booking(models.Model):
     def __str__(self):
         return f'Бронирование {self.id}'
 
+    @property
+    def scheme(self):
+        return SvgSchema.objects.get(pk=self.trade_place.location_floor)
+
 
 class ChangeLog(models.Model):
     date_change = models.DateTimeField()

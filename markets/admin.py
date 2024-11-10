@@ -29,6 +29,14 @@ class GlobalConfigAdmin(admin.ModelAdmin):
     ordering = ['param_name']
 
 
+@admin.register(Booking)
+class BookingAdmin(admin.ModelAdmin):
+    list_display = ['date_transaction', 'user', 'booking_status', 'booking_status_case', 'booking_files', 'renter_id', 'location_number', 'scheme', 'descr']
+    list_filter = ['user']
+    readonly_fields = ['trade_place']
+    ordering = ['user']
+
+
 @admin.register(Parameter)
 class ParamAdmin(admin.ModelAdmin):
     list_display = ['key', 'value', 'preload', 'description']
