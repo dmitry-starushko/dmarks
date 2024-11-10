@@ -22,7 +22,7 @@ class TradeSpecTypeSerializer(ModelSerializer):
 class TradePlaceSerializer(ModelSerializer):
     trade_place_type = TradePlaceTypeSerializer(many=False, read_only=True)
     trade_spec_type_id_act = TradeSpecTypeSerializer(many=False, read_only=True)
-    legend_id = IntegerField(source='trade_spec_type_id_act_id')  # TODO set dynamically!
+    legend_id = IntegerField(source='trade_spec_type_id_act_id')
 
     class Meta:
         model = TradePlace
@@ -30,7 +30,7 @@ class TradePlaceSerializer(ModelSerializer):
 
 
 class TradePlaceSerializerO(TradePlaceSerializer):
-    legend_id = IntegerField(source='trade_place_type_id')  # TODO set dynamically!
+    legend_id = IntegerField(source='trade_place_type_id')
 
     class Meta:
         model = TradePlace
@@ -38,7 +38,7 @@ class TradePlaceSerializerO(TradePlaceSerializer):
 
 
 class TradePlaceSerializerS(TradePlaceSerializer):
-    legend_id = IntegerField(source='trade_spec_type_id_act_id')  # TODO set dynamically!
+    legend_id = IntegerField(source='trade_spec_type_id_act_id')
 
     class Meta:
         model = TradePlace
