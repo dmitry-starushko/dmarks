@@ -127,17 +127,24 @@ class TakeURLsView(APIView):
     @on_exception_returns(HttpResponseBadRequest)
     def post(request):
         data = request.data
-        market_pk = int(data['market_pk'])
-        scheme_pk = int(data['scheme_pk'])
-        legend = int(data['legend'])
-        return Response({
-            'url_market_schemes': reverse('api:markets_take_schemes', kwargs={'market_pk': market_pk}),
-            'url_scheme_outlets_state': reverse('api:schemes_take_outlets_state', kwargs={'scheme_pk': scheme_pk, 'legend': legend}),
-            'url_scheme_outlets_list': reverse('api:schemes_take_outlets_list', kwargs={'scheme_pk': scheme_pk, 'legend': legend}),
-            'url_scheme_gltf': reverse('api:schemes_take_gltf', kwargs={'scheme_pk': scheme_pk}),
-            'url_scheme_svg': reverse('api:schemes_take_svg', kwargs={'scheme_pk': scheme_pk}),
-            'url_legend': reverse('api:info_take_legend', kwargs={'legend': legend})
-        })
+        market_pk = int(data['market_pk']) if 'market_pk' in data else None
+        scheme_pk = int(data['scheme_pk']) if 'scheme_pk' in data else None
+        legend = int(data['legend']) if 'legend' in data else None
+        response = {}
+        response |= {'url_market_schemes': reverse('api:markets_take_schemes', kwargs={'market_pk': market_pk})} \
+            if market_pk is not None else {}
+        response |= {'url_scheme_outlets_state': reverse('api:schemes_take_outlets_state', kwargs={'scheme_pk': scheme_pk, 'legend': legend})} \
+            if scheme_pk is not None and legend is not None else {}
+        response |= {'url_scheme_outlets_list': reverse('api:schemes_take_outlets_list', kwargs={'scheme_pk': scheme_pk, 'legend': legend})} \
+            if scheme_pk is not None and legend is not None else {}
+        response |= {'url_scheme_gltf': reverse('api:schemes_take_gltf', kwargs={'scheme_pk': scheme_pk})} \
+            if scheme_pk is not None else {}
+        response |= {'url_scheme_svg': reverse('api:schemes_take_svg', kwargs={'scheme_pk': scheme_pk})} \
+            if scheme_pk is not None else {}
+        response |= {'url_legend': reverse('api:info_take_legend', kwargs={'legend': legend})} \
+            if legend is not None else {}
+
+        return JsonResponse(response)
 
 
 class TakeLegendView(ListAPIView):

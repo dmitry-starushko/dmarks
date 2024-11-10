@@ -436,7 +436,6 @@ class View3D {
                     'X-CSRFToken': this._csrf_token,
                 },
                 body: JSON.stringify({
-                    market_pk: 0,
                     scheme_pk: this._scheme_pk,
                     legend: this._legend
                 })
