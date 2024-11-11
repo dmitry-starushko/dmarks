@@ -1,10 +1,5 @@
-# This is an auto-generated Django model module.
-# You'll have to do the following manually to clean this up:
-#   * Rearrange models' order
-#   * Make sure each model has one field with primary_key=True
-#   * Make sure each ForeignKey and OneToOneField has `on_delete` set to the desired behavior
-#   * Remove `managed = True` lines if you wish to allow Django to create, modify, and delete the table
-# Feel free to rename the models, but don't rename db_table values or field names.
+from django.contrib.auth.base_user import BaseUserManager
+from django.contrib.auth.models import AbstractUser
 from django.core.validators import RegexValidator
 from django.db import models
 from django.conf import settings
@@ -36,6 +31,45 @@ class DbItem(models.Model):
 
     class Meta:
         abstract: bool = True
+
+
+# -- DmUser ---------------------------------------------------------------------------------------
+
+
+class DmUserManager(BaseUserManager):
+    def create_user(self, phone, password, email, **extra_fields):
+        if not phone:
+            raise ValueError('Телефон должен быть указан')
+        email = self.normalize_email(email)
+        user = self.model(phone=phone, email=email, **extra_fields)
+        user.set_password(password)
+        user.save()
+        return user
+
+    def create_superuser(self, phone, password, email, **extra_fields):
+        extra_fields.setdefault("is_staff", True)
+        extra_fields.setdefault("is_superuser", True)
+        extra_fields.setdefault("is_active", True)
+        if extra_fields.get("is_staff") is not True:
+            raise ValueError("Суперпользователь должен иметь is_staff=True.")
+        if extra_fields.get("is_superuser") is not True:
+            raise ValueError("Суперпользователь должен иметь is_superuser=True.")
+        return self.create_user(phone, password, email, **extra_fields)
+
+
+class DmUser(AbstractUser):
+    username = None
+    phone = models.CharField(unique=True, max_length=16, null=False, blank=False)
+    email = models.EmailField(unique=True, max_length=255)
+    USERNAME_FIELD = "phone"
+    REQUIRED_FIELDS = ["first_name", "last_name", "email"]
+    objects = DmUserManager()
+
+    def __str__(self):
+        return self.email
+
+
+# -- Legacy data ----------------------------------------------------------------------------------
 
 
 class Booking(models.Model):
@@ -561,8 +595,10 @@ class TradePlace(TpMixin, models.Model):
     impr_shopwindow = models.BooleanField(blank=True, null=True, db_comment='Наличие витрин')
     trade_place_type = models.ForeignKey('TradePlaceType', models.DO_NOTHING, db_comment='Занятость торгового места')
     price = models.DecimalField(max_digits=12, decimal_places=2, blank=True, null=True, db_comment='Стоимость аренды торгового места в месяц')
-    trade_spec_type_id_rec = models.ForeignKey('TradeSpecType', models.DO_NOTHING, db_column='trade_spec_type_id_rec', blank=True, null=True, db_comment='Специализация торгового места (рекомендованная)')
-    trade_spec_type_id_act = models.ForeignKey('TradeSpecType', models.DO_NOTHING, db_column='trade_spec_type_id_act', related_name='tradeplace_trade_spec_type_id_act_set', blank=True, null=True, db_comment='Специализация торгового места (фактическая)')
+    trade_spec_type_id_rec = models.ForeignKey('TradeSpecType', models.DO_NOTHING, db_column='trade_spec_type_id_rec', blank=True, null=True,
+                                               db_comment='Специализация торгового места (рекомендованная)')
+    trade_spec_type_id_act = models.ForeignKey('TradeSpecType', models.DO_NOTHING, db_column='trade_spec_type_id_act', related_name='tradeplace_trade_spec_type_id_act_set', blank=True, null=True,
+                                               db_comment='Специализация торгового места (фактическая)')
     street_vending = models.BooleanField(blank=True, null=True, db_comment='Возможность выносной торговли')
     contract_rent = models.ForeignKey(TradeContract, models.DO_NOTHING, blank=True, null=True, db_comment='Информация о договорах аренды')
     receiv_state = models.BooleanField(blank=True, null=True, db_comment='Наличие дебиторской задолженности на текущий месяц')
@@ -735,10 +771,10 @@ class UserLogin(models.Model):
         return f'{self.id}'
 
 
-# New tables in database --------------------------------------------------------------------------
+# -- NG Data --------------------------------------------------------------------------------------
 
 
-class MkImage(DbItem):
+class MkImage(DbItem):  # -- Market images
     image = models.ImageField(upload_to='markets/%Y/%m/%d')  # картинка
     market = models.ForeignKey(Market, related_name="images", on_delete=models.CASCADE)  # рынок
 
@@ -750,7 +786,7 @@ class MkImage(DbItem):
         return f'Фотография рынка #{self.market.id}'
 
 
-class Parameter(DbItem):
+class Parameter(DbItem):  # -- NG Parameters
     key = models.CharField(primary_key=True, max_length=50)  # -- ключ --
     value = models.CharField(max_length=250)  # -- значение --
     preload = models.BooleanField(default=False)  # -- используется в контексте --
@@ -778,7 +814,7 @@ class Parameter(DbItem):
             return default
 
 
-class RdcError(DbItem):
+class RdcError(DbItem):  # -- Errors detected by Restore Database Consistency procedure
     object = models.CharField(max_length=250)  # -- источник --
     text = models.TextField()  # -- проблема --
 
@@ -790,7 +826,7 @@ class RdcError(DbItem):
         verbose_name_plural = "Ошибки"
 
 
-class StuffAction(DbItem):
+class StuffAction(DbItem):  # -- Stuff actions in admin panel
     title = models.CharField(max_length=64)  # -- название --
     link = models.URLField(max_length=512, default="")  # -- ссылка --
     description = models.TextField(null=True, blank=True)  # -- описание --

@@ -1,6 +1,23 @@
 from django.contrib import admin
+from django.contrib.auth.admin import UserAdmin
 from django.utils.html import format_html
+from markets.forms import DmUserCreationForm, DmUserChangeForm
 from markets.models import *
+
+
+class DmUserAdmin(UserAdmin):
+    add_form = DmUserCreationForm
+    form = DmUserChangeForm
+    model = DmUser
+    list_display = ("phone", "first_name", "last_name", "email", "is_staff", "is_active",)
+    list_filter = ("phone", "first_name", "last_name", "email", "is_staff", "is_active",)
+    fieldsets = ((None, {"fields": ("first_name", "last_name", "phone", "password", "email")}), ("Permissions", {"fields": ("is_staff", "is_active", "groups", "user_permissions")}))
+    add_fieldsets = ((None, {"fields": ("first_name", "last_name", "phone", "password1", "password2", "email", "is_staff", "is_active", "groups", "user_permissions")}),)
+    search_fields = ("phone",)
+    ordering = ("phone",)
+
+
+admin.site.register(DmUser, DmUserAdmin)
 
 
 @admin.register(Market)
