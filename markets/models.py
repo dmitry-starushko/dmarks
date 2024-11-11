@@ -80,7 +80,7 @@ class Booking(models.Model):
     booking_status_case = models.TextField(blank=True, null=True, db_comment='Причина изменения статуса (например, причина отказа)')
     booking_files = models.JSONField(blank=True, null=True, db_comment='Файлы для бронирования')
     obsolete_user = models.ForeignKey('User', models.DO_NOTHING, null=True, blank=True, db_column='user', db_comment='Кто забронировал (в старой версии БД)')
-    # user = models.ForeignKey(DmUser, models.DO_NOTHING, null=True, blank=True, db_column='ng_user', db_comment='Кто забронировал (NULL для старых броней)')
+    user = models.ForeignKey(DmUser, models.DO_NOTHING, null=True, blank=True, db_column='ng_user', db_comment='Кто забронировал (NULL для старых броней)')
     renter_id = models.DecimalField(max_digits=32, decimal_places=0, blank=True, null=True, db_comment='Арендатор (пользователь из внешнего источника, надо искать в базе)')
     location_number = models.CharField(blank=True, null=True, db_comment='Номер торгового места (по странной логике ДЦТ, сюда падают номера которых нет в базе -- мы даем отлуп)')
 
