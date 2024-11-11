@@ -79,9 +79,10 @@ class Booking(models.Model):
     booking_status = models.TextField(db_comment='Статус бронирования')  # This field type is a guess.
     booking_status_case = models.TextField(blank=True, null=True, db_comment='Причина изменения статуса (например, причина отказа)')
     booking_files = models.JSONField(blank=True, null=True, db_comment='Файлы для бронирования')
-    user = models.ForeignKey('User', models.DO_NOTHING, db_comment='Кто забронировал')
-    renter_id = models.DecimalField(max_digits=32, decimal_places=0, blank=True, null=True, db_comment='Арендатор')
-    location_number = models.CharField(blank=True, null=True, db_comment='Номер торгового места')
+    obsolete_user = models.ForeignKey('User', models.DO_NOTHING, null=True, blank=True, db_column='user', db_comment='Кто забронировал (в старой версии БД)')
+    # user = models.ForeignKey(DmUser, models.DO_NOTHING, null=True, blank=True, db_column='ng_user', db_comment='Кто забронировал (NULL для старых броней)')
+    renter_id = models.DecimalField(max_digits=32, decimal_places=0, blank=True, null=True, db_comment='Арендатор (пользователь из внешнего источника, надо искать в базе)')
+    location_number = models.CharField(blank=True, null=True, db_comment='Номер торгового места (по странной логике ДЦТ, сюда падают номера которых нет в базе -- мы даем отлуп)')
 
     class Meta:
         managed = True
@@ -167,7 +168,8 @@ class ImportData(models.Model):
     descr = models.TextField(blank=True, null=True, db_comment='Описание')
     import_status = models.TextField(db_comment='Статус импорта')  # This field type is a guess.
     date_transaction = models.DateTimeField(db_comment='Дата транзакции')
-    user_id_transaction = models.ForeignKey('User', models.DO_NOTHING, db_column='user_id_transaction', db_comment='id создателя')
+    user_id_transaction = models.ForeignKey('User', models.CASCADE, null=True, db_column='user_id_transaction', db_comment='id создателя (в старой БД)')
+    # created_by = models.ForeignKey(DmUser, models.CASCADE, null=True, db_comment='id создателя (NULL для старых записей)')
     filename = models.CharField(db_comment='Имя импортируемого файла')
     filepath_server = models.CharField(db_comment='Путь импортируемого файла на сервере')
     date_modify = models.DateTimeField(blank=True, null=True, db_comment='Дата измения транзакции')
@@ -595,10 +597,8 @@ class TradePlace(TpMixin, models.Model):
     impr_shopwindow = models.BooleanField(blank=True, null=True, db_comment='Наличие витрин')
     trade_place_type = models.ForeignKey('TradePlaceType', models.DO_NOTHING, db_comment='Занятость торгового места')
     price = models.DecimalField(max_digits=12, decimal_places=2, blank=True, null=True, db_comment='Стоимость аренды торгового места в месяц')
-    trade_spec_type_id_rec = models.ForeignKey('TradeSpecType', models.DO_NOTHING, db_column='trade_spec_type_id_rec', blank=True, null=True,
-                                               db_comment='Специализация торгового места (рекомендованная)')
-    trade_spec_type_id_act = models.ForeignKey('TradeSpecType', models.DO_NOTHING, db_column='trade_spec_type_id_act', related_name='tradeplace_trade_spec_type_id_act_set', blank=True, null=True,
-                                               db_comment='Специализация торгового места (фактическая)')
+    trade_spec_type_id_rec = models.ForeignKey('TradeSpecType', models.DO_NOTHING, db_column='trade_spec_type_id_rec', blank=True, null=True, db_comment='Специализация торгового места (рекомендованная)')
+    trade_spec_type_id_act = models.ForeignKey('TradeSpecType', models.DO_NOTHING, db_column='trade_spec_type_id_act', related_name='tradeplace_trade_spec_type_id_act_set', blank=True, null=True, db_comment='Специализация торгового места (фактическая)')
     street_vending = models.BooleanField(blank=True, null=True, db_comment='Возможность выносной торговли')
     contract_rent = models.ForeignKey(TradeContract, models.DO_NOTHING, blank=True, null=True, db_comment='Информация о договорах аренды')
     receiv_state = models.BooleanField(blank=True, null=True, db_comment='Наличие дебиторской задолженности на текущий месяц')

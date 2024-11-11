@@ -48,10 +48,10 @@ class GlobalConfigAdmin(admin.ModelAdmin):
 
 @admin.register(Booking)
 class BookingAdmin(admin.ModelAdmin):
-    list_display = ['date_transaction', 'user', 'booking_status', 'booking_status_case', 'booking_files', 'renter_id', 'location_number', 'scheme', 'descr']
-    list_filter = ['user']
+    list_display = ['date_transaction', 'obsolete_user', 'booking_status', 'booking_status_case', 'booking_files', 'renter_id', 'location_number', 'scheme', 'descr']
+    list_filter = ['obsolete_user']
     readonly_fields = ['trade_place']
-    ordering = ['user']
+    ordering = ['obsolete_user']
 
 
 @admin.register(Parameter)
