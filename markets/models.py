@@ -169,7 +169,7 @@ class ImportData(models.Model):
     import_status = models.TextField(db_comment='Статус импорта')  # This field type is a guess.
     date_transaction = models.DateTimeField(db_comment='Дата транзакции')
     user_id_transaction = models.ForeignKey('User', models.CASCADE, null=True, db_column='user_id_transaction', db_comment='id создателя (в старой БД)')
-    # created_by = models.ForeignKey(DmUser, models.CASCADE, null=True, db_comment='id создателя (NULL для старых записей)')
+    created_by = models.ForeignKey(DmUser, models.CASCADE, null=True, blank=True, db_comment='id создателя (NULL для старых записей)')
     filename = models.CharField(db_comment='Имя импортируемого файла')
     filepath_server = models.CharField(db_comment='Путь импортируемого файла на сервере')
     date_modify = models.DateTimeField(blank=True, null=True, db_comment='Дата измения транзакции')
