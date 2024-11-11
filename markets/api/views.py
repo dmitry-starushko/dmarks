@@ -109,8 +109,9 @@ class TakeSchemeOutletsListView(ListAPIView):
         scheme_pk = int(self.kwargs['scheme_pk'])
         scheme = SvgSchema.objects.get(pk=scheme_pk)
         queryset = scheme.market.trade_places.filter(location_floor=scheme_pk)
-        for f_name, f_body in self.request.data.items():
-            queryset = apply_filter(queryset, f_name, f_body)
+        if self.request.data:
+            for f_name, f_body in self.request.data.items():
+                queryset = apply_filter(queryset, f_name, f_body)
         return queryset
 
     def get_serializer_class(self):
