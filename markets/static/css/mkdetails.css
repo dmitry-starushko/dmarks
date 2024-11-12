@@ -222,11 +222,7 @@
 /*****table tm*******/
 .table-tp {
     width: 100%;
-}
-.table-tp > thead
-{
-
-
+    border-collapse: separate;
 }
 
 .table-tp > thead {
@@ -234,10 +230,10 @@
     background: #ddd;
     position: sticky;
     top: -5px;
-    border: 1px solid black;
+    /*border: 1px solid black;*/
 }
 
-.table-tp > thead > tr, .table-tp > thead > tr > th {
+.table-tp > thead > tr, .table-tp > th {
     border: 1px solid black;
 }
 
@@ -246,8 +242,8 @@
 }
 
 
-.table-tp tr:hover {
-    background-color: #fff;
+.table-tp > tbody > tr:hover {
+    background-color: #ccc;
 }
 
 .mkdetails-tp-section-info-main {
