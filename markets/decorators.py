@@ -23,6 +23,7 @@ def on_exception_returns(response_class, name=None):
                 response = response_class()
                 response.content = str(e)
                 return response
+        proxy.__doc__ = qln
         return proxy
     return decorator
 
@@ -30,8 +31,9 @@ def on_exception_returns(response_class, name=None):
 def globally_lonely_action(return_if_busy=None):
     """Creates system-wide "lonely" action like long-time database operation, etc."""
     def decorator(function):
+        qln = function.__qualname__
         gla_lock = Lock()
-        gla_name = f'GLA:{function.__qualname__}:launched'
+        gla_name = f'GLA:{qln}:launched'
 
         def launched():
             with gla_lock:
@@ -47,6 +49,7 @@ def globally_lonely_action(return_if_busy=None):
                 with gla_lock:
                     redis.delete(gla_name)
         proxy.launched = launched
+        proxy.__doc__ = qln
         return proxy
     return decorator
 

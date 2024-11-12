@@ -1,10 +1,5 @@
-# This is an auto-generated Django model module.
-# You'll have to do the following manually to clean this up:
-#   * Rearrange models' order
-#   * Make sure each model has one field with primary_key=True
-#   * Make sure each ForeignKey and OneToOneField has `on_delete` set to the desired behavior
-#   * Remove `managed = True` lines if you wish to allow Django to create, modify, and delete the table
-# Feel free to rename the models, but don't rename db_table values or field names.
+from django.contrib.auth.base_user import BaseUserManager
+from django.contrib.auth.models import AbstractUser
 from django.core.validators import RegexValidator
 from django.db import models
 from django.conf import settings
@@ -38,6 +33,45 @@ class DbItem(models.Model):
         abstract: bool = True
 
 
+# -- DmUser ---------------------------------------------------------------------------------------
+
+
+class DmUserManager(BaseUserManager):
+    def create_user(self, phone, password, email, **extra_fields):
+        if not phone:
+            raise ValueError('Телефон должен быть указан')
+        email = self.normalize_email(email)
+        user = self.model(phone=phone, email=email, **extra_fields)
+        user.set_password(password)
+        user.save()
+        return user
+
+    def create_superuser(self, phone, password, email, **extra_fields):
+        extra_fields.setdefault("is_staff", True)
+        extra_fields.setdefault("is_superuser", True)
+        extra_fields.setdefault("is_active", True)
+        if extra_fields.get("is_staff") is not True:
+            raise ValueError("Суперпользователь должен иметь is_staff=True.")
+        if extra_fields.get("is_superuser") is not True:
+            raise ValueError("Суперпользователь должен иметь is_superuser=True.")
+        return self.create_user(phone, password, email, **extra_fields)
+
+
+class DmUser(AbstractUser):
+    username = None
+    phone = models.CharField(unique=True, max_length=16, null=False, blank=False)
+    email = models.EmailField(unique=True, max_length=255)
+    USERNAME_FIELD = "phone"
+    REQUIRED_FIELDS = ["first_name", "last_name", "email"]
+    objects = DmUserManager()
+
+    def __str__(self):
+        return self.email
+
+
+# -- Legacy data ----------------------------------------------------------------------------------
+
+
 class Booking(models.Model):
     trade_place = models.ForeignKey('TradePlace', models.DO_NOTHING, db_comment='Идентификатор торгового места')
     descr = models.TextField(blank=True, null=True, db_comment='Описание')
@@ -45,9 +79,10 @@ class Booking(models.Model):
     booking_status = models.TextField(db_comment='Статус бронирования')  # This field type is a guess.
     booking_status_case = models.TextField(blank=True, null=True, db_comment='Причина изменения статуса (например, причина отказа)')
     booking_files = models.JSONField(blank=True, null=True, db_comment='Файлы для бронирования')
-    user = models.ForeignKey('User', models.DO_NOTHING, db_comment='Кто забронировал')
-    renter_id = models.DecimalField(max_digits=32, decimal_places=0, blank=True, null=True, db_comment='Арендатор')
-    location_number = models.CharField(blank=True, null=True, db_comment='Номер торгового места')
+    user = models.ForeignKey('User', models.CASCADE, null=True, blank=True, db_column='user', db_comment='Кто забронировал (в старой версии БД)')
+    booked_by = models.ForeignKey(DmUser, models.CASCADE, null=True, blank=True, db_column='ng_user', db_comment='Кто забронировал (NULL для старых броней)')
+    renter_id = models.DecimalField(max_digits=32, decimal_places=0, blank=True, null=True, db_comment='Арендатор (пользователь из внешнего источника, надо искать в базе)')
+    location_number = models.CharField(blank=True, null=True, db_comment='Номер торгового места (по странной логике ДЦТ, сюда падают номера которых нет в базе -- мы даем отлуп)')
 
     class Meta:
         managed = True
@@ -133,7 +168,8 @@ class ImportData(models.Model):
     descr = models.TextField(blank=True, null=True, db_comment='Описание')
     import_status = models.TextField(db_comment='Статус импорта')  # This field type is a guess.
     date_transaction = models.DateTimeField(db_comment='Дата транзакции')
-    user_id_transaction = models.ForeignKey('User', models.DO_NOTHING, db_column='user_id_transaction', db_comment='id создателя')
+    user_id_transaction = models.ForeignKey('User', models.CASCADE, null=True, db_column='user_id_transaction', db_comment='id создателя (в старой БД)')
+    created_by = models.ForeignKey(DmUser, models.CASCADE, null=True, blank=True, db_comment='id создателя (NULL для старых записей)')
     filename = models.CharField(db_comment='Имя импортируемого файла')
     filepath_server = models.CharField(db_comment='Путь импортируемого файла на сервере')
     date_modify = models.DateTimeField(blank=True, null=True, db_comment='Дата измения транзакции')
@@ -735,10 +771,10 @@ class UserLogin(models.Model):
         return f'{self.id}'
 
 
-# New tables in database --------------------------------------------------------------------------
+# -- NG Data --------------------------------------------------------------------------------------
 
 
-class MkImage(DbItem):
+class MkImage(DbItem):  # -- Market images
     image = models.ImageField(upload_to='markets/%Y/%m/%d')  # картинка
     market = models.ForeignKey(Market, related_name="images", on_delete=models.CASCADE)  # рынок
 
@@ -750,7 +786,7 @@ class MkImage(DbItem):
         return f'Фотография рынка #{self.market.id}'
 
 
-class Parameter(DbItem):
+class Parameter(DbItem):  # -- NG Parameters
     key = models.CharField(primary_key=True, max_length=50)  # -- ключ --
     value = models.CharField(max_length=250)  # -- значение --
     preload = models.BooleanField(default=False)  # -- используется в контексте --
@@ -778,7 +814,7 @@ class Parameter(DbItem):
             return default
 
 
-class RdcError(DbItem):
+class RdcError(DbItem):  # -- Errors detected by Restore Database Consistency procedure
     object = models.CharField(max_length=250)  # -- источник --
     text = models.TextField()  # -- проблема --
 
@@ -790,7 +826,7 @@ class RdcError(DbItem):
         verbose_name_plural = "Ошибки"
 
 
-class StuffAction(DbItem):
+class StuffAction(DbItem):  # -- Stuff actions in admin panel
     title = models.CharField(max_length=64)  # -- название --
     link = models.URLField(max_length=512, default="")  # -- ссылка --
     description = models.TextField(null=True, blank=True)  # -- описание --
