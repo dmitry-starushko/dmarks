@@ -1,5 +1,6 @@
 from threading import Thread
 from django.conf import settings
+from django.shortcuts import render
 from django.urls import reverse, NoReverseMatch
 from rest_framework.generics import ListAPIView
 from rest_framework.response import Response
@@ -185,6 +186,39 @@ class TakeLegendView(ListAPIView):
         return self.legends[legend]['serializer_class']
 
 
+# -- Partial views --
+
+
+class PV_OutletTableView(APIView):
+    permission_classes = [AllowAny]
+    legends = [lambda o: o.trade_place_type.roof_color_css, lambda o: o.trade_spec_type_id_act.roof_color_css]
+
+    @on_exception_returns(HttpResponseBadRequest)
+    def post(self, request, scheme_pk: int, legend: int):
+        legend = legend % len(self.legends)
+        scheme = SvgSchema.objects.get(pk=scheme_pk)
+        queryset = scheme.market.trade_places.filter(location_floor=scheme_pk)
+        if self.request.data:
+            for f_name, f_body in self.request.data.items():
+                queryset = apply_filter(queryset, f_name, f_body)
+        outlets = [{
+            'number': r.location_number,
+            'specialization': r.trade_spec_type_id_act.type_name,
+            'occupation': r.trade_place_type.type_name,
+            'price': r.price,
+            'color_css': self.legends[legend](r)
+        } for r in queryset]
+        try:
+            r = render(request, 'markets/partials/outlet-table.html', {
+                'title': scheme.floor,
+                'outlets': outlets
+            })
+        except Exception as e:
+            print(e)
+            raise
+        return r
+
+
 # -- Actions --
 
 
@@ -206,3 +240,4 @@ class RestoreDatabaseConsistencyView(APIView):
                 "status": "launched",
                 "comment": "this is very long action, be patient, please..."
             })
+

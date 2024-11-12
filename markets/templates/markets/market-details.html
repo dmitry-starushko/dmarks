@@ -130,38 +130,7 @@ import { View3D } from "view3d";
                         </div>
                     </div>
                 </div>
-                <div class="tab-pane fade" id="mkdetails-tp-tab" role="tabpanel" aria-labelledby="tp-tab">
-                    <div class="mkdetails-section-ionfo section-block">
-                        <div class="mkdetails-tp-section-info-main">
-                            <table class="table-tp table-bordered">
-                                <thead>
-                                    <tr>
-                                        <th colspan="5">Купол, 1 этаж, гараж (3/6)</th>
-                                    </tr>
-                                    <tr>
-                                    <th>Номер</th>
-                                    <th>Этаж</th>
-                                    <th>Специализация</th>
-                                    <th>Занятость</th>
-                                    <th>Цена аренды</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                {% for tp in market.trade_places.all %}
-                                <tr onclick="window.dispatchEvent(new CustomEvent('outlet_clicked', { detail: { id: '{{tp.location_number}}' }}));">
-                                    <td><div style="color:{{tp.trade_place_type.color}}">{{tp.location_number}}</div></td>
-                                    <td>{{tp.location_floor}}</td>
-                                    <td>{{tp.speciality_recommend}}</td>
-                                    <td>{{tp.trade_place_type}}</td>
-                                    <td></td>
-                                </tr>
-                                {% endfor %}
-                                </tbody>
-                            </table>
-
-                        </div>
-                    </div>
-                </div>
+                <div class="tab-pane fade" id="mkdetails-tp-tab" role="tabpanel" aria-labelledby="tp-tab"></div>
                 <div class="tab-pane fade" id="mkdetails-scheme-tab" role="tabpanel" aria-labelledby="scheme-tab">
                     <div class="section-block">
                         <div id="v3d" class="v3d">
@@ -200,6 +169,7 @@ import { View3D } from "view3d";
                     </a>
                 </div>
                 <div id="outlet-info" class="mkdetails-tp-section-info-detail-body-info">
+                    {% comment %}
                     <div class="mkdetails-tp-header-block">Торговое месо №001100512</div>
                     <div class="mkdetails-tp-section-info-detail-body-info-descr">
                         <p>Тип: <strong>павильон непродовольтсвенный (мелкророзничная торговля)</strong></p>
@@ -272,6 +242,7 @@ import { View3D } from "view3d";
                            <img src="{% static 'svg/icons/undo-variant.svg' %}" alt="Выбор легенды"/>
                         </a>
                     </div>
+                    {%endcomment%}
                 </div>
             </div>
             <div class="mkdetails-tp-section-info-detail-legend">
@@ -297,19 +268,16 @@ import { View3D } from "view3d";
 {% if market.schemes.first %}
 const v3d = new View3D("v3d", "{% url 'api:info_take_urls' %}", {{market.schemes.first.id | stringformat:'d'}}, 0, {{parm_3d_ground_color}}, {{parm_3d_decoration_color}}, {{parm_3d_decoration_opacity}}, window);
 
-{#% comment %#}
-
+{#% comment % !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!#}
 // -- Грубый колхоз с размерами -- надо через стили и вот это вот всё
 // -- Если включить тег comment выше и отрубить нижележащий код, 3д-вид будет иметь 0 высоту
-
 const v3d_observer = new ResizeObserver((entries) => {
     const target = entries[0].target;
     const v = document.getElementById("v3d");
     v.setAttribute("style",`width:${target.clientWidth-8}px;height:${target.clientHeight-8}px;`);
 });
 v3d_observer.observe(document.getElementById("mkdetails-scheme-tab"));
-
-{#% endcomment %#}
+{#% endcomment % !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!#}
 
 // -- Реакция на hover по ТМ
 window.addEventListener("outlet_pointed", (e) => {
@@ -319,14 +287,16 @@ window.addEventListener("outlet_pointed", (e) => {
 // -- Реакция на клик по ТМ
 window.addEventListener("outlet_clicked", async (e) => {
     if(e.detail.id) {
-        let url = "{% url 'markets:partials_outlet_details' outlet_number='@@@' %}";
-        url = url.replace('@@@', e.detail.id);
+        const url = await dj_reverse('markets:partials_outlet_details', {outlet_number: e.detail.id});
         document.getElementById("outlet-info").innerHTML = await(await fetch(url)).text();
     } else {
         document.getElementById("outlet-info").innerHTML = "";
     }
 });
 
+dj_load_partial_view("partial_outlet_table", {scheme_pk: {{market.schemes.first.id}}, legend: 0}, {}).then(
+    html => {document.getElementById("mkdetails-tp-tab").innerHTML = html;}
+);
 
 /*document.querySelectorAll('#tablelisttp tr')
     .forEach(e => e.addEventListener("click", async(e) => {
