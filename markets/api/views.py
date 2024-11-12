@@ -210,7 +210,8 @@ class PV_OutletTableView(APIView):
         } for r in queryset]
         return render(request, 'markets/partials/outlet-table.html', {
             'title': scheme.floor,
-            'outlets': outlets
+            'outlets': outlets,
+            'hash': f'{hash((scheme_pk, legend))})'
         })
 
 
