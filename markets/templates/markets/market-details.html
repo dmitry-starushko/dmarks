@@ -294,7 +294,7 @@ window.addEventListener("outlet_clicked", async (e) => {
     }
 });
 
-dj_load_partial_view("partial_outlet_table", {scheme_pk: {{market.schemes.first.id}}, legend: 0}, {}).then(
+dj_load_partial_view("partial_outlet_table", {scheme_pk: {{market.schemes.first.id | stringformat:'d'}}, legend: 0}, {}).then(
     html => {document.getElementById("mkdetails-tp-tab").innerHTML = html;}
 );
 
