@@ -2,12 +2,9 @@ import os
 import re
 from pathlib import Path
 
-# Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
 
 ALLOWED_HOSTS = []
-
-# Application definition
 
 INSTALLED_APPS = [
     'channels',
@@ -21,6 +18,7 @@ INSTALLED_APPS = [
     'pgtrigger',
     'easy_thumbnails',
     'rest_framework',
+    'rest_framework.authtoken',
     # 'channels',
 ]
 
@@ -59,7 +57,6 @@ WSGI_APPLICATION = 'dmarks.wsgi.application'
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': ['rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'],
     'DEFAULT_RENDERER_CLASSES': ['rest_framework.renderers.JSONRenderer', 'rest_framework.renderers.BrowsableAPIRenderer'],
-    # Next turns off CSRF! ------------------------------------
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework.authentication.SessionAuthentication',
     ],
@@ -71,7 +68,6 @@ REST_FRAMEWORK = {
         'anon': '10000/day',
         'user': '10000/day'
     }
-    # ---------------------------------------------------------
 }
 
 # Password validation
