@@ -1,0 +1,434 @@
+:root {
+    --border-width: 1px;
+    --border-color: black;
+    --border: var(--border-width) solid var(--border-color);
+}
+
+.search-market {
+    position: absolute;
+    top: 0;
+    max-width: 1200px;
+}
+
+
+.market-details-section {
+    width: 100%;
+    height: 100%;
+    /*overflow: inherit;*/
+    /*display: flex;*/
+}
+
+
+.market-details-content
+{
+    height: 90%;
+    display: flex;
+}
+
+.market-details-section-title {
+  /*flex: 1;*/
+  text-align: center;
+  /*font-size: 30px;
+  margin-bottom: 50px;*/
+  width: 100%;
+  border-top: 2px solid var(--active-color);
+  background-color: var(--background-header-color);
+  padding: 5px 0;
+}
+
+.mkdetails-section-info {
+    display: flex;
+     /*border: 1px solid #cbd5e0;*/
+    height: 100%;
+    width: 100%;
+    flex-wrap: nowrap;
+}
+
+.mkdetails-tabs-section {
+    width: 100%;
+}
+
+#mkdetails-tabs-content, #mkdetails-tabs-content .tab-pane {
+    height: 96%;
+}
+
+.mkdetails-section-info-main {
+ /* Initially, the left takes 3/4 width */
+    width: 50%;
+    padding: 10px;
+    min-width: 30%;
+
+    /* Misc */
+    /*align-items: center;*/
+    display: flex;
+    /*justify-content: center;*/
+    flex-direction: column;
+}
+
+.mkdetails-info-title {
+    align-items: center;
+    display: flex;
+    height: 210px;
+    align-items: stretch;
+    justify-content: center;
+    margin-bottom: 10px;
+    /*flex-direction: column;*/
+
+}
+
+.mkdetails-section-info-slide {
+    background-color: #cbd5e0;
+    cursor: ew-resize;
+    height: 100%;
+    width: 5px;
+}
+
+.mkdetails-section-info-detail {
+    padding: 5px;
+    border: 1px solid #ccc;
+    /*width: 50%;*/
+    /* Take the remaining width */
+    flex: 1;
+    overflow-y:scroll;
+
+    /* Misc */
+    /*align-items: center;
+    display: flex;
+    justify-content: center;*/
+}
+
+.mkdetails-img-info {
+    /*width: 50%;
+    flex: 1;*/
+    margin-right: 5px;
+    padding: 4px;
+    -webkit-box-shadow: 0px 0px 5px 0px rgba(0,0,0,0.75);
+    -moz-box-shadow: 0px 0px 5px 0px rgba(0,0,0,0.75);
+    box-shadow: 0px 0px 5px 0px rgba(0,0,0,0.75);
+}
+
+.mkdetails-img-info img {
+
+}
+
+.mkdetails-short-info{
+    /*width: 50%;*/
+    height: 100%;
+    flex: 1;
+    background-color: #8d8d8d;
+    padding: 10px;
+    color: #fff;
+}
+
+.mkdetails-big-info {
+    width: 100%;
+    flex: 2;
+    background-color: #00b0c7;
+    color: #fff;
+    padding: 10px;
+    height: 100%;
+}
+
+
+/*  MKdetails Tree  */
+.tree {
+  --spacing: 1.5rem;
+  --radius: 10px;
+  padding-left: 0px;
+  margin-left: 0;
+}
+
+.tree li {
+  display: block;
+  position: relative;
+  padding-left: calc(2 * var(--spacing) - var(--radius) - 2px);
+  font-size: 12px;
+}
+
+.tree ul {
+  margin-left: calc(var(--radius) - var(--spacing));
+  padding-left: 0;
+}
+
+.tree ul li {
+  border-left: 2px solid #ddd;
+}
+
+.tree ul li:last-child {
+  border-color: transparent;
+}
+
+.tree ul li::before {
+  content: '';
+  display: block;
+  position: absolute;
+  top: calc(var(--spacing) / -2);
+  left: -2px;
+  width: calc(var(--spacing) + 2px);
+  height: calc(var(--spacing) + 1px);
+  border: solid #ddd;
+  border-width: 0 0 2px 2px;
+}
+
+.tree summary::marker {
+    color: #aaa;
+}
+
+.tree summary {
+  /*display: block;*/
+  color: #0000ff;
+  cursor: pointer;
+  transition: ease-in-out 0.2s;
+}
+
+.tree summary:hover {
+  font-weight: bold;
+  /*font-size: 1.02em;*/
+}
+
+/*
+.tree summary::marker,
+.tree summary::-webkit-details-marker {
+  display: none;
+}
+
+.tree summary:focus {
+  outline: none;
+}
+
+.tree summary:focus-visible {
+  outline: 1px dotted #000;
+}
+
+
+.tree li::after,
+.tree summary::before {
+  content: '';
+  display: block;
+  position: absolute;
+  top: calc(var(--spacing) / 2 - var(--radius));
+  left: calc(var(--spacing) - var(--radius) - 1px);
+  width: calc(2 * var(--radius));
+  height: calc(2 * var(--radius));
+  border-radius: 50%;
+  background: #ddd;
+}
+
+.triangle {
+  width: 0;
+  height: 0;
+  border: 150px solid transparent;
+  border-top: 0;
+  border-bottom: 300px solid red;
+}
+
+.tree summary::before {
+  z-index: 1;
+  background: #696 url('/static/svg/icons/account.svg') 0 0;
+  background: #696;
+}
+
+.tree details[open] > summary::before {
+  background-position: calc(-2 * var(--radius)) 0;
+}*/
+
+/*****table tm*******/
+.table-tp {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    /*display: block;*/
+    /*border: 1px solid black;*/
+}
+
+.table-tp > thead {
+    text-align: center;
+    background: #ddd;
+    position: sticky;
+    top: -3px;
+    /*border: 1px solid black;*/
+}
+
+.table-tp > thead > tr > th, .table-tp > tbody > tr >td {
+    border-right: var(--border);
+    border-bottom: var(--border);
+    /*border-top: var(--border);*/
+}
+
+.table-tp > th:first-child, .table-tp > td:first-child {
+    border-left: var(--border);
+}
+
+.table-tp > thead > tr:first-child > th {
+    border-top: var(--border);
+    border-bottom: var(--border);
+}
+
+.table-tp > thead > tr, .table-tp > th {
+    /*border: 1px solid black;*/
+}
+
+.table-tp > tbody > tr {
+    cursor: pointer;
+    /*border: 1px solid black;*/
+}
+
+
+.table-tp > tbody > tr:hover {
+    background-color: #ccc;
+}
+
+.table-tp tr.selected {
+    background-color: #000;
+    color: #FFF;
+}
+
+
+.mkdetails-tp-section-info-main {
+    padding: 5px;
+}
+
+.mkdetails-tp-header-block {
+    border: 1px solid black;
+    background-color: #ccc;
+    padding-left: 5px;
+    height: 25px;
+    width: 100%;
+}
+
+
+/**** right tp panel***/
+.mkdetails-tp-section-info-detail {
+    background-color: var(--background-color);
+    margin-top: 42px;
+    flex: 1;
+    width: 0%;
+    visibility: hidden;
+    padding: 7px 5px 5px 5px;
+    /*position: absolute;*/
+}
+
+.mkdetails-tp-section-info-detail-body {
+    display: flex;
+    height: 85%;
+}
+
+
+.mkdetails-tp-section-info-detail-body-panel {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    /*justify-content: center;*/
+    background-color: #dedede;
+    width: 50px;
+    height: 100%;
+    border: 1px solid black;
+    margin-right: 10px;
+}
+
+.mkdetails-tp-section-info-detail-body-panel > a {
+    margin: 5px 0 5px 0;
+}
+.mkdetails-tp-section-info-detail-body-panel > a > img {
+    transition: ease-in-out 0.3s;
+}
+
+.mkdetails-tp-section-info-detail-body-panel > a > img:hover {
+    filter: invert(74%) sepia(1%) saturate(1061%) hue-rotate(129deg) brightness(96%) contrast(79%);
+}
+
+.mkdetails-tp-section-info-detail-body-info
+{
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    /*border: 1px solid black;*/
+}
+
+.mkdetails-tp-section-info-detail-body-info-descr {
+    background-color: #33ffff;
+    padding: 5px;
+    border-style: solid;
+    border-color: black;
+    border-width: 0 1px;
+}
+
+.mkdetails-tp-section-info-detail-body-info-descr > p {
+    font-size: 12px;
+    margin: 0;
+    padding: 0;
+}
+
+.mkdetails-tp-section-info-detail-body-info-tree {
+    overflow-y:scroll;
+    height: 100%;
+    padding-left: 0;
+    border-style: solid;
+    border-color: black;
+    border-width: 0 1px 1px 1px;
+}
+
+.mkdetails-tp-section-info-detail-body-info-booking {
+    margin-top: 10px;
+    display: flex;
+}
+
+.book-btn {
+    border-radius: 5px;
+    padding: 5px;
+    transition: ease-in-out 0.3s;
+}
+
+.mkdetails-tp-section-info-detail-body-info-booking-button {
+    background-color: #00bcd4;
+    color: #fff;
+    width: 100%;
+    text-align: center;
+    position: relative;
+}
+
+.mkdetails-tp-section-info-detail-body-info-booking-button:hover {
+    background-color: #5cd4e3;
+}
+
+.mkdetails-tp-section-info-detail-body-info-booking-button > img {
+    position: absolute; left: 15px;
+}
+
+.mkdetails-tp-section-info-detail-body-info-booking-button-cancel {
+    background-color: #ff9966;
+    margin-left: 10px;
+}
+
+.mkdetails-tp-section-info-detail-body-info-booking-button-cancel:hover {
+    background-color: #ffbc9b;
+}
+
+.mkdetails-tp-section-info-detail-legend {
+    margin-top: 10px;
+}
+
+.mkdetails-tp-section-info-detail-legend-body {
+    background-color: #ebebeb;
+    border-style: solid;
+    border-color: black;
+    border-width: 0 1px 1px 1px;
+    color: black;
+    font-size: 10px;
+    display: flex;
+    padding: 5px 0;
+}
+
+.mkdetails-tp-section-info-detail-legend-body-item{
+    display: flex;
+    padding-left: 5px;
+}
+
+.mkdetails-tp-section-info-detail-legend-body-item-circle{
+    border-radius: 50%;
+    width: 15px;
+    height: 15px;
+    margin-right: 3px;
+    border: 2px solid black;
+}
+
