@@ -221,7 +221,8 @@ class PV_OutletDetailView(APIView):
     @on_exception_returns(HttpResponseBadRequest, 'outlet_number')
     def post(self, request, outlet_number):
         return render(request, 'markets/partials/outlet-details.html', {
-            'outlet': TradePlace.objects.get(location_number=outlet_number)
+            'outlet': TradePlace.objects.get(location_number=outlet_number),
+            'hash': f'{hash(outlet_number)}'
         })
 
 
