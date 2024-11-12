@@ -16,6 +16,7 @@ urlpatterns = [
     path('info/urls', views.TakeURLsView.as_view(), name='info_take_urls'),
     # --
     path('partial/outlet-table/<int:scheme_pk>/<int:legend>', views.PV_OutletTableView.as_view(), name='partial_outlet_table'),
+    path('partial/outlet-detail/<str:outlet_number>', views.PV_OutletDetailView.as_view(), name='partial_outlet_detail'),
     # --
     path('run/restore-db-consistency', views.RestoreDatabaseConsistencyView.as_view(), name='run_restore_db_consistency'),
 ]

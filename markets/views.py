@@ -56,17 +56,3 @@ class Scheme3DView(View, BasicContextProvider):
         return render(request, self.template_name, self.basic_context | {
             'scheme_pk': scheme_pk
         })
-
-#  Partials ---------------------------------------------------------------------------------------
-
-
-class OutletDetailsPartialView(View):
-    @property
-    def template_name(self):
-        return 'markets/partials/outlet-details.html'
-
-    @on_exception_returns(HttpResponseBadRequest)
-    def get(self, request, outlet_number):
-        return render(request, self.template_name, {
-            'outlet': TradePlace.objects.get(location_number=outlet_number)
-        })

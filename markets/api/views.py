@@ -10,7 +10,7 @@ from django.http.response import JsonResponse, HttpResponseBadRequest, HttpRespo
 from markets.api.business import restore_db_consistency, apply_filter
 from markets.api.serializers import SchemeSerializer, TradePlaceTypeSerializer, TradeSpecTypeSerializer, TradePlaceSerializerO, TradePlaceSerializerS
 from markets.decorators import on_exception_returns
-from markets.models import SvgSchema, Market, TradePlaceType, TradeSpecType
+from markets.models import SvgSchema, Market, TradePlaceType, TradeSpecType, TradePlace
 from redis import Redis
 try:  # To avoid deploy problems
     from transmutation import Svg3DTM
@@ -208,15 +208,20 @@ class PV_OutletTableView(APIView):
             'price': r.price,
             'color_css': self.legends[legend](r)
         } for r in queryset]
-        try:
-            r = render(request, 'markets/partials/outlet-table.html', {
-                'title': scheme.floor,
-                'outlets': outlets
-            })
-        except Exception as e:
-            print(e)
-            raise
-        return r
+        return render(request, 'markets/partials/outlet-table.html', {
+            'title': scheme.floor,
+            'outlets': outlets
+        })
+
+
+class PV_OutletDetailView(APIView):
+    permission_classes = [AllowAny]
+
+    @on_exception_returns(HttpResponseBadRequest, 'outlet_number')
+    def post(self, request, outlet_number):
+        return render(request, 'markets/partials/outlet-details.html', {
+            'outlet': TradePlace.objects.get(location_number=outlet_number)
+        })
 
 
 # -- Actions --

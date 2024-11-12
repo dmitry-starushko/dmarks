@@ -267,8 +267,7 @@ import { View3D } from "view3d";
 {% include 'markets/js/mkdetails.js' %}
 {% if market.schemes.first %}
 const v3d = new View3D("v3d", "{% url 'api:info_take_urls' %}", {{market.schemes.first.id | stringformat:'d'}}, 0, {{parm_3d_ground_color}}, {{parm_3d_decoration_color}}, {{parm_3d_decoration_opacity}}, window);
-
-{#% comment % !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!#}
+{#% comment % TODO !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!#}
 // -- Грубый колхоз с размерами -- надо через стили и вот это вот всё
 // -- Если включить тег comment выше и отрубить нижележащий код, 3д-вид будет иметь 0 высоту
 const v3d_observer = new ResizeObserver((entries) => {
@@ -287,8 +286,9 @@ window.addEventListener("outlet_pointed", (e) => {
 // -- Реакция на клик по ТМ
 window.addEventListener("outlet_clicked", async (e) => {
     if(e.detail.id) {
-        const url = await dj_reverse('markets:partials_outlet_details', {outlet_number: e.detail.id});
-        document.getElementById("outlet-info").innerHTML = await(await fetch(url)).text();
+        dj_load_partial_view("partial_outlet_detail", {outlet_number: e.detail.id}, {}).then(
+            html => {document.getElementById("outlet-info").innerHTML = html;}
+        );
     } else {
         document.getElementById("outlet-info").innerHTML = "";
     }
@@ -298,6 +298,7 @@ dj_load_partial_view("partial_outlet_table", {scheme_pk: {{market.schemes.first.
     html => {document.getElementById("mkdetails-tp-tab").innerHTML = html;}
 );
 
+{% comment %}
 /*document.querySelectorAll('#tablelisttp tr')
     .forEach(e => e.addEventListener("click", async(e) => {
         alert(e.id);
@@ -312,6 +313,6 @@ document.getElementById("tablelisttp").addEventListener("click", async (e) => {
         document.getElementById("outlet-info").innerHTML = "";
     }
 });*/
-
+{% endcomment %}
 {% endif %}
 {% endblock %}
