@@ -1,3 +1,10 @@
+:root {
+    --border-width: 1px;
+    --border-color: black;
+    --border: var(--border-width) solid var(--border-color);
+}
+
+
 .market-details-section {
     width: 100%;
     height: 100%;
@@ -223,28 +230,53 @@
 .table-tp {
     width: 100%;
     border-collapse: separate;
+    border-spacing: 0;
+    /*display: block;*/
+    /*border: 1px solid black;*/
 }
 
 .table-tp > thead {
     text-align: center;
     background: #ddd;
     position: sticky;
-    top: -5px;
+    top: -3px;
     /*border: 1px solid black;*/
 }
 
+.table-tp > thead > tr > th, .table-tp > tbody > tr >td {
+    border-right: var(--border);
+    border-bottom: var(--border);
+    /*border-top: var(--border);*/
+}
+
+.table-tp > th:first-child, .table-tp > td:first-child {
+    border-left: var(--border);
+}
+
+.table-tp > thead > tr:first-child > th {
+    border-top: var(--border);
+    border-bottom: var(--border);
+}
+
 .table-tp > thead > tr, .table-tp > th {
-    border: 1px solid black;
+    /*border: 1px solid black;*/
 }
 
 .table-tp > tbody > tr {
     cursor: pointer;
+    /*border: 1px solid black;*/
 }
 
 
 .table-tp > tbody > tr:hover {
     background-color: #ccc;
 }
+
+.table-tp tr.selected {
+    background-color: #000;
+    color: #FFF;
+}
+
 
 .mkdetails-tp-section-info-main {
     padding: 5px;
@@ -378,7 +410,7 @@
     color: black;
     font-size: 10px;
     display: flex;
-    padding: 10px 0;
+    padding: 5px 0;
 }
 
 .mkdetails-tp-section-info-detail-legend-body-item{

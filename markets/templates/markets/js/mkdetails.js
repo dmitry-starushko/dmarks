@@ -80,3 +80,13 @@
 
     document.getElementById('mkdetails-tp').onclick = ShowRightPanel;
     document.getElementById('mkdetails-scheme').onclick = ShowRightPanel;
+
+    document.querySelector("#mkdetails-fullscreen").addEventListener("click", function (event) {
+      if (document.fullscreenElement) {
+        // If there is a fullscreen element, exit full screen.
+        document.exitFullscreen();
+        return;
+      }
+      // Make the .element div fullscreen.
+      document.querySelector(".market-details-section").requestFullscreen();
+    });
