@@ -278,6 +278,17 @@ const v3d_observer = new ResizeObserver((entries) => {
 v3d_observer.observe(document.getElementById("mkdetails-scheme-tab"));
 {#% endcomment % !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!#}
 
+const current = {
+    scheme_pk: {{market.schemes.first.id | stringformat:'d'}},
+    legend: 0
+};
+
+const update_outlet_table = () => {
+    dj_load_partial_view("partial_outlet_table", {scheme_pk: {{market.schemes.first.id | stringformat:'d'}}, legend: current.legend}, {}).then(
+        html => {document.getElementById("mkdetails-tp-tab").innerHTML = html;}
+    );
+};
+
 // -- Реакция на hover по ТМ
 window.addEventListener("outlet_pointed", (e) => {
     console.log(`pointed: ${e.detail.id}`);
@@ -294,9 +305,12 @@ window.addEventListener("outlet_clicked", async (e) => {
     }
 });
 
-dj_load_partial_view("partial_outlet_table", {scheme_pk: {{market.schemes.first.id | stringformat:'d'}}, legend: 0}, {}).then(
-    html => {document.getElementById("mkdetails-tp-tab").innerHTML = html;}
-);
+window.addEventListener("next_legend", (_) => {
+    current.legend++;
+    update_outlet_table();
+});
+
+update_outlet_table();
 
 {% comment %}
 /*document.querySelectorAll('#tablelisttp tr')
