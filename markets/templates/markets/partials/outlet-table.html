@@ -1,3 +1,5 @@
+{% load cache %}
+{% cache 300 market_detail_outlet_table hash %}
 <div class="mkdetails-section-ionfo section-block">
     <div class="mkdetails-tp-section-info-main">
         <table class="table-tp table-bordered">
@@ -25,3 +27,4 @@
         </table>
     </div>
 </div>
+{% endcache %}
