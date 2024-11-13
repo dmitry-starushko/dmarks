@@ -1,4 +1,3 @@
-from threading import Thread
 from django.conf import settings
 from django.shortcuts import render
 from django.urls import reverse, NoReverseMatch
@@ -11,7 +10,9 @@ from markets.api.business import restore_db_consistency, apply_filter
 from markets.api.serializers import SchemeSerializer, TradePlaceTypeSerializer, TradeSpecTypeSerializer, TradePlaceSerializerO, TradePlaceSerializerS
 from markets.decorators import on_exception_returns
 from markets.models import SvgSchema, Market, TradePlaceType, TradeSpecType, TradePlace
+from markets.tasks import do_rdc
 from redis import Redis
+
 try:  # To avoid deploy problems
     from transmutation import Svg3DTM
 except ModuleNotFoundError:
@@ -241,8 +242,7 @@ class RestoreDatabaseConsistencyView(APIView):
                 "comment": "this is very, very long action, be patient, admin!"
             })
         else:
-            thread = Thread(target=restore_db_consistency, args=(), daemon=True)
-            thread.start()
+            do_rdc.delay()
             return Response({
                 "status": "launched",
                 "comment": "this is very long action, be patient, please..."

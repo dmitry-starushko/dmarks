@@ -16,3 +16,5 @@ DATABASES = {
         'PORT': int(os.environ.get('PGPORT')),
     }
 }
+
+CELERY_BROKER_URL = f'pyamqp://guest@{os.environ.get('RABBIT')}'
