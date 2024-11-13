@@ -1,8 +1,9 @@
+from xml.etree import ElementTree as Et
 from django.core.exceptions import ValidationError
 from django.db import transaction
 from markets.decorators import globally_lonely_action
-from markets.models import TradePlace, SvgSchema, RdcError, Validators
-from xml.etree import ElementTree as Et
+from markets.models import TradePlace, SvgSchema, Validators, RdcError
+
 try:  # To avoid deploy problems
     from transmutation import Svg3DTM
 except ModuleNotFoundError:
@@ -52,7 +53,7 @@ def restore_db_consistency():
                         else:
                             tp = tps[0]
                             if sch.market_id != tp.market_id:
-                                err_list += [f'ТМ #{tp.id} <{path_id}> относится к рынку "{tp.market}"']
+                                err_list += [f'ТМ #{tp.id} <{path_id}> относится к другому рынку "{tp.market}"']
                             elif tp.location_floor:
                                 err_list += [f'ТМ #{tp.id} <{path_id}> уже помечено как относящееся к уровню #{tp.location_floor}']
                             else:
@@ -75,7 +76,3 @@ def restore_db_consistency():
         for key, value in errors.items():
             for err in value:
                 RdcError.objects.create(object=key, text=err)
-
-
-def apply_filter(query, filter_name: str, filter_body: str):
-    return query
