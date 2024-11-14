@@ -1,0 +1,65 @@
+{% load static %}
+<div class="container">
+    <div class="search-market">
+        <div class="search-market-top">
+            <img src="{% static 'svg/icons/binoculars.svg' %}" alt="3D"/>
+            <a href="#" class="search-market-button search-btn" id="search-market-btn">
+                Рынки
+            </a>
+            <a href="#" class="search-market-button search-btn" id="search-tp-btn">
+                Торговые места
+            </a>
+            <a href="#" class="search-close" title="Закрыть" id="search-close">
+                <i class="bi bi-x-circle"></i>
+            </a>
+        </div>
+        <div class="search-market-input">
+            <input id="search-market-input">
+        </div>
+        <div class="search-market-result">
+            <ul class="tree">
+              <li>
+                <details open>
+                  <summary>Донецк</summary>
+                  <ul>
+                    <li>
+                      <details open>
+                        <summary>Ворошиловский район</summary>
+                        <ul>
+                            <li>Рынок "Континент": <strong>{{market.infr_parking}}</strong></li>
+                            <li>Рынок "Центральный": <strong>{{market.infr_entrance}}</strong></li>
+                        </ul>
+                      </details>
+                    </li>
+                    <li>
+                      <details open>
+                        <summary>Калиниский район</summary>
+                        <ul>
+                            <li class="tree-node-result">
+                                <div class="tree-text-title">Рынок "Континент"</div>
+                                <div class="tree-link">
+                                    <a href="#" class="" title="Показать на карте">
+                                        <img src="{% static 'svg/icons/map-marker.svg' %}" alt="Показать на карте"/>
+                                    </a>
+                                    <a href="#" class="" title="Информация">
+                                        <img src="{% static 'svg/icons/information-outline.svg' %}" alt="Информация"/>
+                                    </a>
+                                    <a href="#" class="" title="Список торговых мест">
+                                        <img src="{% static 'svg/icons/format-list-bulleted.svg' %}" alt="Список торговых мест"/>
+                                    </a>
+                                    <a href="#" class="" title="Схема">
+                                        <img src="{% static 'svg/icons/cube-outline.svg' %}" alt="Схема"/>
+                                    </a>
+                                </div>
+                            </li>
+                            <li>Рынок "Центральный": <strong>{{market.infr_entrance}}</strong></li>
+                        </ul>
+                      </details>
+                    </li>
+                  </ul>
+                </details>
+              </li>
+            </ul>
+        </div>
+    </div>
+</div>
