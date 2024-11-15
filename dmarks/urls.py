@@ -23,6 +23,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('markets/', include('markets.urls', namespace='markets')),
     path('api/', include('markets.api.urls', namespace='api')),
+    path('extapi/', include('markets.api_ext.urls', namespace='extapi')),
 ]
 
 if settings.DEBUG:

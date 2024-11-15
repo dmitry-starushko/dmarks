@@ -8,11 +8,11 @@ from rest_framework.permissions import AllowAny
 from django.http.response import JsonResponse, HttpResponseBadRequest, HttpResponse
 from markets.business.outlet_filtering import apply_filter
 from markets.business.actions import restore_db_consistency
-from markets.api.serializers import SchemeSerializer, TradePlaceTypeSerializer, TradeSpecTypeSerializer, TradePlaceSerializerO, TradePlaceSerializerS
 from markets.decorators import on_exception_returns
 from markets.models import SvgSchema, Market, TradePlaceType, TradeSpecType, TradePlace
 from markets.tasks import st_restore_db_consistency
 from redis import Redis
+from .serializers import SchemeSerializer, TradePlaceTypeSerializer, TradeSpecTypeSerializer, TradePlaceSerializerO, TradePlaceSerializerS
 
 try:  # To avoid deploy problems
     from transmutation import Svg3DTM
