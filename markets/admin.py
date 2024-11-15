@@ -54,6 +54,18 @@ class BookingAdmin(admin.ModelAdmin):
     ordering = ['booked_by']
 
 
+@admin.register(Renter)
+class RenterAdmin(admin.ModelAdmin):
+    list_display = ['renter_name', 'legal_doc_info',  'legal_doc_files', 'renter_type', 'renter_phone']
+    ordering = ['renter_name']
+
+
+@admin.register(TradeContract)
+class TradeContractAdmin(admin.ModelAdmin):
+    list_display = ['date_start', 'date_end',  'contract_status_type', 'copy_info', 'copy_files', 'active_contract', 'contract_num']
+    ordering = ['date_start']
+
+
 @admin.register(Parameter)
 class ParamAdmin(admin.ModelAdmin):
     list_display = ['key', 'value', 'preload', 'description']

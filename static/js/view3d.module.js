@@ -16,12 +16,13 @@ const def_emissive_intensity = 0.7;
 const def_fog_density = 0.001;
 const def_marker_color = 0xf46b12;
 const def_marker_metalness = 0.75;
+const def_marker_vdist = 1.0;
 
 class View3D {
     constructor(parent_id,
-                gltf_url,
-                outlets_url,
-                paint_map,
+                urls_url,
+                scheme_pk,
+                legend,
                 ground_color,
                 decoration_color,
                 decoration_opacity,
@@ -30,22 +31,27 @@ class View3D {
         if(!parent) { throw `DOM element with id <${parent_id}> not found`; }
         const width = parent.clientWidth;
         const height = parent.clientHeight;
+        this._urls_url = urls_url,
         this._parent = parent;
         this._listener = listener ? listener : parent;
         this._width = width;
         this._height = height;
-        this._paint_map = paint_map;
         this._ground_color = ground_color;
         this._decoration_color = decoration_color;
         this._decoration_opacity = decoration_opacity;
         this._events_actl = new AbortController();
-        this.__load_scene__(gltf_url, outlets_url);
+        this._csrf_token = Cookies.get('csrftoken');
+        this.__load_scene__(scheme_pk, legend);
     }
 
-    __load_scene__(gltf_url, outlets_url) {
+    async __load_scene__(scheme_pk, legend) {
+        this._scheme_pk = scheme_pk;
+        this._legend = legend;
+        await this.__take_urls__();
+
         const loader = new GLTFLoader();
         loader.load(
-            gltf_url,
+            this._urls.url_scheme_gltf,
             async gltf => {
                 const scene = new THREE.Scene();
                 scene.add(gltf.scene);
@@ -77,13 +83,11 @@ class View3D {
                     const raycaster = new THREE.Raycaster();
                     this._raycaster = raycaster;
                     this._pointer = new THREE.Vector2(-1.0, -1.0);
-                    this._targets = new Array();
+                    this._targets = [];
 
                     this.__create_marker__();
                     const _listener = this._listener;
-                    const _marker = this._marker;
                     const _pointed_marker_position = this._pointed_marker_position;
-                    const _target_marker_position = this._target_marker_position;
                     this._cursor = {
                         _listener: _listener,
                         _id_point: null,
@@ -105,9 +109,14 @@ class View3D {
                         },
                         set id_click(value) {
                             if(this._id_down === value && this._ch_count > 0) {
-                                _target_marker_position.set(_pointed_marker_position.x, _pointed_marker_position.y, _pointed_marker_position.z);
-                                _marker.visible = !!value;
-                                window.setTimeout(() => { this._listener.dispatchEvent(new CustomEvent("outlet_clicked", { detail: { id: value } })); });
+                                window.setTimeout(() => { this._listener.dispatchEvent(new CustomEvent("outlet_clicked", { detail: {
+                                    id: value,
+                                    marker: {
+                                        x: _pointed_marker_position.x,
+                                        y: _pointed_marker_position.y,
+                                        z: _pointed_marker_position.z
+                                    }
+                                }})); });
                             }
                         }
                     };
@@ -147,9 +156,11 @@ class View3D {
                     this.__reset_look_position__();
 
                     renderer.setAnimationLoop(time => this.__render_loop__(time)); // -- start render
-                    const outlets = await (await fetch(outlets_url)).json(); // -- paint scene
-                    this.__prepare_scene__(outlets);
+                    const outlets = await (await fetch(this._urls.url_scheme_outlets_state)).json(); // -- paint scene
                     ground.material.color = new THREE.Color(this._ground_color);
+                    await this.__take_paint_map__();
+                    this.__build_outlet_edges__();
+                    this.__paint_outlets__(outlets);
 
                     const resize_observer  = new ResizeObserver(() => { this.__on_resize__(); });
                     resize_observer.observe(this._parent);
@@ -165,7 +176,7 @@ class View3D {
             },
             async error => {
                 console.error(error);
-                alert(`Ошибка при создании сцены:\n${await(await fetch(gltf_url)).text()}`);
+                alert(`Ошибка при создании сцены:\n${await(await fetch(urls_url)).text()}`);
             }
         );
     }
@@ -186,7 +197,7 @@ class View3D {
                 mesh.material.emissiveIntensity = def_emissive_intensity;
                 const bb = mesh.geometry.boundingBox;
                 bb.getCenter(this._pointed_marker_position);
-                this._pointed_marker_position.y = bb.max.y + 1.0;
+                this._pointed_marker_position.y = bb.max.y + def_marker_vdist;
             });
         } else {
             this._cursor.id_point = null;
@@ -219,20 +230,78 @@ class View3D {
         dom_element.addEventListener("click", event => {
             this._cursor.id_click = this._cursor.id_point;
         }, opt);
-        window.addEventListener("market_storey_changed", event => {
+        this._listener.addEventListener("outlet_clicked", event => {
+            let found = false;
+            if ("marker" in event.detail) { // -- event from myself
+                const marker = event.detail.marker;
+                this._target_marker_position.set(marker.x, marker.y, marker.z);
+                found = !!event.detail.id;
+            } else { // -- external event
+                if(event.detail.id) {
+                    for(const obj of this._targets) {
+                        if(obj.userData.id === event.detail.id) {
+                            obj.children.forEach(mesh => {
+                                const bb = mesh.geometry.boundingBox;
+                                bb.getCenter(this._target_marker_position);
+                                this._target_marker_position.y = bb.max.y + def_marker_vdist;
+                            });
+                            found = true;
+                            break;
+                        }
+                    }
+                }
+            }
+            this._marker.visible = found;
+        }, opt);
+        this._listener.addEventListener("market_storey_changed", event => {
             window.setTimeout(() => {
                 this.__clear__();
-                this.__load_scene__(event.detail.gltf_url, event.detail.outlets_url);
+                this.__load_scene__(event.detail.scheme_pk, this._legend);
             });
         }, opt);
-        window.addEventListener("toggle_3d_view", event => {
+        this._listener.addEventListener("toggle_3d_view", event => {
             window.setTimeout(() => {
                 this.__toggle_controls__();
             });
         }, opt);
-        window.addEventListener("reset_3d_view", event => {
+        this._listener.addEventListener("reset_3d_view", event => {
             window.setTimeout(() => {
                 this.__reset_look_position__();
+            });
+        }, opt);
+        this._listener.addEventListener("apply_outlet_filters", event => {
+            window.setTimeout(async () => {
+                const outlets = await (await fetch(
+                    this._urls.url_scheme_outlets_state, {
+                        method: "POST",
+                        headers: {
+                            'Accept': 'application/json',
+                            'Content-Type': 'application/json',
+                            'X-CSRFToken': this._csrf_token,
+                        },
+                        body: JSON.stringify(this._filters = (event.detail.filters || {}))
+                    }
+                )).json();
+                this.__paint_outlets__(outlets);
+            });
+        }, opt);
+        this._listener.addEventListener("next_legend", async event => {
+            this._legend++;
+            await this.__take_urls__();
+            await this.__take_paint_map__();
+            window.setTimeout(async () => {
+                const outlets = await (await fetch(
+                    this._urls.url_scheme_outlets_state, {
+                        method: "POST",
+                        headers: {
+                            'Accept': 'application/json',
+                            'Content-Type': 'application/json',
+                            'X-CSRFToken': this._csrf_token,
+                        },
+                        body: JSON.stringify(this._filters || {})
+                    }
+                )).json();
+                this.__paint_outlets__(outlets);
             });
         }, opt);
     }
@@ -263,8 +332,7 @@ class View3D {
         this.__reset_look_position__();
     }
 
-    __prepare_scene__(outlets) {
-        let paint_deco = true;
+    __build_outlet_edges__() {
         this._scene.traverse(obj => {
             if((obj instanceof THREE.Group) && 'name' in obj.userData && obj.userData.name == "outlet") {
                 obj.children.forEach((mesh, index) => {
@@ -273,12 +341,21 @@ class View3D {
                     const wireframe = new THREE.LineSegments(geometry, material);
                     this._scene.add(wireframe);
                 });
+            }
+        });
+    }
+
+    __paint_outlets__(outlets) {
+        let paint_deco = true;
+        this._targets = []
+        this._scene.traverse(obj => {
+            if((obj instanceof THREE.Group) && 'name' in obj.userData && obj.userData.name == "outlet") {
                 if(obj.userData.id in outlets) {
                     this._targets.push(obj);
                     const paint_info = this._paint_map.get(outlets[obj.userData.id]);
                     if(paint_info) {
                         obj.children.forEach((mesh, index) => {
-                            mesh.material.color.setHex(index? paint_info.roof_color : paint_info.wall_color); //= new THREE.Color(index? paint_info.roof_color : paint_info.wall_color);
+                            mesh.material.color.setHex(index? paint_info.roof_color : paint_info.wall_color);
                             mesh.material.metalness = def_outlet_metallness;
                         });
                     } else console.error(`Вариант раскраски ТМ для состояния #${outlets[obj.userData.id]} не определён`);
@@ -340,7 +417,6 @@ class View3D {
 
         const geometry = new THREE.ExtrudeGeometry(shape, extrudeSettings);
         const material = new THREE.MeshStandardMaterial({ color: def_marker_color, side: THREE.DoubleSide, metalness: def_marker_metalness });
-
         const mesh = new THREE.Mesh(geometry, material);
         mesh.visible = false;
         mesh.position.set(this._ground_center.x, 1000, this._ground_center.z);
@@ -348,6 +424,34 @@ class View3D {
         this._marker = mesh;
         this._pointed_marker_position = new THREE.Vector3();
         this._target_marker_position = new THREE.Vector3();
+    }
+
+    async __take_urls__() {
+        this._urls = await (await fetch(
+            this._urls_url, {
+                method: "POST",
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': this._csrf_token,
+                },
+                body: JSON.stringify({
+                    scheme_pk: this._scheme_pk,
+                    legend: this._legend
+                })
+            }
+        )).json();
+    }
+
+    async __take_paint_map__() {
+        const legend = await (await fetch(this._urls.url_legend)).json();
+        this._paint_map = new Map();
+        for(const item of legend.legend) {
+            this._paint_map.set(item.id, {
+                wall_color: item.wall_color,
+                roof_color: item.roof_color
+            });
+        }
     }
 }
 

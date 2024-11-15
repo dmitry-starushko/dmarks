@@ -1,17 +1,19 @@
-from threading import Thread
 from django.conf import settings
 from django.shortcuts import render
-from django.urls import reverse, NoReverseMatch
+from django.urls import reverse
 from rest_framework.generics import ListAPIView
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from rest_framework.permissions import AllowAny, IsAdminUser
+from rest_framework.permissions import AllowAny
 from django.http.response import JsonResponse, HttpResponseBadRequest, HttpResponse
-from markets.api.business import restore_db_consistency, apply_filter
+from markets.business.outlet_filtering import apply_filter
+from markets.business.actions import restore_db_consistency
 from markets.api.serializers import SchemeSerializer, TradePlaceTypeSerializer, TradeSpecTypeSerializer, TradePlaceSerializerO, TradePlaceSerializerS
 from markets.decorators import on_exception_returns
 from markets.models import SvgSchema, Market, TradePlaceType, TradeSpecType, TradePlace
+from markets.tasks import st_restore_db_consistency
 from redis import Redis
+
 try:  # To avoid deploy problems
     from transmutation import Svg3DTM
 except ModuleNotFoundError:
@@ -241,10 +243,9 @@ class RestoreDatabaseConsistencyView(APIView):
                 "comment": "this is very, very long action, be patient, admin!"
             })
         else:
-            thread = Thread(target=restore_db_consistency, args=(), daemon=True)
-            thread.start()
+            st_restore_db_consistency.delay()
             return Response({
-                "status": "launched",
+                "status": "launched in background",
                 "comment": "this is very long action, be patient, please..."
             })
 

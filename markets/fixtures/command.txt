@@ -1,0 +1,1 @@
+./manage.py dumpdata markets --indent=2 -emarkets.MkImage -emarkets.DmUser -emarkets.RdcError -emarkets.StuffAction >initial-data.json

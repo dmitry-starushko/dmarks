@@ -21,6 +21,9 @@ services:
     restart: always
     volumes:
       - ./data/cache:/data
+  rabbit:
+    image: rabbitmq:latest
+    restart: always
   web:
     build: .
     #--1-- command: gunicorn --bind=web:8000 dmarks.wsgi --workers 4 --threads 1 --log-file /code/gunicorn.log --log-level debug --preload
@@ -38,7 +41,25 @@ services:
       - REDIS_HOST=cache
       - REDIS_PORT=6379
       - REDIS_DB=0
+      - RABBIT=rabbit
     depends_on:
       - db
       - cache
-
+  celery:
+    build: .
+    command: celery -A dmarks worker -l INFO
+    restart: always
+    volumes:
+      - ./:/code
+    environment:
+      - DJANGO_SETTINGS_MODULE=dmarks.settings.prod
+      - POSTGRES_DB=postgres
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - REDIS_HOST=cache
+      - REDIS_PORT=6379
+      - REDIS_DB=0
+      - RABBIT=rabbit
+    depends_on:
+      - rabbit
+      - web
