@@ -84,6 +84,8 @@
 
 .search-market-result li.tree-node-result {
     display: flex;
+    width: 100%;
+    /*justify-content: space-between;*/
 }
 
 .search-market-result li.tree-node-result > .tree-link > a {
@@ -99,4 +101,16 @@
 
 .search-market-result li.tree-node-result > .tree-link > a > img:hover {
     filter: invert(70%) sepia(95%) saturate(4366%) hue-rotate(150deg) brightness(100%) contrast(101%);
+}
+
+.search-market-result li.tree-node-result > .tree-node-item {
+    border-left: 1px solid #fff;
+    margin: 0 5px;
+    padding-left: 5px;
+}
+
+.search-market-result li.tree-node-result > .tree-node-child {
+    /*flex-grow: 0;*/
+    width: 30%;
+    /*align-self: flex-end;*/
 }
