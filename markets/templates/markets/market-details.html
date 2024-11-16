@@ -274,7 +274,7 @@ import { View3D } from "view3d";
   </div>
   <div class="modal-body-mklevel">
       {% for sch in market.schemes.all %}
-          <div class="mklevel-row" onclick="window.dispatchEvent(new CustomEvent('market_storey_changed', { detail: { scheme_pk: {{sch.id|stringformat:'d'}} } }));">
+          <div class="mklevel-row" onclick="window.dispatchEvent(new CustomEvent('market_storey_changed', { detail: { scheme_pk: {{sch.id | stringformat:'d'}}, scheme_name: '{{sch.floor | default:'Уровень без названия'}}' } }));">
               {{forloop.counter}}) {{sch.floor|default:'Уровень без названия'}}
           </div>
       {% endfor %}
@@ -299,11 +299,13 @@ v3d_observer.observe(document.getElementById("mkdetails-scheme-tab"));
 {#% endcomment % !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!#}
 
 const current = {
+    scheme_name: "{{market.schemes.first.floor | default:'Уровень без названия'}}",
     scheme_pk: {{market.schemes.first.id | stringformat:'d'}},
     legend: 0
 };
 
 const update_outlet_table = () => {
+    document.getElementById("mkdetails-scheme-header").innerText = current.scheme_name;
     const args = {scheme_pk: current.scheme_pk, legend: current.legend};
     dj_load_partial_view("partial_outlet_table", args, {}).then(
         html => {document.getElementById("mkdetails-tp-tab").innerHTML = html;}
@@ -333,6 +335,7 @@ window.addEventListener("next_legend", (_) => {
 
 window.addEventListener("market_storey_changed", (e) => {
     current.scheme_pk = e.detail.scheme_pk;
+    current.scheme_name = e.detail.scheme_name;
     update_outlet_table();
 });
 
