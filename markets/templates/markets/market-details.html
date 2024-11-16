@@ -263,35 +263,22 @@ import { View3D } from "view3d";
     </div>
 </section>
 
-
-   {# -- Choose Markets Level Window -- #}
-    <div id="market-level-window" class="modal-mklevel">
-     <!-- Modal content -->
-      <div class="modal-content-mklevel">
-      <div class="modal-header-mklevel">
-        <span class="close">&times;</span>
-        <h4>Рынок "Центральный" - выбор этажа</h4>
-      </div>
-      <div class="modal-body-mklevel">
-          <div class="mklevel-row" onclick="alert('id=1');">
-              Этаж Купол №1
+{# -- Choose Markets Level Window -- #}
+<div id="market-level-window" class="modal-mklevel">
+ <!-- Modal content -->
+  <div class="modal-content-mklevel">
+  <div class="modal-header-mklevel">
+    <span class="close">&times;</span>
+    <h4>{{market}} - выбор уровня</h4>
+  </div>
+  <div class="modal-body-mklevel">
+      {% for sch in market.schemes.all %}
+          <div class="mklevel-row" onclick="window.dispatchEvent(new CustomEvent('market_storey_changed', { detail: { scheme_pk: {{sch.id|stringformat:'d'}} } }));">
+              {{forloop.counter}}) {{sch.floor|default:'Уровень без названия'}}
           </div>
-          <div class="mklevel-row" onclick="alert('id=2');">
-              Этаж Купол №2
-          </div>
-          <div class="mklevel-row" onclick="alert('id=3');">
-              Этаж Купол №3
-          </div>
-          <div class="mklevel-row" onclick="alert('id=4');">
-              Этаж Купол №4
-          </div>
-          <div class="mklevel-row" onclick="alert('id=5');">
-              Этаж Купол №5
-          </div>
-      </div>
-    </div>
-
-
+      {% endfor %}
+  </div>
+</div>
 {% endblock %}
 {% block dom-loaded-scripts %}
 {{block.super}}
@@ -316,13 +303,14 @@ const current = {
 };
 
 const update_outlet_table = () => {
-    dj_load_partial_view("partial_outlet_table", {scheme_pk: {{market.schemes.first.id | stringformat:'d'}}, legend: current.legend}, {}).then(
+    const args = {scheme_pk: current.scheme_pk, legend: current.legend};
+    dj_load_partial_view("partial_outlet_table", args, {}).then(
         html => {document.getElementById("mkdetails-tp-tab").innerHTML = html;}
     );
 };
 
 // -- Реакция на hover по ТМ
-window.addEventListener("outlet_pointed", (e) => {
+window.addEventListener("outlet_pointed", (e) => { // TODO !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     console.log(`pointed: ${e.detail.id}`);
 });
 
@@ -342,23 +330,12 @@ window.addEventListener("next_legend", (_) => {
     update_outlet_table();
 });
 
+window.addEventListener("market_storey_changed", (e) => {
+    current.scheme_pk = e.detail.scheme_pk;
+    update_outlet_table();
+});
+
 update_outlet_table();
 
-{% comment %}
-/*document.querySelectorAll('#tablelisttp tr')
-    .forEach(e => e.addEventListener("click", async(e) => {
-        alert(e.id);
-}));
-document.getElementById("tablelisttp").addEventListener("click", async (e) => {
-    alert(e.id);
-    if(e.id) {
-        let url = "{% url 'markets:partials_outlet_details' outlet_number='@@@' %}";
-        url = url.replace('@@@', e.detail.id);
-        document.getElementById("outlet-info").innerHTML = await(await fetch(url)).text();
-    } else {
-        document.getElementById("outlet-info").innerHTML = "";
-    }
-});*/
-{% endcomment %}
 {% endif %}
 {% endblock %}

@@ -382,8 +382,6 @@ class View3D {
         if('labels' in this._scene.children[0].userData) {
             const fs = 150;
             const canvas = document.createElement('canvas');
-//            canvas.width = 10;
-//            canvas.height = ;
             let context = canvas.getContext('2d');
             context.fillStyle = '#ff0000';
             context.textAlign = 'center';
