@@ -6,6 +6,7 @@
 {{block.super}}
 <link href="{% static 'css/mkdetails.css' %}" rel="stylesheet">
 <link href="{% static 'css/v3d.css' %}" rel="stylesheet">
+<link href="{% static 'css/mklevel.css' %}" rel="stylesheet">
 {% endblock %}
 {% block header-scripts %}
 {{block.super}}
@@ -263,9 +264,38 @@ import { View3D } from "view3d";
 </section>
 
 
+   {# -- Choose Markets Level Window -- #}
+    <div id="market-level-window" class="modal-mklevel">
+     <!-- Modal content -->
+      <div class="modal-content-mklevel">
+      <div class="modal-header-mklevel">
+        <span class="close">&times;</span>
+        <h4>Рынок "Центральный" - выбор этажа</h4>
+      </div>
+      <div class="modal-body-mklevel">
+          <div class="mklevel-row" onclick="alert('id=1');">
+              Этаж Купол №1
+          </div>
+          <div class="mklevel-row" onclick="alert('id=2');">
+              Этаж Купол №2
+          </div>
+          <div class="mklevel-row" onclick="alert('id=3');">
+              Этаж Купол №3
+          </div>
+          <div class="mklevel-row" onclick="alert('id=4');">
+              Этаж Купол №4
+          </div>
+          <div class="mklevel-row" onclick="alert('id=5');">
+              Этаж Купол №5
+          </div>
+      </div>
+    </div>
+
+
 {% endblock %}
 {% block dom-loaded-scripts %}
 {{block.super}}
+{% include 'markets/js/mklevel.js' %}
 {% include 'markets/js/mkdetails.js' %}
 {% if market.schemes.first %}
 const v3d = new View3D("v3d", "{% url 'api:info_take_urls' %}", {{market.schemes.first.id | stringformat:'d'}}, 0, {{parm_3d_ground_color}}, {{parm_3d_decoration_color}}, {{parm_3d_decoration_opacity}}, window);
