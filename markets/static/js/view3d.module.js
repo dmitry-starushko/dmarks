@@ -161,6 +161,7 @@ class View3D {
                     await this.__take_paint_map__();
                     this.__build_outlet_edges__();
                     this.__paint_outlets__(outlets);
+                    this.__create_labels__();
 
                     const resize_observer  = new ResizeObserver(() => { this.__on_resize__(); });
                     resize_observer.observe(this._parent);
@@ -375,6 +376,54 @@ class View3D {
                 paint_deco = false;
             }
         });
+    }
+
+    __create_labels__() {
+        if('labels' in this._scene.children[0].userData) {
+            const fs = 150;
+            const canvas = document.createElement('canvas');
+//            canvas.width = 10;
+//            canvas.height = ;
+            let context = canvas.getContext('2d');
+            context.fillStyle = '#ff0000';
+            context.textAlign = 'center';
+            context.font = `${fs}px serif`;
+
+            for(const r of this._scene.children[0].userData.labels) {
+                console.log(r.x, r.y, r.text);
+                const tm = context.measureText(r.text);
+                console.log(tm.width);
+                const cnv = document.createElement('canvas');
+                cnv.width = tm.width * 1.4;
+                cnv.height = fs * 1.4;
+                let ctx = cnv.getContext('2d');
+                ctx.textAlign = context.textAlign;
+                ctx.font = context.font;
+
+                ctx.fillStyle = '#ffffff';
+                ctx.fillRect(0, 0, cnv.width, cnv.height);
+                ctx.fillStyle = '#0000ff';
+                ctx.fillText(r.text, tm.width * 0.7, fs * 1.1);
+                ctx.lineWidth = 10;
+                ctx.strokeStyle = '#0000ff';
+                ctx.strokeRect(1, 1, cnv.width-2, cnv.height-2);
+
+                const tex = new THREE.CanvasTexture(cnv);
+                const mat = new THREE.SpriteMaterial({map: tex, transparent: false, color: 0xffffff});
+                const spr = new THREE.Sprite(mat);
+                spr.scale.set(tm.width / fs, 1.0, 1.0);
+                spr.position.set(r.x, 14.0, r.y);
+                this._scene.add(spr);
+
+                const material = new THREE.LineBasicMaterial({color: 0xffffff});
+                const points = [];
+                points.push( new THREE.Vector3(r.x, 0, r.y));
+                points.push( new THREE.Vector3(r.x, 14, r.y) );
+                const geometry = new THREE.BufferGeometry().setFromPoints(points);
+                const line = new THREE.Line( geometry, material );
+                this._scene.add( line );
+            }
+        }
     }
 
     __on_resize__() {
