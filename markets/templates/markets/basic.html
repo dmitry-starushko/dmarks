@@ -29,6 +29,7 @@
     <link href="{% static 'css/support.css' %}" rel="stylesheet">
     <link href="{% static 'css/main.css' %}" rel="stylesheet">
     <link href="{% static 'css/search.css' %}" rel="stylesheet">
+    <link href="{% static 'css/mklevel.css' %}" rel="stylesheet">
     {% endblock %}
     {% endblock %}
     {% block header-scripts %}
@@ -76,7 +77,7 @@
                 <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
             </nav>
             <div class="header-right-icons">
-                <a href="#" class="search" title="Поиск"><i class="bi bi-search"></i></a>
+                <a href="#" class="search" title="Поиск" id="search-btn"><i class="bi bi-search"></i></a>
                 <a href="#" class="sign-in" title="Вход в ЛК"><i class="bi bi-box-arrow-in-right"></i><i
                         class="bi bi-person"></i></a>
                 <a href="#" class="help" title="Помощь">
@@ -130,6 +131,34 @@
         </div>
         {% endblock %}
     </footer>
+
+        {# -- Choose Markets Level Window -- #}
+    <div id="market-level-window" class="modal-mklevel">
+     <!-- Modal content -->
+      <div class="modal-content-mklevel">
+      <div class="modal-header-mklevel">
+        <span class="close">&times;</span>
+        <h4>Рынок "Центральный" - выбор этажа</h4>
+      </div>
+      <div class="modal-body-mklevel">
+          <div class="mklevel-row" onclick="alert('id=1');">
+              Этаж Купол №1
+          </div>
+          <div class="mklevel-row" onclick="alert('id=2');">
+              Этаж Купол №2
+          </div>
+          <div class="mklevel-row" onclick="alert('id=3');">
+              Этаж Купол №3
+          </div>
+          <div class="mklevel-row" onclick="alert('id=4');">
+              Этаж Купол №4
+          </div>
+          <div class="mklevel-row" onclick="alert('id=5');">
+              Этаж Купол №5
+          </div>
+      </div>
+    </div>
+
     {# -- Scroll Top -- #}
     <a href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center"><i
             class="bi bi-arrow-up-short"></i></a>
@@ -137,6 +166,8 @@
     <div id="preloader"></div>
     {% block extern-body-scripts %} <!-- TODO переместить в блок dom-loaded-scripts -->
     <script src="{% static 'js/main.js' %}"></script>
+    <script src="{% static 'js/search.js' %}"></script>
+    <script src="{% static 'js/mklevel.js' %}"></script>
     {% endblock %}
     {# -- Support Icon -- #}
     <div class="support-div">
@@ -147,5 +178,9 @@
 
     {# -- Search Window -- #}
     {% include 'markets/include/search-market.html' %}
+
+</div>
+
+
 </body>
 </html>

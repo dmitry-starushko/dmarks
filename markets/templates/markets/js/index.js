@@ -345,4 +345,3 @@ createMarker(["{{item.lng}}".replace(',', '.'), "{{item.lat}}".replace(',', '.')
     var contentHeight = viewHeight - header.outerHeight() - navbar.outerHeight();
     content.height(contentHeight);
     map.updateSize();*/
-
