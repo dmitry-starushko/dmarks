@@ -7,7 +7,6 @@
                 <tr><th colspan="5">{{title | default:"Без названия"}}</th></tr>
                 <tr>
                     <th>Номер</th>
-                    <th>Этаж</th>
                     <th>Специализация</th>
                     <th>Занятость</th>
                     <th>Цена аренды</th>
@@ -17,7 +16,6 @@
             {% for tp in outlets %}
             <tr onclick="window.dispatchEvent(new CustomEvent('outlet_clicked', { detail: { id: '{{tp.number}}' }}));">
                 <td><div style="color:{{tp.color_css}}">{{tp.number}}</div></td>
-                <td>Это убираем</td>
                 <td>{{tp.specialization}}</td>
                 <td>{{tp.occupation}}</td>
                 <td>{{tp.price}}</td>
