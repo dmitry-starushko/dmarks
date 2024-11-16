@@ -401,7 +401,7 @@ class View3D {
                 ctx.fillStyle = '#ffffff';
                 ctx.fillRect(0, 0, cnv.width, cnv.height);
                 ctx.fillStyle = '#0000ff';
-                ctx.fillText(r.text, tm.width * 0.7, fs * 1.1);
+                ctx.fillText(r.text, tm.width * 0.7, fs * 1.0);
                 ctx.lineWidth = 10;
                 ctx.strokeStyle = '#0000ff';
                 ctx.strokeRect(1, 1, cnv.width-2, cnv.height-2);
