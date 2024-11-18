@@ -268,17 +268,18 @@ import { View3D } from "view3d";
 <div id="market-level-window" class="modal-mklevel">
  <!-- Modal content -->
   <div class="modal-content-mklevel">
-  <div class="modal-header-mklevel">
-    <span class="close">&times;</span>
-    <h4>{{market}} - выбор уровня</h4>
-  </div>
-  <div class="modal-body-mklevel">
-      {% for sch in market.schemes.all %}
-          <div class="mklevel-row" onclick="window.dispatchEvent(new CustomEvent('market_storey_changed', { detail: { scheme_pk: {{sch.id | stringformat:'d'}}, scheme_name: '{{sch.floor | default:'Уровень без названия'}}' } }));">
-              {{forloop.counter}}) {{sch.floor|default:'Уровень без названия'}}
-          </div>
-      {% endfor %}
-  </div>
+      <div class="modal-header-mklevel">
+        <span class="close">&times;</span>
+        <h4>{{market}} - выбор уровня</h4>
+      </div>
+      <div class="modal-body-mklevel">
+          {% for sch in market.schemes.all %}
+              <div class="mklevel-row" onclick="window.dispatchEvent(new CustomEvent('market_storey_changed', { detail: { scheme_pk: {{sch.id | stringformat:'d'}}, scheme_name: '{{sch.floor | default:'Уровень без названия'}}' } }));">
+                  {{forloop.counter}}) {{sch.floor|default:'Уровень без названия'}}
+              </div>
+          {% endfor %}
+      </div>
+    </div>
 </div>
 {% endblock %}
 {% block dom-loaded-scripts %}
