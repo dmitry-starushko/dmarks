@@ -136,6 +136,9 @@
             class="bi bi-arrow-up-short"></i></a>
     {# -- Preloader -- #}
     <div id="preloader"></div>
+    {# -- Search Window -- #}
+    {% include 'markets/include/search-market.html' %}
+
     {% block extern-body-scripts %} <!-- TODO переместить в блок dom-loaded-scripts -->
     <script src="{% static 'js/main.js' %}"></script>
     <script src="{% static 'js/search.js' %}"></script>
@@ -147,8 +150,6 @@
         </div>
     </div>
 
-    {# -- Search Window -- #}
-    {% include 'markets/include/search-market.html' %}
 
 
 </body>
