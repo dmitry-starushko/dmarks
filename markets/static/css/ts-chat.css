@@ -18,13 +18,18 @@
     gap: 1rem;
     z-index: var(--TSCZIx);
     pointer-events: none;
-    transform: scaleY(0%);
     background: #99999980;
     padding: 0.75rem;
     border: thin solid #00bcd4;
+    transform: scaleY(0%);
+    opacity: 0%;
+    transition-property: transform, opacity;
+    transition-duration: 350ms;
+    transition-timing-function: ease-in-out;
 
     &.active {
         transform: scaleY(100%);
+        opacity: 100%;
     }
 
     .tsc-header {
