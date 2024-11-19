@@ -46,7 +46,7 @@
         document.addEventListener('DOMContentLoaded', (event) => {
             {% block dom-loaded-scripts %} {# -- JS code in this block runs on DOM loaded -- #}
             {% include 'markets/js/basic.js' %}
-            const ts_chat = new TsChat("ts-chat", "{{parm_ts_greeting}}");
+            const ts_chat = new TsChat("ts-chat", "markets/ws/chat/", "{{parm_ts_greeting}}");
             window.toggle_ts_chat = () => ts_chat.toggle();
             {% endblock %}
         });

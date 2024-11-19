@@ -1,12 +1,18 @@
 class TsChat {
-    constructor(ts_chat_id, greeting) {
+    constructor(ts_chat_id, path, greeting) {
         this._element = document.getElementById(this._chat_id = ts_chat_id);
         this._dialogue = document.querySelector(`#${ts_chat_id} > .tsc-dialogue`);
         this._input = document.querySelector(`#${ts_chat_id} > .tsc-input > input`);
-        if(!(this._element && this._dialogue && this._input)) { throw "Unable initiate chat!"; }
+        if(!(this._element && this._dialogue && this._input)) { throw "Unable setup chat!"; }
         this._greeting = greeting;
-        this._socket = new WebSocket("ws://localhost:8000/markets/ws/chat/");  // TODO dj_reverse!!!!
+        this._socket = new WebSocket(this.compose_url(path));
         this.setup_events();
+    }
+
+    compose_url(path) {
+        const url = new URL(path, window.location.origin);
+        url.protocol = "ws";
+        return url;
     }
 
     setup_events() {
@@ -43,7 +49,7 @@ class TsChat {
                 window.setTimeout(()=>{
                     this.add_phrase(this._greeting, "a");
                     this._greeting = null;
-                }, 3000);
+                }, 2000);
             }
         }
     }
