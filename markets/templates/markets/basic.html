@@ -41,11 +41,13 @@
     {% endblock %}
     <script type="module">
         {% block dom-loaded-scripts-imports %}
+        import {TsChat} from "ts-chat";
         {% endblock %}
         document.addEventListener('DOMContentLoaded', (event) => {
-            {% block dom-loaded-scripts %}
-            {# -- JS code in this block runs on DOM loaded -- #}
+            {% block dom-loaded-scripts %} {# -- JS code in this block runs on DOM loaded -- #}
             {% include 'markets/js/basic.js' %}
+            const ts_chat = new TsChat("ts-chat");
+            window.toggle_ts_chat = () => ts_chat.toggle();
             {% endblock %}
         });
     </script>
@@ -140,7 +142,7 @@
     <script src="{% static 'js/search.js' %}"></script>
     {% endblock %}
     <div class="support-div">{# -- Support Icon -- #}
-        <div class="support-button">
+        <div class="support-button" onclick="window.toggle_ts_chat();">
             <img src="{% static 'svg/icons/headset.svg' %}" />
         </div>
     </div>
