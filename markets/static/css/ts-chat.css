@@ -1,0 +1,26 @@
+:root {
+    --TSCRight: 2rem;
+    --TSCBottom: 7rem;
+    --TSCZIx: 100;
+}
+
+.ts-chat {
+    position: fixed;
+    right: var(--TSCRight);
+    bottom: var(--TSCBottom);
+    width: fit-content;
+    height: fit-content;
+    max-width: min(35rem, 75vw);
+    background: transparent;
+    display: flex;
+    flex-flow: column;
+    align-items: end;
+    gap: 1rem;
+    z-index: var(--TSCZIx);
+    pointer-events: none;
+    transform: scaleY(0%);
+
+    &.active {
+        transform: scaleY(100%);
+    }
+}
