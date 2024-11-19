@@ -388,9 +388,7 @@ class View3D {
             context.font = `${fs}px serif`;
 
             for(const r of this._scene.children[0].userData.labels) {
-                console.log(r.x, r.y, r.text);
                 const tm = context.measureText(r.text);
-                console.log(tm.width);
                 const cnv = document.createElement('canvas');
                 cnv.width = tm.width * 1.4;
                 cnv.height = fs * 1.4;

@@ -18,7 +18,7 @@
     gap: 1rem;
     z-index: var(--TSCZIx);
     pointer-events: none;
-    transform: scaleY(100%);
+    transform: scaleY(0%);
     background: #99999980;
     padding: 0.75rem;
     border: thin solid #00bcd4;
