@@ -1,6 +1,6 @@
 :root {
     --TSCRight: 2rem;
-    --TSCBottom: 7rem;
+    --TSCBottom: 8rem;
     --TSCWidth: 22rem;
     --TSCZIx: 100;
 }
@@ -12,12 +12,12 @@
     width: fit-content;
     height: fit-content;
     max-width: min(35rem, 75vw);
+    max-height: min(35rem, 75vh);
     display: flex;
     flex-flow: column;
-    align-items: end;
+    align-items: center;
     gap: 1rem;
     z-index: var(--TSCZIx);
-    pointer-events: none;
     background: #99999980;
     padding: 0.75rem;
     border: thin solid #00bcd4;
@@ -51,11 +51,13 @@
     }
 
     .tsc-dialogue {
-        min-height: 10rem;
         width: var(--TSCWidth);
         display: flex;
         flex-flow: column;
         padding: 0 1rem 0 1rem;
+        overflow-y: auto;
+        overflow-x: clip;
+        scrollbar-width: thin;
 
         p {
             border-radius: 10px;
@@ -64,32 +66,30 @@
             padding: 10px 15px 10px 15px;
             text-align: center;
             position: relative;
-        }
-
-        p.a:before {
-            content: "";
-            width: 0px;
-            height: 0px;
-            position: absolute;
-            border-left: 15px solid white;
-            border-right: 15px solid transparent;
-            border-top: 15px solid white;
-            border-bottom: 15px solid transparent;
-            right: -16px;
-            top: 0px;
-        }
-
-        p.q:before {
-            content: "";
-            width: 0px;
-            height: 0px;
-            position: absolute;
-            border-left: 15px solid transparent;
-            border-right: 15px solid white;
-            border-top: 15px solid white;
-            border-bottom: 15px solid transparent;
-            left: -16px;
-            top: 0px;
+            &.a:before {
+                content: "";
+                width: 0px;
+                height: 0px;
+                position: absolute;
+                border-left: 15px solid white;
+                border-right: 15px solid transparent;
+                border-top: 15px solid white;
+                border-bottom: 15px solid transparent;
+                right: -16px;
+                top: 0px;
+            }
+            &.q:before {
+                content: "";
+                width: 0px;
+                height: 0px;
+                position: absolute;
+                border-left: 15px solid transparent;
+                border-right: 15px solid white;
+                border-top: 15px solid white;
+                border-bottom: 15px solid transparent;
+                left: -16px;
+                top: 0px;
+            }
         }
     }
 
@@ -99,7 +99,6 @@
             width: var(--TSCWidth);
             pointer-events: auto;
             outline: none;
-
             &:focus {
                 outline: none;
             }
