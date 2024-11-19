@@ -4,8 +4,13 @@ class TsChat {
         this._dialogue = document.querySelector(`#${ts_chat_id} > .tsc-dialogue`);
         this._input = document.querySelector(`#${ts_chat_id} > .tsc-input > input`);
         if(!(this._element && this._dialogue && this._input)) { throw "Unable initiate chat!"; }
-
         this._greeting = greeting;
+        this._socket = new WebSocket("ws://localhost:8000/markets/ws/chat/");  // TODO dj_reverse!!!!
+        this.setup_events();
+    }
+
+    setup_events() {
+        this._socket.onmessage = event => {this.add_phrase(JSON.parse(event.data).message, "a");};
         this._input.addEventListener("keypress", event => {
             if(event.key=="Enter") {
                 event.preventDefault();
@@ -28,6 +33,7 @@ class TsChat {
     }
 
     send_phrase(phrase) {
+        this._socket.send(JSON.stringify({'message': phrase}));
     }
 
     toggle() {
