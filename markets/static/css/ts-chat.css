@@ -1,6 +1,7 @@
 :root {
     --TSCRight: 2rem;
     --TSCBottom: 7rem;
+    --TSCWidth: 22rem;
     --TSCZIx: 100;
 }
 
@@ -11,16 +12,92 @@
     width: fit-content;
     height: fit-content;
     max-width: min(35rem, 75vw);
-    background: transparent;
     display: flex;
     flex-flow: column;
     align-items: end;
     gap: 1rem;
     z-index: var(--TSCZIx);
     pointer-events: none;
-    transform: scaleY(0%);
+    transform: scaleY(100%);
+    background: #99999980;
+    padding: 0.75rem;
+    border: thin solid #00bcd4;
 
     &.active {
         transform: scaleY(100%);
+    }
+
+    .tsc-header {
+        display: flex;
+        flex-flow: column;
+        align-items: end;
+        label {
+            padding: 1rem;
+            width: var(--TSCWidth);
+            background: #00bcd4;
+            color: white;
+        }
+        img {
+            margin-top: -2rem;
+            margin-right: 1rem;
+            width: 5rem;
+            height: 5rem;
+        }
+    }
+
+    .tsc-dialogue {
+        min-height: 10rem;
+        width: var(--TSCWidth);
+        display: flex;
+        flex-flow: column;
+        padding: 0 1rem 0 1rem;
+
+        p {
+            border-radius: 10px;
+            background: white;
+            color: black;
+            padding: 10px 15px 10px 15px;
+            text-align: center;
+            position: relative;
+        }
+
+        p.a:before {
+            content: "";
+            width: 0px;
+            height: 0px;
+            position: absolute;
+            border-left: 15px solid white;
+            border-right: 15px solid transparent;
+            border-top: 15px solid white;
+            border-bottom: 15px solid transparent;
+            right: -16px;
+            top: 0px;
+        }
+
+        p.q:before {
+            content: "";
+            width: 0px;
+            height: 0px;
+            position: absolute;
+            border-left: 15px solid transparent;
+            border-right: 15px solid white;
+            border-top: 15px solid white;
+            border-bottom: 15px solid transparent;
+            left: -16px;
+            top: 0px;
+        }
+    }
+
+    .tsc-input {
+        input {
+            border: thin solid #00bcd4;
+            width: var(--TSCWidth);
+            pointer-events: auto;
+            outline: none;
+
+            &:focus {
+                outline: none;
+            }
+        }
     }
 }

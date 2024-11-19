@@ -1,11 +1,15 @@
+{% load static %}
 <div id="{{ts_chat_id}}" class="ts-chat">
     <div class="tsc-header">
-        Заголовок чата
+        <label>Техподдержка</label>
+        <img src="{% static 'svg/deco/ts.svg' %}"/>
     </div>
     <div class="tsc-dialogue">
-        Диалог
+        <p class="a">Вас приветствует служба технической поддержки! Чем могу помочь?</p>
+        <p class="q">У меня болит голова, одолжите топор?</p>
+        <p class="a">С огромным удовольствием, всегда рады помочь!</p>
     </div>
-    <div class="tsc-controls">
-        Ввод
+    <div class="tsc-input">
+        <input type="text" />
     </div>
 </div>
