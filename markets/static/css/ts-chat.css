@@ -12,7 +12,7 @@
     width: fit-content;
     height: fit-content;
     max-width: min(35rem, 75vw);
-    max-height: min(35rem, 75vh);
+    max-height: min(50rem, 75vh);
     display: flex;
     flex-flow: column;
     align-items: center;
@@ -66,6 +66,7 @@
             padding: 10px 15px 10px 15px;
             text-align: center;
             position: relative;
+            word-break: break-word;
             &.a:before {
                 content: "";
                 width: 0px;
@@ -96,6 +97,7 @@
     .tsc-input {
         input {
             border: thin solid #00bcd4;
+            padding: 0.5rem;
             width: var(--TSCWidth);
             pointer-events: auto;
             outline: none;
