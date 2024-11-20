@@ -18,10 +18,11 @@ class Telegram:
                     client.headers['Content-Type'] = 'application/json'
                     res = client.post(self.send_url, json={'chat_id': cid, 'text': message} | ({'parse_mode': 'Markdown'} if markdown else {}))
                     send_info |= {
-                        cid: {'send': not res.is_error, 'note': ''}
+                        cid: res.json()
                     }
+                    print(res.json())
                 except httpx.TransportError as e:
                     send_info |= {
-                        cid: {'send': False, 'note': str(e)}
+                        cid: None
                     }
         return send_info
