@@ -20,8 +20,8 @@ server {
         root /code/;
     }
 
-    location /markets/ws/chat/ {
-        proxy_pass http://web:8000/;
+    location /markets/ws/ {
+        proxy_pass http://web:8000/markets/ws/;
         proxy_http_version 1.1;
         proxy_set_header Upgrade $http_upgrade;
         proxy_set_header Connection "upgrade";

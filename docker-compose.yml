@@ -26,10 +26,7 @@ services:
     restart: always
   web:
     build: .
-    #--1-- command: gunicorn --bind=web:8000 dmarks.wsgi --workers 4 --threads 1 --log-file /code/gunicorn.log --log-level debug --preload
-    #--2-- command: python manage.py runserver web:8000 --insecure
-    #--3-- command: uwsgi --http :8000 --wsgi-file /code/dmarks/wsgi.py --processes 4 --threads 1
-    command: gunicorn --bind=web:8000 dmarks.wsgi --workers 4 --threads 1 --log-file /code/gunicorn.log --log-level error --preload
+    command: daphne -b web -p 8000 dmarks.asgi:application
     restart: always
     volumes:
       - ./:/code
