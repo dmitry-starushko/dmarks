@@ -20,7 +20,6 @@ class Telegram:
                     send_info |= {
                         cid: res.json()
                     }
-                    print(res.json())
                 except httpx.TransportError as e:
                     send_info |= {
                         cid: None
