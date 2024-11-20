@@ -25,3 +25,5 @@ DATABASES = {
 }
 
 CELERY_BROKER_URL = f'pyamqp://guest@rabbit'  # TODO set name of RabbitMQ image as 'rabbit' in deploy
+
+TELEBOT_ID = os.environ.get('TELEBOT')

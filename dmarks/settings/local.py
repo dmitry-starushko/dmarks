@@ -18,3 +18,5 @@ DATABASES = {
 }
 
 CELERY_BROKER_URL = f'pyamqp://guest@{os.environ.get('RABBIT')}'
+
+TELEBOT_ID = os.environ.get('TELEBOT')
