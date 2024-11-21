@@ -12,8 +12,7 @@
 {% endblock %}
 {% block dom-loaded-scripts %}
 {{block.super}}
-dj_reverse("api:schemes_take_outlets_list", { scheme_pk: 1236, legend: 1 }).then(url => alert(url));
-dj_reverse("api:markets_take_schemes", { market_pk: 10 }).then(url => alert(url));
+
 const socket = new WebSocket("ws://localhost:8000/markets/ws/chat/");
 socket.onmessage = event => {
     alert(JSON.parse(event.data).message);

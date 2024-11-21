@@ -380,7 +380,7 @@ class View3D {
 
     __create_labels__() {
         if('labels' in this._scene.children[0].userData) {
-            const fs = 150;
+            const fs = 250;
             const canvas = document.createElement('canvas');
             let context = canvas.getContext('2d');
             context.fillStyle = '#ff0000';
@@ -388,9 +388,7 @@ class View3D {
             context.font = `${fs}px serif`;
 
             for(const r of this._scene.children[0].userData.labels) {
-                console.log(r.x, r.y, r.text);
                 const tm = context.measureText(r.text);
-                console.log(tm.width);
                 const cnv = document.createElement('canvas');
                 cnv.width = tm.width * 1.4;
                 cnv.height = fs * 1.4;
@@ -448,7 +446,7 @@ class View3D {
         const shape = new THREE.Shape();
         shape.moveTo( 0,0 );
         shape.lineTo( width, length  );
-        shape.lineTo( 0, 2*length/3 );
+        shape.lineTo( 0, 2 * length / 3 );
         shape.lineTo( -width, length  );
         shape.lineTo( 0, 0 );
 
