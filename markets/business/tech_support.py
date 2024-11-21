@@ -11,7 +11,7 @@ redis = Redis(host=settings.REDIS_HOST, port=settings.REDIS_PORT, db=settings.RE
 def send_message_to_ts(from_name, cids, message):
     bot_id = settings.TELEBOT_ID
     if bot_id:
-        si = Telegram(bot_id).send_message(set(cids), f'{from_name}\n{message}')
+        si = Telegram(bot_id).send_message(set(cids), f'{from_name}:\n{message}')
         msg_ids = set()
         for cid in si:
             if si[cid] and si[cid]['ok']:

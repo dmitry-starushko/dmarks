@@ -15,7 +15,7 @@ class ChatConsumer(WebsocketConsumer):
 
     @property
     def group_name(self):
-        return f'user_{hash(self.channel_name)}'
+        return f'user_{abs(hash(self.channel_name))}'
 
     def connect(self):
         async_to_sync(self.channel_layer.group_add)(self.group_name, self.channel_name)
