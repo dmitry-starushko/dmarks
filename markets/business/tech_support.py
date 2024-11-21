@@ -41,5 +41,5 @@ def collect_messages_from_ts():
                         w_cid = message['from']['id']
                         w_key = f'warnings:{w_cid}:{w_mid}'
                         if not redis.exists(w_key):
-                            redis.set(name=w_key, value=1, ex=3600*72)
+                            redis.set(name=w_key, value=1, ex=3600*25)
                             tbot.send_message({message['from']['id']}, f'*Безадресные* сообщения *не допускаются*! Отвечайте на сообщения клиента!', True)
