@@ -10,5 +10,5 @@ def st_restore_db_consistency():
 
 
 @shared_task
-def st_send_message_to_ts(cids, message):
-    send_message_to_ts(cids, message)
+def st_send_message_to_ts(from_name, cids, message):
+    send_message_to_ts(from_name, cids, message)
