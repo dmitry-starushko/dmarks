@@ -3,15 +3,28 @@
     <div class="search-market" id="search-market">
         <div class="search-market-top">
             <img src="{% static 'svg/icons/binoculars.svg' %}" alt="3D"/>
-            <a href="#" class="search-market-button search-btn" id="search-market-btn">
+            <!--a href="#" class="search-market-button search-btn" id="search-market-btn">
                 Рынки
             </a>
             <a href="#" class="search-market-button search-btn" id="search-tp-btn">
                 Торговые места
-            </a>
+            </a-->
+            <div class="button-container">
+              <div class="bar bar-grey">
+                <div class="option">Рынки</div>
+                <div class="option">ТМ</div>
+              </div>
+              <div class="bar-outer">
+                <div class="bar bar-purple">
+                  <div class="option">Рынки</div>
+                  <div class="option">ТМ</div>
+                </div>
+              </div>
+            </div>
             <a href="#" class="search-close" title="Закрыть" id="search-close">
                 <i class="bi bi-x-circle"></i>
             </a>
+
         </div>
         <div class="search-market-input">
             <input id="search-market-input">
