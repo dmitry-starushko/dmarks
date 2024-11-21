@@ -23,6 +23,6 @@ requests~=2.32.3
 whitenoise~=6.7.0
 reportlab~=4.2.5
 svglib~=1.5.1
-
+uvicorn~=0.32.1
 
 

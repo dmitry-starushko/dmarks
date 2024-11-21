@@ -27,6 +27,7 @@ services:
   web:
     build: .
     command: daphne -b web -p 8000 dmarks.asgi:application
+    #command: uvicorn --host web --port 8000  --interface asgi3 --no-access-log dmarks.asgi:application
     restart: always
     volumes:
       - ./:/code
