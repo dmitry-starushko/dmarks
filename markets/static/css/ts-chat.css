@@ -5,6 +5,10 @@
     --TSCZIx: 100;
     --TSCColorQ: #ede4ad;
     --TSCColorA: #adedce;
+    --TSCFont: "Geologica", sans-serif;
+    --TSCFontWeight: 100;
+    --TSCFontSize: 14pt;
+    --TSCFontSizePara: 11pt;
 }
 
 .ts-chat {
@@ -28,6 +32,11 @@
     transition-property: transform, opacity;
     transition-duration: 350ms;
     transition-timing-function: ease-in-out;
+
+    font-size: var(--TSCFontSize);
+    font-variation-settings: "wght" var(--TSCFontWeight);
+    font-weight: var(--TSCFontWeight);
+    font-family: var(--TSCFont);
 
     &.active {
         transform: scaleY(100%);
@@ -69,6 +78,7 @@
             text-align: center;
             position: relative;
             word-break: break-word;
+            font-size: var(--TSCFontSizePara);
             &.a {
                 background: var(--TSCColorA);
                 &:before {
@@ -109,8 +119,11 @@
             width: var(--TSCWidth);
             pointer-events: auto;
             outline: none;
+            font-size: var(--TSCFontSizePara);
+            font-variation-settings: "wght" var(--TSCFontWeight);
             &:focus {
                 outline: none;
+
             }
         }
     }
