@@ -18,9 +18,9 @@ INSTALLED_APPS = [
     'markets.apps.MarketsConfig',
     'pgtrigger',
     'easy_thumbnails',
+    'django_filters',
     'rest_framework',
     'rest_framework.authtoken',
-    # 'channels',
 ]
 
 MIDDLEWARE = [

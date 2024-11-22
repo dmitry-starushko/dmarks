@@ -228,6 +228,14 @@ class PV_OutletDetailView(APIView):
         })
 
 
+class PV_FilteredMarketsView(APIView):
+    permission_classes = [AllowAny]
+
+    @on_exception_returns(HttpResponseBadRequest)
+    def post(self, request):
+        return render(request, 'markets/partials/filtered-markets.html', {})
+
+
 # -- Actions --
 
 
