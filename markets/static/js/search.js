@@ -2,7 +2,7 @@ var searchbtn = document.getElementById('search-btn');
 var searchwindow = document.getElementById('search-market-window');
 var searchinput = document.getElementById('search-market-input');
 var globalTimeout = null;
-var maxsymbols = 3;
+var min_symbols = 3;
 var closebtn = document.getElementById("search-close");
 const search_result = document.getElementById("search-market-result");
 
@@ -20,16 +20,17 @@ window.onclick = function(event) {
   }
 }
 
-searchinput.onkeyup = function() {
-  if (searchinput.value.length <= maxsymbols) {
-    return false;
-  }
-  if (globalTimeout != null) {
-    clearTimeout(globalTimeout);
-  }
-  globalTimeout = setTimeout(function() {
-    globalTimeout = null;
-    dj_load_partial_view("partial_filtered_markets", {}, {search_text: searchinput.value})
-        .then(html => {search_result.innerHTML = html;});
-  }, 300);
+searchinput.onkeyup = () => {
+    if(globalTimeout) {
+        clearTimeout(globalTimeout);
+        globalTimeout = null;
+    }
+    const text = searchinput.value;
+    if (text.length >= min_symbols) {
+        globalTimeout = setTimeout(() => {
+            globalTimeout = null;
+            dj_load_partial_view("partial_filtered_markets", {}, {search_text: text})
+                .then(html => {search_result.innerHTML = html;});
+        }, 1000);
+    }
 }

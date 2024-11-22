@@ -233,6 +233,7 @@ class PV_FilteredMarketsView(APIView):
 
     @on_exception_returns(HttpResponseBadRequest)
     def post(self, request):
+        print(request.data)
         return render(request, 'markets/partials/filtered-markets.html', {})
 
 
