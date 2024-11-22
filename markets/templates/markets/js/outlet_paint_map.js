@@ -1,1 +1,0 @@
-{% if as_variable %}const {{as_variable}} = {% endif %}new Map([{% for key, value in legend.items %}[{{key}}, {title: "{{value.title}}", color: "{{value.wall_color}}", wall_color: {{value.wall_color}}, roof_color: {{value.roof_color}}}],{% endfor %}]){% if as_variable %};{% endif %}
