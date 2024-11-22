@@ -6,5 +6,7 @@ def apply_filter(query, filter_name: str, filter_body: str):
 
 
 def filter_markets(text: str):
-    # return Market.objects.filter(market_name__icontains=text)
-    return Market.objects.filter(geo_district__isnull=True)
+    return (Market.objects.filter(market_name__icontains=text) |
+            Market.objects.filter(additional_name__icontains=text) |
+            Market.objects.filter(geo_city__locality_name__icontains=text) |
+            Market.objects.filter(geo_district__locality_name__icontains=text)).order_by('geo_city__locality_name', 'geo_district__locality_name', 'market_name', 'additional_name')

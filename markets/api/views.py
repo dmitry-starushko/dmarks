@@ -1,3 +1,4 @@
+from collections import OrderedDict
 from django.conf import settings
 from django.shortcuts import render
 from django.urls import reverse
@@ -235,9 +236,22 @@ class PV_FilteredMarketsView(APIView):
     def post(self, request):
         print(request.data)
         markets = filter_markets(request.data['search_text'])
+        context = OrderedDict()
         for m in markets:
-            print(m.market_name, m.additional_name)
-        return render(request, 'markets/partials/filtered-markets.html', {})
+            print(m.market_name, m.additional_name, m.geo_city.locality_name, m.geo_district.locality_name)
+            r = context.setdefault(m.geo_city.locality_name, OrderedDict()).setdefault(m.geo_district.locality_name, OrderedDict())
+            r[m.mk_full_name] = {
+                'address': f'{m.geo_street_type.type_name} {m.geo_street}{', ' if m.geo_house else ''}{m.geo_house}',
+                'outlet_num': m.trade_places.count(),
+                'link_map': reverse('markets:index'),
+                'link_info': reverse('markets:market_details', kwargs={'mpk': m.id, 'show': 'info'}),
+                'link_outlets': reverse('markets:market_details', kwargs={'mpk': m.id, 'show': 'outlets'}),
+                'link_scheme': reverse('markets:market_details', kwargs={'mpk': m.id, 'show': 'scheme'}),
+            }
+            print(reverse('markets:index'))
+
+        print(context)
+        return render(request, 'markets/partials/filtered-markets.html', {'context': context})
 
 
 # -- Actions --
