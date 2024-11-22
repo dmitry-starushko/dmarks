@@ -1,7 +1,7 @@
+import channels.layers
 from django.conf import settings
 from asgiref.sync import async_to_sync
 from markets.telegram import Telegram
-import channels.layers
 from redis import Redis
 
 
@@ -37,8 +37,8 @@ def collect_messages_from_ts():
                             channel_layer = channels.layers.get_channel_layer()
                             async_to_sync(channel_layer.group_send)(from_name.decode(), {'type': 'message_from_ts', 'message': message['text']})
                     else:
-                        w_mid = message['message_id']
                         w_cid = message['from']['id']
+                        w_mid = message['message_id']
                         w_key = f'warnings:{w_cid}:{w_mid}'
                         if not redis.exists(w_key):
                             redis.set(name=w_key, value=1, ex=3600*25)

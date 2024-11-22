@@ -3,6 +3,8 @@
     --TSCBottom: 8rem;
     --TSCWidth: 22rem;
     --TSCZIx: 100;
+    --TSCColorQ: #ede4ad;
+    --TSCColorA: #adedce;
 }
 
 .ts-chat {
@@ -18,7 +20,7 @@
     align-items: center;
     gap: 1rem;
     z-index: var(--TSCZIx);
-    background: #99999980;
+    background: #90909080;
     padding: 0.75rem;
     border: thin solid #00bcd4;
     transform: scaleY(0%);
@@ -67,29 +69,35 @@
             text-align: center;
             position: relative;
             word-break: break-word;
-            &.a:before {
-                content: "";
-                width: 0px;
-                height: 0px;
-                position: absolute;
-                border-left: 15px solid white;
-                border-right: 15px solid transparent;
-                border-top: 15px solid white;
-                border-bottom: 15px solid transparent;
-                right: -16px;
-                top: 0px;
+            &.a {
+                background: var(--TSCColorA);
+                &:before {
+                    content: "";
+                    width: 0px;
+                    height: 0px;
+                    position: absolute;
+                    border-left: 15px solid var(--TSCColorA);
+                    border-right: 15px solid transparent;
+                    border-top: 15px solid var(--TSCColorA);
+                    border-bottom: 15px solid transparent;
+                    right: -16px;
+                    top: 0px;
+                }
             }
-            &.q:before {
-                content: "";
-                width: 0px;
-                height: 0px;
-                position: absolute;
-                border-left: 15px solid transparent;
-                border-right: 15px solid white;
-                border-top: 15px solid white;
-                border-bottom: 15px solid transparent;
-                left: -16px;
-                top: 0px;
+            &.q {
+                background: var(--TSCColorQ);
+                &:before {
+                    content: "";
+                    width: 0px;
+                    height: 0px;
+                    position: absolute;
+                    border-left: 15px solid transparent;
+                    border-right: 15px solid var(--TSCColorQ);
+                    border-top: 15px solid var(--TSCColorQ);
+                    border-bottom: 15px solid transparent;
+                    left: -16px;
+                    top: 0px;
+                }
             }
         }
     }
