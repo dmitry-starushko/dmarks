@@ -335,7 +335,6 @@ class Locality(models.Model):
         loc, flag = cls.objects.get_or_create(locality_name="Не указано")
         return loc.pk
 
-
     class Meta:
         managed = True
         ordering = ['locality_name']
