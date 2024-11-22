@@ -8,6 +8,7 @@ const search_result = document.getElementById("search-market-result");
 
 searchbtn.onclick = function() {
   searchwindow.style.display = "block";
+  searchinput.focus();
 }
 
 closebtn.onclick = function() {
