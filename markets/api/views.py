@@ -6,7 +6,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.permissions import AllowAny
 from django.http.response import JsonResponse, HttpResponseBadRequest, HttpResponse
-from markets.business.outlet_filtering import apply_filter
+from markets.business.search_and_filters import apply_filter, filter_markets
 from markets.business.actions import restore_db_consistency
 from markets.decorators import on_exception_returns
 from markets.models import SvgSchema, Market, TradePlaceType, TradeSpecType, TradePlace
@@ -234,6 +234,9 @@ class PV_FilteredMarketsView(APIView):
     @on_exception_returns(HttpResponseBadRequest)
     def post(self, request):
         print(request.data)
+        markets = filter_markets(request.data['search_text'])
+        for m in markets:
+            print(m.market_name, m.additional_name)
         return render(request, 'markets/partials/filtered-markets.html', {})
 
 
