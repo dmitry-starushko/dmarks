@@ -330,6 +330,11 @@ class Locality(models.Model):
     descr = models.TextField(blank=True, null=True, db_comment='Описание')
     parent = models.ForeignKey('self', models.DO_NOTHING, blank=True, null=True, db_comment='Родительская запись. Иерархическое подчинение')
 
+    @classmethod
+    def default_pk(cls):
+        loc, flag = cls.objects.get_or_create(locality_name="Не указано")
+        return loc.pk
+
     class Meta:
         managed = True
         ordering = ['locality_name']
@@ -432,11 +437,11 @@ class Market(MkMixin, models.Model):
     info_constitutive_files = models.JSONField(blank=True, null=True, db_comment='Копии правоустанавливающих документов дочернего предприятия - файлы')
     info_other_docs = models.TextField(blank=True, null=True, db_comment='Информация о других документах')
     info_other_docs_files = models.JSONField(blank=True, null=True, db_comment='Другие документы - файлы')
-    geo_city = models.ForeignKey(Locality, models.DO_NOTHING, blank=True, null=True, db_comment='Город - id')
-    geo_district = models.ForeignKey(Locality, models.DO_NOTHING, related_name='markets_geo_district_set', blank=True, null=True, db_comment='Район - id')
+    geo_city = models.ForeignKey(Locality, models.DO_NOTHING, blank=False, null=False, db_comment='Город - id', default=Locality.default_pk)
+    geo_district = models.ForeignKey(Locality, models.DO_NOTHING, related_name='markets_geo_district_set', blank=False, null=False, db_comment='Район - id', default=Locality.default_pk)
     geo_street_type = models.ForeignKey('StreetType', models.DO_NOTHING, blank=True, null=True, db_comment='Тип улицы - id')
-    geo_street = models.TextField(blank=True, null=True, db_comment='Наименование улицы')
-    geo_house = models.CharField(max_length=50, blank=True, null=True, db_comment='Дом')
+    geo_street = models.TextField(blank=False, null=False, db_comment='Наименование улицы', default='Не указана')
+    geo_house = models.CharField(max_length=50, blank=False, null=False, db_comment='Дом', default='Не указан')
     phone = models.CharField(max_length=255, blank=True, null=True, db_comment='Телефоны')
     email = models.CharField(max_length=255, blank=True, null=True, db_comment='Электронные адреса')
     schedule = models.TextField(blank=True, null=True, db_column='shedule', db_comment='График работы')

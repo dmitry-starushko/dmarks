@@ -3,406 +3,137 @@
     <div class="search-market" id="search-market">
         <div class="search-market-top">
             <img src="{% static 'svg/icons/binoculars.svg' %}" alt="3D"/>
-            <!--a href="#" class="search-market-button search-btn" id="search-market-btn">
+            <a href="#" class="search-market-button search-btn" id="search-market-btn">
                 Рынки
             </a>
             <a href="#" class="search-market-button search-btn" id="search-tp-btn">
                 Торговые места
-            </a-->
-            <div class="button-container">
-              <div class="bar bar-grey">
-                <div class="option">Рынки</div>
-                <div class="option">ТМ</div>
-              </div>
-              <div class="bar-outer">
-                <div class="bar bar-purple">
-                  <div class="option">Рынки</div>
-                  <div class="option">ТМ</div>
-                </div>
-              </div>
-            </div>
+            </a>
             <a href="#" class="search-close" title="Закрыть" id="search-close">
                 <i class="bi bi-x-circle"></i>
             </a>
-
         </div>
-        <div class="search-section-market">
-            <div class="search-market-input">
-                <input id="search-market-input">
-            </div>
-            <div class="search-market-result">
-                <ul class="tree">
-                  <li>
-                    <details open>
-                      <summary>Донецк</summary>
-                      <ul>
-                        <li>
-                          <details open>
-                            <summary>Ворошиловский район</summary>
-                            <ul>
-                                <li class="tree-node-result">
-                                    <div class="tree-text-title tree-node-child">Рынок "Континент"</div>
-                                    <div class="tree-link tree-node-item tree-node-child">
-                                        <a href="#" class="" title="Показать на карте">
-                                            <img src="{% static 'svg/icons/map-marker.svg' %}" alt="Показать на карте"/>
-                                        </a>
-                                        <a href="#" class="" title="Информация">
-                                            <img src="{% static 'svg/icons/information-outline.svg' %}" alt="Информация"/>
-                                        </a>
-                                        <a href="#" class="" title="Список торговых мест">
-                                            <img src="{% static 'svg/icons/format-list-bulleted.svg' %}" alt="Список торговых мест"/>
-                                        </a>
-                                        <a href="#" class="" title="Схема">
-                                            <img src="{% static 'svg/icons/cube-outline.svg' %}" alt="Схема"/>
-                                        </a>
-                                    </div>
-                                    <div class="tree-address tree-node-item tree-node-child">
-                                        ул. Первомайская, 1
-                                    </div>
-                                    <div class="tree-tp-count tree-node-item tree-node-child">
-                                        NN торговых точек
-                                    </div>
-                                </li>
-                                <li class="tree-node-result">
-                                    <div class="tree-text-title tree-node-child">Рынок "Центральный"</div>
-                                    <div class="tree-link tree-node-item tree-node-child">
-                                        <a href="#" class="" title="Показать на карте">
-                                            <img src="{% static 'svg/icons/map-marker.svg' %}" alt="Показать на карте"/>
-                                        </a>
-                                        <a href="#" class="" title="Информация">
-                                            <img src="{% static 'svg/icons/information-outline.svg' %}" alt="Информация"/>
-                                        </a>
-                                        <a href="#" class="" title="Список торговых мест">
-                                            <img src="{% static 'svg/icons/format-list-bulleted.svg' %}" alt="Список торговых мест"/>
-                                        </a>
-                                        <a href="#" class="" title="Схема">
-                                            <img src="{% static 'svg/icons/cube-outline.svg' %}" alt="Схема"/>
-                                        </a>
-                                    </div>
-                                    <div class="tree-address tree-node-item tree-node-child">
-                                        б. Шевченко, 6Б
-                                    </div>
-                                    <div class="tree-tp-count tree-node-item tree-node-child">
-                                        NN торговых точек
-                                    </div>
-                                </li>
-                            </ul>
-                          </details>
-                        </li>
-                        <li>
-                          <details open>
-                            <summary>Калиниский район</summary>
-                            <ul>
-                                <li class="tree-node-result">
-                                    <div class="tree-text-title tree-node-child">Рынок "Континент"</div>
-                                    <div class="tree-link tree-node-item tree-node-child">
-                                        <a href="#" class="" title="Показать на карте">
-                                            <img src="{% static 'svg/icons/map-marker.svg' %}" alt="Показать на карте"/>
-                                        </a>
-                                        <a href="#" class="" title="Информация">
-                                            <img src="{% static 'svg/icons/information-outline.svg' %}" alt="Информация"/>
-                                        </a>
-                                        <a href="#" class="" title="Список торговых мест">
-                                            <img src="{% static 'svg/icons/format-list-bulleted.svg' %}" alt="Список торговых мест"/>
-                                        </a>
-                                        <a href="#" class="" title="Схема">
-                                            <img src="{% static 'svg/icons/cube-outline.svg' %}" alt="Схема"/>
-                                        </a>
-                                    </div>
-                                    <div class="tree-address tree-node-item tree-node-child">
-                                        ул. Первомайская, 1
-                                    </div>
-                                    <div class="tree-tp-count tree-node-item tree-node-child">
-                                        NN торговых точек
-                                    </div>
-                                </li>
-                                <li class="tree-node-result">
-                                    <div class="tree-text-title tree-node-child">Рынок "Центральный"</div>
-                                    <div class="tree-link tree-node-item tree-node-child">
-                                        <a href="#" class="" title="Показать на карте">
-                                            <img src="{% static 'svg/icons/map-marker.svg' %}" alt="Показать на карте"/>
-                                        </a>
-                                        <a href="#" class="" title="Информация">
-                                            <img src="{% static 'svg/icons/information-outline.svg' %}" alt="Информация"/>
-                                        </a>
-                                        <a href="#" class="" title="Список торговых мест">
-                                            <img src="{% static 'svg/icons/format-list-bulleted.svg' %}" alt="Список торговых мест"/>
-                                        </a>
-                                        <a href="#" class="" title="Схема">
-                                            <img src="{% static 'svg/icons/cube-outline.svg' %}" alt="Схема"/>
-                                        </a>
-                                    </div>
-                                    <div class="tree-address tree-node-item tree-node-child">
-                                        б. Шевченко, 6Б
-                                    </div>
-                                    <div class="tree-tp-count tree-node-item tree-node-child">
-                                        NN торговых точек
-                                    </div>
-                                </li>
-                            </ul>
-                          </details>
-                        </li>
-                      </ul>
-                    </details>
-                  </li>
-                </ul>
-            </div>
+        <div class="search-market-input">
+            <input id="search-market-input">
         </div>
-        <div class="search-section-tp">
-            <div class="search-tp-top">
-                <div class="search-tp-block">
-                    <div class="search-tp-block-title">Расположение</div>
-                    <div class="search-tp-block-body">
-                        <ul class="tree">
-                          <li>
-                            <details open>
-                              <summary><input class="search-tp-check" type="checkbox" value="here-id-location" checked> Донецк</summary>
-                              <ul>
-                                <li>
-                                  <details open>
-                                    <summary><input class="search-tp-check" type="checkbox" value="here-id-location" checked> Ворошиловский район</summary>
-                                    <ul>
-                                        <li class="tree-node-result">
-                                            <div class="tree-text-title tree-node-child">
-                                                <input class="search-tp-check" type="checkbox" value="here-id-location" checked>
-                                                Рынок "Континент"
-                                            </div>
-                                        </li>
-                                        <li class="tree-node-result">
-                                            <div class="tree-text-title tree-node-child">
-                                                <input class="search-tp-check" type="checkbox" value="here-id-location" checked>
-                                                Рынок "Центральный"
-                                            </div>
-                                        </li>
-                                    </ul>
-                                  </details>
-                                </li>
-                                <li>
-                                  <details open>
-                                    <summary><input class="search-tp-check" type="checkbox" value="here-id-location" checked> Калиниский район</summary>
-                                    <ul>
-                                        <li class="tree-node-result">
-                                            <div class="tree-text-title tree-node-child">
-                                                <input class="search-tp-check" type="checkbox" value="here-id-location" checked>
-                                                Рынок "Континент"
-                                            </div>
-                                        </li>
-                                        <li class="tree-node-result">
-                                            <div class="tree-text-title tree-node-child">
-                                                <input class="search-tp-check" type="checkbox" value="here-id-location" checked>
-                                                Рынок "Центральный"
-                                            </div>
-                                        </li>
-                                    </ul>
-                                  </details>
-                                </li>
-                              </ul>
-                            </details>
-                          </li>
+        <div id="search-market-result" class="search-market-result">
+            {% comment %}
+            <ul class="tree">
+              <li>
+                <details open>
+                  <summary>Донецк</summary>
+                  <ul>
+                    <li>
+                      <details open>
+                        <summary>Ворошиловский район</summary>
+                        <ul>
+                            <li class="tree-node-result">
+                                <div class="tree-text-title tree-node-child">Рынок "Континент"</div>
+                                <div class="tree-link tree-node-item tree-node-child">
+                                    <a href="#" class="" title="Показать на карте">
+                                        <img src="{% static 'svg/icons/map-marker.svg' %}" alt="Показать на карте"/>
+                                    </a>
+                                    <a href="#" class="" title="Информация">
+                                        <img src="{% static 'svg/icons/information-outline.svg' %}" alt="Информация"/>
+                                    </a>
+                                    <a href="#" class="" title="Список торговых мест">
+                                        <img src="{% static 'svg/icons/format-list-bulleted.svg' %}" alt="Список торговых мест"/>
+                                    </a>
+                                    <a href="#" class="" title="Схема">
+                                        <img src="{% static 'svg/icons/cube-outline.svg' %}" alt="Схема"/>
+                                    </a>
+                                </div>
+                                <div class="tree-address tree-node-item tree-node-child">
+                                    ул. Первомайская, 1
+                                </div>
+                                <div class="tree-tp-count tree-node-item tree-node-child">
+                                    NN торговых точек
+                                </div>
+                            </li>
+                            <li class="tree-node-result">
+                                <div class="tree-text-title tree-node-child">Рынок "Центральный"</div>
+                                <div class="tree-link tree-node-item tree-node-child">
+                                    <a href="#" class="" title="Показать на карте">
+                                        <img src="{% static 'svg/icons/map-marker.svg' %}" alt="Показать на карте"/>
+                                    </a>
+                                    <a href="#" class="" title="Информация">
+                                        <img src="{% static 'svg/icons/information-outline.svg' %}" alt="Информация"/>
+                                    </a>
+                                    <a href="#" class="" title="Список торговых мест">
+                                        <img src="{% static 'svg/icons/format-list-bulleted.svg' %}" alt="Список торговых мест"/>
+                                    </a>
+                                    <a href="#" class="" title="Схема">
+                                        <img src="{% static 'svg/icons/cube-outline.svg' %}" alt="Схема"/>
+                                    </a>
+                                </div>
+                                <div class="tree-address tree-node-item tree-node-child">
+                                    б. Шевченко, 6Б
+                                </div>
+                                <div class="tree-tp-count tree-node-item tree-node-child">
+                                    NN торговых точек
+                                </div>
+                            </li>
                         </ul>
-                    </div>
-                </div>
-                <div class="search-tp-block">
-                    <div class="search-tp-block-title">Специализация</div>
-                    <div class="search-tp-block-body">
-                        <div class="search-tp-spec for-checkbox">
-                            <input class="search-tp-check" type="checkbox" value="here-id-spec" checked>
-                            Мебель
-                        </div>
-                        <div class="search-tp-spec for-checkbox">
-                            <input class="search-tp-check" type="checkbox" value="here-id-spec" checked>
-                            Продукты
-                        </div>
-                        <div class="search-tp-spec for-checkbox">
-                            <input class="search-tp-check" type="checkbox" value="here-id-spec" checked>
-                            Молочка
-                        </div>
-                        <div class="search-tp-spec for-checkbox">
-                            <input class="search-tp-check" type="checkbox" value="here-id-spec" checked>
-                            Строительный
-                        </div>
-                        <div class="search-tp-spec for-checkbox">
-                            <input class="search-tp-check" type="checkbox" value="here-id-spec" checked>
-                            Еще что-то
-                        </div>
-                    </div>
-                </div>
-                <div class="search-tp-block">
-                    <div class="search-tp-block-title">Занятость</div>
-                    <div class="search-tp-block-body">
-                        <div class="search-tp-type for-checkbox">
-                            <input class="search-tp-check" type="checkbox" value="here-id-spec" checked>
-                            Свободно
-                        </div>
-                        <div class="search-tp-type for-checkbox">
-                            <input class="search-tp-check" type="checkbox" value="here-id-spec" checked>
-                            Занято
-                        </div>
-                        <div class="search-tp-type for-checkbox">
-                            <input class="search-tp-check" type="checkbox" value="here-id-spec" checked>
-                            Не сдается
-                        </div>
-                        <div class="search-tp-type for-checkbox">
-                            <input class="search-tp-check" type="checkbox" value="here-id-spec" checked>
-                            Забронировано
-                        </div>
-                        <div class="search-tp-type for-checkbox">
-                            <input class="search-tp-check" type="checkbox" value="here-id-spec" checked>
-                            Нет информации
-                        </div>
-                    </div>
-                </div>
-                <div class="search-tp-block">
-                    <div class="search-tp-block-title">Благоустройство</div>
-                    <div class="search-tp-block-body">
-                        <div class="search-tp-type for-checkbox">
-                            <input class="search-tp-check" type="checkbox" value="here-id-spec" checked>
-                            Электричество
-                        </div>
-                        <div class="search-tp-type for-checkbox">
-                            <input class="search-tp-check" type="checkbox" value="here-id-spec" checked>
-                            Кондиционер
-                        </div>
-                        <div class="search-tp-type for-checkbox">
-                            <input class="search-tp-check" type="checkbox" value="here-id-spec" checked>
-                            Водопровод
-                        </div>
-                        <div class="search-tp-type for-checkbox">
-                            <input class="search-tp-check" type="checkbox" value="here-id-spec" checked>
-                            Стоки
-                        </div>
-                        <div class="search-tp-type for-checkbox">
-                            <input class="search-tp-check" type="checkbox" value="here-id-spec" checked>
-                            Интернет
-                        </div>
-                    </div>
-                </div>
-                <div class="search-tp-block">
-                    <div class="search-tp-block-title">Прочее</div>
-                    <div class="search-tp-block-body">
-                        <div class="search-tp-param">
-                            
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="search-tp-result">
-                <ul class="tree">
-                  <li>
-                    <details open>
-                      <summary>Донецк</summary>
-                      <ul>
-                        <li>
-                          <details open>
-                            <summary>Ворошиловский район</summary>
-                            <ul>
-                                <li class="tree-node-result">
-                                    <div class="tree-text-title tree-node-child">Рынок "Континент"</div>
-                                    <div class="tree-link tree-node-item tree-node-child">
-                                        <a href="#" class="" title="Показать на карте">
-                                            <img src="{% static 'svg/icons/map-marker.svg' %}" alt="Показать на карте"/>
-                                        </a>
-                                        <a href="#" class="" title="Информация">
-                                            <img src="{% static 'svg/icons/information-outline.svg' %}" alt="Информация"/>
-                                        </a>
-                                        <a href="#" class="" title="Список торговых мест">
-                                            <img src="{% static 'svg/icons/format-list-bulleted.svg' %}" alt="Список торговых мест"/>
-                                        </a>
-                                        <a href="#" class="" title="Схема">
-                                            <img src="{% static 'svg/icons/cube-outline.svg' %}" alt="Схема"/>
-                                        </a>
-                                    </div>
-                                    <div class="tree-address tree-node-item tree-node-child">
-                                        ул. Первомайская, 1
-                                    </div>
-                                    <div class="tree-tp-count tree-node-item tree-node-child">
-                                        NN торговых точек
-                                    </div>
-                                </li>
-                                <li class="tree-node-result">
-                                    <div class="tree-text-title tree-node-child">Рынок "Центральный"</div>
-                                    <div class="tree-link tree-node-item tree-node-child">
-                                        <a href="#" class="" title="Показать на карте">
-                                            <img src="{% static 'svg/icons/map-marker.svg' %}" alt="Показать на карте"/>
-                                        </a>
-                                        <a href="#" class="" title="Информация">
-                                            <img src="{% static 'svg/icons/information-outline.svg' %}" alt="Информация"/>
-                                        </a>
-                                        <a href="#" class="" title="Список торговых мест">
-                                            <img src="{% static 'svg/icons/format-list-bulleted.svg' %}" alt="Список торговых мест"/>
-                                        </a>
-                                        <a href="#" class="" title="Схема">
-                                            <img src="{% static 'svg/icons/cube-outline.svg' %}" alt="Схема"/>
-                                        </a>
-                                    </div>
-                                    <div class="tree-address tree-node-item tree-node-child">
-                                        б. Шевченко, 6Б
-                                    </div>
-                                    <div class="tree-tp-count tree-node-item tree-node-child">
-                                        NN торговых точек
-                                    </div>
-                                </li>
-                            </ul>
-                          </details>
-                        </li>
-                        <li>
-                          <details open>
-                            <summary>Калиниский район</summary>
-                            <ul>
-                                <li class="tree-node-result">
-                                    <div class="tree-text-title tree-node-child">Рынок "Континент"</div>
-                                    <div class="tree-link tree-node-item tree-node-child">
-                                        <a href="#" class="" title="Показать на карте">
-                                            <img src="{% static 'svg/icons/map-marker.svg' %}" alt="Показать на карте"/>
-                                        </a>
-                                        <a href="#" class="" title="Информация">
-                                            <img src="{% static 'svg/icons/information-outline.svg' %}" alt="Информация"/>
-                                        </a>
-                                        <a href="#" class="" title="Список торговых мест">
-                                            <img src="{% static 'svg/icons/format-list-bulleted.svg' %}" alt="Список торговых мест"/>
-                                        </a>
-                                        <a href="#" class="" title="Схема">
-                                            <img src="{% static 'svg/icons/cube-outline.svg' %}" alt="Схема"/>
-                                        </a>
-                                    </div>
-                                    <div class="tree-address tree-node-item tree-node-child">
-                                        ул. Первомайская, 1
-                                    </div>
-                                    <div class="tree-tp-count tree-node-item tree-node-child">
-                                        NN торговых точек
-                                    </div>
-                                </li>
-                                <li class="tree-node-result">
-                                    <div class="tree-text-title tree-node-child">Рынок "Центральный"</div>
-                                    <div class="tree-link tree-node-item tree-node-child">
-                                        <a href="#" class="" title="Показать на карте">
-                                            <img src="{% static 'svg/icons/map-marker.svg' %}" alt="Показать на карте"/>
-                                        </a>
-                                        <a href="#" class="" title="Информация">
-                                            <img src="{% static 'svg/icons/information-outline.svg' %}" alt="Информация"/>
-                                        </a>
-                                        <a href="#" class="" title="Список торговых мест">
-                                            <img src="{% static 'svg/icons/format-list-bulleted.svg' %}" alt="Список торговых мест"/>
-                                        </a>
-                                        <a href="#" class="" title="Схема">
-                                            <img src="{% static 'svg/icons/cube-outline.svg' %}" alt="Схема"/>
-                                        </a>
-                                    </div>
-                                    <div class="tree-address tree-node-item tree-node-child">
-                                        б. Шевченко, 6Б
-                                    </div>
-                                    <div class="tree-tp-count tree-node-item tree-node-child">
-                                        NN торговых точек
-                                    </div>
-                                </li>
-                            </ul>
-                          </details>
-                        </li>
-                      </ul>
-                    </details>
-                  </li>
-                </ul>
-            </div>
+                      </details>
+                    </li>
+                    <li>
+                      <details open>
+                        <summary>Калиниский район</summary>
+                        <ul>
+                            <li class="tree-node-result">
+                                <div class="tree-text-title tree-node-child">Рынок "Континент"</div>
+                                <div class="tree-link tree-node-item tree-node-child">
+                                    <a href="#" class="" title="Показать на карте">
+                                        <img src="{% static 'svg/icons/map-marker.svg' %}" alt="Показать на карте"/>
+                                    </a>
+                                    <a href="#" class="" title="Информация">
+                                        <img src="{% static 'svg/icons/information-outline.svg' %}" alt="Информация"/>
+                                    </a>
+                                    <a href="#" class="" title="Список торговых мест">
+                                        <img src="{% static 'svg/icons/format-list-bulleted.svg' %}" alt="Список торговых мест"/>
+                                    </a>
+                                    <a href="#" class="" title="Схема">
+                                        <img src="{% static 'svg/icons/cube-outline.svg' %}" alt="Схема"/>
+                                    </a>
+                                </div>
+                                <div class="tree-address tree-node-item tree-node-child">
+                                    ул. Первомайская, 1
+                                </div>
+                                <div class="tree-tp-count tree-node-item tree-node-child">
+                                    NN торговых точек
+                                </div>
+                            </li>
+                            <li class="tree-node-result">
+                                <div class="tree-text-title tree-node-child">Рынок "Центральный"</div>
+                                <div class="tree-link tree-node-item tree-node-child">
+                                    <a href="#" class="" title="Показать на карте">
+                                        <img src="{% static 'svg/icons/map-marker.svg' %}" alt="Показать на карте"/>
+                                    </a>
+                                    <a href="#" class="" title="Информация">
+                                        <img src="{% static 'svg/icons/information-outline.svg' %}" alt="Информация"/>
+                                    </a>
+                                    <a href="#" class="" title="Список торговых мест">
+                                        <img src="{% static 'svg/icons/format-list-bulleted.svg' %}" alt="Список торговых мест"/>
+                                    </a>
+                                    <a href="#" class="" title="Схема">
+                                        <img src="{% static 'svg/icons/cube-outline.svg' %}" alt="Схема"/>
+                                    </a>
+                                </div>
+                                <div class="tree-address tree-node-item tree-node-child">
+                                    б. Шевченко, 6Б
+                                </div>
+                                <div class="tree-tp-count tree-node-item tree-node-child">
+                                    NN торговых точек
+                                </div>
+                            </li>
+                        </ul>
+                      </details>
+                    </li>
+                  </ul>
+                </details>
+              </li>
+            </ul>
+            {% endcomment %}
         </div>
     </div>
 </div>

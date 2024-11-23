@@ -18,9 +18,9 @@ INSTALLED_APPS = [
     'markets.apps.MarketsConfig',
     'pgtrigger',
     'easy_thumbnails',
+    'django_filters',
     'rest_framework',
     'rest_framework.authtoken',
-    # 'channels',
 ]
 
 MIDDLEWARE = [
@@ -114,6 +114,8 @@ SCHEME_EXPIRE_SECONDS = 600
 
 FAIL_EXPIRE_SECONDS = 600
 
+ASGI_APPLICATION = 'dmarks.asgi.application'
+
 CACHES = {
     'default': {
         'BACKEND': 'django.core.cache.backends.redis.RedisCache',
@@ -121,4 +123,11 @@ CACHES = {
     }
 }
 
-ASGI_APPLICATION = 'dmarks.asgi.application'
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'channels_redis.core.RedisChannelLayer',
+        'CONFIG': {
+            'hosts': [(REDIS_HOST, REDIS_PORT)],
+        }
+    }
+}
