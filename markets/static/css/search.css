@@ -5,6 +5,7 @@
     --background-color-search: rgba(170,170,170,0.85);
     --background-color-search-result: rgba(100,100,219,0.85);
     --opacity-child: 100%;
+    --background-color-search-tp-block: rgba(255,255,255,1);
 }
 
 .search-market-window {
@@ -308,7 +309,7 @@
     border: 1px solid #2bb8ca;
 }
 
-.search-market-result {
+.search-market-result, .search-tp-result {
     width: 100%;
     height: 300px;
     overflow-y:scroll;
@@ -318,7 +319,8 @@
 .search-market-result > .tree {
 }
 
-.search-market-result > .tree summary, .search-market-result > .tree li {
+.search-market-result > .tree summary, .search-market-result > .tree li,
+.search-tp-result > .tree summary, .search-tp-result > .tree li{
   color: #fff;
 }
 
@@ -327,35 +329,68 @@
   /*font-size: 1.02em;*/
 }
 
-.search-market-result li.tree-node-result {
+.search-market-result li.tree-node-result,
+.search-tp-result li.tree-node-result {
     display: flex;
     width: 100%;
     /*justify-content: space-between;*/
 }
 
-.search-market-result li.tree-node-result > .tree-link > a {
+.search-market-result li.tree-node-result > .tree-link > a,
+.search-tp-result li.tree-node-result > .tree-link > a {
     margin-right: 5px;
 }
 
-.search-market-result li.tree-node-result > .tree-link > a > img {
+.search-market-result li.tree-node-result > .tree-link > a > img,
+.search-tp-result li.tree-node-result > .tree-link > a > img {
     width: 15px;
     -webkit-transition: ease-in-out 0.3s;
     transition: ease-in-out 0.3s;
     filter: invert(100%) sepia(0%) saturate(7500%) hue-rotate(275deg) brightness(105%) contrast(100%);
 }
 
-.search-market-result li.tree-node-result > .tree-link > a > img:hover {
+.search-market-result li.tree-node-result > .tree-link > a > img:hover,
+.search-tp-result li.tree-node-result > .tree-link > a > img:hover {
     filter: invert(70%) sepia(95%) saturate(4366%) hue-rotate(150deg) brightness(100%) contrast(101%);
 }
 
-.search-market-result li.tree-node-result > .tree-node-item {
+.search-market-result li.tree-node-result > .tree-node-item,
+.search-tp-result li.tree-node-result > .tree-node-item {
     border-left: 1px solid #fff;
     margin: 0 5px;
     padding-left: 5px;
 }
 
-.search-market-result li.tree-node-result > .tree-node-child {
+.search-market-result li.tree-node-result > .tree-node-child,
+.search-tp-result li.tree-node-result > .tree-node-child {
     flex-grow: 0;
     width: 40%;
     /*align-self: flex-end;*/
+}
+
+/**** Seacrh TP ****/
+.search-tp-top {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+}
+
+.search-tp-block {
+    /*width: 100%;*/
+}
+
+.search-tp-block-body {
+    background-color: var(--background-color-search-tp-block);
+    padding: 5px;
+    overflow-y:scroll;
+    scrollbar-width: thin;
+}
+
+.search-tp-check {
+    accent-color: white;
+    outline: 1px solid black;
+}
+
+.for-checkbox {
+    font-size: 12px;
 }
