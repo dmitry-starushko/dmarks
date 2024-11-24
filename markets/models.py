@@ -94,7 +94,6 @@ class Booking(models.Model):
 
 
 class ContractStatusType(models.Model):
-    # id = models.SmallAutoField(primary_key=True)
     type_name = models.CharField(db_comment='Наименование типа специализации торгового места')
     descr = models.TextField(blank=True, null=True, db_comment='Описание')
 
@@ -111,7 +110,6 @@ class ContractStatusType(models.Model):
 
 
 class LocalityType(models.Model):
-    # id = models.SmallAutoField(primary_key=True)
     type_name = models.CharField(db_comment='Наименование типа')
     descr = models.TextField(blank=True, null=True, db_comment='Описание')
 
@@ -172,7 +170,6 @@ class MarketFireProtection(models.Model):
 
 
 class MarketProfitability(models.Model):
-    # id = models.SmallIntegerField(primary_key=True)
     profitability_name = models.CharField(db_comment='Наименование категории рентабельности рынка')
     descr = models.TextField(blank=True, null=True, db_comment='Описание')
 
@@ -189,7 +186,6 @@ class MarketProfitability(models.Model):
 
 
 class MarketType(models.Model):
-    # id = models.SmallAutoField(primary_key=True)
     type_name = models.CharField(db_comment='Наименование типа рынка')
     descr = models.TextField(blank=True, null=True, db_comment='Описание')
 
@@ -226,7 +222,6 @@ class Renter(models.Model):
 
 
 class RenterType(models.Model):
-    # id = models.SmallAutoField(primary_key=True)
     type_name = models.CharField(db_comment='Наименование типа арендатора')
     descr = models.TextField(blank=True, null=True, db_comment='Описание')
 
@@ -243,7 +238,6 @@ class RenterType(models.Model):
 
 
 class StreetType(models.Model):
-    # id = models.SmallAutoField(primary_key=True)
     type_name = models.CharField(db_comment='Наименование типа улиц (сокращенное)')
     descr = models.TextField(blank=True, null=True, db_comment='Описание (полное наименование)')
 
@@ -280,7 +274,6 @@ class TradeContract(models.Model):
 
 
 class TradePlaceType(models.Model):
-    # id = models.SmallAutoField(primary_key=True)
     type_name = models.CharField(db_comment='Наименование типа занятости торгового места')
     descr = models.TextField(blank=True, null=True, db_comment='Опиcание')
     color = models.CharField(max_length=7, blank=True, null=True, validators=[Validators.css_color], db_comment='Цвет в формате #ffffff')
@@ -308,7 +301,6 @@ class TradePlaceType(models.Model):
 
 
 class TradeSector(models.Model):
-    # id = models.SmallAutoField(primary_key=True)
     sector_name = models.CharField(db_comment='Наименование сектора рынка')
     descr = models.TextField(blank=True, null=True, db_comment='Описание')
 
@@ -325,7 +317,6 @@ class TradeSector(models.Model):
 
 
 class TradeSpecType(models.Model):
-    # id = models.SmallAutoField(primary_key=True)
     type_name = models.CharField(db_comment='Наименование типа специализации торгового места')
     descr = models.TextField(blank=True, null=True, db_comment='Описание')
     color = models.CharField(max_length=7, blank=True, null=True, db_comment='Цвет в формате #ffffff')
@@ -353,7 +344,6 @@ class TradeSpecType(models.Model):
 
 
 class TradeType(models.Model):
-    # id = models.SmallAutoField(primary_key=True)
     type_name = models.CharField(db_comment='Наименование типа торгового места')
     type_num = models.SmallIntegerField(blank=True, null=True, db_comment='Код типа объекта')
     descr = models.TextField(blank=True, null=True, db_comment='Описание')
