@@ -458,6 +458,10 @@ class Market(MkMixin, models.Model):
     geo_full_address = models.CharField(blank=True, null=True, db_comment='Полный адрес через запятую')
     images: models.QuerySet
 
+    @classmethod
+    def default_pk(cls):
+        return cls.objects.first().pk
+
     @property
     def image(self):
         first_img = self.images.first()
@@ -476,8 +480,8 @@ class Market(MkMixin, models.Model):
 
 
 class TradePlace(TpMixin, models.Model):
-    market = models.ForeignKey(Market, models.DO_NOTHING, related_name="trade_places", db_comment='Уникальный идентификатор рынка\r\n')
-    trade_type = models.ForeignKey('TradeType', models.DO_NOTHING, db_comment='Тип торгового места')
+    market = models.ForeignKey(Market, models.CASCADE, related_name="trade_places", db_comment='Уникальный идентификатор рынка\r\n')
+    trade_type = models.ForeignKey(TradeType, models.SET_DEFAULT, default=TradeType.default_pk, db_comment='Тип торгового места')
     meas_area = models.FloatField(blank=True, null=True, db_comment='Площадь места')
     meas_length = models.FloatField(blank=True, null=True, db_comment='Длина места')
     meas_height = models.FloatField(blank=True, null=True, db_comment='Высота места')
@@ -492,12 +496,12 @@ class TradePlace(TpMixin, models.Model):
     impr_add_equipment = models.BooleanField(blank=True, null=True, db_comment='Наличие стендов, мебели')
     impr_fridge = models.BooleanField(blank=True, null=True, db_comment='Наличие холодильных установок')
     impr_shopwindow = models.BooleanField(blank=True, null=True, db_comment='Наличие витрин')
-    trade_place_type = models.ForeignKey('TradePlaceType', models.DO_NOTHING, db_comment='Занятость торгового места')
+    trade_place_type = models.ForeignKey(TradePlaceType, models.SET_DEFAULT, default=TradePlaceType.default_pk, db_comment='Занятость торгового места')
     price = models.DecimalField(max_digits=12, decimal_places=2, blank=True, null=True, db_comment='Стоимость аренды торгового места в месяц')
-    trade_spec_type_id_rec = models.ForeignKey('TradeSpecType', models.DO_NOTHING, db_column='trade_spec_type_id_rec', blank=True, null=True, db_comment='Специализация торгового места (рекомендованная)')
-    trade_spec_type_id_act = models.ForeignKey('TradeSpecType', models.DO_NOTHING, db_column='trade_spec_type_id_act', related_name='tradeplace_trade_spec_type_id_act_set', blank=True, null=True, db_comment='Специализация торгового места (фактическая)')
+    trade_spec_type_id_rec = models.ForeignKey('TradeSpecType', models.SET_DEFAULT, default=TradeSpecType.default_pk, db_column='trade_spec_type_id_rec', db_comment='Специализация торгового места (рекомендованная)')
+    trade_spec_type_id_act = models.ForeignKey('TradeSpecType', models.SET_DEFAULT, default=TradeSpecType.default_pk, db_column='trade_spec_type_id_act', related_name='tradeplace_trade_spec_type_id_act_set', db_comment='Специализация торгового места (фактическая)')
     street_vending = models.BooleanField(blank=True, null=True, db_comment='Возможность выносной торговли')
-    contract_rent = models.ForeignKey(TradeContract, models.DO_NOTHING, blank=True, null=True, db_comment='Информация о договорах аренды')
+    contract_rent = models.ForeignKey(TradeContract, models.DO_NOTHING, blank=True, null=True, db_comment='Информация о договорах аренды')  # TODO kill wrong field
     receiv_state = models.BooleanField(blank=True, null=True, db_comment='Наличие дебиторской задолженности на текущий месяц')
     receiv_amount = models.DecimalField(max_digits=12, decimal_places=2, blank=True, null=True, db_comment='Размер дебиторской задолженности')
     pay_electricity = models.DecimalField(max_digits=12, decimal_places=2, blank=True, null=True, db_comment='Оплата электричества')
@@ -510,11 +514,11 @@ class TradePlace(TpMixin, models.Model):
     pay_add_equipment = models.DecimalField(max_digits=12, decimal_places=2, blank=True, null=True, db_comment='Аренда стендов, мебели')
     pay_fridge = models.DecimalField(max_digits=12, decimal_places=2, blank=True, null=True, db_comment='Аренда холодильных установок')
     pay_shopwindows = models.DecimalField(max_digits=12, decimal_places=2, blank=True, null=True, db_comment='Аренда витрин')
-    location_sector = models.ForeignKey('TradeSector', models.DO_NOTHING, db_comment='id сектор торгового места')
+    location_sector = models.ForeignKey(TradeSector, models.SET_DEFAULT, default=TradeSector.default_pk, db_comment='id сектор торгового места')
     location_row = models.CharField(blank=True, null=True, db_comment='Ряд торгового места')
     location_floor = models.SmallIntegerField(blank=True, null=True, db_comment='Этаж торгового места')
     location_number = models.CharField(unique=True, blank=True, null=True, validators=[Validators.outlet_number], db_comment='Номер торгового места')
-    renter = models.ForeignKey(Renter, models.DO_NOTHING, blank=True, null=True, db_comment='id - текущий арендатор')
+    renter = models.ForeignKey(Renter, models.DO_NOTHING, blank=True, null=True, db_comment='id - текущий арендатор')  # TODO kill wrong field
     additional = models.JSONField(blank=True, null=True, db_comment='Дополнительные поля')
     meas_width = models.FloatField(blank=True, null=True, db_comment='Ширина места')
     internal_id = models.CharField(blank=True, null=True, db_comment='Текстовый код')
@@ -541,7 +545,7 @@ class TradePlace(TpMixin, models.Model):
 class SvgSchema(models.Model):
     order = models.IntegerField(blank=False, null=False, default=0, db_comment='Поле для упорядочивания схем')
     svg_schema = models.TextField(blank=True, null=True, db_comment='svg объекта')
-    market = models.ForeignKey(Market, models.DO_NOTHING, related_name="schemes", blank=True, null=True, db_comment='id рынка')  # TODO models.CASCADE
+    market = models.ForeignKey(Market, on_delete=models.CASCADE, related_name="schemes", db_comment='id рынка')  # TODO models.CASCADE
     descr = models.TextField(blank=True, null=True, db_comment='Описание')
     source_file = models.CharField(blank=True, null=True, db_comment='Имя загруженного файла')
     floor = models.CharField(blank=True, null=True, db_comment='Этаж схемы объекта')
