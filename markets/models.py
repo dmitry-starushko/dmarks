@@ -80,6 +80,7 @@ class Booking(models.Model):
     booking_status_case = models.TextField(blank=True, null=True, db_comment='Причина изменения статуса (например, причина отказа)')
     booking_files = models.JSONField(blank=True, null=True, db_comment='Файлы для бронирования')
     booked_by = models.ForeignKey(DmUser, models.CASCADE, null=True, blank=True, related_name="bookings", db_column='ng_user', db_comment='Кто забронировал')
+    # TODO null=True, blank=True -- fix it
 
     class Meta:
         managed = True
@@ -247,7 +248,7 @@ class Renter(models.Model):
     legal_doc_info = models.CharField(blank=True, null=True, db_comment='Информация об уставных документах')
     legal_doc_files = models.JSONField(blank=True, null=True, db_comment='Уставные документы - файлы')
     descr = models.TextField(blank=True, null=True, db_comment='Описание')
-    renter_type = models.ForeignKey(RenterType, models.DO_NOTHING, db_comment='Тип арендатора')
+    renter_type = models.ForeignKey(RenterType, models.SET_DEFAULT, default=RenterType.default_pk, db_comment='Тип арендатора')
     renter_phone = models.DecimalField(max_digits=11, decimal_places=0, blank=True, null=True, db_comment='Номер телефона')
 
     class Meta:
@@ -286,7 +287,7 @@ class StreetType(models.Model):
 class TradeContract(models.Model):
     date_start = models.DateField(blank=True, null=True, db_comment='Дата начала договора')
     date_end = models.DateField(blank=True, null=True, db_comment='Дата окончания договора')
-    contract_status_type = models.ForeignKey(ContractStatusType, models.DO_NOTHING, db_comment='id статус договора')
+    contract_status_type = models.ForeignKey(ContractStatusType, models.SET_DEFAULT, default=ContractStatusType.default_pk, db_comment='id статус договора')
     copy_info = models.CharField(blank=True, null=True, db_comment='Информация о копии договора')
     copy_files = models.JSONField(blank=True, null=True, db_comment='Файлы договора')
     active_contract = models.BooleanField(blank=True, null=True, db_comment='Наличие договора аренды')
@@ -413,8 +414,8 @@ class TradeType(models.Model):
 class Market(MkMixin, models.Model):
     market_name = models.CharField(max_length=1000, db_comment='Наименование рынка')
     internal_id = models.CharField(max_length=50, blank=True, null=True, db_comment='Внутренний код рынка')
-    market_type = models.ForeignKey(MarketType, models.DO_NOTHING, db_comment='id - тип рынка')
-    profitability = models.ForeignKey(MarketProfitability, models.DO_NOTHING, blank=True, null=True, db_comment='id - категория рентабельности')
+    market_type = models.ForeignKey(MarketType, models.SET_DEFAULT, default=MarketType.default_pk, db_comment='id - тип рынка')
+    profitability = models.ForeignKey(MarketProfitability, models.SET_DEFAULT, default=MarketProfitability.default_pk, db_comment='id - категория рентабельности')
     infr_parking = models.SmallIntegerField(blank=True, null=True, db_comment='Кол-во парковок')
     infr_entrance = models.SmallIntegerField(blank=True, null=True, db_comment='Кол-во подъездов')
     infr_restroom = models.SmallIntegerField(blank=True, null=True, db_comment='Кол-во санузлов')
@@ -422,7 +423,7 @@ class Market(MkMixin, models.Model):
     infr_sewerage = models.BooleanField(blank=True, null=True, db_comment='Наличие канализации')
     infr_sewerage_type = models.CharField(max_length=1000, blank=True, null=True, db_comment='Тип канализации')
     infr_storage = models.SmallIntegerField(blank=True, null=True, db_comment='Кол-во складских помещений')
-    infr_fire_protection = models.ForeignKey(MarketFireProtection, models.DO_NOTHING, blank=True, null=True, db_comment='id - противопожарные системы')
+    infr_fire_protection = models.ForeignKey(MarketFireProtection, models.SET_DEFAULT, default=MarketFireProtection.default_pk, db_comment='id - противопожарные системы')
     info_statement_forms = models.TextField(blank=True, null=True, db_comment='Информация о формах заявлений')
     info_statement_files = models.JSONField(blank=True, null=True, db_comment='Формы заявлений - файлы')
     info_contracts = models.TextField(blank=True, null=True, db_comment='Информация о типовых договорах')
@@ -433,9 +434,9 @@ class Market(MkMixin, models.Model):
     info_constitutive_files = models.JSONField(blank=True, null=True, db_comment='Копии правоустанавливающих документов дочернего предприятия - файлы')
     info_other_docs = models.TextField(blank=True, null=True, db_comment='Информация о других документах')
     info_other_docs_files = models.JSONField(blank=True, null=True, db_comment='Другие документы - файлы')
-    geo_city = models.ForeignKey(Locality, models.SET_DEFAULT, blank=False, null=False, db_comment='Город - id', default=Locality.default_pk)
-    geo_district = models.ForeignKey(Locality, models.SET_DEFAULT, related_name='markets_geo_district_set', blank=False, null=False, db_comment='Район - id', default=Locality.default_pk)
-    geo_street_type = models.ForeignKey('StreetType', models.DO_NOTHING, blank=True, null=True, db_comment='Тип улицы - id')
+    geo_city = models.ForeignKey(Locality, models.SET_DEFAULT, default=Locality.default_pk, db_comment='Город - id')
+    geo_district = models.ForeignKey(Locality, models.SET_DEFAULT, default=Locality.default_pk, related_name='markets_geo_district_set', db_comment='Район - id')
+    geo_street_type = models.ForeignKey(StreetType, models.SET_DEFAULT, default=StreetType.default_pk, blank=True, null=True, db_comment='Тип улицы - id')
     geo_street = models.TextField(blank=False, null=False, db_comment='Наименование улицы', default='Не указана')
     geo_house = models.CharField(max_length=50, blank=False, null=False, db_comment='Дом', default='Не указан')
     phone = models.CharField(max_length=255, blank=True, null=True, db_comment='Телефоны')

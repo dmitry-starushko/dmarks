@@ -22,7 +22,7 @@ admin.site.register(DmUser, DmUserAdmin)
 
 @admin.register(Market)
 class MarketAdmin(admin.ModelAdmin):
-    list_display = ['id', 'market_name', 'additional_name']
+    list_display = ['id', 'market_name', 'additional_name', 'market_type']
     ordering = ['market_name', 'additional_name']
 
 
