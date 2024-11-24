@@ -40,15 +40,9 @@ class MkImageAdmin(admin.ModelAdmin):
     ordering = ['market']
 
 
-@admin.register(GlobalConfig)
-class GlobalConfigAdmin(admin.ModelAdmin):
-    list_display = ['param_name', 'param_data', 'descr']
-    ordering = ['param_name']
-
-
 @admin.register(Booking)
 class BookingAdmin(admin.ModelAdmin):
-    list_display = ['date_transaction', 'booked_by',  'booking_status', 'booking_status_case', 'booking_files', 'renter_id', 'location_number', 'scheme', 'descr']
+    list_display = ['date_transaction', 'booked_by',  'booking_status', 'booking_status_case', 'booking_files', 'descr']
     list_filter = ['booked_by']
     readonly_fields = ['trade_place']
     ordering = ['booked_by']
