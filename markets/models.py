@@ -73,13 +73,13 @@ class DmUser(AbstractUser):
 
 
 class Booking(models.Model):
-    trade_place = models.ForeignKey('TradePlace', models.DO_NOTHING, related_name="bookings", db_comment='Идентификатор торгового места')
+    trade_place = models.ForeignKey('TradePlace', models.CASCADE, related_name="bookings", db_comment='Идентификатор торгового места')
     descr = models.TextField(blank=True, null=True, db_comment='Описание')
     date_transaction = models.DateTimeField(db_comment='Дата создания записи')
     booking_status = models.TextField(db_comment='Статус бронирования')  # This field type is a guess.
     booking_status_case = models.TextField(blank=True, null=True, db_comment='Причина изменения статуса (например, причина отказа)')
     booking_files = models.JSONField(blank=True, null=True, db_comment='Файлы для бронирования')
-    booked_by = models.ForeignKey(DmUser, models.CASCADE, null=True, blank=True, related_name="bookings", db_column='ng_user', db_comment='Кто забронировал (NULL для старых броней)')
+    booked_by = models.ForeignKey(DmUser, models.CASCADE, null=True, blank=True, related_name="bookings", db_column='ng_user', db_comment='Кто забронировал')
 
     class Meta:
         managed = True
