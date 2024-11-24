@@ -325,15 +325,15 @@ class ImportTradePlace(TpMixin, models.Model):
 
 
 class Locality(models.Model):
-    locality_name = models.CharField(db_comment='Наименование населенного пункта')
-    locality_type = models.ForeignKey('LocalityType', models.DO_NOTHING, blank=True, null=True, db_comment='Тип населенного пункта')
-    descr = models.TextField(blank=True, null=True, db_comment='Описание')
-    parent = models.ForeignKey('self', models.DO_NOTHING, blank=True, null=True, db_comment='Родительская запись. Иерархическое подчинение')
-
     @classmethod
     def default_pk(cls):
         loc, flag = cls.objects.get_or_create(locality_name="Не указано")
         return loc.pk
+
+    locality_name = models.CharField(db_comment='Наименование населенного пункта')
+    locality_type = models.ForeignKey('LocalityType', models.DO_NOTHING, blank=True, null=True, db_comment='Тип населенного пункта')
+    descr = models.TextField(blank=True, null=True, db_comment='Описание')
+    parent = models.ForeignKey('self', models.SET_NULL, blank=True, null=True, db_comment='Родительская запись. Иерархическое подчинение')
 
     class Meta:
         managed = True
@@ -437,8 +437,8 @@ class Market(MkMixin, models.Model):
     info_constitutive_files = models.JSONField(blank=True, null=True, db_comment='Копии правоустанавливающих документов дочернего предприятия - файлы')
     info_other_docs = models.TextField(blank=True, null=True, db_comment='Информация о других документах')
     info_other_docs_files = models.JSONField(blank=True, null=True, db_comment='Другие документы - файлы')
-    geo_city = models.ForeignKey(Locality, models.DO_NOTHING, blank=False, null=False, db_comment='Город - id', default=Locality.default_pk)
-    geo_district = models.ForeignKey(Locality, models.DO_NOTHING, related_name='markets_geo_district_set', blank=False, null=False, db_comment='Район - id', default=Locality.default_pk)
+    geo_city = models.ForeignKey(Locality, models.SET_DEFAULT, blank=False, null=False, db_comment='Город - id', default=Locality.default_pk)
+    geo_district = models.ForeignKey(Locality, models.SET_DEFAULT, related_name='markets_geo_district_set', blank=False, null=False, db_comment='Район - id', default=Locality.default_pk)
     geo_street_type = models.ForeignKey('StreetType', models.DO_NOTHING, blank=True, null=True, db_comment='Тип улицы - id')
     geo_street = models.TextField(blank=False, null=False, db_comment='Наименование улицы', default='Не указана')
     geo_house = models.CharField(max_length=50, blank=False, null=False, db_comment='Дом', default='Не указан')
