@@ -458,10 +458,6 @@ class Market(MkMixin, models.Model):
     geo_full_address = models.CharField(blank=True, null=True, db_comment='Полный адрес через запятую')
     images: models.QuerySet
 
-    @classmethod
-    def default_pk(cls):
-        return cls.objects.first().pk
-
     @property
     def image(self):
         first_img = self.images.first()
