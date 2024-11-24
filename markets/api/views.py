@@ -234,11 +234,9 @@ class PV_FilteredMarketsView(APIView):
 
     @on_exception_returns(HttpResponseBadRequest)
     def post(self, request):
-        print(request.data)
         markets = filter_markets(request.data['search_text'])
         context = OrderedDict()
         for m in markets:
-            print(m.market_name, m.additional_name, m.geo_city.locality_name, m.geo_district.locality_name)
             r = context.setdefault(m.geo_city.locality_name, OrderedDict()).setdefault(m.geo_district.locality_name, OrderedDict())
             r[m.mk_full_name] = {
                 'address': f'{m.geo_street_type.type_name} {m.geo_street}{', ' if m.geo_house else ''}{m.geo_house}',
@@ -248,9 +246,6 @@ class PV_FilteredMarketsView(APIView):
                 'link_outlets': reverse('markets:market_details', kwargs={'mpk': m.id, 'show': 'outlets'}),
                 'link_scheme': reverse('markets:market_details', kwargs={'mpk': m.id, 'show': 'scheme'}),
             }
-            print(reverse('markets:index'))
-
-        print(context)
         return render(request, 'markets/partials/filtered-markets.html', {'context': context})
 
 
