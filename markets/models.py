@@ -97,6 +97,11 @@ class ContractStatusType(models.Model):
     type_name = models.CharField(db_comment='Наименование типа специализации торгового места')
     descr = models.TextField(blank=True, null=True, db_comment='Описание')
 
+    @classmethod
+    def default_pk(cls):
+        item, _ = cls.objects.get_or_create(type_name="Не указано")
+        return item.pk
+
     class Meta:
         managed = True
         ordering = ['type_name']
@@ -157,6 +162,11 @@ class MarketFireProtection(models.Model):
     fp_name = models.CharField(db_comment='Наименование противопожарной системы')
     descr = models.TextField(blank=True, null=True, db_comment='Описание')
 
+    @classmethod
+    def default_pk(cls):
+        item, _ = cls.objects.get_or_create(fp_name="Не указано")
+        return item.pk
+
     class Meta:
         managed = True
         ordering = ['fp_name']
@@ -172,6 +182,11 @@ class MarketFireProtection(models.Model):
 class MarketProfitability(models.Model):
     profitability_name = models.CharField(db_comment='Наименование категории рентабельности рынка')
     descr = models.TextField(blank=True, null=True, db_comment='Описание')
+
+    @classmethod
+    def default_pk(cls):
+        item, _ = cls.objects.get_or_create(profitability_name="Не указано")
+        return item.pk
 
     class Meta:
         managed = True
@@ -189,6 +204,11 @@ class MarketType(models.Model):
     type_name = models.CharField(db_comment='Наименование типа рынка')
     descr = models.TextField(blank=True, null=True, db_comment='Описание')
 
+    @classmethod
+    def default_pk(cls):
+        item, _ = cls.objects.get_or_create(type_name="Не указано")
+        return item.pk
+
     class Meta:
         managed = True
         ordering = ['type_name']
@@ -201,12 +221,33 @@ class MarketType(models.Model):
         return f'{self.type_name}'
 
 
+class RenterType(models.Model):
+    type_name = models.CharField(db_comment='Наименование типа арендатора')
+    descr = models.TextField(blank=True, null=True, db_comment='Описание')
+
+    @classmethod
+    def default_pk(cls):
+        item, _ = cls.objects.get_or_create(type_name="Не указано")
+        return item.pk
+
+    class Meta:
+        managed = True
+        ordering = ['type_name']
+        db_table = 'renter_type'
+        db_table_comment = 'Тип арендатора'
+        verbose_name = "Тип арендатора"
+        verbose_name_plural = "Типы арендаторов"
+
+    def __str__(self):
+        return f'{self.type_name}'
+
+
 class Renter(models.Model):
     renter_name = models.CharField(db_comment='Наименование арендатора')
     legal_doc_info = models.CharField(blank=True, null=True, db_comment='Информация об уставных документах')
     legal_doc_files = models.JSONField(blank=True, null=True, db_comment='Уставные документы - файлы')
     descr = models.TextField(blank=True, null=True, db_comment='Описание')
-    renter_type = models.ForeignKey('RenterType', models.DO_NOTHING, db_comment='Тип арендатора')
+    renter_type = models.ForeignKey(RenterType, models.DO_NOTHING, db_comment='Тип арендатора')
     renter_phone = models.DecimalField(max_digits=11, decimal_places=0, blank=True, null=True, db_comment='Номер телефона')
 
     class Meta:
@@ -221,25 +262,14 @@ class Renter(models.Model):
         return f'{self.renter_name}'
 
 
-class RenterType(models.Model):
-    type_name = models.CharField(db_comment='Наименование типа арендатора')
-    descr = models.TextField(blank=True, null=True, db_comment='Описание')
-
-    class Meta:
-        managed = True
-        ordering = ['type_name']
-        db_table = 'renter_type'
-        db_table_comment = 'Тип арендатора'
-        verbose_name = "Тип арендатора"
-        verbose_name_plural = "Типы арендаторов"
-
-    def __str__(self):
-        return f'{self.type_name}'
-
-
 class StreetType(models.Model):
     type_name = models.CharField(db_comment='Наименование типа улиц (сокращенное)')
     descr = models.TextField(blank=True, null=True, db_comment='Описание (полное наименование)')
+
+    @classmethod
+    def default_pk(cls):
+        item, _ = cls.objects.get_or_create(type_name="Не указано")
+        return item.pk
 
     class Meta:
         managed = True
@@ -280,6 +310,11 @@ class TradePlaceType(models.Model):
     wall_color = models.CharField(max_length=8, default='0xffffff', validators=[Validators.hex], db_comment='Цвет стен ТМ в формате 0xffffff, для 3D')
     roof_color = models.CharField(max_length=8, default='0xffffff', validators=[Validators.hex], db_comment='Цвет крыш ТМ в формате 0xffffff, для 3D')
 
+    @classmethod
+    def default_pk(cls):
+        item, _ = cls.objects.get_or_create(type_name="Не указано")
+        return item.pk
+
     class Meta:
         managed = True
         ordering = ['type_name']
@@ -304,6 +339,11 @@ class TradeSector(models.Model):
     sector_name = models.CharField(db_comment='Наименование сектора рынка')
     descr = models.TextField(blank=True, null=True, db_comment='Описание')
 
+    @classmethod
+    def default_pk(cls):
+        item, _ = cls.objects.get_or_create(sector_name="Не указано")
+        return item.pk
+
     class Meta:
         managed = True
         ordering = ['sector_name']
@@ -322,6 +362,11 @@ class TradeSpecType(models.Model):
     color = models.CharField(max_length=7, blank=True, null=True, db_comment='Цвет в формате #ffffff')
     wall_color = models.CharField(max_length=8, default='0xffffff', validators=[Validators.hex], db_comment='Цвет стен ТМ в формате 0xffffff, для 3D')
     roof_color = models.CharField(max_length=8, default='0xffffff', validators=[Validators.hex], db_comment='Цвет крыш ТМ в формате 0xffffff, для 3D')
+
+    @classmethod
+    def default_pk(cls):
+        item, _ = cls.objects.get_or_create(type_name="Не указано")
+        return item.pk
 
     class Meta:
         managed = True
@@ -347,6 +392,11 @@ class TradeType(models.Model):
     type_name = models.CharField(db_comment='Наименование типа торгового места')
     type_num = models.SmallIntegerField(blank=True, null=True, db_comment='Код типа объекта')
     descr = models.TextField(blank=True, null=True, db_comment='Описание')
+
+    @classmethod
+    def default_pk(cls):
+        item, _ = cls.objects.get_or_create(type_name="Не указано")
+        return item.pk
 
     class Meta:
         managed = True
