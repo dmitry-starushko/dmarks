@@ -481,6 +481,7 @@ class TradePlace(TpMixin, models.Model):
     meas_area = models.FloatField(blank=True, null=True, db_comment='Площадь места')
     meas_length = models.FloatField(blank=True, null=True, db_comment='Длина места')
     meas_height = models.FloatField(blank=True, null=True, db_comment='Высота места')
+    meas_width = models.FloatField(blank=True, null=True, db_comment='Ширина места')
     impr_electricity = models.BooleanField(blank=True, null=True, db_comment='Наличие электричества')
     impr_heat_supply = models.BooleanField(blank=True, null=True, db_comment='Наличие теплоснабжения')
     impr_air_conditioning = models.BooleanField(blank=True, null=True, db_comment='Наличие кондиционирования')
@@ -498,8 +499,8 @@ class TradePlace(TpMixin, models.Model):
     trade_spec_type_id_act = models.ForeignKey('TradeSpecType', models.SET_DEFAULT, default=TradeSpecType.default_pk, db_column='trade_spec_type_id_act', related_name='tradeplace_trade_spec_type_id_act_set', db_comment='Специализация торгового места (фактическая)')
     street_vending = models.BooleanField(blank=True, null=True, db_comment='Возможность выносной торговли')
     contract_rent = models.ForeignKey(TradeContract, models.DO_NOTHING, blank=True, null=True, db_comment='Информация о договорах аренды')  # TODO kill wrong field
-    receiv_state = models.BooleanField(blank=True, null=True, db_comment='Наличие дебиторской задолженности на текущий месяц')
-    receiv_amount = models.DecimalField(max_digits=12, decimal_places=2, blank=True, null=True, db_comment='Размер дебиторской задолженности')
+    receiv_state = models.BooleanField(blank=True, null=True, db_comment='Наличие дебиторской задолженности на текущий месяц')  # TODO kill wrong field
+    receiv_amount = models.DecimalField(max_digits=12, decimal_places=2, blank=True, null=True, db_comment='Размер дебиторской задолженности')  # TODO kill wrong field
     pay_electricity = models.DecimalField(max_digits=12, decimal_places=2, blank=True, null=True, db_comment='Оплата электричества')
     pay_heat_supply = models.DecimalField(max_digits=12, decimal_places=2, blank=True, null=True, db_column='pay_heat_supplay', db_comment='Оплата услуг теплоснабжения')
     pay_air_conditioning = models.DecimalField(max_digits=12, decimal_places=2, blank=True, null=True, db_comment='Оплата за кондиционер')
@@ -516,7 +517,6 @@ class TradePlace(TpMixin, models.Model):
     location_number = models.CharField(unique=True, blank=True, null=True, validators=[Validators.outlet_number], db_comment='Номер торгового места')
     renter = models.ForeignKey(Renter, models.DO_NOTHING, blank=True, null=True, db_comment='id - текущий арендатор')  # TODO kill wrong field
     additional = models.JSONField(blank=True, null=True, db_comment='Дополнительные поля')
-    meas_width = models.FloatField(blank=True, null=True, db_comment='Ширина места')
     internal_id = models.CharField(blank=True, null=True, db_comment='Текстовый код')
     speciality_recommend = models.JSONField(blank=True, null=True, db_comment='Специализация торгового места (рекомендованная)')
     speciality_actual = models.JSONField(blank=True, null=True, db_comment='Специализация торгового места (фактическая)')
@@ -539,12 +539,12 @@ class TradePlace(TpMixin, models.Model):
 
 
 class SvgSchema(models.Model):
+    market = models.ForeignKey(Market, on_delete=models.CASCADE, related_name="schemes", db_comment='id рынка')
+    floor = models.CharField(blank=True, null=True, db_comment='Этаж схемы объекта')
     order = models.IntegerField(blank=False, null=False, default=0, db_comment='Поле для упорядочивания схем')
     svg_schema = models.TextField(blank=True, null=True, db_comment='svg объекта')
-    market = models.ForeignKey(Market, on_delete=models.CASCADE, related_name="schemes", db_comment='id рынка')  # TODO models.CASCADE
-    descr = models.TextField(blank=True, null=True, db_comment='Описание')
-    source_file = models.CharField(blank=True, null=True, db_comment='Имя загруженного файла')
-    floor = models.CharField(blank=True, null=True, db_comment='Этаж схемы объекта')
+    descr = models.TextField(blank=True, null=True, db_comment='Описание')  # TODO kill unused field
+    source_file = models.CharField(blank=True, null=True, db_comment='Имя загруженного файла')  # TODO kill unused field
 
     class Meta:
         managed = True
