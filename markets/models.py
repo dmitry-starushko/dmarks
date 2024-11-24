@@ -110,33 +110,15 @@ class ContractStatusType(models.Model):
         return f'{self.type_name}'
 
 
-class Locality(models.Model):
-    @classmethod
-    def default_pk(cls):
-        loc, flag = cls.objects.get_or_create(locality_name="Не указано")
-        return loc.pk
-
-    locality_name = models.CharField(db_comment='Наименование населенного пункта')
-    locality_type = models.ForeignKey('LocalityType', models.DO_NOTHING, blank=True, null=True, db_comment='Тип населенного пункта')
-    descr = models.TextField(blank=True, null=True, db_comment='Описание')
-    parent = models.ForeignKey('self', models.SET_NULL, blank=True, null=True, db_comment='Родительская запись. Иерархическое подчинение')
-
-    class Meta:
-        managed = True
-        ordering = ['locality_name']
-        db_table = 'locality'
-        db_table_comment = 'Населенные пункты'
-        verbose_name = "Локация"
-        verbose_name_plural = "Локации"
-
-    def __str__(self):
-        return f'{self.locality_name}'
-
-
 class LocalityType(models.Model):
     id = models.SmallAutoField(primary_key=True)
     type_name = models.CharField(db_comment='Наименование типа')
     descr = models.TextField(blank=True, null=True, db_comment='Описание')
+
+    @classmethod
+    def default_pk(cls):
+        item, _ = cls.objects.get_or_create(type_name="Не указано")
+        return item.pk
 
     class Meta:
         managed = True
@@ -148,6 +130,29 @@ class LocalityType(models.Model):
 
     def __str__(self):
         return f'{self.type_name}'
+
+
+class Locality(models.Model):
+    locality_name = models.CharField(db_comment='Наименование населенного пункта')
+    locality_type = models.ForeignKey(LocalityType, models.SET_DEFAULT, blank=False, null=False, default=LocalityType.default_pk, db_comment='Тип населенного пункта')
+    descr = models.TextField(blank=True, null=True, db_comment='Описание')
+    parent = models.ForeignKey('self', models.SET_NULL, blank=True, null=True, db_comment='Родительская запись. Иерархическое подчинение')
+
+    @classmethod
+    def default_pk(cls):
+        item, _ = cls.objects.get_or_create(locality_name="Не указано")
+        return item.pk
+
+    class Meta:
+        managed = True
+        ordering = ['locality_name']
+        db_table = 'locality'
+        db_table_comment = 'Населенные пункты'
+        verbose_name = "Локация"
+        verbose_name_plural = "Локации"
+
+    def __str__(self):
+        return f'{self.locality_name}'
 
 
 class MarketFireProtection(models.Model):
