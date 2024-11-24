@@ -307,7 +307,7 @@ class TradeContract(models.Model):
 class TradePlaceType(models.Model):
     type_name = models.CharField(db_comment='Наименование типа занятости торгового места')
     descr = models.TextField(blank=True, null=True, db_comment='Опиcание')
-    color = models.CharField(max_length=7, blank=True, null=True, validators=[Validators.css_color], db_comment='Цвет в формате #ffffff')
+    color = models.CharField(max_length=7, default='#ffffff', validators=[Validators.css_color], db_comment='Цвет в формате #ffffff')
     wall_color = models.CharField(max_length=8, default='0xffffff', validators=[Validators.hex], db_comment='Цвет стен ТМ в формате 0xffffff, для 3D')
     roof_color = models.CharField(max_length=8, default='0xffffff', validators=[Validators.hex], db_comment='Цвет крыш ТМ в формате 0xffffff, для 3D')
 
@@ -360,7 +360,7 @@ class TradeSector(models.Model):
 class TradeSpecType(models.Model):
     type_name = models.CharField(db_comment='Наименование типа специализации торгового места')
     descr = models.TextField(blank=True, null=True, db_comment='Описание')
-    color = models.CharField(max_length=7, blank=True, null=True, db_comment='Цвет в формате #ffffff')
+    color = models.CharField(max_length=7, default='#ffffff', validators=[Validators.css_color], db_comment='Цвет в формате #ffffff')
     wall_color = models.CharField(max_length=8, default='0xffffff', validators=[Validators.hex], db_comment='Цвет стен ТМ в формате 0xffffff, для 3D')
     roof_color = models.CharField(max_length=8, default='0xffffff', validators=[Validators.hex], db_comment='Цвет крыш ТМ в формате 0xffffff, для 3D')
 
