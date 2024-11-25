@@ -65,10 +65,6 @@ class DmUser(AbstractUser):
     REQUIRED_FIELDS = ["first_name", "last_name", "email"]
     objects = DmUserManager()
 
-    @classmethod
-    def default_pk(cls):
-        return cls.objects.first().pk
-
     def __str__(self):
         return self.email
 
@@ -98,7 +94,7 @@ class Booking(models.Model):
 
 
 class ContractStatusType(models.Model):
-    type_name = models.CharField(db_comment='Наименование типа специализации торгового места')
+    type_name = models.CharField(unique=True, db_comment='Наименование типа специализации торгового места')
     descr = models.TextField(blank=True, null=True, db_comment='Описание')
 
     @classmethod
@@ -119,7 +115,7 @@ class ContractStatusType(models.Model):
 
 
 class LocalityType(models.Model):
-    type_name = models.CharField(db_comment='Наименование типа')
+    type_name = models.CharField(unique=True, db_comment='Наименование типа')
     descr = models.TextField(blank=True, null=True, db_comment='Описание')
 
     @classmethod
@@ -163,7 +159,7 @@ class Locality(models.Model):
 
 
 class MarketFireProtection(models.Model):
-    fp_name = models.CharField(db_comment='Наименование противопожарной системы')
+    fp_name = models.CharField(unique=True, db_comment='Наименование противопожарной системы')
     descr = models.TextField(blank=True, null=True, db_comment='Описание')
 
     @classmethod
@@ -184,7 +180,7 @@ class MarketFireProtection(models.Model):
 
 
 class MarketProfitability(models.Model):
-    profitability_name = models.CharField(db_comment='Наименование категории рентабельности рынка')
+    profitability_name = models.CharField(unique=True, db_comment='Наименование категории рентабельности рынка')
     descr = models.TextField(blank=True, null=True, db_comment='Описание')
 
     @classmethod
@@ -205,7 +201,7 @@ class MarketProfitability(models.Model):
 
 
 class MarketType(models.Model):
-    type_name = models.CharField(db_comment='Наименование типа рынка')
+    type_name = models.CharField(unique=True, db_comment='Наименование типа рынка')
     descr = models.TextField(blank=True, null=True, db_comment='Описание')
 
     @classmethod
@@ -226,7 +222,7 @@ class MarketType(models.Model):
 
 
 class RenterType(models.Model):
-    type_name = models.CharField(db_comment='Наименование типа арендатора')
+    type_name = models.CharField(unique=True, db_comment='Наименование типа арендатора')
     descr = models.TextField(blank=True, null=True, db_comment='Описание')
 
     @classmethod
@@ -267,7 +263,7 @@ class Renter(models.Model):
 
 
 class StreetType(models.Model):
-    type_name = models.CharField(db_comment='Наименование типа улиц (сокращенное)')
+    type_name = models.CharField(unique=True, db_comment='Наименование типа улиц (сокращенное)')
     descr = models.TextField(blank=True, null=True, db_comment='Описание (полное наименование)')
 
     @classmethod
@@ -308,7 +304,7 @@ class TradeContract(models.Model):
 
 
 class TradePlaceType(models.Model):
-    type_name = models.CharField(db_comment='Наименование типа занятости торгового места')
+    type_name = models.CharField(unique=True, db_comment='Наименование типа занятости торгового места')
     color = models.CharField(max_length=7, default='#ffffff', validators=[Validators.css_color], db_comment='Цвет в формате #ffffff')
     wall_color = models.CharField(max_length=8, default='0xffffff', validators=[Validators.hex], db_comment='Цвет стен ТМ в формате 0xffffff, для 3D')
     roof_color = models.CharField(max_length=8, default='0xffffff', validators=[Validators.hex], db_comment='Цвет крыш ТМ в формате 0xffffff, для 3D')
@@ -340,7 +336,7 @@ class TradePlaceType(models.Model):
 
 
 class TradeSector(models.Model):
-    sector_name = models.CharField(db_comment='Наименование сектора рынка')
+    sector_name = models.CharField(unique=True, db_comment='Наименование сектора рынка')
     descr = models.TextField(blank=True, null=True, db_comment='Описание')
 
     @classmethod
@@ -361,7 +357,7 @@ class TradeSector(models.Model):
 
 
 class TradeSpecType(models.Model):
-    type_name = models.CharField(db_comment='Наименование типа специализации торгового места')
+    type_name = models.CharField(unique=True, db_comment='Наименование типа специализации торгового места')
     color = models.CharField(max_length=7, default='#ffffff', validators=[Validators.css_color], db_comment='Цвет в формате #ffffff')
     wall_color = models.CharField(max_length=8, default='0xffffff', validators=[Validators.hex], db_comment='Цвет стен ТМ в формате 0xffffff, для 3D')
     roof_color = models.CharField(max_length=8, default='0xffffff', validators=[Validators.hex], db_comment='Цвет крыш ТМ в формате 0xffffff, для 3D')
@@ -393,7 +389,7 @@ class TradeSpecType(models.Model):
 
 
 class TradeType(models.Model):
-    type_name = models.CharField(db_comment='Наименование типа торгового места')
+    type_name = models.CharField(unique=True, db_comment='Наименование типа торгового места')
     type_num = models.SmallIntegerField(blank=True, null=True, db_comment='Код типа объекта')
     descr = models.TextField(blank=True, null=True, db_comment='Описание')
 
