@@ -78,12 +78,12 @@ class DmUser(AbstractUser):
 
 class Booking(models.Model):
     trade_place = models.ForeignKey('TradePlace', models.CASCADE, related_name="bookings", db_comment='Идентификатор торгового места')
-    descr = models.TextField(blank=True, null=True, db_comment='Описание')
+    booked_by = models.ForeignKey(DmUser, models.CASCADE, related_name="bookings", db_column='ng_user', db_comment='Кто забронировал')
     date_transaction = models.DateTimeField(db_comment='Дата создания записи')
     booking_status = models.TextField(db_comment='Статус бронирования')  # This field type is a guess.
     booking_status_case = models.TextField(blank=True, null=True, db_comment='Причина изменения статуса (например, причина отказа)')
     booking_files = models.JSONField(blank=True, null=True, db_comment='Файлы для бронирования')
-    booked_by = models.ForeignKey(DmUser, models.CASCADE, related_name="bookings", db_column='ng_user', db_comment='Кто забронировал')
+    descr = models.TextField(blank=True, null=True, db_comment='Описание')
 
     class Meta:
         managed = True
@@ -141,9 +141,9 @@ class LocalityType(models.Model):
 
 class Locality(models.Model):
     locality_name = models.CharField(db_comment='Наименование населенного пункта')
-    locality_type = models.ForeignKey(LocalityType, models.SET_DEFAULT, blank=False, null=False, default=LocalityType.default_pk, db_comment='Тип населенного пункта')
-    descr = models.TextField(blank=True, null=True, db_comment='Описание')
+    locality_type = models.ForeignKey(LocalityType, models.SET_DEFAULT, default=LocalityType.default_pk, db_comment='Тип населенного пункта')
     parent = models.ForeignKey('self', models.SET_NULL, blank=True, null=True, db_comment='Родительская запись. Иерархическое подчинение')
+    descr = models.TextField(blank=True, null=True, db_comment='Описание')
 
     @classmethod
     def default_pk(cls):
@@ -309,10 +309,10 @@ class TradeContract(models.Model):
 
 class TradePlaceType(models.Model):
     type_name = models.CharField(db_comment='Наименование типа занятости торгового места')
-    descr = models.TextField(blank=True, null=True, db_comment='Опиcание')
     color = models.CharField(max_length=7, default='#ffffff', validators=[Validators.css_color], db_comment='Цвет в формате #ffffff')
     wall_color = models.CharField(max_length=8, default='0xffffff', validators=[Validators.hex], db_comment='Цвет стен ТМ в формате 0xffffff, для 3D')
     roof_color = models.CharField(max_length=8, default='0xffffff', validators=[Validators.hex], db_comment='Цвет крыш ТМ в формате 0xffffff, для 3D')
+    descr = models.TextField(blank=True, null=True, db_comment='Опиcание')
 
     @classmethod
     def default_pk(cls):
@@ -362,10 +362,10 @@ class TradeSector(models.Model):
 
 class TradeSpecType(models.Model):
     type_name = models.CharField(db_comment='Наименование типа специализации торгового места')
-    descr = models.TextField(blank=True, null=True, db_comment='Описание')
     color = models.CharField(max_length=7, default='#ffffff', validators=[Validators.css_color], db_comment='Цвет в формате #ffffff')
     wall_color = models.CharField(max_length=8, default='0xffffff', validators=[Validators.hex], db_comment='Цвет стен ТМ в формате 0xffffff, для 3D')
     roof_color = models.CharField(max_length=8, default='0xffffff', validators=[Validators.hex], db_comment='Цвет крыш ТМ в формате 0xffffff, для 3D')
+    descr = models.TextField(blank=True, null=True, db_comment='Описание')
 
     @classmethod
     def default_pk(cls):
@@ -546,8 +546,8 @@ class SvgSchema(models.Model):
     floor = models.CharField(blank=True, null=True, db_comment='Этаж схемы объекта')
     order = models.IntegerField(blank=False, null=False, default=0, db_comment='Поле для упорядочивания схем')
     svg_schema = models.TextField(blank=True, null=True, db_comment='svg объекта')
-    descr = models.TextField(blank=True, null=True, db_comment='Описание')  # TODO kill unused field
     source_file = models.CharField(blank=True, null=True, db_comment='Имя загруженного файла')  # TODO kill unused field
+    descr = models.TextField(blank=True, null=True, db_comment='Описание')  # TODO kill unused field
 
     class Meta:
         managed = True
