@@ -78,27 +78,6 @@ class DmUser(AbstractUser):
 # -- Legacy data ----------------------------------------------------------------------------------
 
 
-class ContractStatusType(models.Model):
-    type_name = models.CharField(unique=True, db_comment='Наименование типа специализации торгового места')
-    descr = models.TextField(blank=True, null=True, db_comment='Описание')
-
-    @classmethod
-    def default_pk(cls):
-        item, _ = cls.objects.get_or_create(type_name="Не указано")
-        return item.pk
-
-    class Meta:
-        managed = True
-        ordering = ['type_name']
-        db_table = 'contract_status_type'
-        db_table_comment = 'Типы статусов договоров'
-        verbose_name = "Тип статуса договора"
-        verbose_name_plural = "Типы статуса договора"
-
-    def __str__(self):
-        return f'{self.type_name}'
-
-
 class LocalityType(models.Model):
     type_name = models.CharField(unique=True, db_comment='Наименование типа')
     descr = models.TextField(blank=True, null=True, db_comment='Описание')
@@ -268,26 +247,6 @@ class StreetType(models.Model):
         return f'{self.type_name}'
 
 
-class TradeContract(models.Model):
-    date_start = models.DateField(blank=True, null=True, db_comment='Дата начала договора')
-    date_end = models.DateField(blank=True, null=True, db_comment='Дата окончания договора')
-    contract_status_type = models.ForeignKey(ContractStatusType, models.SET_DEFAULT, default=ContractStatusType.default_pk, db_comment='id статус договора')
-    copy_info = models.CharField(blank=True, null=True, db_comment='Информация о копии договора')
-    copy_files = models.JSONField(blank=True, null=True, db_comment='Файлы договора')
-    active_contract = models.BooleanField(blank=True, null=True, db_comment='Наличие договора аренды')
-    contract_num = models.CharField(blank=True, null=True, db_comment='Номер договора')
-
-    class Meta:
-        managed = True
-        db_table = 'trade_contract'
-        db_table_comment = 'Информация о договорах аренды'
-        verbose_name = "Договор аренды"
-        verbose_name_plural = "Договоры аренды"
-
-    def __str__(self):
-        return f'Контракт {self.id}'
-
-
 class TradePlaceType(models.Model):
     type_name = models.CharField(unique=True, db_comment='Наименование типа занятости торгового места')
     color = models.CharField(max_length=7, default='#ffffff', validators=[Validators.css_color], db_comment='Цвет в формате #ffffff')
@@ -425,7 +384,6 @@ class Market(MkMixin, models.Model):
     schedule = models.TextField(default='Не указано', db_column='shedule', db_comment='График работы')
     ads = models.TextField(default='Не указано', db_comment='Реклама')
     images: models.QuerySet
-
 
     @property
     def image(self):
