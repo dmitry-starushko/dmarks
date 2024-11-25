@@ -226,6 +226,9 @@ class TradePlaceType(models.Model):
         verbose_name = "Тип занятости ТМ"
         verbose_name_plural = "Типы занятости ТМ"
 
+    def __str__(self):
+        return f'{self.type_name}'
+
     @property
     def wall_color_css(self):
         return f'#{hex(int(self.wall_color, 16))[2:]}'
@@ -234,12 +237,12 @@ class TradePlaceType(models.Model):
     def roof_color_css(self):
         return f'#{hex(int(self.roof_color, 16))[2:]}'
 
-    def __str__(self):
-        return f'{self.type_name}'
-
 
 class TradeSector(models.Model):
     sector_name = models.CharField(unique=True, db_comment='Наименование сектора рынка')
+    color = models.CharField(max_length=7, default='#ffffff', validators=[Validators.css_color], db_comment='Цвет в формате #ffffff')
+    wall_color = models.CharField(max_length=8, default='0xffffff', validators=[Validators.hex], db_comment='Цвет стен ТМ в формате 0xffffff, для 3D')
+    roof_color = models.CharField(max_length=8, default='0xffffff', validators=[Validators.hex], db_comment='Цвет крыш ТМ в формате 0xffffff, для 3D')
     descr = models.TextField(blank=True, null=True, db_comment='Описание')
 
     @classmethod
@@ -257,6 +260,14 @@ class TradeSector(models.Model):
 
     def __str__(self):
         return f'{self.sector_name}'
+
+    @property
+    def wall_color_css(self):
+        return f'#{hex(int(self.wall_color, 16))[2:]}'
+
+    @property
+    def roof_color_css(self):
+        return f'#{hex(int(self.roof_color, 16))[2:]}'
 
 
 class TradeSpecType(models.Model):
@@ -361,6 +372,25 @@ class Market(MkMixin, models.Model):
         return f'{self.market_name}:{self.additional_name}'
 
 
+class SvgSchema(models.Model):
+    market = models.ForeignKey(Market, on_delete=models.CASCADE, related_name="schemes", db_comment='id рынка')
+    floor = models.CharField(blank=True, null=True, db_comment='Этаж схемы объекта')
+    order = models.IntegerField(blank=False, null=False, default=0, db_comment='Поле для упорядочивания схем')
+    svg_schema = models.TextField(blank=True, null=True, db_comment='svg объекта')
+    source_file = models.CharField(blank=True, null=True, db_comment='Имя загруженного файла')  # TODO kill unused field
+    descr = models.TextField(blank=True, null=True, db_comment='Описание')  # TODO kill unused field
+
+    class Meta:
+        managed = True
+        ordering = ['order']
+        db_table = 'svg_schema'
+        verbose_name = "Схема"
+        verbose_name_plural = "Схемы"
+
+    def __str__(self):
+        return f'Схема #{self.id}, уровень "{self.floor}", рынок "{self.market}"'
+
+
 class TradePlace(TpMixin, models.Model):
     market = models.ForeignKey(Market, models.CASCADE, related_name="trade_places", db_comment='Уникальный идентификатор рынка\r\n')
     trade_type = models.ForeignKey(TradeType, models.SET_DEFAULT, default=TradeType.default_pk, db_comment='Тип торгового места')
@@ -368,10 +398,11 @@ class TradePlace(TpMixin, models.Model):
     trade_spec_type_id_act = models.ForeignKey(TradeSpecType, models.SET_DEFAULT, default=TradeSpecType.default_pk, db_column='trade_spec_type_id_act', related_name='tradeplace_trade_spec_type_id_act_set', db_comment='Специализация торгового места (фактическая)')
     trade_spec_type_id_rec = models.ForeignKey(TradeSpecType, models.SET_DEFAULT, default=TradeSpecType.default_pk, db_column='trade_spec_type_id_rec', db_comment='Специализация торгового места (рекомендованная)')
     location_sector = models.ForeignKey(TradeSector, models.SET_DEFAULT, default=TradeSector.default_pk, db_comment='id сектор торгового места')
+    scheme = models.ForeignKey(SvgSchema, related_name="outlets", on_delete=models.SET_NULL, null=True)
 
     location_number = models.CharField(unique=True, validators=[Validators.outlet_number], db_comment='Номер торгового места')
-    location_floor = models.SmallIntegerField(blank=True, null=True, db_comment='Этаж торгового места')
     location_row = models.CharField(default='Не указано', db_comment='Ряд торгового места')
+    location_floor = models.SmallIntegerField(blank=True, null=True, db_comment='Этаж торгового места')
 
     meas_area = models.FloatField(default=0.0, db_comment='Площадь места')
     meas_length = models.FloatField(default=0.0, db_comment='Длина места')
@@ -419,25 +450,6 @@ class TradePlace(TpMixin, models.Model):
         return f'ТМ #{self.id} <{self.location_number}>'
 
 
-class SvgSchema(models.Model):
-    market = models.ForeignKey(Market, on_delete=models.CASCADE, related_name="schemes", db_comment='id рынка')
-    floor = models.CharField(blank=True, null=True, db_comment='Этаж схемы объекта')
-    order = models.IntegerField(blank=False, null=False, default=0, db_comment='Поле для упорядочивания схем')
-    svg_schema = models.TextField(blank=True, null=True, db_comment='svg объекта')
-    source_file = models.CharField(blank=True, null=True, db_comment='Имя загруженного файла')  # TODO kill unused field
-    descr = models.TextField(blank=True, null=True, db_comment='Описание')  # TODO kill unused field
-
-    class Meta:
-        managed = True
-        ordering = ['order']
-        db_table = 'svg_schema'
-        verbose_name = "Схема"
-        verbose_name_plural = "Схемы"
-
-    def __str__(self):
-        return f'Схема #{self.id}, уровень "{self.floor}", рынок "{self.market}"'
-
-
 class Booking(models.Model):
     trade_place = models.ForeignKey(TradePlace, models.CASCADE, related_name="bookings", db_comment='Идентификатор торгового места')
     booked_by = models.ForeignKey(DmUser, models.CASCADE, related_name="bookings", db_column='ng_user', db_comment='Кто забронировал')
@@ -472,6 +484,30 @@ class MkImage(DbItem):  # -- Market images
 
     def __str__(self):
         return f'Фотография рынка #{self.market.id}'
+
+
+class MarketPhone(DbItem):  # -- Market phones
+    phone = models.CharField(unique=True, max_length=16)
+    market = models.ForeignKey(Market, related_name="phones", on_delete=models.CASCADE)
+
+    class Meta:
+        verbose_name = "Телефон"
+        verbose_name_plural = "Телефоны"
+
+    def __str__(self):
+        return f'{self.phone}'
+
+
+class MarketEmail(DbItem):  # -- Market phones
+    email = models.EmailField(unique=True, max_length=255)
+    market = models.ForeignKey(Market, related_name="emails", on_delete=models.CASCADE)
+
+    class Meta:
+        verbose_name = "EMail"
+        verbose_name_plural = "EMail"
+
+    def __str__(self):
+        return f'{self.email}'
 
 
 class Parameter(DbItem):  # -- NG Parameters
@@ -527,28 +563,28 @@ class StuffAction(DbItem):  # -- Stuff actions in admin panel
     def __str__(self):
         return f'{self.title}'
 
-# -- May be useful --------------------------------------------------------------------------------
+# -- May be useful - do not kill! -----------------------------------------------------------------
 
 
-class RenterType(models.Model):
-    type_name = models.CharField(unique=True, db_comment='Наименование типа арендатора')
-    descr = models.TextField(blank=True, null=True, db_comment='Описание')
-
-    @classmethod
-    def default_pk(cls):
-        item, _ = cls.objects.get_or_create(type_name="Не указано")
-        return item.pk
-
-    class Meta:
-        managed = True
-        ordering = ['type_name']
-        db_table = 'renter_type'
-        db_table_comment = 'Тип арендатора'
-        verbose_name = "Тип арендатора"
-        verbose_name_plural = "Типы арендаторов"
-
-    def __str__(self):
-        return f'{self.type_name}'
+# class RenterType(models.Model):
+#     type_name = models.CharField(unique=True, db_comment='Наименование типа арендатора')
+#     descr = models.TextField(blank=True, null=True, db_comment='Описание')
+#
+#     @classmethod
+#     def default_pk(cls):
+#         item, _ = cls.objects.get_or_create(type_name="Не указано")
+#         return item.pk
+#
+#     class Meta:
+#         managed = True
+#         ordering = ['type_name']
+#         db_table = 'renter_type'
+#         db_table_comment = 'Тип арендатора'
+#         verbose_name = "Тип арендатора"
+#         verbose_name_plural = "Типы арендаторов"
+#
+#     def __str__(self):
+#         return f'{self.type_name}'
 #
 #
 # class Renter(models.Model):
