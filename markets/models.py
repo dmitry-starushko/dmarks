@@ -1,3 +1,5 @@
+from decimal import Decimal
+
 from django.contrib.auth.base_user import BaseUserManager
 from django.contrib.auth.models import AbstractUser
 from django.core.validators import RegexValidator
@@ -23,6 +25,10 @@ class Validators:
     @staticmethod
     def outlet_number(value):
         return Validators._rxv("^[0-9]{9}[а-яё]{0,1}$", "Ожидается значение в формате 999999999[a]")(value)
+
+    @staticmethod
+    def market_id(value):
+        return Validators._rxv("^[0-9]{3}$", "Ожидается значение в формате 999999999[a]")(value)
 
 
 class DbItem(models.Model):
@@ -411,56 +417,36 @@ class TradeType(models.Model):
 
 
 class Market(MkMixin, models.Model):
-    market_id = models.CharField(max_length=3, blank=True, null=True, db_comment='Уникальный идентификатор рынка')
+    market_id = models.CharField(max_length=3, unique=True, validators=[Validators.outlet_number], db_comment='Уникальный идентификатор рынка')
     market_name = models.CharField(max_length=1000, db_comment='Наименование рынка')
-    additional_name = models.CharField(max_length=1000, blank=True, null=True, db_comment='Дополнительное наименование')
+    additional_name = models.CharField(max_length=1000, db_comment='Дополнительное наименование')
     market_type = models.ForeignKey(MarketType, models.SET_DEFAULT, default=MarketType.default_pk, db_comment='id - тип рынка')
 
     profitability = models.ForeignKey(MarketProfitability, models.SET_DEFAULT, default=MarketProfitability.default_pk, db_comment='id - категория рентабельности')
     infr_fire_protection = models.ForeignKey(MarketFireProtection, models.SET_DEFAULT, default=MarketFireProtection.default_pk, db_comment='id - противопожарные системы')
-    infr_parking = models.SmallIntegerField(blank=True, null=True, db_comment='Кол-во парковок')
-    infr_entrance = models.SmallIntegerField(blank=True, null=True, db_comment='Кол-во подъездов')
-    infr_restroom = models.SmallIntegerField(blank=True, null=True, db_comment='Кол-во санузлов')
-    infr_water_pipes = models.BooleanField(blank=True, null=True, db_comment='Наличие водопровода')
-    infr_sewerage = models.BooleanField(blank=True, null=True, db_comment='Наличие канализации')
-    infr_sewerage_type = models.CharField(max_length=1000, blank=True, null=True, db_comment='Тип канализации')
-    infr_storage = models.SmallIntegerField(blank=True, null=True, db_comment='Кол-во складских помещений')
+    infr_parking = models.SmallIntegerField(default=0, db_comment='Кол-во парковок')
+    infr_entrance = models.SmallIntegerField(default=0, db_comment='Кол-во подъездов')
+    infr_restroom = models.SmallIntegerField(default=0, db_comment='Кол-во санузлов')
+    infr_water_pipes = models.BooleanField(default=False, db_comment='Наличие водопровода')
+    infr_sewerage = models.BooleanField(default=False, db_comment='Наличие канализации')
+    infr_sewerage_type = models.CharField(max_length=1000, default='Не указано', db_comment='Тип канализации')
+    infr_storage = models.SmallIntegerField(default=0, db_comment='Кол-во складских помещений')
 
-    lat = models.FloatField(blank=True, null=True, db_comment='Широта - координата рынка')
-    lng = models.FloatField(blank=True, null=True, db_comment='Долгота - координата рынка')
+    lat = models.FloatField(default=0.0, db_comment='Широта - координата рынка')
+    lng = models.FloatField(default=0.0, db_comment='Долгота - координата рынка')
     geo_city = models.ForeignKey(Locality, models.SET_DEFAULT, default=Locality.default_pk, db_comment='Город - id')
     geo_district = models.ForeignKey(Locality, models.SET_DEFAULT, default=Locality.default_pk, related_name='markets_geo_district_set', db_comment='Район - id')
-    geo_street_type = models.ForeignKey(StreetType, models.SET_DEFAULT, default=StreetType.default_pk, blank=True, null=True, db_comment='Тип улицы - id')
-    geo_street = models.TextField(blank=False, null=False, db_comment='Наименование улицы', default='Не указана')
-    geo_house = models.CharField(max_length=50, blank=False, null=False, db_comment='Дом', default='Не указан')
-    geo_index = models.CharField(max_length=10, blank=True, null=True, db_comment='Индекс')
-    geo_full_address = models.CharField(blank=True, null=True, db_comment='Полный адрес через запятую')
-    market_square = models.FloatField(blank=True, null=True, db_comment='Общая площадь рынка')
+    geo_street_type = models.ForeignKey(StreetType, models.SET_DEFAULT, default=StreetType.default_pk, db_comment='Тип улицы - id')
+    geo_street = models.TextField(default='Не указано', db_comment='Наименование улицы')
+    geo_house = models.CharField(max_length=50, default='Не указано', db_comment='Дом')
+    geo_index = models.CharField(max_length=10, default='Не указано', db_comment='Индекс')
+    geo_full_address = models.CharField(default='Не указано', db_comment='Полный адрес через запятую')
+    market_square = models.FloatField(default=0.0, db_comment='Общая площадь рынка')
 
-    schedule = models.TextField(blank=True, null=True, db_column='shedule', db_comment='График работы')
-    ads = models.TextField(blank=True, null=True, db_comment='Реклама')
-
+    schedule = models.TextField(default='Не указано', db_column='shedule', db_comment='График работы')
+    ads = models.TextField(default='Не указано', db_comment='Реклама')
     images: models.QuerySet
 
-    phone = models.CharField(max_length=255, blank=True, null=True, db_comment='Телефоны')
-    email = models.CharField(max_length=255, blank=True, null=True, db_comment='Электронные адреса')
-    info_statement_forms = models.TextField(blank=True, null=True, db_comment='Информация о формах заявлений')
-    info_statement_files = models.JSONField(blank=True, null=True, db_comment='Формы заявлений - файлы')
-    info_contracts = models.TextField(blank=True, null=True, db_comment='Информация о типовых договорах')
-    info_contracts_files = models.JSONField(blank=True, null=True, db_comment='Формы типовых договоров - файлы')
-    info_contracts_req = models.TextField(blank=True, null=True, db_comment='Информация о требованиях для оформления договоров/талонов')
-    info_contracts_req_files = models.JSONField(blank=True, null=True, db_comment='Требованиях для оформления договоров/талонов - файлы')
-    info_constitutive = models.TextField(blank=True, null=True, db_comment='Информация о копиях правоустанавливающих документов дочернего предприятия')
-    info_constitutive_files = models.JSONField(blank=True, null=True, db_comment='Копии правоустанавливающих документов дочернего предприятия - файлы')
-    info_other_docs = models.TextField(blank=True, null=True, db_comment='Информация о других документах')
-    info_other_docs_files = models.JSONField(blank=True, null=True, db_comment='Другие документы - файлы')
-    market_count = models.IntegerField(blank=True, null=True, db_comment='Кол-во торговых мест')
-    activity = models.TextField(blank=True, null=True, db_comment='Возможные виды деятельности')
-    additional = models.JSONField(blank=True, null=True, db_comment="Дополнительные поля в формате {'param_name' : 'param_value'}")
-    schema_file = models.JSONField(blank=True, null=True, db_comment='Файл c данными отображения')
-    market_id_char = models.CharField(max_length=50, blank=True, null=True, db_comment='Уникальный идентификатор рынка согласно шаблону 001010001')
-    citizen_appeal = models.TextField(blank=True, null=True, db_comment='Информация для обращения граждан/ФЛП')
-    internal_id = models.CharField(max_length=50, blank=True, null=True, db_comment='Внутренний код рынка')
 
     @property
     def image(self):
@@ -487,49 +473,39 @@ class TradePlace(TpMixin, models.Model):
     trade_spec_type_id_rec = models.ForeignKey('TradeSpecType', models.SET_DEFAULT, default=TradeSpecType.default_pk, db_column='trade_spec_type_id_rec', db_comment='Специализация торгового места (рекомендованная)')
     location_sector = models.ForeignKey(TradeSector, models.SET_DEFAULT, default=TradeSector.default_pk, db_comment='id сектор торгового места')
 
-    location_number = models.CharField(unique=True, blank=True, null=True, validators=[Validators.outlet_number], db_comment='Номер торгового места')
+    location_number = models.CharField(unique=True, validators=[Validators.outlet_number], db_comment='Номер торгового места')
     location_floor = models.SmallIntegerField(blank=True, null=True, db_comment='Этаж торгового места')
-    location_row = models.CharField(blank=True, null=True, db_comment='Ряд торгового места')
+    location_row = models.CharField(default='Не указано', db_comment='Ряд торгового места')
 
-    meas_area = models.FloatField(blank=True, null=True, db_comment='Площадь места')
-    meas_length = models.FloatField(blank=True, null=True, db_comment='Длина места')
-    meas_height = models.FloatField(blank=True, null=True, db_comment='Высота места')
-    meas_width = models.FloatField(blank=True, null=True, db_comment='Ширина места')
+    meas_area = models.FloatField(default=0.0, db_comment='Площадь места')
+    meas_length = models.FloatField(default=0.0, db_comment='Длина места')
+    meas_height = models.FloatField(default=0.0, db_comment='Высота места')
+    meas_width = models.FloatField(default=0.0, db_comment='Ширина места')
 
-    street_vending = models.BooleanField(blank=True, null=True, db_comment='Возможность выносной торговли')
-    impr_electricity = models.BooleanField(blank=True, null=True, db_comment='Наличие электричества')
-    impr_heat_supply = models.BooleanField(blank=True, null=True, db_comment='Наличие теплоснабжения')
-    impr_air_conditioning = models.BooleanField(blank=True, null=True, db_comment='Наличие кондиционирования')
-    impr_plumbing = models.BooleanField(blank=True, null=True, db_comment='Наличие водопровода')
-    impr_sewerage = models.BooleanField(blank=True, null=True, db_comment='Наличие канализации')
-    impr_drains = models.BooleanField(blank=True, null=True, db_comment='Наличие стоков')
-    impr_internet = models.BooleanField(blank=True, null=True, db_comment='Подключение к сети интернет')
-    impr_internet_type_id = models.SmallIntegerField(blank=True, null=True, db_comment='Тип подключения к сети интернет (0 - не заполнено, 1 - проводной, 2 - беспроводной)')
-    impr_add_equipment = models.BooleanField(blank=True, null=True, db_comment='Наличие стендов, мебели')
-    impr_fridge = models.BooleanField(blank=True, null=True, db_comment='Наличие холодильных установок')
-    impr_shopwindow = models.BooleanField(blank=True, null=True, db_comment='Наличие витрин')
+    street_vending = models.BooleanField(default=False, db_comment='Возможность выносной торговли')
+    impr_electricity = models.BooleanField(default=False, db_comment='Наличие электричества')
+    impr_heat_supply = models.BooleanField(default=False, db_comment='Наличие теплоснабжения')
+    impr_air_conditioning = models.BooleanField(default=False, db_comment='Наличие кондиционирования')
+    impr_plumbing = models.BooleanField(default=False, db_comment='Наличие водопровода')
+    impr_sewerage = models.BooleanField(default=False, db_comment='Наличие канализации')
+    impr_drains = models.BooleanField(default=False, db_comment='Наличие стоков')
+    impr_internet = models.BooleanField(default=False, db_comment='Подключение к сети интернет')
+    impr_internet_type_id = models.SmallIntegerField(default=0, db_comment='Тип подключения к сети интернет (0 - не заполнено, 1 - проводной, 2 - беспроводной)')
+    impr_add_equipment = models.BooleanField(default=False, db_comment='Наличие стендов, мебели')
+    impr_fridge = models.BooleanField(default=False, db_comment='Наличие холодильных установок')
+    impr_shopwindow = models.BooleanField(default=False, db_comment='Наличие витрин')
 
-    price = models.DecimalField(max_digits=12, decimal_places=2, blank=True, null=True, db_comment='Стоимость аренды торгового места в месяц')
-    pay_electricity = models.DecimalField(max_digits=12, decimal_places=2, blank=True, null=True, db_comment='Оплата электричества')
-    pay_heat_supply = models.DecimalField(max_digits=12, decimal_places=2, blank=True, null=True, db_column='pay_heat_supplay', db_comment='Оплата услуг теплоснабжения')
-    pay_air_conditioning = models.DecimalField(max_digits=12, decimal_places=2, blank=True, null=True, db_comment='Оплата за кондиционер')
-    pay_plumbing = models.DecimalField(max_digits=12, decimal_places=2, blank=True, null=True, db_comment='Оплата услуг водоснабжения')
-    pay_sewerage = models.DecimalField(max_digits=12, decimal_places=2, blank=True, null=True, db_comment='Оплата услуг водоотведения')
-    pay_drains = models.DecimalField(max_digits=12, decimal_places=2, blank=True, null=True, db_comment='Оплата наличия стоков')
-    pay_internet = models.DecimalField(max_digits=12, decimal_places=2, blank=True, null=True, db_comment='Оплата интернета')
-    pay_add_equipment = models.DecimalField(max_digits=12, decimal_places=2, blank=True, null=True, db_comment='Аренда стендов, мебели')
-    pay_fridge = models.DecimalField(max_digits=12, decimal_places=2, blank=True, null=True, db_comment='Аренда холодильных установок')
-    pay_shopwindows = models.DecimalField(max_digits=12, decimal_places=2, blank=True, null=True, db_comment='Аренда витрин')
-
-    contract_rent = models.ForeignKey(TradeContract, models.DO_NOTHING, blank=True, null=True, db_comment='Информация о договорах аренды')  # TODO kill wrong field
-    receiv_state = models.BooleanField(blank=True, null=True, db_comment='Наличие дебиторской задолженности на текущий месяц')  # TODO kill wrong field
-    receiv_amount = models.DecimalField(max_digits=12, decimal_places=2, blank=True, null=True, db_comment='Размер дебиторской задолженности')  # TODO kill wrong field
-    renter = models.ForeignKey(Renter, models.DO_NOTHING, blank=True, null=True, db_comment='id - текущий арендатор')  # TODO kill wrong field
-    additional = models.JSONField(blank=True, null=True, db_comment='Дополнительные поля')
-    internal_id = models.CharField(blank=True, null=True, db_comment='Текстовый код')
-    speciality_recommend = models.JSONField(blank=True, null=True, db_comment='Специализация торгового места (рекомендованная)')
-    speciality_actual = models.JSONField(blank=True, null=True, db_comment='Специализация торгового места (фактическая)')
-    activities_type = models.JSONField(blank=True, null=True, db_comment='Возможные виды деятельности')
+    price = models.DecimalField(max_digits=12, decimal_places=2, default=Decimal(0.0), db_comment='Стоимость аренды торгового места в месяц')
+    pay_electricity = models.DecimalField(max_digits=12, decimal_places=2, default=Decimal(0.0), db_comment='Оплата электричества')
+    pay_heat_supply = models.DecimalField(max_digits=12, decimal_places=2, default=Decimal(0.0), db_column='pay_heat_supplay', db_comment='Оплата услуг теплоснабжения')
+    pay_air_conditioning = models.DecimalField(max_digits=12, decimal_places=2, default=Decimal(0.0), db_comment='Оплата за кондиционер')
+    pay_plumbing = models.DecimalField(max_digits=12, decimal_places=2, default=Decimal(0.0), db_comment='Оплата услуг водоснабжения')
+    pay_sewerage = models.DecimalField(max_digits=12, decimal_places=2, default=Decimal(0.0), db_comment='Оплата услуг водоотведения')
+    pay_drains = models.DecimalField(max_digits=12, decimal_places=2, default=Decimal(0.0), db_comment='Оплата наличия стоков')
+    pay_internet = models.DecimalField(max_digits=12, decimal_places=2, default=Decimal(0.0), db_comment='Оплата интернета')
+    pay_add_equipment = models.DecimalField(max_digits=12, decimal_places=2, default=Decimal(0.0), db_comment='Аренда стендов, мебели')
+    pay_fridge = models.DecimalField(max_digits=12, decimal_places=2, default=Decimal(0.0), db_comment='Аренда холодильных установок')
+    pay_shopwindows = models.DecimalField(max_digits=12, decimal_places=2, default=Decimal(0.0), db_comment='Аренда витрин')
 
     class Meta:
         managed = True
