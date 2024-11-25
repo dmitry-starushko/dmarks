@@ -65,6 +65,10 @@ class DmUser(AbstractUser):
     REQUIRED_FIELDS = ["first_name", "last_name", "email"]
     objects = DmUserManager()
 
+    @classmethod
+    def default_pk(cls):
+        return cls.objects.first().pk
+
     def __str__(self):
         return self.email
 
@@ -79,8 +83,7 @@ class Booking(models.Model):
     booking_status = models.TextField(db_comment='Статус бронирования')  # This field type is a guess.
     booking_status_case = models.TextField(blank=True, null=True, db_comment='Причина изменения статуса (например, причина отказа)')
     booking_files = models.JSONField(blank=True, null=True, db_comment='Файлы для бронирования')
-    booked_by = models.ForeignKey(DmUser, models.CASCADE, null=True, blank=True, related_name="bookings", db_column='ng_user', db_comment='Кто забронировал')
-    # TODO null=True, blank=True -- fix it
+    booked_by = models.ForeignKey(DmUser, models.CASCADE, related_name="bookings", db_column='ng_user', db_comment='Кто забронировал')
 
     class Meta:
         managed = True
