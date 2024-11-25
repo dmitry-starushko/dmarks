@@ -48,12 +48,6 @@ class BookingAdmin(admin.ModelAdmin):
     ordering = ['booked_by']
 
 
-@admin.register(Renter)
-class RenterAdmin(admin.ModelAdmin):
-    list_display = ['renter_name', 'legal_doc_info',  'legal_doc_files', 'renter_type', 'renter_phone']
-    ordering = ['renter_name']
-
-
 @admin.register(Parameter)
 class ParamAdmin(admin.ModelAdmin):
     list_display = ['key', 'value', 'preload', 'description']
@@ -106,12 +100,6 @@ class MarketFireProtectionAdmin(admin.ModelAdmin):
 
 @admin.register(MarketType)
 class MarketTypeAdmin(admin.ModelAdmin):
-    list_display = ['type_name', 'descr']
-    ordering = ['type_name']
-
-
-@admin.register(RenterType)
-class RenterTypeAdmin(admin.ModelAdmin):
     list_display = ['type_name', 'descr']
     ordering = ['type_name']
 
