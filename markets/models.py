@@ -78,27 +78,6 @@ class DmUser(AbstractUser):
 # -- Legacy data ----------------------------------------------------------------------------------
 
 
-class Booking(models.Model):
-    trade_place = models.ForeignKey('TradePlace', models.CASCADE, related_name="bookings", db_comment='Идентификатор торгового места')
-    booked_by = models.ForeignKey(DmUser, models.CASCADE, related_name="bookings", db_column='ng_user', db_comment='Кто забронировал')
-    date_transaction = models.DateTimeField(db_comment='Дата создания записи')
-    booking_status = models.TextField(db_comment='Статус бронирования')  # This field type is a guess.
-    booking_status_case = models.TextField(blank=True, null=True, db_comment='Причина изменения статуса (например, причина отказа)')
-    booking_files = models.JSONField(blank=True, null=True, db_comment='Файлы для бронирования')
-    descr = models.TextField(blank=True, null=True, db_comment='Описание')
-
-    class Meta:
-        managed = True
-        ordering = ['-date_transaction']
-        db_table = 'booking'
-        db_table_comment = 'Бронирование торговых мест'
-        verbose_name = "Бронирование ТМ"
-        verbose_name_plural = "Бронирования ТМ"
-
-    def __str__(self):
-        return f'Бронирование {self.id}'
-
-
 class ContractStatusType(models.Model):
     type_name = models.CharField(unique=True, db_comment='Наименование типа специализации торгового места')
     descr = models.TextField(blank=True, null=True, db_comment='Описание')
@@ -469,8 +448,8 @@ class TradePlace(TpMixin, models.Model):
     market = models.ForeignKey(Market, models.CASCADE, related_name="trade_places", db_comment='Уникальный идентификатор рынка\r\n')
     trade_type = models.ForeignKey(TradeType, models.SET_DEFAULT, default=TradeType.default_pk, db_comment='Тип торгового места')
     trade_place_type = models.ForeignKey(TradePlaceType, models.SET_DEFAULT, default=TradePlaceType.default_pk, db_comment='Занятость торгового места')
-    trade_spec_type_id_act = models.ForeignKey('TradeSpecType', models.SET_DEFAULT, default=TradeSpecType.default_pk, db_column='trade_spec_type_id_act', related_name='tradeplace_trade_spec_type_id_act_set', db_comment='Специализация торгового места (фактическая)')
-    trade_spec_type_id_rec = models.ForeignKey('TradeSpecType', models.SET_DEFAULT, default=TradeSpecType.default_pk, db_column='trade_spec_type_id_rec', db_comment='Специализация торгового места (рекомендованная)')
+    trade_spec_type_id_act = models.ForeignKey(TradeSpecType, models.SET_DEFAULT, default=TradeSpecType.default_pk, db_column='trade_spec_type_id_act', related_name='tradeplace_trade_spec_type_id_act_set', db_comment='Специализация торгового места (фактическая)')
+    trade_spec_type_id_rec = models.ForeignKey(TradeSpecType, models.SET_DEFAULT, default=TradeSpecType.default_pk, db_column='trade_spec_type_id_rec', db_comment='Специализация торгового места (рекомендованная)')
     location_sector = models.ForeignKey(TradeSector, models.SET_DEFAULT, default=TradeSector.default_pk, db_comment='id сектор торгового места')
 
     location_number = models.CharField(unique=True, validators=[Validators.outlet_number], db_comment='Номер торгового места')
@@ -540,6 +519,27 @@ class SvgSchema(models.Model):
 
     def __str__(self):
         return f'Схема #{self.id}, уровень "{self.floor}", рынок "{self.market}"'
+
+
+class Booking(models.Model):
+    trade_place = models.ForeignKey(TradePlace, models.CASCADE, related_name="bookings", db_comment='Идентификатор торгового места')
+    booked_by = models.ForeignKey(DmUser, models.CASCADE, related_name="bookings", db_column='ng_user', db_comment='Кто забронировал')
+    date_transaction = models.DateTimeField(db_comment='Дата создания записи')
+    booking_status = models.TextField(db_comment='Статус бронирования')  # This field type is a guess.
+    booking_status_case = models.TextField(blank=True, null=True, db_comment='Причина изменения статуса (например, причина отказа)')
+    booking_files = models.JSONField(blank=True, null=True, db_comment='Файлы для бронирования')
+    descr = models.TextField(blank=True, null=True, db_comment='Описание')
+
+    class Meta:
+        managed = True
+        ordering = ['-date_transaction']
+        db_table = 'booking'
+        db_table_comment = 'Бронирование торговых мест'
+        verbose_name = "Бронирование ТМ"
+        verbose_name_plural = "Бронирования ТМ"
+
+    def __str__(self):
+        return f'Бронирование {self.id}'
 
 
 # -- NG Data --------------------------------------------------------------------------------------

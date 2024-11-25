@@ -54,12 +54,6 @@ class RenterAdmin(admin.ModelAdmin):
     ordering = ['renter_name']
 
 
-@admin.register(TradeContract)
-class TradeContractAdmin(admin.ModelAdmin):
-    list_display = ['date_start', 'date_end',  'contract_status_type', 'copy_info', 'copy_files', 'active_contract', 'contract_num']
-    ordering = ['date_start']
-
-
 @admin.register(Parameter)
 class ParamAdmin(admin.ModelAdmin):
     list_display = ['key', 'value', 'preload', 'description']
@@ -83,12 +77,6 @@ class StuffActionAdmin(admin.ModelAdmin):
 
 
 # -------------------------------------------------------------------------------------------------
-
-
-@admin.register(ContractStatusType)
-class ContractStatusTypeAdmin(admin.ModelAdmin):
-    list_display = ['type_name', 'descr']
-    ordering = ['type_name']
 
 
 @admin.register(Locality)
