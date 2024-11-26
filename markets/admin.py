@@ -26,6 +26,20 @@ class MarketAdmin(admin.ModelAdmin):
     ordering = ['market_name', 'additional_name']
 
 
+@admin.register(MarketPhone)
+class MarketPhoneAdmin(admin.ModelAdmin):
+    list_display = ['phone']
+    ordering = ['phone']
+    list_filter = ['market']
+
+
+@admin.register(MarketEmail)
+class MarketEmailAdmin(admin.ModelAdmin):
+    list_display = ['email']
+    ordering = ['email']
+    list_filter = ['market']
+
+
 @admin.register(SvgSchema)
 class SvgSchemaAdmin(admin.ModelAdmin):
     list_display = ['id', 'market', 'order', 'floor', 'descr']

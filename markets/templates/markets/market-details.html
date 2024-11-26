@@ -102,15 +102,30 @@ import { View3D } from "view3d";
                                         </ul>
                                       </details>
                                     </li>
-                                      <li>
+                                    {% if market.phones.exists %}
+                                    <li>
                                       <details open>
-                                        <summary>Контактные данные</summary>
+                                        <summary>Телефоны:</summary>
                                         <ul>
-                                            <li>Телефон: <strong>{{market.phone}}</strong></li>
-                                            <li>Email: <strong>{{market.email}}</strong></li>
+                                            {% for ph in market.phones.all %}
+                                            <li><a href="tel:{{ph}}"><strong>{{ph}}</strong></a></li>
+                                            {% endfor %}
                                         </ul>
                                       </details>
                                     </li>
+                                    {% endif %}
+                                    {% if market.emails.exists %}
+                                    <li>
+                                      <details open>
+                                        <summary>E-mail:</summary>
+                                        <ul>
+                                            {% for eml in market.emails.all %}
+                                            <li><a href="mailto:{{eml}}"><strong>{{eml}}</strong></a></li>
+                                            {% endfor %}
+                                        </ul>
+                                      </details>
+                                    </li>
+                                    {% endif %}
                                   </ul>
                                 </details>
                               </li>
