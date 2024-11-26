@@ -1,8 +1,12 @@
+from decimal import Decimal
+from sys import float_info
 from xml.etree import ElementTree as Et
 from django.core.exceptions import ValidationError
 from django.db import transaction
+
+from markets.business.observation_names import Observation
 from markets.decorators import globally_lonely_action
-from markets.models import TradePlace, SvgSchema, Validators, RdcError
+from markets.models import TradePlace, SvgSchema, Validators, RdcError, Market, GlobalObservation
 
 try:  # To avoid deploy problems
     from transmutation import Svg3DTM
@@ -78,3 +82,22 @@ def restore_db_consistency():
             for err in value:
                 RdcError.objects.create(object=key, text=err)
 
+
+def observe():
+    # 1. Renting cost limits
+    g_orc_min = Decimal(float_info.max)
+    g_orc_max = Decimal(-float_info.max)
+    for market in Market.objects.all():
+        m_orc_min = Decimal(float_info.max)
+        m_orc_max = Decimal(-float_info.max)
+        for olt in Market.trade_places.all():
+            m_orc_min = min(m_orc_min, olt.price)
+            m_orc_max = max(m_orc_max, olt.price)
+        g_orc_min = min(g_orc_min, m_orc_min)
+        g_orc_max = max(g_orc_max, m_orc_max)
+        if m_orc_min <= m_orc_max:
+            market.observations.get_or_create(key=Observation.OUTLET_RENTING_COST_MIN).update(decimal=m_orc_min)
+            market.observations.get_or_create(key=Observation.OUTLET_RENTING_COST_MAX).update(decimal=m_orc_max)
+    if g_orc_min <= g_orc_max:
+        GlobalObservation.objects.get_or_create(key=Observation.OUTLET_RENTING_COST_MIN).update(decimal=g_orc_min)
+        GlobalObservation.objects.get_or_create(key=Observation.OUTLET_RENTING_COST_MAX).update(decimal=g_orc_max)
