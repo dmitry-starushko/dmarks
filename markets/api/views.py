@@ -193,7 +193,7 @@ class TakeLegendView(ListAPIView):
         return self.legends[legend]['serializer_class']
 
 
-# -- Partial views --
+# -- Partial views --------------------------------------------------------------------------------
 
 
 class PV_OutletTableView(APIView):
@@ -257,7 +257,7 @@ class PV_FilteredMarketsView(APIView):
         return render(request, 'markets/partials/filtered-markets.html', {'context': context})
 
 
-# -- Actions --
+# -- Actions --------------------------------------------------------------------------------------
 
 
 class RestoreDatabaseConsistencyView(APIView):
