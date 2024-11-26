@@ -19,7 +19,7 @@ def restore_db_consistency():
 
         # -- Clear outlet's location floor
         print(f'Подготовка к обработке...')
-        TradePlace.objects.update(location_floor=None)
+        TradePlace.objects.update(scheme=None)
 
         # -- Set outlet's location floors
         for sch in SvgSchema.objects.all():
@@ -54,10 +54,10 @@ def restore_db_consistency():
                             tp = tps[0]
                             if sch.market_id != tp.market_id:
                                 err_list += [f'ТМ #{tp.id} <{path_id}> относится к другому рынку "{tp.market}"']
-                            elif tp.location_floor:
-                                err_list += [f'ТМ #{tp.id} <{path_id}> уже помечено как относящееся к уровню #{tp.location_floor}']
+                            elif tp.scheme is not None:
+                                err_list += [f'ТМ #{tp.id} <{path_id}> уже помечено как относящееся к уровню #{tp.scheme}']
                             else:
-                                tp.location_floor = sch.id
+                                tp.scheme = sch
                                 tp.save()
                     else:
                         err_list += [f'Номер ТМ не указан в SVG']
@@ -65,8 +65,9 @@ def restore_db_consistency():
         for tp in tps:
             print(f'Обрабатывается {tp}')
             errors[f'{tp}'] = (err_list := [])
-            if tp.location_floor is None:
-                err_list += ['ТМ не привязано к схеме']
+            if tp.scheme_id is None:
+                err_list += [f'ТМ не привязано к схеме: scheme_id = {tp.scheme_id}']
+                print(f'ТМ не привязано к схеме: scheme_id = {tp.scheme_id}')
             try:
                 Validators.outlet_number(tp.location_number)
             except ValidationError:
