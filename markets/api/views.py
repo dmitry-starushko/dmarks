@@ -85,7 +85,7 @@ class TakeSchemeOutletsStateView(APIView):
         legend %= len(self.legends)
         leg_field = self.legends[legend]
         scheme = SvgSchema.objects.get(pk=scheme_pk)
-        query = scheme.market.trade_places.filter(location_floor=int(scheme_pk)).values('location_number', leg_field)
+        query = scheme.outlets.values('location_number', leg_field)
         return Response({str(r['location_number']): int(r[leg_field]) for r in query})
 
     @on_exception_returns(HttpResponseBadRequest, 'scheme_pk')
@@ -93,7 +93,7 @@ class TakeSchemeOutletsStateView(APIView):
         legend %= len(self.legends)
         leg_field = self.legends[legend]
         scheme = SvgSchema.objects.get(pk=scheme_pk)
-        query = scheme.market.trade_places.filter(location_floor=int(scheme_pk))
+        query = scheme.outlets.all()
         if request.data:
             for f_name, f_body in request.data.items():
                 query = apply_filter(query, f_name, f_body)
@@ -112,7 +112,7 @@ class TakeSchemeOutletsListView(ListAPIView):
     def get_queryset(self):
         scheme_pk = int(self.kwargs['scheme_pk'])
         scheme = SvgSchema.objects.get(pk=scheme_pk)
-        queryset = scheme.market.trade_places.filter(location_floor=scheme_pk)
+        queryset = scheme.outlets.all()
         if self.request.data:
             for f_name, f_body in self.request.data.items():
                 queryset = apply_filter(queryset, f_name, f_body)
@@ -200,7 +200,7 @@ class PV_OutletTableView(APIView):
     def post(self, request, scheme_pk: int, legend: int):
         legend = legend % len(self.legends)
         scheme = SvgSchema.objects.get(pk=scheme_pk)
-        queryset = scheme.market.trade_places.filter(location_floor=scheme_pk)
+        queryset = scheme.outlets.all()
         if self.request.data:
             for f_name, f_body in self.request.data.items():
                 queryset = apply_filter(queryset, f_name, f_body)

@@ -46,9 +46,6 @@ class TradePlaceSerializer(ModelSerializer):
             'impr_shopwindow',
             'price',
             'street_vending',
-            'contract_rent',
-            'receiv_state',
-            'receiv_amount',
             'pay_electricity',
             'pay_heat_supply',
             'pay_air_conditioning',
@@ -61,36 +58,11 @@ class TradePlaceSerializer(ModelSerializer):
             'pay_shopwindows',
             'location_sector',
             'location_row',
-            'location_floor',
             'location_number',
-            'renter',
-            'additional',
-            'internal_id',
-            'speciality_recommend',
-            'speciality_actual',
-            'activities_type',
             'trade_type',
             'trade_place_type',
             'trade_spec_type_id_act',
             'trade_spec_type_id_rec',
         ]
-
-
-class TradePlaceSerializerO(TradePlaceSerializer):
-    legend_id = IntegerField(source='trade_place_type_id')
-
-    class Meta:
-        model = TradePlace
-        fields = TradePlaceSerializer.Meta.fields + ['legend_id']
-
-
-class TradePlaceSerializerS(TradePlaceSerializer):
-    legend_id = IntegerField(source='trade_spec_type_id_act_id')
-
-    class Meta:
-        model = TradePlace
-        fields = TradePlaceSerializer.Meta.fields + ['legend_id']
-
-
 
 

@@ -402,7 +402,6 @@ class TradePlace(TpMixin, models.Model):
 
     location_number = models.CharField(unique=True, validators=[Validators.outlet_number], db_comment='Номер торгового места')
     location_row = models.CharField(default='Не указано', db_comment='Ряд торгового места')
-    location_floor = models.SmallIntegerField(blank=True, null=True, db_comment='Этаж торгового места')
 
     meas_area = models.FloatField(default=0.0, db_comment='Площадь места')
     meas_length = models.FloatField(default=0.0, db_comment='Длина места')
@@ -439,10 +438,7 @@ class TradePlace(TpMixin, models.Model):
         ordering = ['location_number']
         db_table = 'trade_place'
         db_table_comment = 'Торговые места'
-        indexes = [
-            Index(fields=["location_number"], include=["location_floor"], name='index_by_number'),
-            Index(fields=["location_floor"], include=["location_number"], name='index_by_storey'),
-        ]
+        indexes = [Index(fields=["location_number"], name='index_by_number')]
         verbose_name = "Торговое место"
         verbose_name_plural = "Торговые места"
 
