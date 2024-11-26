@@ -28,7 +28,7 @@ class Validators:
 
     @staticmethod
     def market_id(value):
-        return Validators._rxv("^[0-9]{3}$", "Ожидается значение в формате 999999999[a]")(value)
+        return Validators._rxv("^[0-9]{3}$", "Ожидается значение в формате 999")(value)
 
 
 class DbItem(models.Model):
