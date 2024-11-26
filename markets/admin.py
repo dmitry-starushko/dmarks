@@ -132,7 +132,7 @@ class TradePlaceTypeAdmin(admin.ModelAdmin):
 
 @admin.register(TradeSector)
 class TradeSectorAdmin(admin.ModelAdmin):
-    list_display = ['sector_name', 'descr']
+    list_display = ['sector_name', 'descr', 'color', 'wall_color', 'roof_color']
     ordering = ['sector_name']
 
 

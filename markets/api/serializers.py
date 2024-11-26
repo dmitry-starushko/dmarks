@@ -1,5 +1,5 @@
 from rest_framework.serializers import ModelSerializer, IntegerField
-from markets.models import Market, TradePlace, TradePlaceType, SvgSchema, TradeSpecType
+from markets.models import Market, TradePlace, TradePlaceType, SvgSchema, TradeSpecType, TradeSector
 
 
 class MarketSerializer(ModelSerializer):
@@ -19,14 +19,19 @@ class TradeSpecTypeSerializer(ModelSerializer):
         fields = ['id', 'type_name', 'color', 'wall_color', 'roof_color', 'wall_color_css', 'roof_color_css']
 
 
+class TradeSectorSerializer(ModelSerializer):
+    class Meta:
+        model = TradeSector
+        fields = ['id', 'sector_name', 'color', 'wall_color', 'roof_color', 'wall_color_css', 'roof_color_css']
+
+
 class TradePlaceSerializer(ModelSerializer):
     trade_place_type = TradePlaceTypeSerializer(many=False, read_only=True)
     trade_spec_type_id_act = TradeSpecTypeSerializer(many=False, read_only=True)
-    legend_id = IntegerField(source='trade_spec_type_id_act_id')
 
     class Meta:
         model = TradePlace
-        fields = ['id', 'location_number', 'tp_actual_specialization', 'price', 'trade_place_type', 'trade_spec_type_id_act', 'legend_id']
+        fields = ['id', 'location_number', 'tp_actual_specialization', 'price', 'trade_place_type', 'trade_spec_type_id_act']
 
 
 class TradePlaceSerializerO(TradePlaceSerializer):
@@ -39,6 +44,14 @@ class TradePlaceSerializerO(TradePlaceSerializer):
 
 class TradePlaceSerializerS(TradePlaceSerializer):
     legend_id = IntegerField(source='trade_spec_type_id_act_id')
+
+    class Meta:
+        model = TradePlace
+        fields = TradePlaceSerializer.Meta.fields + ['legend_id']
+
+
+class TradePlaceSerializerSec(TradePlaceSerializer):
+    legend_id = IntegerField(source='location_sector_id')
 
     class Meta:
         model = TradePlace

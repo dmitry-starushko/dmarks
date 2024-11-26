@@ -10,10 +10,10 @@ from django.http.response import JsonResponse, HttpResponseBadRequest, HttpRespo
 from markets.business.search_and_filters import apply_filter, filter_markets
 from markets.business.actions import restore_db_consistency
 from markets.decorators import on_exception_returns
-from markets.models import SvgSchema, Market, TradePlaceType, TradeSpecType, TradePlace
+from markets.models import SvgSchema, Market, TradePlaceType, TradeSpecType, TradePlace, TradeSector
 from markets.tasks import st_restore_db_consistency
 from redis import Redis
-from .serializers import SchemeSerializer, TradePlaceTypeSerializer, TradeSpecTypeSerializer, TradePlaceSerializerO, TradePlaceSerializerS
+from .serializers import SchemeSerializer, TradePlaceTypeSerializer, TradeSpecTypeSerializer, TradePlaceSerializerO, TradePlaceSerializerS, TradeSectorSerializer, TradePlaceSerializerSec
 
 try:  # To avoid deploy problems
     from transmutation import Svg3DTM
@@ -78,7 +78,7 @@ class TakeSchemeSvgView(APIView):
 
 class TakeSchemeOutletsStateView(APIView):
     permission_classes = [AllowAny]
-    legends = ['trade_place_type_id', 'trade_spec_type_id_act_id']
+    legends = ['trade_place_type_id', 'trade_spec_type_id_act_id', 'location_sector_id']
 
     @on_exception_returns(HttpResponseBadRequest, 'scheme_pk')
     def get(self, _, scheme_pk: int, legend: int):
@@ -103,7 +103,7 @@ class TakeSchemeOutletsStateView(APIView):
 
 class TakeSchemeOutletsListView(ListAPIView):
     permission_classes = [AllowAny]
-    legends = [TradePlaceSerializerO, TradePlaceSerializerS]
+    legends = [TradePlaceSerializerO, TradePlaceSerializerS, TradePlaceSerializerSec]
 
     @on_exception_returns(HttpResponseBadRequest)
     def post(self, request, *args, **kwargs):
@@ -170,7 +170,11 @@ class TakeLegendView(ListAPIView):
          'serializer_class': TradePlaceTypeSerializer},
         {'title': 'По специализации',
          'model': TradeSpecType,
-         'serializer_class': TradeSpecTypeSerializer}]
+         'serializer_class': TradeSpecTypeSerializer},
+        {'title': 'По сектору',
+         'model': TradeSector,
+         'serializer_class': TradeSectorSerializer},
+    ]
 
     @on_exception_returns(HttpResponseBadRequest)
     def get(self, request, *args, **kwargs):
@@ -194,7 +198,11 @@ class TakeLegendView(ListAPIView):
 
 class PV_OutletTableView(APIView):
     permission_classes = [AllowAny]
-    legends = [lambda o: o.trade_place_type.roof_color_css, lambda o: o.trade_spec_type_id_act.roof_color_css]
+    legends = [
+        lambda o: o.trade_place_type.roof_color_css,
+        lambda o: o.trade_spec_type_id_act.roof_color_css,
+        lambda o: o.location_sector.roof_color_css,
+    ]
 
     @on_exception_returns(HttpResponseBadRequest)
     def post(self, request, scheme_pk: int, legend: int):
