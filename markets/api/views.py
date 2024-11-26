@@ -24,7 +24,7 @@ except ModuleNotFoundError:
 redis = Redis(host=settings.REDIS_HOST, port=settings.REDIS_PORT, db=settings.REDIS_DB)
 
 
-# -- Markets API --
+# -- Markets API ----------------------------------------------------------------------------------
 
 
 class TakeMarketSchemesListView(ListAPIView):
