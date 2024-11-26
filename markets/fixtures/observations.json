@@ -1,0 +1,2134 @@
+[
+{
+  "model": "markets.marketobservation",
+  "pk": 1,
+  "fields": {
+    "created_at": "2024-11-26T19:12:15.028Z",
+    "updated_at": "2024-11-26T19:37:35.359Z",
+    "key": "outlet-renting-cost-min",
+    "market": 149,
+    "decimal": "0.00"
+  }
+},
+{
+  "model": "markets.marketobservation",
+  "pk": 2,
+  "fields": {
+    "created_at": "2024-11-26T19:21:57.149Z",
+    "updated_at": "2024-11-26T19:37:35.476Z",
+    "key": "outlet-renting-cost-max",
+    "market": 149,
+    "decimal": "0.00"
+  }
+},
+{
+  "model": "markets.marketobservation",
+  "pk": 3,
+  "fields": {
+    "created_at": "2024-11-26T19:21:57.227Z",
+    "updated_at": "2024-11-26T19:37:35.503Z",
+    "key": "outlet-renting-cost-min",
+    "market": 59,
+    "decimal": "0.00"
+  }
+},
+{
+  "model": "markets.marketobservation",
+  "pk": 4,
+  "fields": {
+    "created_at": "2024-11-26T19:21:57.271Z",
+    "updated_at": "2024-11-26T19:37:35.531Z",
+    "key": "outlet-renting-cost-max",
+    "market": 59,
+    "decimal": "0.00"
+  }
+},
+{
+  "model": "markets.marketobservation",
+  "pk": 5,
+  "fields": {
+    "created_at": "2024-11-26T19:21:57.339Z",
+    "updated_at": "2024-11-26T19:37:35.581Z",
+    "key": "outlet-renting-cost-min",
+    "market": 87,
+    "decimal": "0.00"
+  }
+},
+{
+  "model": "markets.marketobservation",
+  "pk": 6,
+  "fields": {
+    "created_at": "2024-11-26T19:21:57.381Z",
+    "updated_at": "2024-11-26T19:37:35.609Z",
+    "key": "outlet-renting-cost-max",
+    "market": 87,
+    "decimal": "0.00"
+  }
+},
+{
+  "model": "markets.marketobservation",
+  "pk": 7,
+  "fields": {
+    "created_at": "2024-11-26T19:21:57.547Z",
+    "updated_at": "2024-11-26T19:37:35.650Z",
+    "key": "outlet-renting-cost-min",
+    "market": 58,
+    "decimal": "0.00"
+  }
+},
+{
+  "model": "markets.marketobservation",
+  "pk": 8,
+  "fields": {
+    "created_at": "2024-11-26T19:21:57.603Z",
+    "updated_at": "2024-11-26T19:37:35.675Z",
+    "key": "outlet-renting-cost-max",
+    "market": 58,
+    "decimal": "0.00"
+  }
+},
+{
+  "model": "markets.marketobservation",
+  "pk": 9,
+  "fields": {
+    "created_at": "2024-11-26T19:21:57.674Z",
+    "updated_at": "2024-11-26T19:37:35.702Z",
+    "key": "outlet-renting-cost-min",
+    "market": 57,
+    "decimal": "0.00"
+  }
+},
+{
+  "model": "markets.marketobservation",
+  "pk": 10,
+  "fields": {
+    "created_at": "2024-11-26T19:21:57.724Z",
+    "updated_at": "2024-11-26T19:37:35.731Z",
+    "key": "outlet-renting-cost-max",
+    "market": 57,
+    "decimal": "0.00"
+  }
+},
+{
+  "model": "markets.marketobservation",
+  "pk": 11,
+  "fields": {
+    "created_at": "2024-11-26T19:21:57.810Z",
+    "updated_at": "2024-11-26T19:37:35.762Z",
+    "key": "outlet-renting-cost-min",
+    "market": 60,
+    "decimal": "0.00"
+  }
+},
+{
+  "model": "markets.marketobservation",
+  "pk": 12,
+  "fields": {
+    "created_at": "2024-11-26T19:21:57.858Z",
+    "updated_at": "2024-11-26T19:37:35.786Z",
+    "key": "outlet-renting-cost-max",
+    "market": 60,
+    "decimal": "0.00"
+  }
+},
+{
+  "model": "markets.marketobservation",
+  "pk": 13,
+  "fields": {
+    "created_at": "2024-11-26T19:21:57.922Z",
+    "updated_at": "2024-11-26T19:37:35.813Z",
+    "key": "outlet-renting-cost-min",
+    "market": 88,
+    "decimal": "0.00"
+  }
+},
+{
+  "model": "markets.marketobservation",
+  "pk": 14,
+  "fields": {
+    "created_at": "2024-11-26T19:21:57.968Z",
+    "updated_at": "2024-11-26T19:37:35.841Z",
+    "key": "outlet-renting-cost-max",
+    "market": 88,
+    "decimal": "0.00"
+  }
+},
+{
+  "model": "markets.marketobservation",
+  "pk": 15,
+  "fields": {
+    "created_at": "2024-11-26T19:21:58.160Z",
+    "updated_at": "2024-11-26T19:37:35.883Z",
+    "key": "outlet-renting-cost-min",
+    "market": 10,
+    "decimal": "0.00"
+  }
+},
+{
+  "model": "markets.marketobservation",
+  "pk": 16,
+  "fields": {
+    "created_at": "2024-11-26T19:21:58.211Z",
+    "updated_at": "2024-11-26T19:37:35.908Z",
+    "key": "outlet-renting-cost-max",
+    "market": 10,
+    "decimal": "0.00"
+  }
+},
+{
+  "model": "markets.marketobservation",
+  "pk": 17,
+  "fields": {
+    "created_at": "2024-11-26T19:21:58.334Z",
+    "updated_at": "2024-11-26T19:37:35.938Z",
+    "key": "outlet-renting-cost-min",
+    "market": 86,
+    "decimal": "0.00"
+  }
+},
+{
+  "model": "markets.marketobservation",
+  "pk": 18,
+  "fields": {
+    "created_at": "2024-11-26T19:21:58.378Z",
+    "updated_at": "2024-11-26T19:37:35.963Z",
+    "key": "outlet-renting-cost-max",
+    "market": 86,
+    "decimal": "0.00"
+  }
+},
+{
+  "model": "markets.marketobservation",
+  "pk": 19,
+  "fields": {
+    "created_at": "2024-11-26T19:21:58.673Z",
+    "updated_at": "2024-11-26T19:37:36.023Z",
+    "key": "outlet-renting-cost-min",
+    "market": 122,
+    "decimal": "0.00"
+  }
+},
+{
+  "model": "markets.marketobservation",
+  "pk": 20,
+  "fields": {
+    "created_at": "2024-11-26T19:21:58.721Z",
+    "updated_at": "2024-11-26T19:37:36.052Z",
+    "key": "outlet-renting-cost-max",
+    "market": 122,
+    "decimal": "0.00"
+  }
+},
+{
+  "model": "markets.marketobservation",
+  "pk": 21,
+  "fields": {
+    "created_at": "2024-11-26T19:21:58.785Z",
+    "updated_at": "2024-11-26T19:37:36.079Z",
+    "key": "outlet-renting-cost-min",
+    "market": 127,
+    "decimal": "0.00"
+  }
+},
+{
+  "model": "markets.marketobservation",
+  "pk": 22,
+  "fields": {
+    "created_at": "2024-11-26T19:21:58.832Z",
+    "updated_at": "2024-11-26T19:37:36.138Z",
+    "key": "outlet-renting-cost-max",
+    "market": 127,
+    "decimal": "0.00"
+  }
+},
+{
+  "model": "markets.marketobservation",
+  "pk": 23,
+  "fields": {
+    "created_at": "2024-11-26T19:21:58.889Z",
+    "updated_at": "2024-11-26T19:37:36.178Z",
+    "key": "outlet-renting-cost-min",
+    "market": 128,
+    "decimal": "0.00"
+  }
+},
+{
+  "model": "markets.marketobservation",
+  "pk": 24,
+  "fields": {
+    "created_at": "2024-11-26T19:21:58.931Z",
+    "updated_at": "2024-11-26T19:37:36.207Z",
+    "key": "outlet-renting-cost-max",
+    "market": 128,
+    "decimal": "0.00"
+  }
+},
+{
+  "model": "markets.marketobservation",
+  "pk": 25,
+  "fields": {
+    "created_at": "2024-11-26T19:21:58.996Z",
+    "updated_at": "2024-11-26T19:37:36.233Z",
+    "key": "outlet-renting-cost-min",
+    "market": 124,
+    "decimal": "0.00"
+  }
+},
+{
+  "model": "markets.marketobservation",
+  "pk": 26,
+  "fields": {
+    "created_at": "2024-11-26T19:21:59.042Z",
+    "updated_at": "2024-11-26T19:37:36.262Z",
+    "key": "outlet-renting-cost-max",
+    "market": 124,
+    "decimal": "0.00"
+  }
+},
+{
+  "model": "markets.marketobservation",
+  "pk": 27,
+  "fields": {
+    "created_at": "2024-11-26T19:21:59.111Z",
+    "updated_at": "2024-11-26T19:37:36.289Z",
+    "key": "outlet-renting-cost-min",
+    "market": 125,
+    "decimal": "0.00"
+  }
+},
+{
+  "model": "markets.marketobservation",
+  "pk": 28,
+  "fields": {
+    "created_at": "2024-11-26T19:21:59.164Z",
+    "updated_at": "2024-11-26T19:37:36.318Z",
+    "key": "outlet-renting-cost-max",
+    "market": 125,
+    "decimal": "0.00"
+  }
+},
+{
+  "model": "markets.marketobservation",
+  "pk": 29,
+  "fields": {
+    "created_at": "2024-11-26T19:21:59.230Z",
+    "updated_at": "2024-11-26T19:37:36.344Z",
+    "key": "outlet-renting-cost-min",
+    "market": 126,
+    "decimal": "0.00"
+  }
+},
+{
+  "model": "markets.marketobservation",
+  "pk": 30,
+  "fields": {
+    "created_at": "2024-11-26T19:21:59.276Z",
+    "updated_at": "2024-11-26T19:37:36.373Z",
+    "key": "outlet-renting-cost-max",
+    "market": 126,
+    "decimal": "0.00"
+  }
+},
+{
+  "model": "markets.marketobservation",
+  "pk": 31,
+  "fields": {
+    "created_at": "2024-11-26T19:21:59.327Z",
+    "updated_at": "2024-11-26T19:37:36.397Z",
+    "key": "outlet-renting-cost-min",
+    "market": 129,
+    "decimal": "0.00"
+  }
+},
+{
+  "model": "markets.marketobservation",
+  "pk": 32,
+  "fields": {
+    "created_at": "2024-11-26T19:21:59.374Z",
+    "updated_at": "2024-11-26T19:37:36.417Z",
+    "key": "outlet-renting-cost-max",
+    "market": 129,
+    "decimal": "0.00"
+  }
+},
+{
+  "model": "markets.marketobservation",
+  "pk": 33,
+  "fields": {
+    "created_at": "2024-11-26T19:21:59.436Z",
+    "updated_at": "2024-11-26T19:37:36.443Z",
+    "key": "outlet-renting-cost-min",
+    "market": 123,
+    "decimal": "0.00"
+  }
+},
+{
+  "model": "markets.marketobservation",
+  "pk": 34,
+  "fields": {
+    "created_at": "2024-11-26T19:21:59.496Z",
+    "updated_at": "2024-11-26T19:37:36.462Z",
+    "key": "outlet-renting-cost-max",
+    "market": 123,
+    "decimal": "0.00"
+  }
+},
+{
+  "model": "markets.marketobservation",
+  "pk": 35,
+  "fields": {
+    "created_at": "2024-11-26T19:21:59.553Z",
+    "updated_at": "2024-11-26T19:37:36.487Z",
+    "key": "outlet-renting-cost-min",
+    "market": 121,
+    "decimal": "0.00"
+  }
+},
+{
+  "model": "markets.marketobservation",
+  "pk": 36,
+  "fields": {
+    "created_at": "2024-11-26T19:21:59.596Z",
+    "updated_at": "2024-11-26T19:37:36.516Z",
+    "key": "outlet-renting-cost-max",
+    "market": 121,
+    "decimal": "0.00"
+  }
+},
+{
+  "model": "markets.marketobservation",
+  "pk": 37,
+  "fields": {
+    "created_at": "2024-11-26T19:21:59.650Z",
+    "updated_at": "2024-11-26T19:37:36.542Z",
+    "key": "outlet-renting-cost-min",
+    "market": 70,
+    "decimal": "0.00"
+  }
+},
+{
+  "model": "markets.marketobservation",
+  "pk": 38,
+  "fields": {
+    "created_at": "2024-11-26T19:21:59.695Z",
+    "updated_at": "2024-11-26T19:37:36.572Z",
+    "key": "outlet-renting-cost-max",
+    "market": 70,
+    "decimal": "0.00"
+  }
+},
+{
+  "model": "markets.marketobservation",
+  "pk": 39,
+  "fields": {
+    "created_at": "2024-11-26T19:21:59.746Z",
+    "updated_at": "2024-11-26T19:37:36.597Z",
+    "key": "outlet-renting-cost-min",
+    "market": 74,
+    "decimal": "0.00"
+  }
+},
+{
+  "model": "markets.marketobservation",
+  "pk": 40,
+  "fields": {
+    "created_at": "2024-11-26T19:21:59.795Z",
+    "updated_at": "2024-11-26T19:37:36.616Z",
+    "key": "outlet-renting-cost-max",
+    "market": 74,
+    "decimal": "0.00"
+  }
+},
+{
+  "model": "markets.marketobservation",
+  "pk": 41,
+  "fields": {
+    "created_at": "2024-11-26T19:22:00.082Z",
+    "updated_at": "2024-11-26T19:37:36.672Z",
+    "key": "outlet-renting-cost-min",
+    "market": 71,
+    "decimal": "0.00"
+  }
+},
+{
+  "model": "markets.marketobservation",
+  "pk": 42,
+  "fields": {
+    "created_at": "2024-11-26T19:22:00.138Z",
+    "updated_at": "2024-11-26T19:37:36.693Z",
+    "key": "outlet-renting-cost-max",
+    "market": 71,
+    "decimal": "0.00"
+  }
+},
+{
+  "model": "markets.marketobservation",
+  "pk": 43,
+  "fields": {
+    "created_at": "2024-11-26T19:22:00.292Z",
+    "updated_at": "2024-11-26T19:37:36.731Z",
+    "key": "outlet-renting-cost-min",
+    "market": 73,
+    "decimal": "0.00"
+  }
+},
+{
+  "model": "markets.marketobservation",
+  "pk": 44,
+  "fields": {
+    "created_at": "2024-11-26T19:22:00.339Z",
+    "updated_at": "2024-11-26T19:37:36.760Z",
+    "key": "outlet-renting-cost-max",
+    "market": 73,
+    "decimal": "0.00"
+  }
+},
+{
+  "model": "markets.marketobservation",
+  "pk": 45,
+  "fields": {
+    "created_at": "2024-11-26T19:22:00.399Z",
+    "updated_at": "2024-11-26T19:37:36.786Z",
+    "key": "outlet-renting-cost-min",
+    "market": 69,
+    "decimal": "0.00"
+  }
+},
+{
+  "model": "markets.marketobservation",
+  "pk": 46,
+  "fields": {
+    "created_at": "2024-11-26T19:22:00.448Z",
+    "updated_at": "2024-11-26T19:37:36.816Z",
+    "key": "outlet-renting-cost-max",
+    "market": 69,
+    "decimal": "0.00"
+  }
+},
+{
+  "model": "markets.marketobservation",
+  "pk": 47,
+  "fields": {
+    "created_at": "2024-11-26T19:22:00.619Z",
+    "updated_at": "2024-11-26T19:37:36.855Z",
+    "key": "outlet-renting-cost-min",
+    "market": 72,
+    "decimal": "0.00"
+  }
+},
+{
+  "model": "markets.marketobservation",
+  "pk": 48,
+  "fields": {
+    "created_at": "2024-11-26T19:22:00.669Z",
+    "updated_at": "2024-11-26T19:37:36.882Z",
+    "key": "outlet-renting-cost-max",
+    "market": 72,
+    "decimal": "0.00"
+  }
+},
+{
+  "model": "markets.marketobservation",
+  "pk": 49,
+  "fields": {
+    "created_at": "2024-11-26T19:22:00.736Z",
+    "updated_at": "2024-11-26T19:37:36.909Z",
+    "key": "outlet-renting-cost-min",
+    "market": 245,
+    "decimal": "0.00"
+  }
+},
+{
+  "model": "markets.marketobservation",
+  "pk": 50,
+  "fields": {
+    "created_at": "2024-11-26T19:22:00.780Z",
+    "updated_at": "2024-11-26T19:37:36.937Z",
+    "key": "outlet-renting-cost-max",
+    "market": 245,
+    "decimal": "0.00"
+  }
+},
+{
+  "model": "markets.marketobservation",
+  "pk": 51,
+  "fields": {
+    "created_at": "2024-11-26T19:22:00.828Z",
+    "updated_at": "2024-11-26T19:37:36.963Z",
+    "key": "outlet-renting-cost-min",
+    "market": 246,
+    "decimal": "0.00"
+  }
+},
+{
+  "model": "markets.marketobservation",
+  "pk": 52,
+  "fields": {
+    "created_at": "2024-11-26T19:22:00.880Z",
+    "updated_at": "2024-11-26T19:37:36.982Z",
+    "key": "outlet-renting-cost-max",
+    "market": 246,
+    "decimal": "0.00"
+  }
+},
+{
+  "model": "markets.marketobservation",
+  "pk": 53,
+  "fields": {
+    "created_at": "2024-11-26T19:22:00.953Z",
+    "updated_at": "2024-11-26T19:37:37.009Z",
+    "key": "outlet-renting-cost-min",
+    "market": 76,
+    "decimal": "0.00"
+  }
+},
+{
+  "model": "markets.marketobservation",
+  "pk": 54,
+  "fields": {
+    "created_at": "2024-11-26T19:22:01.001Z",
+    "updated_at": "2024-11-26T19:37:37.037Z",
+    "key": "outlet-renting-cost-max",
+    "market": 76,
+    "decimal": "0.00"
+  }
+},
+{
+  "model": "markets.marketobservation",
+  "pk": 55,
+  "fields": {
+    "created_at": "2024-11-26T19:22:01.078Z",
+    "updated_at": "2024-11-26T19:37:37.066Z",
+    "key": "outlet-renting-cost-min",
+    "market": 61,
+    "decimal": "0.00"
+  }
+},
+{
+  "model": "markets.marketobservation",
+  "pk": 56,
+  "fields": {
+    "created_at": "2024-11-26T19:22:01.123Z",
+    "updated_at": "2024-11-26T19:37:37.092Z",
+    "key": "outlet-renting-cost-max",
+    "market": 61,
+    "decimal": "0.00"
+  }
+},
+{
+  "model": "markets.marketobservation",
+  "pk": 57,
+  "fields": {
+    "created_at": "2024-11-26T19:22:01.179Z",
+    "updated_at": "2024-11-26T19:37:37.117Z",
+    "key": "outlet-renting-cost-min",
+    "market": 66,
+    "decimal": "0.00"
+  }
+},
+{
+  "model": "markets.marketobservation",
+  "pk": 58,
+  "fields": {
+    "created_at": "2024-11-26T19:22:01.223Z",
+    "updated_at": "2024-11-26T19:37:37.137Z",
+    "key": "outlet-renting-cost-max",
+    "market": 66,
+    "decimal": "0.00"
+  }
+},
+{
+  "model": "markets.marketobservation",
+  "pk": 59,
+  "fields": {
+    "created_at": "2024-11-26T19:22:01.319Z",
+    "updated_at": "2024-11-26T19:37:37.167Z",
+    "key": "outlet-renting-cost-min",
+    "market": 65,
+    "decimal": "0.00"
+  }
+},
+{
+  "model": "markets.marketobservation",
+  "pk": 60,
+  "fields": {
+    "created_at": "2024-11-26T19:22:01.367Z",
+    "updated_at": "2024-11-26T19:37:37.192Z",
+    "key": "outlet-renting-cost-max",
+    "market": 65,
+    "decimal": "0.00"
+  }
+},
+{
+  "model": "markets.marketobservation",
+  "pk": 61,
+  "fields": {
+    "created_at": "2024-11-26T19:22:01.533Z",
+    "updated_at": "2024-11-26T19:37:37.232Z",
+    "key": "outlet-renting-cost-min",
+    "market": 64,
+    "decimal": "0.00"
+  }
+},
+{
+  "model": "markets.marketobservation",
+  "pk": 62,
+  "fields": {
+    "created_at": "2024-11-26T19:22:01.577Z",
+    "updated_at": "2024-11-26T19:37:37.258Z",
+    "key": "outlet-renting-cost-max",
+    "market": 64,
+    "decimal": "0.00"
+  }
+},
+{
+  "model": "markets.marketobservation",
+  "pk": 63,
+  "fields": {
+    "created_at": "2024-11-26T19:22:01.632Z",
+    "updated_at": "2024-11-26T19:37:37.284Z",
+    "key": "outlet-renting-cost-min",
+    "market": 62,
+    "decimal": "0.00"
+  }
+},
+{
+  "model": "markets.marketobservation",
+  "pk": 64,
+  "fields": {
+    "created_at": "2024-11-26T19:22:01.676Z",
+    "updated_at": "2024-11-26T19:37:37.314Z",
+    "key": "outlet-renting-cost-max",
+    "market": 62,
+    "decimal": "0.00"
+  }
+},
+{
+  "model": "markets.marketobservation",
+  "pk": 65,
+  "fields": {
+    "created_at": "2024-11-26T19:22:01.734Z",
+    "updated_at": "2024-11-26T19:37:37.339Z",
+    "key": "outlet-renting-cost-min",
+    "market": 63,
+    "decimal": "0.00"
+  }
+},
+{
+  "model": "markets.marketobservation",
+  "pk": 66,
+  "fields": {
+    "created_at": "2024-11-26T19:22:01.776Z",
+    "updated_at": "2024-11-26T19:37:37.358Z",
+    "key": "outlet-renting-cost-max",
+    "market": 63,
+    "decimal": "0.00"
+  }
+},
+{
+  "model": "markets.marketobservation",
+  "pk": 67,
+  "fields": {
+    "created_at": "2024-11-26T19:22:01.832Z",
+    "updated_at": "2024-11-26T19:37:37.383Z",
+    "key": "outlet-renting-cost-min",
+    "market": 67,
+    "decimal": "0.00"
+  }
+},
+{
+  "model": "markets.marketobservation",
+  "pk": 68,
+  "fields": {
+    "created_at": "2024-11-26T19:22:01.876Z",
+    "updated_at": "2024-11-26T19:37:37.402Z",
+    "key": "outlet-renting-cost-max",
+    "market": 67,
+    "decimal": "0.00"
+  }
+},
+{
+  "model": "markets.marketobservation",
+  "pk": 69,
+  "fields": {
+    "created_at": "2024-11-26T19:22:01.971Z",
+    "updated_at": "2024-11-26T19:37:37.432Z",
+    "key": "outlet-renting-cost-min",
+    "market": 75,
+    "decimal": "0.00"
+  }
+},
+{
+  "model": "markets.marketobservation",
+  "pk": 70,
+  "fields": {
+    "created_at": "2024-11-26T19:22:02.020Z",
+    "updated_at": "2024-11-26T19:37:37.458Z",
+    "key": "outlet-renting-cost-max",
+    "market": 75,
+    "decimal": "0.00"
+  }
+},
+{
+  "model": "markets.marketobservation",
+  "pk": 71,
+  "fields": {
+    "created_at": "2024-11-26T19:22:02.161Z",
+    "updated_at": "2024-11-26T19:37:37.485Z",
+    "key": "outlet-renting-cost-min",
+    "market": 68,
+    "decimal": "0.00"
+  }
+},
+{
+  "model": "markets.marketobservation",
+  "pk": 72,
+  "fields": {
+    "created_at": "2024-11-26T19:22:02.208Z",
+    "updated_at": "2024-11-26T19:37:37.513Z",
+    "key": "outlet-renting-cost-max",
+    "market": 68,
+    "decimal": "0.00"
+  }
+},
+{
+  "model": "markets.marketobservation",
+  "pk": 73,
+  "fields": {
+    "created_at": "2024-11-26T19:22:02.270Z",
+    "updated_at": "2024-11-26T19:37:37.540Z",
+    "key": "outlet-renting-cost-min",
+    "market": 83,
+    "decimal": "0.00"
+  }
+},
+{
+  "model": "markets.marketobservation",
+  "pk": 74,
+  "fields": {
+    "created_at": "2024-11-26T19:22:02.318Z",
+    "updated_at": "2024-11-26T19:37:37.568Z",
+    "key": "outlet-renting-cost-max",
+    "market": 83,
+    "decimal": "0.00"
+  }
+},
+{
+  "model": "markets.marketobservation",
+  "pk": 75,
+  "fields": {
+    "created_at": "2024-11-26T19:22:02.379Z",
+    "updated_at": "2024-11-26T19:37:37.595Z",
+    "key": "outlet-renting-cost-min",
+    "market": 148,
+    "decimal": "0.00"
+  }
+},
+{
+  "model": "markets.marketobservation",
+  "pk": 76,
+  "fields": {
+    "created_at": "2024-11-26T19:22:02.430Z",
+    "updated_at": "2024-11-26T19:37:37.624Z",
+    "key": "outlet-renting-cost-max",
+    "market": 148,
+    "decimal": "0.00"
+  }
+},
+{
+  "model": "markets.marketobservation",
+  "pk": 77,
+  "fields": {
+    "created_at": "2024-11-26T19:22:02.513Z",
+    "updated_at": "2024-11-26T19:37:37.652Z",
+    "key": "outlet-renting-cost-min",
+    "market": 78,
+    "decimal": "0.00"
+  }
+},
+{
+  "model": "markets.marketobservation",
+  "pk": 78,
+  "fields": {
+    "created_at": "2024-11-26T19:22:02.563Z",
+    "updated_at": "2024-11-26T19:37:37.680Z",
+    "key": "outlet-renting-cost-max",
+    "market": 78,
+    "decimal": "0.00"
+  }
+},
+{
+  "model": "markets.marketobservation",
+  "pk": 79,
+  "fields": {
+    "created_at": "2024-11-26T19:22:02.615Z",
+    "updated_at": "2024-11-26T19:37:37.703Z",
+    "key": "outlet-renting-cost-min",
+    "market": 85,
+    "decimal": "0.00"
+  }
+},
+{
+  "model": "markets.marketobservation",
+  "pk": 80,
+  "fields": {
+    "created_at": "2024-11-26T19:22:02.695Z",
+    "updated_at": "2024-11-26T19:37:37.723Z",
+    "key": "outlet-renting-cost-max",
+    "market": 85,
+    "decimal": "0.00"
+  }
+},
+{
+  "model": "markets.marketobservation",
+  "pk": 81,
+  "fields": {
+    "created_at": "2024-11-26T19:22:02.905Z",
+    "updated_at": "2024-11-26T19:37:37.769Z",
+    "key": "outlet-renting-cost-min",
+    "market": 79,
+    "decimal": "0.00"
+  }
+},
+{
+  "model": "markets.marketobservation",
+  "pk": 82,
+  "fields": {
+    "created_at": "2024-11-26T19:22:02.950Z",
+    "updated_at": "2024-11-26T19:37:37.790Z",
+    "key": "outlet-renting-cost-max",
+    "market": 79,
+    "decimal": "0.00"
+  }
+},
+{
+  "model": "markets.marketobservation",
+  "pk": 83,
+  "fields": {
+    "created_at": "2024-11-26T19:22:03.011Z",
+    "updated_at": "2024-11-26T19:37:37.816Z",
+    "key": "outlet-renting-cost-min",
+    "market": 82,
+    "decimal": "0.00"
+  }
+},
+{
+  "model": "markets.marketobservation",
+  "pk": 84,
+  "fields": {
+    "created_at": "2024-11-26T19:22:03.061Z",
+    "updated_at": "2024-11-26T19:37:37.845Z",
+    "key": "outlet-renting-cost-max",
+    "market": 82,
+    "decimal": "0.00"
+  }
+},
+{
+  "model": "markets.marketobservation",
+  "pk": 85,
+  "fields": {
+    "created_at": "2024-11-26T19:22:03.128Z",
+    "updated_at": "2024-11-26T19:37:37.871Z",
+    "key": "outlet-renting-cost-min",
+    "market": 80,
+    "decimal": "0.00"
+  }
+},
+{
+  "model": "markets.marketobservation",
+  "pk": 86,
+  "fields": {
+    "created_at": "2024-11-26T19:22:03.171Z",
+    "updated_at": "2024-11-26T19:37:37.889Z",
+    "key": "outlet-renting-cost-max",
+    "market": 80,
+    "decimal": "0.00"
+  }
+},
+{
+  "model": "markets.marketobservation",
+  "pk": 87,
+  "fields": {
+    "created_at": "2024-11-26T19:22:03.242Z",
+    "updated_at": "2024-11-26T19:37:37.916Z",
+    "key": "outlet-renting-cost-min",
+    "market": 84,
+    "decimal": "0.00"
+  }
+},
+{
+  "model": "markets.marketobservation",
+  "pk": 88,
+  "fields": {
+    "created_at": "2024-11-26T19:22:03.294Z",
+    "updated_at": "2024-11-26T19:37:37.945Z",
+    "key": "outlet-renting-cost-max",
+    "market": 84,
+    "decimal": "0.00"
+  }
+},
+{
+  "model": "markets.marketobservation",
+  "pk": 89,
+  "fields": {
+    "created_at": "2024-11-26T19:22:03.355Z",
+    "updated_at": "2024-11-26T19:37:37.971Z",
+    "key": "outlet-renting-cost-min",
+    "market": 77,
+    "decimal": "0.00"
+  }
+},
+{
+  "model": "markets.marketobservation",
+  "pk": 90,
+  "fields": {
+    "created_at": "2024-11-26T19:22:03.405Z",
+    "updated_at": "2024-11-26T19:37:38.031Z",
+    "key": "outlet-renting-cost-max",
+    "market": 77,
+    "decimal": "0.00"
+  }
+},
+{
+  "model": "markets.marketobservation",
+  "pk": 91,
+  "fields": {
+    "created_at": "2024-11-26T19:22:03.659Z",
+    "updated_at": "2024-11-26T19:37:38.097Z",
+    "key": "outlet-renting-cost-min",
+    "market": 81,
+    "decimal": "0.00"
+  }
+},
+{
+  "model": "markets.marketobservation",
+  "pk": 92,
+  "fields": {
+    "created_at": "2024-11-26T19:22:03.702Z",
+    "updated_at": "2024-11-26T19:37:38.144Z",
+    "key": "outlet-renting-cost-max",
+    "market": 81,
+    "decimal": "0.00"
+  }
+},
+{
+  "model": "markets.marketobservation",
+  "pk": 93,
+  "fields": {
+    "created_at": "2024-11-26T19:22:03.767Z",
+    "updated_at": "2024-11-26T19:37:38.169Z",
+    "key": "outlet-renting-cost-min",
+    "market": 147,
+    "decimal": "0.00"
+  }
+},
+{
+  "model": "markets.marketobservation",
+  "pk": 94,
+  "fields": {
+    "created_at": "2024-11-26T19:22:03.813Z",
+    "updated_at": "2024-11-26T19:37:38.189Z",
+    "key": "outlet-renting-cost-max",
+    "market": 147,
+    "decimal": "0.00"
+  }
+},
+{
+  "model": "markets.marketobservation",
+  "pk": 95,
+  "fields": {
+    "created_at": "2024-11-26T19:22:03.872Z",
+    "updated_at": "2024-11-26T19:37:38.214Z",
+    "key": "outlet-renting-cost-min",
+    "market": 92,
+    "decimal": "0.00"
+  }
+},
+{
+  "model": "markets.marketobservation",
+  "pk": 96,
+  "fields": {
+    "created_at": "2024-11-26T19:22:03.924Z",
+    "updated_at": "2024-11-26T19:37:38.232Z",
+    "key": "outlet-renting-cost-max",
+    "market": 92,
+    "decimal": "0.00"
+  }
+},
+{
+  "model": "markets.marketobservation",
+  "pk": 97,
+  "fields": {
+    "created_at": "2024-11-26T19:22:04.010Z",
+    "updated_at": "2024-11-26T19:37:38.261Z",
+    "key": "outlet-renting-cost-min",
+    "market": 89,
+    "decimal": "0.00"
+  }
+},
+{
+  "model": "markets.marketobservation",
+  "pk": 98,
+  "fields": {
+    "created_at": "2024-11-26T19:22:04.058Z",
+    "updated_at": "2024-11-26T19:37:38.288Z",
+    "key": "outlet-renting-cost-max",
+    "market": 89,
+    "decimal": "0.00"
+  }
+},
+{
+  "model": "markets.marketobservation",
+  "pk": 99,
+  "fields": {
+    "created_at": "2024-11-26T19:22:04.114Z",
+    "updated_at": "2024-11-26T19:37:38.313Z",
+    "key": "outlet-renting-cost-min",
+    "market": 94,
+    "decimal": "0.00"
+  }
+},
+{
+  "model": "markets.marketobservation",
+  "pk": 100,
+  "fields": {
+    "created_at": "2024-11-26T19:22:04.158Z",
+    "updated_at": "2024-11-26T19:37:38.332Z",
+    "key": "outlet-renting-cost-max",
+    "market": 94,
+    "decimal": "0.00"
+  }
+},
+{
+  "model": "markets.marketobservation",
+  "pk": 101,
+  "fields": {
+    "created_at": "2024-11-26T19:22:04.226Z",
+    "updated_at": "2024-11-26T19:37:38.359Z",
+    "key": "outlet-renting-cost-min",
+    "market": 90,
+    "decimal": "0.00"
+  }
+},
+{
+  "model": "markets.marketobservation",
+  "pk": 102,
+  "fields": {
+    "created_at": "2024-11-26T19:22:04.278Z",
+    "updated_at": "2024-11-26T19:37:38.387Z",
+    "key": "outlet-renting-cost-max",
+    "market": 90,
+    "decimal": "0.00"
+  }
+},
+{
+  "model": "markets.marketobservation",
+  "pk": 103,
+  "fields": {
+    "created_at": "2024-11-26T19:22:04.331Z",
+    "updated_at": "2024-11-26T19:37:38.411Z",
+    "key": "outlet-renting-cost-min",
+    "market": 93,
+    "decimal": "0.00"
+  }
+},
+{
+  "model": "markets.marketobservation",
+  "pk": 104,
+  "fields": {
+    "created_at": "2024-11-26T19:22:04.378Z",
+    "updated_at": "2024-11-26T19:37:38.431Z",
+    "key": "outlet-renting-cost-max",
+    "market": 93,
+    "decimal": "0.00"
+  }
+},
+{
+  "model": "markets.marketobservation",
+  "pk": 105,
+  "fields": {
+    "created_at": "2024-11-26T19:22:04.436Z",
+    "updated_at": "2024-11-26T19:37:38.457Z",
+    "key": "outlet-renting-cost-min",
+    "market": 103,
+    "decimal": "0.00"
+  }
+},
+{
+  "model": "markets.marketobservation",
+  "pk": 106,
+  "fields": {
+    "created_at": "2024-11-26T19:22:04.488Z",
+    "updated_at": "2024-11-26T19:37:38.476Z",
+    "key": "outlet-renting-cost-max",
+    "market": 103,
+    "decimal": "0.00"
+  }
+},
+{
+  "model": "markets.marketobservation",
+  "pk": 107,
+  "fields": {
+    "created_at": "2024-11-26T19:22:04.549Z",
+    "updated_at": "2024-11-26T19:37:38.503Z",
+    "key": "outlet-renting-cost-min",
+    "market": 101,
+    "decimal": "0.00"
+  }
+},
+{
+  "model": "markets.marketobservation",
+  "pk": 108,
+  "fields": {
+    "created_at": "2024-11-26T19:22:04.601Z",
+    "updated_at": "2024-11-26T19:37:38.531Z",
+    "key": "outlet-renting-cost-max",
+    "market": 101,
+    "decimal": "0.00"
+  }
+},
+{
+  "model": "markets.marketobservation",
+  "pk": 109,
+  "fields": {
+    "created_at": "2024-11-26T19:22:04.655Z",
+    "updated_at": "2024-11-26T19:37:38.556Z",
+    "key": "outlet-renting-cost-min",
+    "market": 102,
+    "decimal": "0.00"
+  }
+},
+{
+  "model": "markets.marketobservation",
+  "pk": 110,
+  "fields": {
+    "created_at": "2024-11-26T19:22:04.699Z",
+    "updated_at": "2024-11-26T19:37:38.576Z",
+    "key": "outlet-renting-cost-max",
+    "market": 102,
+    "decimal": "0.00"
+  }
+},
+{
+  "model": "markets.marketobservation",
+  "pk": 111,
+  "fields": {
+    "created_at": "2024-11-26T19:22:04.872Z",
+    "updated_at": "2024-11-26T19:37:38.615Z",
+    "key": "outlet-renting-cost-min",
+    "market": 91,
+    "decimal": "0.00"
+  }
+},
+{
+  "model": "markets.marketobservation",
+  "pk": 112,
+  "fields": {
+    "created_at": "2024-11-26T19:22:04.921Z",
+    "updated_at": "2024-11-26T19:37:38.642Z",
+    "key": "outlet-renting-cost-max",
+    "market": 91,
+    "decimal": "0.00"
+  }
+},
+{
+  "model": "markets.marketobservation",
+  "pk": 113,
+  "fields": {
+    "created_at": "2024-11-26T19:22:04.987Z",
+    "updated_at": "2024-11-26T19:37:38.668Z",
+    "key": "outlet-renting-cost-min",
+    "market": 98,
+    "decimal": "0.00"
+  }
+},
+{
+  "model": "markets.marketobservation",
+  "pk": 114,
+  "fields": {
+    "created_at": "2024-11-26T19:22:05.031Z",
+    "updated_at": "2024-11-26T19:37:38.697Z",
+    "key": "outlet-renting-cost-max",
+    "market": 98,
+    "decimal": "0.00"
+  }
+},
+{
+  "model": "markets.marketobservation",
+  "pk": 115,
+  "fields": {
+    "created_at": "2024-11-26T19:22:05.099Z",
+    "updated_at": "2024-11-26T19:37:38.724Z",
+    "key": "outlet-renting-cost-min",
+    "market": 96,
+    "decimal": "0.00"
+  }
+},
+{
+  "model": "markets.marketobservation",
+  "pk": 116,
+  "fields": {
+    "created_at": "2024-11-26T19:22:05.142Z",
+    "updated_at": "2024-11-26T19:37:38.753Z",
+    "key": "outlet-renting-cost-max",
+    "market": 96,
+    "decimal": "0.00"
+  }
+},
+{
+  "model": "markets.marketobservation",
+  "pk": 117,
+  "fields": {
+    "created_at": "2024-11-26T19:22:05.195Z",
+    "updated_at": "2024-11-26T19:37:38.777Z",
+    "key": "outlet-renting-cost-min",
+    "market": 105,
+    "decimal": "0.00"
+  }
+},
+{
+  "model": "markets.marketobservation",
+  "pk": 118,
+  "fields": {
+    "created_at": "2024-11-26T19:22:05.241Z",
+    "updated_at": "2024-11-26T19:37:38.797Z",
+    "key": "outlet-renting-cost-max",
+    "market": 105,
+    "decimal": "0.00"
+  }
+},
+{
+  "model": "markets.marketobservation",
+  "pk": 119,
+  "fields": {
+    "created_at": "2024-11-26T19:22:05.342Z",
+    "updated_at": "2024-11-26T19:37:38.826Z",
+    "key": "outlet-renting-cost-min",
+    "market": 104,
+    "decimal": "0.00"
+  }
+},
+{
+  "model": "markets.marketobservation",
+  "pk": 120,
+  "fields": {
+    "created_at": "2024-11-26T19:22:05.385Z",
+    "updated_at": "2024-11-26T19:37:38.852Z",
+    "key": "outlet-renting-cost-max",
+    "market": 104,
+    "decimal": "0.00"
+  }
+},
+{
+  "model": "markets.marketobservation",
+  "pk": 121,
+  "fields": {
+    "created_at": "2024-11-26T19:22:05.438Z",
+    "updated_at": "2024-11-26T19:37:38.877Z",
+    "key": "outlet-renting-cost-min",
+    "market": 100,
+    "decimal": "0.00"
+  }
+},
+{
+  "model": "markets.marketobservation",
+  "pk": 122,
+  "fields": {
+    "created_at": "2024-11-26T19:22:05.485Z",
+    "updated_at": "2024-11-26T19:37:38.896Z",
+    "key": "outlet-renting-cost-max",
+    "market": 100,
+    "decimal": "0.00"
+  }
+},
+{
+  "model": "markets.marketobservation",
+  "pk": 123,
+  "fields": {
+    "created_at": "2024-11-26T19:22:05.534Z",
+    "updated_at": "2024-11-26T19:37:38.922Z",
+    "key": "outlet-renting-cost-min",
+    "market": 97,
+    "decimal": "0.00"
+  }
+},
+{
+  "model": "markets.marketobservation",
+  "pk": 124,
+  "fields": {
+    "created_at": "2024-11-26T19:22:05.584Z",
+    "updated_at": "2024-11-26T19:37:38.941Z",
+    "key": "outlet-renting-cost-max",
+    "market": 97,
+    "decimal": "0.00"
+  }
+},
+{
+  "model": "markets.marketobservation",
+  "pk": 125,
+  "fields": {
+    "created_at": "2024-11-26T19:22:05.638Z",
+    "updated_at": "2024-11-26T19:37:38.965Z",
+    "key": "outlet-renting-cost-min",
+    "market": 99,
+    "decimal": "0.00"
+  }
+},
+{
+  "model": "markets.marketobservation",
+  "pk": 126,
+  "fields": {
+    "created_at": "2024-11-26T19:22:05.684Z",
+    "updated_at": "2024-11-26T19:37:38.985Z",
+    "key": "outlet-renting-cost-max",
+    "market": 99,
+    "decimal": "0.00"
+  }
+},
+{
+  "model": "markets.marketobservation",
+  "pk": 127,
+  "fields": {
+    "created_at": "2024-11-26T19:22:05.743Z",
+    "updated_at": "2024-11-26T19:37:39.011Z",
+    "key": "outlet-renting-cost-min",
+    "market": 95,
+    "decimal": "0.00"
+  }
+},
+{
+  "model": "markets.marketobservation",
+  "pk": 128,
+  "fields": {
+    "created_at": "2024-11-26T19:22:05.796Z",
+    "updated_at": "2024-11-26T19:37:39.030Z",
+    "key": "outlet-renting-cost-max",
+    "market": 95,
+    "decimal": "0.00"
+  }
+},
+{
+  "model": "markets.marketobservation",
+  "pk": 129,
+  "fields": {
+    "created_at": "2024-11-26T19:22:05.850Z",
+    "updated_at": "2024-11-26T19:37:39.055Z",
+    "key": "outlet-renting-cost-min",
+    "market": 131,
+    "decimal": "0.00"
+  }
+},
+{
+  "model": "markets.marketobservation",
+  "pk": 130,
+  "fields": {
+    "created_at": "2024-11-26T19:22:05.897Z",
+    "updated_at": "2024-11-26T19:37:39.074Z",
+    "key": "outlet-renting-cost-max",
+    "market": 131,
+    "decimal": "0.00"
+  }
+},
+{
+  "model": "markets.marketobservation",
+  "pk": 131,
+  "fields": {
+    "created_at": "2024-11-26T19:22:05.949Z",
+    "updated_at": "2024-11-26T19:37:39.098Z",
+    "key": "outlet-renting-cost-min",
+    "market": 141,
+    "decimal": "0.00"
+  }
+},
+{
+  "model": "markets.marketobservation",
+  "pk": 132,
+  "fields": {
+    "created_at": "2024-11-26T19:22:05.994Z",
+    "updated_at": "2024-11-26T19:37:39.118Z",
+    "key": "outlet-renting-cost-max",
+    "market": 141,
+    "decimal": "0.00"
+  }
+},
+{
+  "model": "markets.marketobservation",
+  "pk": 133,
+  "fields": {
+    "created_at": "2024-11-26T19:22:06.073Z",
+    "updated_at": "2024-11-26T19:37:39.146Z",
+    "key": "outlet-renting-cost-min",
+    "market": 143,
+    "decimal": "0.00"
+  }
+},
+{
+  "model": "markets.marketobservation",
+  "pk": 134,
+  "fields": {
+    "created_at": "2024-11-26T19:22:06.116Z",
+    "updated_at": "2024-11-26T19:37:39.174Z",
+    "key": "outlet-renting-cost-max",
+    "market": 143,
+    "decimal": "0.00"
+  }
+},
+{
+  "model": "markets.marketobservation",
+  "pk": 135,
+  "fields": {
+    "created_at": "2024-11-26T19:22:06.273Z",
+    "updated_at": "2024-11-26T19:37:39.213Z",
+    "key": "outlet-renting-cost-min",
+    "market": 144,
+    "decimal": "0.00"
+  }
+},
+{
+  "model": "markets.marketobservation",
+  "pk": 136,
+  "fields": {
+    "created_at": "2024-11-26T19:22:06.393Z",
+    "updated_at": "2024-11-26T19:37:39.240Z",
+    "key": "outlet-renting-cost-max",
+    "market": 144,
+    "decimal": "0.00"
+  }
+},
+{
+  "model": "markets.marketobservation",
+  "pk": 137,
+  "fields": {
+    "created_at": "2024-11-26T19:22:06.547Z",
+    "updated_at": "2024-11-26T19:37:39.280Z",
+    "key": "outlet-renting-cost-min",
+    "market": 130,
+    "decimal": "0.00"
+  }
+},
+{
+  "model": "markets.marketobservation",
+  "pk": 138,
+  "fields": {
+    "created_at": "2024-11-26T19:22:06.591Z",
+    "updated_at": "2024-11-26T19:37:39.306Z",
+    "key": "outlet-renting-cost-max",
+    "market": 130,
+    "decimal": "0.00"
+  }
+},
+{
+  "model": "markets.marketobservation",
+  "pk": 139,
+  "fields": {
+    "created_at": "2024-11-26T19:22:06.663Z",
+    "updated_at": "2024-11-26T19:37:39.334Z",
+    "key": "outlet-renting-cost-min",
+    "market": 145,
+    "decimal": "0.00"
+  }
+},
+{
+  "model": "markets.marketobservation",
+  "pk": 140,
+  "fields": {
+    "created_at": "2024-11-26T19:22:06.714Z",
+    "updated_at": "2024-11-26T19:37:39.362Z",
+    "key": "outlet-renting-cost-max",
+    "market": 145,
+    "decimal": "0.00"
+  }
+},
+{
+  "model": "markets.marketobservation",
+  "pk": 141,
+  "fields": {
+    "created_at": "2024-11-26T19:22:06.775Z",
+    "updated_at": "2024-11-26T19:37:39.387Z",
+    "key": "outlet-renting-cost-min",
+    "market": 142,
+    "decimal": "0.00"
+  }
+},
+{
+  "model": "markets.marketobservation",
+  "pk": 142,
+  "fields": {
+    "created_at": "2024-11-26T19:22:06.825Z",
+    "updated_at": "2024-11-26T19:37:39.406Z",
+    "key": "outlet-renting-cost-max",
+    "market": 142,
+    "decimal": "0.00"
+  }
+},
+{
+  "model": "markets.marketobservation",
+  "pk": 143,
+  "fields": {
+    "created_at": "2024-11-26T19:22:06.977Z",
+    "updated_at": "2024-11-26T19:37:39.439Z",
+    "key": "outlet-renting-cost-min",
+    "market": 140,
+    "decimal": "0.00"
+  }
+},
+{
+  "model": "markets.marketobservation",
+  "pk": 144,
+  "fields": {
+    "created_at": "2024-11-26T19:22:07.059Z",
+    "updated_at": "2024-11-26T19:37:39.461Z",
+    "key": "outlet-renting-cost-max",
+    "market": 140,
+    "decimal": "0.00"
+  }
+},
+{
+  "model": "markets.marketobservation",
+  "pk": 145,
+  "fields": {
+    "created_at": "2024-11-26T19:22:07.142Z",
+    "updated_at": "2024-11-26T19:37:39.487Z",
+    "key": "outlet-renting-cost-min",
+    "market": 146,
+    "decimal": "0.00"
+  }
+},
+{
+  "model": "markets.marketobservation",
+  "pk": 146,
+  "fields": {
+    "created_at": "2024-11-26T19:22:07.212Z",
+    "updated_at": "2024-11-26T19:37:39.506Z",
+    "key": "outlet-renting-cost-max",
+    "market": 146,
+    "decimal": "0.00"
+  }
+},
+{
+  "model": "markets.marketobservation",
+  "pk": 147,
+  "fields": {
+    "created_at": "2024-11-26T19:22:07.272Z",
+    "updated_at": "2024-11-26T19:37:39.532Z",
+    "key": "outlet-renting-cost-min",
+    "market": 132,
+    "decimal": "0.00"
+  }
+},
+{
+  "model": "markets.marketobservation",
+  "pk": 148,
+  "fields": {
+    "created_at": "2024-11-26T19:22:07.323Z",
+    "updated_at": "2024-11-26T19:37:39.561Z",
+    "key": "outlet-renting-cost-max",
+    "market": 132,
+    "decimal": "0.00"
+  }
+},
+{
+  "model": "markets.marketobservation",
+  "pk": 149,
+  "fields": {
+    "created_at": "2024-11-26T19:22:07.451Z",
+    "updated_at": "2024-11-26T19:37:39.597Z",
+    "key": "outlet-renting-cost-min",
+    "market": 107,
+    "decimal": "0.00"
+  }
+},
+{
+  "model": "markets.marketobservation",
+  "pk": 150,
+  "fields": {
+    "created_at": "2024-11-26T19:22:07.500Z",
+    "updated_at": "2024-11-26T19:37:39.616Z",
+    "key": "outlet-renting-cost-max",
+    "market": 107,
+    "decimal": "0.00"
+  }
+},
+{
+  "model": "markets.marketobservation",
+  "pk": 151,
+  "fields": {
+    "created_at": "2024-11-26T19:22:07.614Z",
+    "updated_at": "2024-11-26T19:37:39.650Z",
+    "key": "outlet-renting-cost-min",
+    "market": 133,
+    "decimal": "0.00"
+  }
+},
+{
+  "model": "markets.marketobservation",
+  "pk": 152,
+  "fields": {
+    "created_at": "2024-11-26T19:22:07.666Z",
+    "updated_at": "2024-11-26T19:37:39.672Z",
+    "key": "outlet-renting-cost-max",
+    "market": 133,
+    "decimal": "0.00"
+  }
+},
+{
+  "model": "markets.marketobservation",
+  "pk": 153,
+  "fields": {
+    "created_at": "2024-11-26T19:22:07.718Z",
+    "updated_at": "2024-11-26T19:37:39.719Z",
+    "key": "outlet-renting-cost-min",
+    "market": 112,
+    "decimal": "0.00"
+  }
+},
+{
+  "model": "markets.marketobservation",
+  "pk": 154,
+  "fields": {
+    "created_at": "2024-11-26T19:22:07.766Z",
+    "updated_at": "2024-11-26T19:37:39.738Z",
+    "key": "outlet-renting-cost-max",
+    "market": 112,
+    "decimal": "0.00"
+  }
+},
+{
+  "model": "markets.marketobservation",
+  "pk": 155,
+  "fields": {
+    "created_at": "2024-11-26T19:22:07.835Z",
+    "updated_at": "2024-11-26T19:37:39.765Z",
+    "key": "outlet-renting-cost-min",
+    "market": 109,
+    "decimal": "0.00"
+  }
+},
+{
+  "model": "markets.marketobservation",
+  "pk": 156,
+  "fields": {
+    "created_at": "2024-11-26T19:22:07.887Z",
+    "updated_at": "2024-11-26T19:37:39.794Z",
+    "key": "outlet-renting-cost-max",
+    "market": 109,
+    "decimal": "0.00"
+  }
+},
+{
+  "model": "markets.marketobservation",
+  "pk": 157,
+  "fields": {
+    "created_at": "2024-11-26T19:22:07.947Z",
+    "updated_at": "2024-11-26T19:37:39.819Z",
+    "key": "outlet-renting-cost-min",
+    "market": 111,
+    "decimal": "0.00"
+  }
+},
+{
+  "model": "markets.marketobservation",
+  "pk": 158,
+  "fields": {
+    "created_at": "2024-11-26T19:22:07.998Z",
+    "updated_at": "2024-11-26T19:37:39.849Z",
+    "key": "outlet-renting-cost-max",
+    "market": 111,
+    "decimal": "0.00"
+  }
+},
+{
+  "model": "markets.marketobservation",
+  "pk": 159,
+  "fields": {
+    "created_at": "2024-11-26T19:22:08.077Z",
+    "updated_at": "2024-11-26T19:37:39.875Z",
+    "key": "outlet-renting-cost-min",
+    "market": 134,
+    "decimal": "0.00"
+  }
+},
+{
+  "model": "markets.marketobservation",
+  "pk": 160,
+  "fields": {
+    "created_at": "2024-11-26T19:22:08.131Z",
+    "updated_at": "2024-11-26T19:37:39.904Z",
+    "key": "outlet-renting-cost-max",
+    "market": 134,
+    "decimal": "0.00"
+  }
+},
+{
+  "model": "markets.marketobservation",
+  "pk": 161,
+  "fields": {
+    "created_at": "2024-11-26T19:22:08.193Z",
+    "updated_at": "2024-11-26T19:37:39.931Z",
+    "key": "outlet-renting-cost-min",
+    "market": 108,
+    "decimal": "0.00"
+  }
+},
+{
+  "model": "markets.marketobservation",
+  "pk": 162,
+  "fields": {
+    "created_at": "2024-11-26T19:22:08.242Z",
+    "updated_at": "2024-11-26T19:37:39.959Z",
+    "key": "outlet-renting-cost-max",
+    "market": 108,
+    "decimal": "0.00"
+  }
+},
+{
+  "model": "markets.marketobservation",
+  "pk": 163,
+  "fields": {
+    "created_at": "2024-11-26T19:22:08.306Z",
+    "updated_at": "2024-11-26T19:37:39.985Z",
+    "key": "outlet-renting-cost-min",
+    "market": 110,
+    "decimal": "0.00"
+  }
+},
+{
+  "model": "markets.marketobservation",
+  "pk": 164,
+  "fields": {
+    "created_at": "2024-11-26T19:22:08.352Z",
+    "updated_at": "2024-11-26T19:37:40.003Z",
+    "key": "outlet-renting-cost-max",
+    "market": 110,
+    "decimal": "0.00"
+  }
+},
+{
+  "model": "markets.marketobservation",
+  "pk": 165,
+  "fields": {
+    "created_at": "2024-11-26T19:22:08.403Z",
+    "updated_at": "2024-11-26T19:37:40.028Z",
+    "key": "outlet-renting-cost-min",
+    "market": 135,
+    "decimal": "0.00"
+  }
+},
+{
+  "model": "markets.marketobservation",
+  "pk": 166,
+  "fields": {
+    "created_at": "2024-11-26T19:22:08.452Z",
+    "updated_at": "2024-11-26T19:37:40.049Z",
+    "key": "outlet-renting-cost-max",
+    "market": 135,
+    "decimal": "0.00"
+  }
+},
+{
+  "model": "markets.marketobservation",
+  "pk": 167,
+  "fields": {
+    "created_at": "2024-11-26T19:22:08.512Z",
+    "updated_at": "2024-11-26T19:37:40.074Z",
+    "key": "outlet-renting-cost-min",
+    "market": 106,
+    "decimal": "0.00"
+  }
+},
+{
+  "model": "markets.marketobservation",
+  "pk": 168,
+  "fields": {
+    "created_at": "2024-11-26T19:22:08.574Z",
+    "updated_at": "2024-11-26T19:37:40.092Z",
+    "key": "outlet-renting-cost-max",
+    "market": 106,
+    "decimal": "0.00"
+  }
+},
+{
+  "model": "markets.marketobservation",
+  "pk": 169,
+  "fields": {
+    "created_at": "2024-11-26T19:22:08.726Z",
+    "updated_at": "2024-11-26T19:37:40.125Z",
+    "key": "outlet-renting-cost-min",
+    "market": 114,
+    "decimal": "0.00"
+  }
+},
+{
+  "model": "markets.marketobservation",
+  "pk": 170,
+  "fields": {
+    "created_at": "2024-11-26T19:22:08.773Z",
+    "updated_at": "2024-11-26T19:37:40.147Z",
+    "key": "outlet-renting-cost-max",
+    "market": 114,
+    "decimal": "0.00"
+  }
+},
+{
+  "model": "markets.marketobservation",
+  "pk": 171,
+  "fields": {
+    "created_at": "2024-11-26T19:22:08.832Z",
+    "updated_at": "2024-11-26T19:37:40.173Z",
+    "key": "outlet-renting-cost-min",
+    "market": 118,
+    "decimal": "0.00"
+  }
+},
+{
+  "model": "markets.marketobservation",
+  "pk": 172,
+  "fields": {
+    "created_at": "2024-11-26T19:22:08.884Z",
+    "updated_at": "2024-11-26T19:37:40.192Z",
+    "key": "outlet-renting-cost-max",
+    "market": 118,
+    "decimal": "0.00"
+  }
+},
+{
+  "model": "markets.marketobservation",
+  "pk": 173,
+  "fields": {
+    "created_at": "2024-11-26T19:22:08.955Z",
+    "updated_at": "2024-11-26T19:37:40.219Z",
+    "key": "outlet-renting-cost-min",
+    "market": 137,
+    "decimal": "0.00"
+  }
+},
+{
+  "model": "markets.marketobservation",
+  "pk": 174,
+  "fields": {
+    "created_at": "2024-11-26T19:22:09.006Z",
+    "updated_at": "2024-11-26T19:37:40.247Z",
+    "key": "outlet-renting-cost-max",
+    "market": 137,
+    "decimal": "0.00"
+  }
+},
+{
+  "model": "markets.marketobservation",
+  "pk": 175,
+  "fields": {
+    "created_at": "2024-11-26T19:22:09.079Z",
+    "updated_at": "2024-11-26T19:37:40.275Z",
+    "key": "outlet-renting-cost-min",
+    "market": 136,
+    "decimal": "0.00"
+  }
+},
+{
+  "model": "markets.marketobservation",
+  "pk": 176,
+  "fields": {
+    "created_at": "2024-11-26T19:22:09.205Z",
+    "updated_at": "2024-11-26T19:37:40.302Z",
+    "key": "outlet-renting-cost-max",
+    "market": 136,
+    "decimal": "0.00"
+  }
+},
+{
+  "model": "markets.marketobservation",
+  "pk": 177,
+  "fields": {
+    "created_at": "2024-11-26T19:22:09.279Z",
+    "updated_at": "2024-11-26T19:37:40.385Z",
+    "key": "outlet-renting-cost-min",
+    "market": 117,
+    "decimal": "0.00"
+  }
+},
+{
+  "model": "markets.marketobservation",
+  "pk": 178,
+  "fields": {
+    "created_at": "2024-11-26T19:22:09.327Z",
+    "updated_at": "2024-11-26T19:37:40.413Z",
+    "key": "outlet-renting-cost-max",
+    "market": 117,
+    "decimal": "0.00"
+  }
+},
+{
+  "model": "markets.marketobservation",
+  "pk": 179,
+  "fields": {
+    "created_at": "2024-11-26T19:22:09.381Z",
+    "updated_at": "2024-11-26T19:37:40.439Z",
+    "key": "outlet-renting-cost-min",
+    "market": 116,
+    "decimal": "0.00"
+  }
+},
+{
+  "model": "markets.marketobservation",
+  "pk": 180,
+  "fields": {
+    "created_at": "2024-11-26T19:22:09.426Z",
+    "updated_at": "2024-11-26T19:37:40.470Z",
+    "key": "outlet-renting-cost-max",
+    "market": 116,
+    "decimal": "0.00"
+  }
+},
+{
+  "model": "markets.marketobservation",
+  "pk": 181,
+  "fields": {
+    "created_at": "2024-11-26T19:22:09.507Z",
+    "updated_at": "2024-11-26T19:37:40.496Z",
+    "key": "outlet-renting-cost-min",
+    "market": 113,
+    "decimal": "0.00"
+  }
+},
+{
+  "model": "markets.marketobservation",
+  "pk": 182,
+  "fields": {
+    "created_at": "2024-11-26T19:22:09.559Z",
+    "updated_at": "2024-11-26T19:37:40.524Z",
+    "key": "outlet-renting-cost-max",
+    "market": 113,
+    "decimal": "0.00"
+  }
+},
+{
+  "model": "markets.marketobservation",
+  "pk": 183,
+  "fields": {
+    "created_at": "2024-11-26T19:22:09.630Z",
+    "updated_at": "2024-11-26T19:37:40.550Z",
+    "key": "outlet-renting-cost-min",
+    "market": 120,
+    "decimal": "0.00"
+  }
+},
+{
+  "model": "markets.marketobservation",
+  "pk": 184,
+  "fields": {
+    "created_at": "2024-11-26T19:22:09.681Z",
+    "updated_at": "2024-11-26T19:37:40.579Z",
+    "key": "outlet-renting-cost-max",
+    "market": 120,
+    "decimal": "0.00"
+  }
+},
+{
+  "model": "markets.marketobservation",
+  "pk": 185,
+  "fields": {
+    "created_at": "2024-11-26T19:22:09.749Z",
+    "updated_at": "2024-11-26T19:37:40.606Z",
+    "key": "outlet-renting-cost-min",
+    "market": 115,
+    "decimal": "0.00"
+  }
+},
+{
+  "model": "markets.marketobservation",
+  "pk": 186,
+  "fields": {
+    "created_at": "2024-11-26T19:22:09.792Z",
+    "updated_at": "2024-11-26T19:37:40.634Z",
+    "key": "outlet-renting-cost-max",
+    "market": 115,
+    "decimal": "0.00"
+  }
+},
+{
+  "model": "markets.marketobservation",
+  "pk": 187,
+  "fields": {
+    "created_at": "2024-11-26T19:22:09.869Z",
+    "updated_at": "2024-11-26T19:37:40.663Z",
+    "key": "outlet-renting-cost-min",
+    "market": 139,
+    "decimal": "0.00"
+  }
+},
+{
+  "model": "markets.marketobservation",
+  "pk": 188,
+  "fields": {
+    "created_at": "2024-11-26T19:22:09.913Z",
+    "updated_at": "2024-11-26T19:37:40.690Z",
+    "key": "outlet-renting-cost-max",
+    "market": 139,
+    "decimal": "0.00"
+  }
+},
+{
+  "model": "markets.marketobservation",
+  "pk": 189,
+  "fields": {
+    "created_at": "2024-11-26T19:22:10.002Z",
+    "updated_at": "2024-11-26T19:37:40.719Z",
+    "key": "outlet-renting-cost-min",
+    "market": 138,
+    "decimal": "0.00"
+  }
+},
+{
+  "model": "markets.marketobservation",
+  "pk": 190,
+  "fields": {
+    "created_at": "2024-11-26T19:22:10.046Z",
+    "updated_at": "2024-11-26T19:37:40.745Z",
+    "key": "outlet-renting-cost-max",
+    "market": 138,
+    "decimal": "0.00"
+  }
+},
+{
+  "model": "markets.marketobservation",
+  "pk": 191,
+  "fields": {
+    "created_at": "2024-11-26T19:22:10.100Z",
+    "updated_at": "2024-11-26T19:37:40.771Z",
+    "key": "outlet-renting-cost-min",
+    "market": 119,
+    "decimal": "0.00"
+  }
+},
+{
+  "model": "markets.marketobservation",
+  "pk": 192,
+  "fields": {
+    "created_at": "2024-11-26T19:22:10.146Z",
+    "updated_at": "2024-11-26T19:37:40.790Z",
+    "key": "outlet-renting-cost-max",
+    "market": 119,
+    "decimal": "0.00"
+  }
+},
+{
+  "model": "markets.globalobservation",
+  "pk": 1,
+  "fields": {
+    "created_at": "2024-11-26T19:22:10.190Z",
+    "updated_at": "2024-11-26T19:37:40.812Z",
+    "key": "outlet-renting-cost-min",
+    "decimal": "0.00"
+  }
+},
+{
+  "model": "markets.globalobservation",
+  "pk": 2,
+  "fields": {
+    "created_at": "2024-11-26T19:22:10.234Z",
+    "updated_at": "2024-11-26T19:37:40.833Z",
+    "key": "outlet-renting-cost-max",
+    "decimal": "0.00"
+  }
+}
+]
