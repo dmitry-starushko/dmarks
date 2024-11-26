@@ -77,3 +77,4 @@ def restore_db_consistency():
         for key, value in errors.items():
             for err in value:
                 RdcError.objects.create(object=key, text=err)
+

@@ -534,6 +534,32 @@ class Parameter(DbItem):  # -- NG Parameters
             return default
 
 
+class MarketObservation(DbItem):
+    key = models.CharField(max_length=50)  # -- ключ --
+    market = models.ForeignKey(Market, related_name="observations", on_delete=models.CASCADE)
+    decimal = models.DecimalField(max_digits=12, decimal_places=2, default=Decimal(0.0))
+
+    class Meta:
+        verbose_name = "Значение"
+        verbose_name_plural = "Значения"
+        constraints = [models.UniqueConstraint(fields=["key", "market_id"], name="unique_key_per_market")]
+
+    def __str__(self):
+        return f'{self.key}'
+
+
+class GlobalObservation(DbItem):
+    key = models.CharField(unique=True, max_length=50)  # -- ключ --
+    decimal = models.DecimalField(max_digits=12, decimal_places=2, default=Decimal(0.0))
+
+    class Meta:
+        verbose_name = "Значение"
+        verbose_name_plural = "Значения"
+
+    def __str__(self):
+        return f'{self.key}'
+
+
 class RdcError(DbItem):  # -- Errors detected by Restore Database Consistency procedure
     object = models.CharField(max_length=250)  # -- источник --
     text = models.TextField()  # -- проблема --

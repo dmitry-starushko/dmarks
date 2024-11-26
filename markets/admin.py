@@ -69,6 +69,22 @@ class ParamAdmin(admin.ModelAdmin):
     search_fields = ['key', 'value']
 
 
+@admin.register(MarketObservation)
+class MarketObservationAdmin(admin.ModelAdmin):
+    list_display = ['key', 'decimal']
+    list_filter = ['market']
+    readonly_fields = ['key', 'market', 'decimal']
+    ordering = ['key']
+    search_fields = ['key']
+
+
+@admin.register(GlobalObservation)
+class GlobalObservationAdmin(admin.ModelAdmin):
+    list_display = ['key', 'decimal']
+    ordering = ['key']
+    search_fields = ['key']
+
+
 @admin.register(RdcError)
 class RdcErrorAdmin(admin.ModelAdmin):
     list_display = ['object', 'text', 'created_at']
