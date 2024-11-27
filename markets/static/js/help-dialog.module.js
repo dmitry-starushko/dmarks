@@ -11,7 +11,13 @@ class HelpDialog {
         if(this._state == "open") {
             this._dialog.close();
         } else {
-            this._dialog.showModal();
+            dj_load_partial_view("partial_help_content", {hid: this._help_id}, {}).then(
+                html => {
+                    debugger;
+                    this._dialog.getElementsByTagName("section").item(0).innerHTML = html;
+                    this._dialog.showModal();
+                }
+            );
         }
     }
 }

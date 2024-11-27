@@ -1,6 +1,7 @@
 from collections import OrderedDict
 from django.conf import settings
 from django.shortcuts import render
+from django.template import TemplateDoesNotExist
 from django.urls import reverse
 from rest_framework.generics import ListAPIView
 from rest_framework.response import Response
@@ -262,7 +263,10 @@ class PV_HelpContentView(APIView):
 
     @on_exception_returns(HttpResponseBadRequest)
     def post(self, request, hid: int):
-        return render(request, f'markets/partials/help/help-{hid}', {'hid': hid})
+        try:
+            return render(request, f'markets/partials/help/help-{hid}', {'hid': hid})
+        except TemplateDoesNotExist:
+            return render(request, f'markets/partials/help/help-0.html', {'hid': 0})
 
 
 # -- Actions --------------------------------------------------------------------------------------
