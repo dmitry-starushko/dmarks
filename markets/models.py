@@ -302,7 +302,7 @@ class TradeSpecType(models.Model):
 
 class TradeType(models.Model):
     type_name = models.CharField(unique=True, db_comment='Наименование типа торгового места')
-    type_num = models.SmallIntegerField(blank=True, null=True, db_comment='Код типа объекта')
+    type_num = models.SmallIntegerField(unique=True, default=0, db_comment='Код типа объекта')
     descr = models.TextField(blank=True, null=True, db_comment='Описание')
 
     @classmethod
@@ -404,11 +404,9 @@ class Market(models.Model):
 
 class SvgSchema(models.Model):
     market = models.ForeignKey(Market, on_delete=models.CASCADE, related_name="schemes", db_comment='id рынка')
-    floor = models.CharField(blank=True, null=True, db_comment='Этаж схемы объекта')
-    order = models.IntegerField(blank=False, null=False, default=0, db_comment='Поле для упорядочивания схем')
-    svg_schema = models.TextField(blank=True, null=True, db_comment='svg объекта')
-    source_file = models.CharField(blank=True, null=True, db_comment='Имя загруженного файла')  # TODO kill unused field
-    descr = models.TextField(blank=True, null=True, db_comment='Описание')  # TODO kill unused field
+    floor = models.CharField(default='Не указано', db_comment='Этаж схемы объекта')
+    order = models.IntegerField(default=0, db_comment='Поле для упорядочивания схем')
+    svg_schema = models.TextField(default='', db_comment='svg объекта')
 
     class Meta:
         managed = True
@@ -495,9 +493,7 @@ class Booking(models.Model):
     booked_by = models.ForeignKey(DmUser, models.CASCADE, related_name="bookings", db_column='ng_user', db_comment='Кто забронировал')
     date_transaction = models.DateTimeField(db_comment='Дата создания записи')
     booking_status = models.TextField(db_comment='Статус бронирования')  # This field type is a guess.
-    booking_status_case = models.TextField(blank=True, null=True, db_comment='Причина изменения статуса (например, причина отказа)')
-    booking_files = models.JSONField(blank=True, null=True, db_comment='Файлы для бронирования')
-    descr = models.TextField(blank=True, null=True, db_comment='Описание')
+    booking_status_case = models.TextField(default='', db_comment='Причина изменения статуса (например, причина отказа)')
 
     class Meta:
         managed = True

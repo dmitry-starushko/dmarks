@@ -42,7 +42,7 @@ class MarketEmailAdmin(admin.ModelAdmin):
 
 @admin.register(SvgSchema)
 class SvgSchemaAdmin(admin.ModelAdmin):
-    list_display = ['id', 'market', 'order', 'floor', 'descr']
+    list_display = ['id', 'market', 'order', 'floor']
     list_filter = ['market']
     ordering = ['market', 'order']
 
@@ -56,7 +56,7 @@ class MkImageAdmin(admin.ModelAdmin):
 
 @admin.register(Booking)
 class BookingAdmin(admin.ModelAdmin):
-    list_display = ['date_transaction', 'booked_by',  'booking_status', 'booking_status_case', 'booking_files', 'descr']
+    list_display = ['date_transaction', 'booked_by',  'booking_status', 'booking_status_case']
     list_filter = ['booked_by']
     readonly_fields = ['trade_place']
     ordering = ['booked_by']
