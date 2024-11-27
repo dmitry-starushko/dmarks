@@ -257,6 +257,14 @@ class PV_FilteredMarketsView(APIView):
         return render(request, 'markets/partials/filtered-markets.html', {'context': context})
 
 
+class PV_HelpContentView(APIView):
+    permission_classes = [AllowAny]
+
+    @on_exception_returns(HttpResponseBadRequest)
+    def post(self, request, hid: int):
+        return render(request, f'markets/partials/help/help-{hid}', {'hid': hid})
+
+
 # -- Actions --------------------------------------------------------------------------------------
 
 
