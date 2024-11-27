@@ -1,12 +1,10 @@
 from decimal import Decimal
-
 from django.contrib.auth.base_user import BaseUserManager
 from django.contrib.auth.models import AbstractUser
 from django.core.validators import RegexValidator
 from django.db import models
 from django.conf import settings
 from django.db.models import Index
-from markets.models_mixins import TpMixin, MkMixin
 
 
 class Validators:
@@ -324,7 +322,7 @@ class TradeType(models.Model):
         return f'{self.type_name}'
 
 
-class Market(MkMixin, models.Model):
+class Market(models.Model):
     market_id = models.CharField(max_length=3, unique=True, validators=[Validators.outlet_number], db_comment='Уникальный идентификатор рынка')
     market_name = models.CharField(max_length=1000, db_comment='Наименование рынка')
     additional_name = models.CharField(max_length=1000, db_comment='Дополнительное наименование')
@@ -355,11 +353,6 @@ class Market(MkMixin, models.Model):
     ads = models.TextField(default='Не указано', db_comment='Реклама')
     images: models.QuerySet
 
-    @property
-    def image(self):
-        first_img = self.images.first()
-        return first_img.image if first_img else settings.DEF_MK_IMG
-
     class Meta:
         managed = True
         ordering = ['market_name', 'additional_name']
@@ -370,6 +363,43 @@ class Market(MkMixin, models.Model):
 
     def __str__(self):
         return f'{self.market_name}:{self.additional_name}'
+
+    @property
+    def image(self):
+        first_img = self.images.first()
+        return first_img.image if first_img else settings.DEF_MK_IMG
+
+    @property
+    def mk_sewerage(self):
+        return self.infr_sewerage_type if self.infr_sewerage else "отсутствует"
+
+    @property
+    def mk_water_supply(self):
+        return "есть" if self.infr_water_pipes else "отсутствует"
+
+    @property
+    def mk_market_name(self):
+        return settings.DISP_RE.sub(' ', self.market_name).strip()
+
+    @property
+    def mk_additional_name(self):
+        return settings.DISP_RE.sub(' ', self.additional_name).strip()
+
+    @property
+    def mk_geo_full_address(self):
+        return settings.DISP_RE.sub(' ', self.geo_full_address).strip()
+
+    @property
+    def mk_geo_index(self):
+        return settings.DISP_RE.sub(' ', self.geo_index).strip()
+
+    @property
+    def mk_full_name(self):
+        return f"{self.mk_market_name}, {self.mk_additional_name}"
+
+    @property
+    def mk_full_address(self):
+        return f"{self.mk_geo_index}, {self.mk_geo_full_address}"
 
 
 class SvgSchema(models.Model):
@@ -391,7 +421,7 @@ class SvgSchema(models.Model):
         return f'Схема #{self.id}, уровень "{self.floor}", рынок "{self.market}"'
 
 
-class TradePlace(TpMixin, models.Model):
+class TradePlace(models.Model):
     market = models.ForeignKey(Market, models.CASCADE, related_name="trade_places", db_comment='Уникальный идентификатор рынка\r\n')
     trade_type = models.ForeignKey(TradeType, models.SET_DEFAULT, default=TradeType.default_pk, db_comment='Тип торгового места')
     trade_place_type = models.ForeignKey(TradePlaceType, models.SET_DEFAULT, default=TradePlaceType.default_pk, db_comment='Занятость торгового места')
@@ -444,6 +474,20 @@ class TradePlace(TpMixin, models.Model):
 
     def __str__(self):
         return f'ТМ #{self.id} <{self.location_number}>'
+
+    @property
+    def tp_internet_connection(self):
+        match self.impr_internet, self.impr_internet_type_id:
+            case False, _:
+                return "отсутствует"
+            case True, 0:
+                return "не указано"
+            case True, 1:
+                return "проводное"
+            case True, 2:
+                return "беспроводное"
+            case _:
+                return "ошибка в данных"
 
 
 class Booking(models.Model):

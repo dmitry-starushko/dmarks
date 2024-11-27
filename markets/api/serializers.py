@@ -31,7 +31,7 @@ class TradePlaceSerializer(ModelSerializer):
 
     class Meta:
         model = TradePlace
-        fields = ['id', 'location_number', 'tp_actual_specialization', 'price', 'trade_place_type', 'trade_spec_type_id_act']
+        fields = ['id', 'location_number', 'price', 'trade_place_type', 'trade_spec_type_id_act']
 
 
 class TradePlaceSerializerO(TradePlaceSerializer):
