@@ -49,7 +49,7 @@
             {% include 'markets/js/basic.js' %}
             const ts_chat = new TsChat("ts-chat", "markets/ws/chat/", "{{parm_ts_greeting}}");
             window.toggle_ts_chat = () => ts_chat.toggle();
-            const help_dialog = new HelpDialog();
+            const help_dialog = new HelpDialog("help-dialog", "{{help_id | default:0}}");
             window.toggle_help_dialog = () => help_dialog.toggle();
             {% endblock %}
         });
@@ -146,6 +146,6 @@
             <img src="{% static 'svg/icons/headset.svg' %}" />
         </div>
     </div>
-    {% include 'markets/include/context-help-dialog.html' with dialog_id='ctx-help-dialog' %}
+    {% include 'markets/include/context-help-dialog.html' with dialog_id='help-dialog' %}
 </body>
 </html>
