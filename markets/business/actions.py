@@ -3,7 +3,6 @@ from sys import float_info
 from xml.etree import ElementTree as Et
 from django.core.exceptions import ValidationError
 from django.db import transaction
-
 from markets.business.observation_names import Observation
 from markets.decorators import globally_lonely_action
 from markets.models import TradePlace, SvgSchema, Validators, RdcError, Market, GlobalObservation
@@ -71,7 +70,6 @@ def restore_db_consistency():
             errors[f'{tp}'] = (err_list := [])
             if tp.scheme_id is None:
                 err_list += [f'ТМ не привязано к схеме: scheme_id = {tp.scheme_id}']
-                print(f'ТМ не привязано к схеме: scheme_id = {tp.scheme_id}')
             try:
                 Validators.outlet_number(tp.location_number)
             except ValidationError:
