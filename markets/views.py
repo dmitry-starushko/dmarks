@@ -22,7 +22,7 @@ class IndexView(View, BasicContextProvider):
     def get(self, request):
         return render(request, self.template_name, self.basic_context | {
             'markets': Market.objects.all(),
-            'help_id': 1,
+            'help_id': 100,
         })
 
 
