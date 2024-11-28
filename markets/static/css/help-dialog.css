@@ -1,0 +1,49 @@
+:root {
+    --HDColorB: #90909080;
+    --HDColorF: #00bcd4;
+    --HDFont: "Geologica", sans-serif;
+    --HDFontWeight: 100;
+    --HDFontSize: 14pt;
+    --HDFontSizePara: 11pt;
+}
+
+.help-dialog {
+    background: var(--HDColorB);
+    border: thin solid var(--HDColorF);
+    padding: 1rem;
+    outline: none;
+    box-shadow: 0px 2rem 3rem rgba(0, 0, 0, 0.25);
+
+    font-size: var(--HDFontSize);
+    font-variation-settings: "wght" var(--HDFontWeight);
+    font-weight: var(--HDFontWeight);
+    font-family: var(--HDFont);
+    overflow: clip;
+
+    main {
+        max-height: calc(90vh - 3rem);
+        max-width: calc(70vw - 3rem);
+        display: flex;
+        flex-flow: column;
+        align-items: center;
+
+        header {
+            padding: 1rem;
+            width: 100%;
+            background: var(--HDColorF);
+            p {
+                padding:0;
+                margin: 0;
+            }
+        }
+
+        section {
+            background: white;
+            border: thin solid var(--HDColorF);
+            padding: 1rem;
+            overflow: auto;
+            scrollbar-width: thin;
+            font-size: var(--HDFontSizePara);
+        }
+    }
+}

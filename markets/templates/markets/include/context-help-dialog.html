@@ -1,5 +1,10 @@
+{% load static %}
 {% load aux_tags %}
 <dialog id="{{dialog_id}}" class="help-dialog">
-  <header onclick="window.toggle_help_dialog()">Закрыть</header>
-  <section class="content"></section>
+  <main>
+    <header onclick="window.toggle_help_dialog()">
+      <p>Справка</p>
+    </header>
+    <section class="content"></section>
+  </main>
 </dialog>

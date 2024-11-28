@@ -28,6 +28,7 @@
     <link href="{% static 'css/main.css' %}" rel="stylesheet">
     <link href="{% static 'css/search.css' %}" rel="stylesheet">
     <link href="{% static 'css/ts-chat.css' %}" rel="stylesheet">
+    <link href="{% static 'css/help-dialog.css' %}" rel="stylesheet">
     {% endblock %}
     {% endblock %}
     {% block header-scripts %}{# -- Scripts -- #}
@@ -49,8 +50,8 @@
             {% include 'markets/js/basic.js' %}
             const ts_chat = new TsChat("ts-chat", "markets/ws/chat/", "{{parm_ts_greeting}}");
             window.toggle_ts_chat = () => ts_chat.toggle();
-            const help_dialog = new HelpDialog("help-dialog", "{{help_id | default:0}}");
-            window.toggle_help_dialog = () => help_dialog.toggle();
+            const help_dialog = new HelpDialog("help-dialog");
+            window.toggle_help_dialog = (help_id) => help_dialog.toggle(help_id);
             {% endblock %}
         });
     </script>
@@ -82,7 +83,7 @@
             <div class="header-right-icons">
                 <a href="#" class="search" title="Поиск" id="search-btn"><i class="bi bi-search"></i></a>
                 <a href="#" class="sign-in" title="Вход в ЛК"><i class="bi bi-box-arrow-in-right"></i><i class="bi bi-person"></i></a>
-                <a href="#" class="help" title="Помощь"><i class="bi bi-question-circle" onclick="window.toggle_help_dialog();"></i></a>
+                <a href="#" class="help" title="Помощь"><i class="bi bi-question-circle" onclick="window.toggle_help_dialog({{help_id|default:0}});"></i></a>
             </div>
         </div>
         {% endblock %}
