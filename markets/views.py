@@ -26,15 +26,6 @@ class IndexView(View, BasicContextProvider):
         })
 
 
-class ContactsView(View, BasicContextProvider):
-    @property
-    def template_name(self):
-        return 'markets/contacts.html'
-
-    def get(self, request):
-        return render(request, self.template_name, self.basic_context | {'text': 'Здесь будут контакты'})
-
-
 class MarketDetailsView(View, BasicContextProvider):
     @property
     def template_name(self):
@@ -43,7 +34,20 @@ class MarketDetailsView(View, BasicContextProvider):
     @on_exception_returns(HttpResponseBadRequest)
     def get(self, request, mpk, show):
         return render(request, self.template_name, self.basic_context | {
-            'market': Market.objects.get(pk=mpk)
+            'market': Market.objects.get(pk=mpk),
+            'help_id': 200,
+        })
+
+
+class ContactsView(View, BasicContextProvider):
+    @property
+    def template_name(self):
+        return 'markets/contacts.html'
+
+    def get(self, request):
+        return render(request, self.template_name, self.basic_context | {
+            'text': 'Здесь будут контакты',
+            'help_id': 300,
         })
 
 
