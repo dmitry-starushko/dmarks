@@ -31,9 +31,20 @@
             padding: 1rem;
             width: 100%;
             background: var(--HDColorF);
+            display: flex;
+            flex-flow: row;
+            align-items: center;
+
             p {
+                color: white;
                 padding:0;
                 margin: 0;
+                flex: 1 1 100%;
+            }
+            img {
+                width: 2rem;
+                height: 2rem;
+                cursor: pointer;
             }
         }
 

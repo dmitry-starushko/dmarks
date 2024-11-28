@@ -264,7 +264,7 @@ class PV_HelpContentView(APIView):
     @on_exception_returns(HttpResponseBadRequest)
     def post(self, request, hid: int):
         try:
-            return render(request, f'markets/partials/help/help-{hid}', {'hid': hid})
+            return render(request, f'markets/partials/help/help-{hid}.html', {'hid': hid})
         except TemplateDoesNotExist:
             return render(request, f'markets/partials/help/help-0.html', {'hid': 0})
 
