@@ -3,6 +3,7 @@ from sys import float_info
 from xml.etree import ElementTree as Et
 from django.core.exceptions import ValidationError
 from django.db import transaction
+from django.db.models import Max, Min
 from markets.business.observation_names import Observation
 from markets.decorators import globally_lonely_action
 from markets.models import TradePlace, SvgSchema, Validators, RdcError, Market, GlobalObservation
@@ -84,28 +85,16 @@ def restore_db_consistency():
 @globally_lonely_action(None)
 def observe_all():
     # 1. -- Renting cost limits -----------------
-    g_orc_min = Decimal(float_info.max)
-    g_orc_max = Decimal(-float_info.max)
     for market in Market.objects.all():
-        m_orc_min = Decimal(float_info.max)
-        m_orc_max = Decimal(-float_info.max)
-        for olt in market.trade_places.all().values('price'):
-            price = olt['price']
-            m_orc_min = min(m_orc_min, price)
-            m_orc_max = max(m_orc_max, price)
-        g_orc_min = min(g_orc_min, m_orc_min)
-        g_orc_max = max(g_orc_max, m_orc_max)
-        if m_orc_min <= m_orc_max:
-            r, _ = market.observations.get_or_create(key=Observation.OUTLET_RENTING_COST_MIN)
-            r.decimal = m_orc_min
-            r.save()
-            r, _ = market.observations.get_or_create(key=Observation.OUTLET_RENTING_COST_MAX)
-            r.decimal = m_orc_max
-            r.save()
-    if g_orc_min <= g_orc_max:
-        r, _ = GlobalObservation.objects.get_or_create(key=Observation.OUTLET_RENTING_COST_MIN)
-        r.decimal = g_orc_min
+        r, _ = market.observations.get_or_create(key=Observation.OUTLET_RENTING_COST_MIN)
+        r.decimal = market.trade_places.aggregate(Min('price', default=0))['price__min']
         r.save()
-        r, _ = GlobalObservation.objects.get_or_create(key=Observation.OUTLET_RENTING_COST_MAX)
-        r.decimal = g_orc_max
+        r, _ = market.observations.get_or_create(key=Observation.OUTLET_RENTING_COST_MAX)
+        r.decimal = market.trade_places.aggregate(Max('price', default=0))['price__max']
         r.save()
+    r, _ = GlobalObservation.objects.get_or_create(key=Observation.OUTLET_RENTING_COST_MIN)
+    r.decimal = TradePlace.objects.aggregate(Min('price', default=0))['price__min']
+    r.save()
+    r, _ = GlobalObservation.objects.get_or_create(key=Observation.OUTLET_RENTING_COST_MAX)
+    r.decimal = TradePlace.objects.aggregate(Max('price', default=0))['price__max']
+    r.save()
