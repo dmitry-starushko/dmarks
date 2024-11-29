@@ -22,7 +22,7 @@
 
     main {
         max-height: calc(90vh - 3rem);
-        max-width: calc(70vw - 3rem);
+        max-width: min(calc(70vw - 3rem), 1440px);
         display: flex;
         flex-flow: column;
         align-items: center;
@@ -41,6 +41,7 @@
                 margin: 0;
                 flex: 1 1 100%;
             }
+
             img {
                 width: 2rem;
                 height: 2rem;
@@ -55,6 +56,10 @@
             overflow: auto;
             scrollbar-width: thin;
             font-size: var(--HDFontSizePara);
+
+            img {
+                max-width: 100%;
+            }
         }
     }
 }
