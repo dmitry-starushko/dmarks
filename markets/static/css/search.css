@@ -388,7 +388,11 @@
 }
 
 .search-market-result li.tree-node-result > .tree-link {
-    width: 15%;
+    width: 100px;
+}
+
+.search-tp-result li.tree-node-result > .tree-link {
+    width: 100px;
 }
 
 .search-market-result li.tree-node-result > .tree-tp-count {
