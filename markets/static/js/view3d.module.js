@@ -28,7 +28,7 @@ class View3D {
                 decoration_opacity,
                 listener) {
         const parent = document.getElementById(parent_id);
-        if(!parent) { throw `DOM element with id <${parent_id}> not found`; }
+        if(!parent) { throw `DOM element #${parent_id} not found`; }
         const width = parent.clientWidth;
         const height = parent.clientHeight;
         this._urls_url = urls_url,

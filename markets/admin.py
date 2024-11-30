@@ -22,13 +22,27 @@ admin.site.register(DmUser, DmUserAdmin)
 
 @admin.register(Market)
 class MarketAdmin(admin.ModelAdmin):
-    list_display = ['id', 'market_name', 'additional_name']
+    list_display = ['id', 'market_name', 'additional_name', 'market_id', 'market_type']
     ordering = ['market_name', 'additional_name']
+
+
+@admin.register(MarketPhone)
+class MarketPhoneAdmin(admin.ModelAdmin):
+    list_display = ['phone']
+    ordering = ['phone']
+    list_filter = ['market']
+
+
+@admin.register(MarketEmail)
+class MarketEmailAdmin(admin.ModelAdmin):
+    list_display = ['email']
+    ordering = ['email']
+    list_filter = ['market']
 
 
 @admin.register(SvgSchema)
 class SvgSchemaAdmin(admin.ModelAdmin):
-    list_display = ['id', 'market', 'order', 'floor', 'descr']
+    list_display = ['id', 'market', 'order', 'floor']
     list_filter = ['market']
     ordering = ['market', 'order']
 
@@ -40,30 +54,12 @@ class MkImageAdmin(admin.ModelAdmin):
     ordering = ['market']
 
 
-@admin.register(GlobalConfig)
-class GlobalConfigAdmin(admin.ModelAdmin):
-    list_display = ['param_name', 'param_data', 'descr']
-    ordering = ['param_name']
-
-
 @admin.register(Booking)
 class BookingAdmin(admin.ModelAdmin):
-    list_display = ['date_transaction', 'booked_by',  'booking_status', 'booking_status_case', 'booking_files', 'renter_id', 'location_number', 'scheme', 'descr']
+    list_display = ['date_transaction', 'booked_by',  'booking_status', 'booking_status_case']
     list_filter = ['booked_by']
     readonly_fields = ['trade_place']
     ordering = ['booked_by']
-
-
-@admin.register(Renter)
-class RenterAdmin(admin.ModelAdmin):
-    list_display = ['renter_name', 'legal_doc_info',  'legal_doc_files', 'renter_type', 'renter_phone']
-    ordering = ['renter_name']
-
-
-@admin.register(TradeContract)
-class TradeContractAdmin(admin.ModelAdmin):
-    list_display = ['date_start', 'date_end',  'contract_status_type', 'copy_info', 'copy_files', 'active_contract', 'contract_num']
-    ordering = ['date_start']
 
 
 @admin.register(Parameter)
@@ -71,6 +67,22 @@ class ParamAdmin(admin.ModelAdmin):
     list_display = ['key', 'value', 'preload', 'description']
     ordering = ['key']
     search_fields = ['key', 'value']
+
+
+@admin.register(MarketObservation)
+class MarketObservationAdmin(admin.ModelAdmin):
+    list_display = ['key', 'decimal']
+    list_filter = ['market']
+    readonly_fields = ['key', 'market', 'decimal']
+    ordering = ['key']
+    search_fields = ['key']
+
+
+@admin.register(GlobalObservation)
+class GlobalObservationAdmin(admin.ModelAdmin):
+    list_display = ['key', 'decimal']
+    ordering = ['key']
+    search_fields = ['key']
 
 
 @admin.register(RdcError)
@@ -89,12 +101,6 @@ class StuffActionAdmin(admin.ModelAdmin):
 
 
 # -------------------------------------------------------------------------------------------------
-
-
-@admin.register(ContractStatusType)
-class ContractStatusTypeAdmin(admin.ModelAdmin):
-    list_display = ['type_name', 'descr']
-    ordering = ['type_name']
 
 
 @admin.register(Locality)
@@ -128,12 +134,6 @@ class MarketTypeAdmin(admin.ModelAdmin):
     ordering = ['type_name']
 
 
-@admin.register(RenterType)
-class RenterTypeAdmin(admin.ModelAdmin):
-    list_display = ['type_name', 'descr']
-    ordering = ['type_name']
-
-
 @admin.register(StreetType)
 class StreetTypeAdmin(admin.ModelAdmin):
     list_display = ['type_name', 'descr']
@@ -148,7 +148,7 @@ class TradePlaceTypeAdmin(admin.ModelAdmin):
 
 @admin.register(TradeSector)
 class TradeSectorAdmin(admin.ModelAdmin):
-    list_display = ['sector_name', 'descr']
+    list_display = ['sector_name', 'descr', 'color', 'wall_color', 'roof_color']
     ordering = ['sector_name']
 
 

@@ -1,0 +1,11 @@
+{% load static %}
+{% load aux_tags %}
+<dialog id="{{dialog_id}}" class="help-dialog">
+  <main>
+    <header>
+      <p>Справка</p>
+      <img src="{% static 'svg/icons/close-circle-outline-white.svg' %}" onclick="window.toggle_help_dialog();"/>
+    </header>
+    <section class="content"></section>
+  </main>
+</dialog>

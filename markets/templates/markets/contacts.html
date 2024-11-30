@@ -10,17 +10,4 @@
 <h2 style="color:{{v.roof_color_css}};">#{{k}} {{v.title}} -- в цвете крыши</h2>
 {% endfor %}
 {% endblock %}
-{% block dom-loaded-scripts %}
-{{block.super}}
 
-const socket = new WebSocket("ws://localhost:8000/markets/ws/chat/");
-socket.onmessage = event => {
-    alert(JSON.parse(event.data).message);
-    window.setTimeout(()=>{
-        socket.send(JSON.stringify({'message': "Hello again!"}));
-    }, 3000);
-};
-window.setTimeout(()=>{
-    socket.send(JSON.stringify({'message': "Hello, world!"}));
-}, 3000);
-{% endblock %}

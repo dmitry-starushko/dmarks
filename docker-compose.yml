@@ -64,7 +64,7 @@ services:
       - web
   celery_beat:
     build: .
-    command: celery -A dmarks beat
+    command: celery -A dmarks beat --max-interval 86400
     restart: always
     volumes:
       - ./:/code

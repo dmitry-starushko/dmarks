@@ -1,8 +1,12 @@
+from decimal import Decimal
+from sys import float_info
 from xml.etree import ElementTree as Et
 from django.core.exceptions import ValidationError
 from django.db import transaction
+from django.db.models import Max, Min
+from markets.business.observation_names import Observation
 from markets.decorators import globally_lonely_action
-from markets.models import TradePlace, SvgSchema, Validators, RdcError
+from markets.models import TradePlace, SvgSchema, Validators, RdcError, Market, GlobalObservation
 
 try:  # To avoid deploy problems
     from transmutation import Svg3DTM
@@ -19,7 +23,7 @@ def restore_db_consistency():
 
         # -- Clear outlet's location floor
         print(f'Подготовка к обработке...')
-        TradePlace.objects.update(location_floor=None)
+        TradePlace.objects.update(scheme=None)
 
         # -- Set outlet's location floors
         for sch in SvgSchema.objects.all():
@@ -54,10 +58,10 @@ def restore_db_consistency():
                             tp = tps[0]
                             if sch.market_id != tp.market_id:
                                 err_list += [f'ТМ #{tp.id} <{path_id}> относится к другому рынку "{tp.market}"']
-                            elif tp.location_floor:
-                                err_list += [f'ТМ #{tp.id} <{path_id}> уже помечено как относящееся к уровню #{tp.location_floor}']
+                            elif tp.scheme is not None:
+                                err_list += [f'ТМ #{tp.id} <{path_id}> уже помечено как относящееся к уровню #{tp.scheme}']
                             else:
-                                tp.location_floor = sch.id
+                                tp.scheme = sch
                                 tp.save()
                     else:
                         err_list += [f'Номер ТМ не указан в SVG']
@@ -65,8 +69,8 @@ def restore_db_consistency():
         for tp in tps:
             print(f'Обрабатывается {tp}')
             errors[f'{tp}'] = (err_list := [])
-            if tp.location_floor is None:
-                err_list += ['ТМ не привязано к схеме']
+            if tp.scheme_id is None:
+                err_list += [f'ТМ не привязано к схеме: scheme_id = {tp.scheme_id}']
             try:
                 Validators.outlet_number(tp.location_number)
             except ValidationError:
@@ -76,3 +80,21 @@ def restore_db_consistency():
         for key, value in errors.items():
             for err in value:
                 RdcError.objects.create(object=key, text=err)
+
+
+@globally_lonely_action(None)
+def observe_all():
+    # 1. -- Renting cost limits -----------------
+    for market in Market.objects.all():
+        r, _ = market.observations.get_or_create(key=Observation.OUTLET_RENTING_COST_MIN)
+        r.decimal = market.trade_places.aggregate(Min('price', default=0))['price__min']
+        r.save()
+        r, _ = market.observations.get_or_create(key=Observation.OUTLET_RENTING_COST_MAX)
+        r.decimal = market.trade_places.aggregate(Max('price', default=0))['price__max']
+        r.save()
+    r, _ = GlobalObservation.objects.get_or_create(key=Observation.OUTLET_RENTING_COST_MIN)
+    r.decimal = TradePlace.objects.aggregate(Min('price', default=0))['price__min']
+    r.save()
+    r, _ = GlobalObservation.objects.get_or_create(key=Observation.OUTLET_RENTING_COST_MAX)
+    r.decimal = TradePlace.objects.aggregate(Max('price', default=0))['price__max']
+    r.save()

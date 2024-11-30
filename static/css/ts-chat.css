@@ -3,6 +3,12 @@
     --TSCBottom: 8rem;
     --TSCWidth: 22rem;
     --TSCZIx: 100;
+    --TSCColorQ: #ede4ad;
+    --TSCColorA: #adedce;
+    --TSCFont: "Geologica", sans-serif;
+    --TSCFontWeight: 100;
+    --TSCFontSize: 14pt;
+    --TSCFontSizePara: 11pt;
 }
 
 .ts-chat {
@@ -18,7 +24,7 @@
     align-items: center;
     gap: 1rem;
     z-index: var(--TSCZIx);
-    background: #99999980;
+    background: #90909080;
     padding: 0.75rem;
     border: thin solid #00bcd4;
     transform: scaleY(0%);
@@ -26,6 +32,11 @@
     transition-property: transform, opacity;
     transition-duration: 350ms;
     transition-timing-function: ease-in-out;
+
+    font-size: var(--TSCFontSize);
+    font-variation-settings: "wght" var(--TSCFontWeight);
+    font-weight: var(--TSCFontWeight);
+    font-family: var(--TSCFont);
 
     &.active {
         transform: scaleY(100%);
@@ -67,29 +78,36 @@
             text-align: center;
             position: relative;
             word-break: break-word;
-            &.a:before {
-                content: "";
-                width: 0px;
-                height: 0px;
-                position: absolute;
-                border-left: 15px solid white;
-                border-right: 15px solid transparent;
-                border-top: 15px solid white;
-                border-bottom: 15px solid transparent;
-                right: -16px;
-                top: 0px;
+            font-size: var(--TSCFontSizePara);
+            &.a {
+                background: var(--TSCColorA);
+                &:before {
+                    content: "";
+                    width: 0px;
+                    height: 0px;
+                    position: absolute;
+                    border-left: 15px solid var(--TSCColorA);
+                    border-right: 15px solid transparent;
+                    border-top: 15px solid var(--TSCColorA);
+                    border-bottom: 15px solid transparent;
+                    right: -16px;
+                    top: 0px;
+                }
             }
-            &.q:before {
-                content: "";
-                width: 0px;
-                height: 0px;
-                position: absolute;
-                border-left: 15px solid transparent;
-                border-right: 15px solid white;
-                border-top: 15px solid white;
-                border-bottom: 15px solid transparent;
-                left: -16px;
-                top: 0px;
+            &.q {
+                background: var(--TSCColorQ);
+                &:before {
+                    content: "";
+                    width: 0px;
+                    height: 0px;
+                    position: absolute;
+                    border-left: 15px solid transparent;
+                    border-right: 15px solid var(--TSCColorQ);
+                    border-top: 15px solid var(--TSCColorQ);
+                    border-bottom: 15px solid transparent;
+                    left: -16px;
+                    top: 0px;
+                }
             }
         }
     }
@@ -101,8 +119,11 @@
             width: var(--TSCWidth);
             pointer-events: auto;
             outline: none;
+            font-size: var(--TSCFontSizePara);
+            font-variation-settings: "wght" var(--TSCFontWeight);
             &:focus {
                 outline: none;
+
             }
         }
     }

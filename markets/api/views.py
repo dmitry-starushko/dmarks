@@ -1,6 +1,7 @@
 from collections import OrderedDict
 from django.conf import settings
 from django.shortcuts import render
+from django.template import TemplateDoesNotExist
 from django.urls import reverse
 from rest_framework.generics import ListAPIView
 from rest_framework.response import Response
@@ -10,10 +11,10 @@ from django.http.response import JsonResponse, HttpResponseBadRequest, HttpRespo
 from markets.business.search_and_filters import apply_filter, filter_markets
 from markets.business.actions import restore_db_consistency
 from markets.decorators import on_exception_returns
-from markets.models import SvgSchema, Market, TradePlaceType, TradeSpecType, TradePlace
+from markets.models import SvgSchema, Market, TradePlaceType, TradeSpecType, TradePlace, TradeSector
 from markets.tasks import st_restore_db_consistency
 from redis import Redis
-from .serializers import SchemeSerializer, TradePlaceTypeSerializer, TradeSpecTypeSerializer, TradePlaceSerializerO, TradePlaceSerializerS
+from .serializers import SchemeSerializer, TradePlaceTypeSerializer, TradeSpecTypeSerializer, TradePlaceSerializerO, TradePlaceSerializerS, TradeSectorSerializer, TradePlaceSerializerSec
 
 try:  # To avoid deploy problems
     from transmutation import Svg3DTM
@@ -24,7 +25,7 @@ except ModuleNotFoundError:
 redis = Redis(host=settings.REDIS_HOST, port=settings.REDIS_PORT, db=settings.REDIS_DB)
 
 
-# -- Markets API --
+# -- Markets API ----------------------------------------------------------------------------------
 
 
 class TakeMarketSchemesListView(ListAPIView):
@@ -78,14 +79,14 @@ class TakeSchemeSvgView(APIView):
 
 class TakeSchemeOutletsStateView(APIView):
     permission_classes = [AllowAny]
-    legends = ['trade_place_type_id', 'trade_spec_type_id_act_id']
+    legends = ['trade_place_type_id', 'trade_spec_type_id_act_id', 'location_sector_id']
 
     @on_exception_returns(HttpResponseBadRequest, 'scheme_pk')
     def get(self, _, scheme_pk: int, legend: int):
         legend %= len(self.legends)
         leg_field = self.legends[legend]
         scheme = SvgSchema.objects.get(pk=scheme_pk)
-        query = scheme.market.trade_places.filter(location_floor=int(scheme_pk)).values('location_number', leg_field)
+        query = scheme.outlets.values('location_number', leg_field)
         return Response({str(r['location_number']): int(r[leg_field]) for r in query})
 
     @on_exception_returns(HttpResponseBadRequest, 'scheme_pk')
@@ -93,7 +94,7 @@ class TakeSchemeOutletsStateView(APIView):
         legend %= len(self.legends)
         leg_field = self.legends[legend]
         scheme = SvgSchema.objects.get(pk=scheme_pk)
-        query = scheme.market.trade_places.filter(location_floor=int(scheme_pk))
+        query = scheme.outlets.all()
         if request.data:
             for f_name, f_body in request.data.items():
                 query = apply_filter(query, f_name, f_body)
@@ -103,7 +104,7 @@ class TakeSchemeOutletsStateView(APIView):
 
 class TakeSchemeOutletsListView(ListAPIView):
     permission_classes = [AllowAny]
-    legends = [TradePlaceSerializerO, TradePlaceSerializerS]
+    legends = [TradePlaceSerializerO, TradePlaceSerializerS, TradePlaceSerializerSec]
 
     @on_exception_returns(HttpResponseBadRequest)
     def post(self, request, *args, **kwargs):
@@ -112,7 +113,7 @@ class TakeSchemeOutletsListView(ListAPIView):
     def get_queryset(self):
         scheme_pk = int(self.kwargs['scheme_pk'])
         scheme = SvgSchema.objects.get(pk=scheme_pk)
-        queryset = scheme.market.trade_places.filter(location_floor=scheme_pk)
+        queryset = scheme.outlets.all()
         if self.request.data:
             for f_name, f_body in self.request.data.items():
                 queryset = apply_filter(queryset, f_name, f_body)
@@ -170,7 +171,11 @@ class TakeLegendView(ListAPIView):
          'serializer_class': TradePlaceTypeSerializer},
         {'title': 'По специализации',
          'model': TradeSpecType,
-         'serializer_class': TradeSpecTypeSerializer}]
+         'serializer_class': TradeSpecTypeSerializer},
+        {'title': 'По сектору',
+         'model': TradeSector,
+         'serializer_class': TradeSectorSerializer},
+    ]
 
     @on_exception_returns(HttpResponseBadRequest)
     def get(self, request, *args, **kwargs):
@@ -189,18 +194,22 @@ class TakeLegendView(ListAPIView):
         return self.legends[legend]['serializer_class']
 
 
-# -- Partial views --
+# -- Partial views --------------------------------------------------------------------------------
 
 
 class PV_OutletTableView(APIView):
     permission_classes = [AllowAny]
-    legends = [lambda o: o.trade_place_type.roof_color_css, lambda o: o.trade_spec_type_id_act.roof_color_css]
+    legends = [
+        lambda o: o.trade_place_type.roof_color_css,
+        lambda o: o.trade_spec_type_id_act.roof_color_css,
+        lambda o: o.location_sector.roof_color_css,
+    ]
 
     @on_exception_returns(HttpResponseBadRequest)
     def post(self, request, scheme_pk: int, legend: int):
         legend = legend % len(self.legends)
         scheme = SvgSchema.objects.get(pk=scheme_pk)
-        queryset = scheme.market.trade_places.filter(location_floor=scheme_pk)
+        queryset = scheme.outlets.all()
         if self.request.data:
             for f_name, f_body in self.request.data.items():
                 queryset = apply_filter(queryset, f_name, f_body)
@@ -234,11 +243,9 @@ class PV_FilteredMarketsView(APIView):
 
     @on_exception_returns(HttpResponseBadRequest)
     def post(self, request):
-        print(request.data)
         markets = filter_markets(request.data['search_text'])
         context = OrderedDict()
         for m in markets:
-            print(m.market_name, m.additional_name, m.geo_city.locality_name, m.geo_district.locality_name)
             r = context.setdefault(m.geo_city.locality_name, OrderedDict()).setdefault(m.geo_district.locality_name, OrderedDict())
             r[m.mk_full_name] = {
                 'address': f'{m.geo_street_type.type_name} {m.geo_street}{', ' if m.geo_house else ''}{m.geo_house}',
@@ -248,13 +255,21 @@ class PV_FilteredMarketsView(APIView):
                 'link_outlets': reverse('markets:market_details', kwargs={'mpk': m.id, 'show': 'outlets'}),
                 'link_scheme': reverse('markets:market_details', kwargs={'mpk': m.id, 'show': 'scheme'}),
             }
-            print(reverse('markets:index'))
-
-        print(context)
         return render(request, 'markets/partials/filtered-markets.html', {'context': context})
 
 
-# -- Actions --
+class PV_HelpContentView(APIView):
+    permission_classes = [AllowAny]
+
+    @on_exception_returns(HttpResponseBadRequest)
+    def post(self, request, hid: int):
+        try:
+            return render(request, f'markets/partials/help/help-{hid}.html', {'hid': hid})
+        except TemplateDoesNotExist:
+            return render(request, f'markets/partials/help/help-0.html', {'hid': 0})
+
+
+# -- Actions --------------------------------------------------------------------------------------
 
 
 class RestoreDatabaseConsistencyView(APIView):

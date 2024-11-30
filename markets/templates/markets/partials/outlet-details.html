@@ -46,7 +46,7 @@
                         <summary>Месторасположение ТМ</summary>
                         <ul>
                             <li>Сектор: <strong>{{outlet.location_sector}}</strong></li>
-                            <li>Этаж: <strong>{{outlet.location_floor}}</strong></li>
+                            <li>Этаж: <strong>{{outlet.scheme.floor | default:'Не указано'}}</strong></li>
                         </ul>
                     </details>
                 </li>
