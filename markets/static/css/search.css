@@ -102,7 +102,7 @@
 }
 .option {
   cursor: pointer;
-  line-height: 142px;
+  /*line-height: 142px;*/
   text-align: center;
   width: 33.33%;
 }
@@ -293,6 +293,24 @@
 }
 
 
+.search-section-market, .search-section-tp {
+    -webkit-animation-name: animatemk;
+    -webkit-animation-duration: 0.5s;
+    animation-name: animatemk;
+    animation-duration: 0.5s;
+}
+
+/* Add Animation */
+@-webkit-keyframes animatemk {
+  from {left:-300px; opacity:0}
+  to {left:-500; opacity:1}
+}
+
+@keyframes animatemk {
+  from {left:-300px; opacity:0}
+  to {left:-500; opacity:1}
+}
+
 .search-market-input {
     margin: 10px 5px;
     width: 100%;
@@ -336,9 +354,10 @@
     /*justify-content: space-between;*/
 }
 
+
 .search-market-result li.tree-node-result > .tree-link > a,
 .search-tp-result li.tree-node-result > .tree-link > a {
-    margin-right: 5px;
+    margin-right: 2px;
 }
 
 .search-market-result li.tree-node-result > .tree-link > a > img,
@@ -368,15 +387,30 @@
     /*align-self: flex-end;*/
 }
 
+.search-market-result li.tree-node-result > .tree-link {
+    width: 15%;
+}
+
+.search-market-result li.tree-node-result > .tree-tp-count {
+    width: 25%;
+}
+
 /**** Seacrh TP ****/
+.search-section-tp {
+    display: none;
+}
+
 .search-tp-top {
     display: flex;
     width: 100%;
-    justify-content: space-between;
+    justify-content: stretch;
+    align-items: stretch;
 }
 
 .search-tp-block {
-    /*width: 100%;*/
+    width: 100%;
+    height: 100%;
+    flex-grow: 1;
 }
 
 .search-tp-block-body {
@@ -392,5 +426,82 @@
 }
 
 .for-checkbox {
-    font-size: 12px;
+    font-size: 10px;
+}
+
+.search-tp-inputs {
+    margin-bottom: 5px;
+    display: flex;
+    align-items: center;
+}
+
+.search-tp-input-num {
+    width: 100%;
+    margin-left: 5px;
+}
+.search-tp-input-price {
+    width: 100%;
+}
+
+.search-tp-input-label {
+    white-space: nowrap;
+    margin: 0 5px;
+}
+
+.search-tp-range-block {
+    margin: 15px 0;
+}
+
+.search-tp-slider{
+  height: 5px;
+  position: relative;
+  background: #ddd;
+  border-radius: 5px;
+}
+
+/*.search-tp-price-slider .search-tp-price-progress {*/
+.search-tp-progress {
+  height: 100%;
+  left: 25%;
+  right: 25%;
+  position: absolute;
+  border-radius: 5px;
+  background: #000;
+}
+
+.search-tp-range-input {
+  position: relative;
+}
+
+.search-tp-range-input input {
+  position: absolute;
+  width: 100%;
+  height: 5px;
+  top: -5px;
+  background: none;
+  pointer-events: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+  height: 17px;
+  width: 17px;
+  border-radius: 50%;
+  background: #e5e5e5;
+  border: 1px solid black;
+  pointer-events: auto;
+  -webkit-appearance: none;
+  box-shadow: 0 0 6px rgba(0, 0, 0, 0.05);
+}
+
+input[type="range"]::-moz-range-thumb {
+  height: 17px;
+  width: 17px;
+  border: none;
+  border-radius: 50%;
+  background: #17a2b8;
+  pointer-events: auto;
+  -moz-appearance: none;
+  box-shadow: 0 0 6px rgba(0, 0, 0, 0.05);
 }
