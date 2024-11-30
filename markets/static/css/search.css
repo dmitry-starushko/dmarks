@@ -409,8 +409,9 @@
 
 .search-tp-block {
     width: 100%;
-    height: 100%;
-    flex-grow: 1;
+    height: auto;
+    display: flex;
+    flex-direction: column;
 }
 
 .search-tp-block-body {
@@ -418,6 +419,7 @@
     padding: 5px;
     overflow-y:scroll;
     scrollbar-width: thin;
+    flex: 1 0 auto;
 }
 
 .search-tp-check {
