@@ -288,7 +288,7 @@ import { View3D } from "view3d";
 {{block.super}}
 {% include 'markets/js/mklevel.js' %}
 {% include 'markets/js/mkdetails.js' %}
-{% if market.schemes.first %}
+{% if market.schemes.exists %}
 const v3d = new View3D("v3d", "{% url 'api:info_take_urls' %}", {{market.schemes.first.id | stringformat:'d'}}, 0, {{parm_3d_ground_color}}, {{parm_3d_decoration_color}}, {{parm_3d_decoration_opacity}}, window);
 {#% comment % TODO !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!#}
 // -- Грубый колхоз с размерами -- надо через стили и вот это вот всё
