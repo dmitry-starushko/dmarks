@@ -35,6 +35,7 @@ class MarketDetailsView(View, BasicContextProvider):
     def get(self, request, mpk, show):
         return render(request, self.template_name, self.basic_context | {
             'market': Market.objects.get(pk=mpk),
+            'show_tab': show,
             'help_id': 200,
         })
 

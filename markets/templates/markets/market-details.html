@@ -300,13 +300,14 @@ const v3d_observer = new ResizeObserver((entries) => {
 });
 v3d_observer.observe(document.getElementById("mkdetails-scheme-tab"));
 {#% endcomment % !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!#}
-
+{# Current state #}
 const current = {
     scheme_name: "{{market.schemes.first.floor | default:'Уровень без названия'}}",
     scheme_pk: {{market.schemes.first.id | stringformat:'d'}},
     legend: 0
 };
-
+const tab_map = new Map([["info", "mkdetails-info"], ["outlets", "mkdetails-tp"], ["scheme","mkdetails-scheme"]]);
+{# Loading outlet table partial view #}
 const update_outlet_table = () => {
     document.getElementById("mkdetails-scheme-header").innerText = current.scheme_name;
     const args = {scheme_pk: current.scheme_pk, legend: current.legend};
@@ -314,13 +315,11 @@ const update_outlet_table = () => {
         html => {document.getElementById("mkdetails-tp-tab").innerHTML = html;}
     );
 };
-
-// -- Реакция на hover по ТМ
+{# Outlet hover #}
 window.addEventListener("outlet_pointed", (e) => { // TODO !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     console.log(`pointed: ${e.detail.id}`);
 });
-
-// -- Реакция на клик по ТМ
+{# Outlet click #}
 window.addEventListener("outlet_clicked", async (e) => {
     if(e.detail.id) {
         dj_load_partial_view("partial_outlet_detail", {outlet_number: e.detail.id}, {}).then(
@@ -330,19 +329,19 @@ window.addEventListener("outlet_clicked", async (e) => {
         document.getElementById("outlet-info").innerHTML = "";
     }
 });
-
+{# Legend changing #}
 window.addEventListener("next_legend", (_) => {
     current.legend++;
     update_outlet_table();
 });
-
+{# Market storey changing #}
 window.addEventListener("market_storey_changed", (e) => {
     current.scheme_pk = e.detail.scheme_pk;
     current.scheme_name = e.detail.scheme_name;
     update_outlet_table();
 });
-
+{# Initiation #}
 update_outlet_table();
-
+window.setTimeout(()=>{ if(tab_map.has("{{show_tab}}")) { document.getElementById(tab_map.get("{{show_tab}}")).click(); } });
 {% endif %}
 {% endblock %}
