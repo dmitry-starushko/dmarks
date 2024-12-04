@@ -342,6 +342,6 @@ window.addEventListener("market_storey_changed", (e) => {
 });
 {# Initiation #}
 update_outlet_table();
-window.setTimeout(()=>{ if(tab_map.has("{{show_tab}}")) { document.getElementById(tab_map.get("{{show_tab}}")).click(); } });
+if(tab_map.has("{{show_tab}}")) window.setTimeout(()=>{ document.getElementById(tab_map.get("{{show_tab}}")).click(); });
 {% endif %}
 {% endblock %}

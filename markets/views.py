@@ -19,9 +19,10 @@ class IndexView(View, BasicContextProvider):
     def template_name(self):
         return 'markets/index.html'
 
-    def get(self, request):
+    def get(self, request, mpk: int | None = None):
         return render(request, self.template_name, self.basic_context | {
             'markets': Market.objects.all(),
+            'mpk': int(mpk) if mpk is not None else 0,
             'help_id': 100,
         })
 

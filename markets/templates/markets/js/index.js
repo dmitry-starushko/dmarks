@@ -1,6 +1,5 @@
 {% load thumbnail %}
 
-
 var markerLayer = new ol.layer.Vector({
     title: "MarketPoint1",
     visible: true,
@@ -27,7 +26,6 @@ var markerLayer = new ol.layer.Vector({
         }
 });
 
-
 var markerLayerText = new ol.layer.Vector({
     title: "MarketPointText",
     visible: true,
@@ -39,6 +37,7 @@ var markerLayerText = new ol.layer.Vector({
             crossOrigin: "anonymous"
           }),
     style: function(feature) {
+{% comment %}
 //            style = style = new ol.style.Style({
 //            image: new ol.style.RegularShape({
 //                fill: new ol.style.Fill({
@@ -61,6 +60,7 @@ var markerLayerText = new ol.layer.Vector({
 //              })
 //          });
 //          return style;
+{% endcomment %}
             style = new ol.style.Style({
             image: new ol.style.RegularShape({
                 fill: new ol.style.Fill({
@@ -328,16 +328,16 @@ var toggle = function (elem, timing) {
 /*createMarker(mposition, '123');*/
 
 {% for item in items %}
-
 console.log('{% thumbnail item.image 100x100 crop %}');
-
 createMarker(["{{item.lng}}".replace(',', '.'), "{{item.lat}}".replace(',', '.')],
             '{{item.mk_full_name | truncatechars:32}}',
             '{{item.mk_full_address}}',
             '{% thumbnail item.image 100x100 crop %}', "{% url 'markets:market_details' mpk=item.id show='info' %}");
 {% endfor %}
 
-
+if({{iid}}) {
+    window.setTimeout(() => alert("Я страничка, и я должна показать рынок #{{iid}}!"), 500);
+}
     //var viewHeight = $(window).height();
     /*var header = $("div[data-role='header']:visible:visible");
     var navbar = $("div[data-role='navbar']:visible:visible");

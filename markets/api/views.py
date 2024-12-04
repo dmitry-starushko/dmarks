@@ -250,7 +250,7 @@ class PV_FilteredMarketsView(APIView):
             r[m.mk_full_name] = {
                 'address': f'{m.geo_street_type.type_name} {m.geo_street}{', ' if m.geo_house else ''}{m.geo_house}',
                 'outlet_num': m.trade_places.count(),
-                'link_map': reverse('markets:index'),
+                'link_map': reverse('markets:index_mpk', kwargs={'mpk': m.id}),
                 'link_info': reverse('markets:market_details', kwargs={'mpk': m.id, 'show': 'info'}),
                 'link_outlets': reverse('markets:market_details', kwargs={'mpk': m.id, 'show': 'outlets'}),
                 'link_scheme': reverse('markets:market_details', kwargs={'mpk': m.id, 'show': 'scheme'}),
