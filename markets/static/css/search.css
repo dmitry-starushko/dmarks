@@ -416,6 +416,7 @@
     height: auto;
     display: flex;
     flex-direction: column;
+    overflow-x: scroll;
 }
 
 .search-tp-block-body {
