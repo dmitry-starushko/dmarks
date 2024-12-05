@@ -8,5 +8,6 @@ urlpatterns = [
     path('<int:mpk>', IndexView.as_view(), name='index_mpk'),
     path('contacts/', ContactsView.as_view(), name='contacts'),
     path('market-detail/<int:mpk>/<str:show>/', MarketDetailsView.as_view(), name='market_details'),
+    path('market-detail/<int:mpk>/<str:show>/<str:outlet>', MarketDetailsView.as_view(), name='market_details_outlet'),
     path('test/<int:scheme_pk>/', Scheme3DView.as_view(), name='test_scheme_3d_view'),
 ]
