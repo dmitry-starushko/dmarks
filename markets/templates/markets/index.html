@@ -69,33 +69,11 @@
                     </div>
                 {% endfor %}
             </div>
-
-            <!--h3 style="color:red">Список в виде таблицы -- временный, для ссылок на страницы рынков, здесь будет грид с карточками</h3>
-            <table>
-                <tr>
-                    <th>№пп</th>
-                    <th>&nbsp;</th>
-                    <th>Название</th>
-                    <th>Альтернативное название</th>
-                    <th>Широта</th>
-                    <th>Долгота</th>
-                </tr>
-                {% for market in markets %}
-                <tr>
-                    <td>{{forloop.counter}}</td>
-                    <td>&nbsp;</td>
-                    <td><a href="{% url 'markets:market_details' mpk=market.id show='info' %}">{{market.market_name}}</a></td>
-                    <td>{{market.additional_name}}</td>
-                    <td>{{market.lat}}</td>
-                    <td>{{market.lng}}</td>
-                </tr>
-                {% endfor %}
-            </table-->
         </div>
     </div>
 </section>
 {% endblock %}
 {% block dom-loaded-scripts %}
 {{block.super}}
-{% include 'markets/js/index.js' with items=markets %}
+{% include 'markets/js/index.js' with items=markets iid=mpk %}
 {% endblock %}

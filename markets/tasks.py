@@ -1,4 +1,3 @@
-import os
 from celery import shared_task
 from dmarks import celery
 from markets.business.actions import restore_db_consistency, observe_all
