@@ -306,14 +306,7 @@ const current = {
 {% if outlet or market.schemes.exists %}
 const tab_map = new Map([["info", "mkdetails-info"], ["outlets", "mkdetails-tp"], ["scheme","mkdetails-scheme"]]);
 const v3d = new View3D( {# ------------------------------------------------------------------------------ 3D View --- #}
-    "v3d",
-    "{% url 'api:info_take_urls' %}",
-    current.scheme_pk,
-    0,
-    {{parm_3d_ground_color}},
-    {{parm_3d_decoration_color}},
-    {{parm_3d_decoration_opacity}},
-    window,
+    "v3d", "{% url 'api:info_take_urls' %}", current.scheme_pk, 0, {{parm_3d_ground_color}}, {{parm_3d_decoration_color}}, {{parm_3d_decoration_opacity}}, window,
     current.outlet_number ? () => {
         v3d.set_ready_signal(null);
         window.dispatchEvent(new CustomEvent("outlet_clicked", { detail: { id: current.outlet_number } }));
