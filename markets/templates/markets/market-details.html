@@ -288,16 +288,36 @@ import { View3D } from "view3d";
 {{block.super}}
 {% include 'markets/js/mklevel.js' %}
 {% include 'markets/js/mkdetails.js' %}
-{% if market.schemes.exists %}
-const v3d = new View3D(
+{% if outlet %} {# -------------------------------------------------------------------------------- Current state --- #}
+const current = {
+    scheme_pk: {{outlet.scheme.id | stringformat:'d'}},
+    scheme_name: "{{outlet.scheme.floor | default:'Уровень без названия'}}",
+    outlet_number: "{{outlet.location_number}}",
+    legend: 0
+};
+{% elif market.schemes.exists %}
+const current = {
+    scheme_pk: {{market.schemes.first.id | stringformat:'d'}},
+    scheme_name: "{{market.schemes.first.floor | default:'Уровень без названия'}}",
+    outlet_number: null,
+    legend: 0
+};
+{% endif %}
+{% if outlet or market.schemes.exists %}
+const tab_map = new Map([["info", "mkdetails-info"], ["outlets", "mkdetails-tp"], ["scheme","mkdetails-scheme"]]);
+const v3d = new View3D( {# ------------------------------------------------------------------------------ 3D View --- #}
     "v3d",
     "{% url 'api:info_take_urls' %}",
-    {{market.schemes.first.id | stringformat:'d'}},
+    current.scheme_pk,
     0,
     {{parm_3d_ground_color}},
     {{parm_3d_decoration_color}},
     {{parm_3d_decoration_opacity}},
-    window
+    window,
+    current.outlet_number ? () => {
+        v3d.set_ready_signal(null);
+        window.dispatchEvent(new CustomEvent("outlet_clicked", { detail: { id: current.outlet_number } }));
+    } : null
 );
 {#% comment % TODO !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!#}
 // -- Грубый колхоз с размерами -- надо через стили и вот это вот всё
@@ -309,27 +329,17 @@ const v3d_observer = new ResizeObserver((entries) => {
 });
 v3d_observer.observe(document.getElementById("mkdetails-scheme-tab"));
 {#% endcomment % !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!#}
-{# Current state #}
-const current = {
-    scheme_name: "{{market.schemes.first.floor | default:'Уровень без названия'}}",
-    scheme_pk: {{market.schemes.first.id | stringformat:'d'}},
-    legend: 0
-};
-const tab_map = new Map([["info", "mkdetails-info"], ["outlets", "mkdetails-tp"], ["scheme","mkdetails-scheme"]]);
-{# Loading outlet table partial view #}
-const update_outlet_table = () => {
+const update_outlet_table = () => { {# --- Loading outlet table partial view --- #}
     document.getElementById("mkdetails-scheme-header").innerText = current.scheme_name;
     const args = {scheme_pk: current.scheme_pk, legend: current.legend};
     dj_load_partial_view("partial_outlet_table", args, {}).then(
         html => {document.getElementById("mkdetails-tp-tab").innerHTML = html;}
     );
 };
-{# Outlet hover #}
-window.addEventListener("outlet_pointed", (e) => { // TODO !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+window.addEventListener("outlet_pointed", (e) => { {# ---------------------------------------------- Outlet hover --- #} // TODO !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     console.log(`pointed: ${e.detail.id}`);
 });
-{# Outlet click #}
-window.addEventListener("outlet_clicked", async (e) => {
+window.addEventListener("outlet_clicked", async (e) => { {# ---------------------------------------- Outlet click --- #}
     if(e.detail.id) {
         dj_load_partial_view("partial_outlet_detail", {outlet_number: e.detail.id}, {}).then(
             html => {document.getElementById("outlet-info").innerHTML = html;}
@@ -338,19 +348,16 @@ window.addEventListener("outlet_clicked", async (e) => {
         document.getElementById("outlet-info").innerHTML = "";
     }
 });
-{# Legend changing #}
-window.addEventListener("next_legend", (_) => {
+window.addEventListener("next_legend", (_) => { {# ---------------------------------------------- Legend changing --- #}
     current.legend++;
     update_outlet_table();
 });
-{# Market storey changing #}
-window.addEventListener("market_storey_changed", (e) => {
+window.addEventListener("market_storey_changed", (e) => { {# ----------------------------- Market storey changing --- #}
     current.scheme_pk = e.detail.scheme_pk;
     current.scheme_name = e.detail.scheme_name;
     update_outlet_table();
 });
-{# Initiation #}
-update_outlet_table();
+update_outlet_table(); {# ---------------------------------------------------------------------------- Initiation --- #}
 if(tab_map.has("{{show_tab}}")) window.setTimeout(()=>{ document.getElementById(tab_map.get("{{show_tab}}")).click(); });
 {% endif %}
 {% endblock %}
