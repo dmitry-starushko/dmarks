@@ -310,8 +310,7 @@ const v3d = new View3D( {# -----------------------------------------------------
     current.outlet_number ? () => {
         v3d.set_ready_signal(null);
         window.dispatchEvent(new CustomEvent("outlet_clicked", { detail: { id: current.outlet_number } }));
-    } : null
-);
+    } : null);
 {#% comment % TODO !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!#}
 // -- Грубый колхоз с размерами -- надо через стили и вот это вот всё
 // -- Если включить тег comment выше и отрубить нижележащий код, 3д-вид будет иметь 0 высоту
