@@ -14,19 +14,23 @@ class Validators:
 
     @staticmethod
     def css_color(value):
-        return Validators._rxv("^#[0-9a-fA-F]{6}$", "Ожидается значение в формате #ffffff")(value)
+        return Validators._rxv('^#[\\da-fA-F]{6}$', "Ожидается значение в формате #ffffff")(value)
 
     @staticmethod
     def hex(value):
-        return Validators._rxv("^0x[0-9a-fA-F]{1,6}$", "Ожидается значение в формате 0xffffff")(value)
+        return Validators._rxv('^0x[\\da-fA-F]{1,6}$', "Ожидается значение в формате 0xffffff")(value)
 
     @staticmethod
     def outlet_number(value):
-        return Validators._rxv("^[0-9]{9}[а-яё]{0,1}$", "Ожидается значение в формате 999999999[a]")(value)
+        return Validators._rxv('^\\d{9}[а-яё]{0,1}$', "Ожидается значение в формате 999999999[a]")(value)
 
     @staticmethod
     def market_id(value):
-        return Validators._rxv("^[0-9]{3}$", "Ожидается значение в формате 999")(value)
+        return Validators._rxv('^\\d{3}$', "Ожидается значение в формате 999")(value)
+
+    @staticmethod
+    def itn(value):
+        return Validators._rxv('^((?:\\d{10})|(?:\\d{12}))$', "Ожидается значение в формате 999")(value)
 
 
 class DbItem(models.Model):
@@ -71,6 +75,33 @@ class DmUser(AbstractUser):
 
     def __str__(self):
         return self.email
+
+
+class File(DbItem):
+    file_name = models.CharField(max_length=512)  # -- имя файла --
+    file_content = models.BinaryField()  # -- двоичный образ файла --
+
+    class Meta:
+        verbose_name = "Файл"
+        verbose_name_plural = "Файлы"
+
+    def __str__(self):
+        return f'Файл {self.file_name}'
+
+
+class AuxUserData(DbItem):
+    user = models.OneToOneField(DmUser, on_delete=models.CASCADE, related_name='aux_data')  # -- ассоциированный пользователь --
+    confirmed = models.BooleanField(default=False)  # -- данные подтверждены администрацией --
+    itn = models.CharField(max_length=12, validators=[Validators.itn])  # -- ИНН --
+    usr_le_extract = models.OneToOneField(File, related_name='usr_le_extract', on_delete=models.SET_NULL, null=True)  # -- выписка из ЕСГРЮЛ, Unified State Register of Legal Entities --
+    passport_image = models.OneToOneField(File, related_name='passport_image', on_delete=models.SET_NULL, null=True)  # -- скан паспорта --
+
+    class Meta:
+        verbose_name = "Доп. данные"
+        verbose_name_plural = "Доп. данные"
+
+    def __str__(self):
+        return f'Данные "{self.user}"'
 
 
 # -- Legacy data ----------------------------------------------------------------------------------
@@ -448,18 +479,7 @@ class TradePlace(models.Model):
     impr_add_equipment = models.BooleanField(default=False, db_comment='Наличие стендов, мебели')
     impr_fridge = models.BooleanField(default=False, db_comment='Наличие холодильных установок')
     impr_shopwindow = models.BooleanField(default=False, db_comment='Наличие витрин')
-
     price = models.DecimalField(max_digits=12, decimal_places=2, default=Decimal(0.0), db_comment='Стоимость аренды торгового места в месяц')
-    pay_electricity = models.DecimalField(max_digits=12, decimal_places=2, default=Decimal(0.0), db_comment='Оплата электричества')
-    pay_heat_supply = models.DecimalField(max_digits=12, decimal_places=2, default=Decimal(0.0), db_column='pay_heat_supplay', db_comment='Оплата услуг теплоснабжения')
-    pay_air_conditioning = models.DecimalField(max_digits=12, decimal_places=2, default=Decimal(0.0), db_comment='Оплата за кондиционер')
-    pay_plumbing = models.DecimalField(max_digits=12, decimal_places=2, default=Decimal(0.0), db_comment='Оплата услуг водоснабжения')
-    pay_sewerage = models.DecimalField(max_digits=12, decimal_places=2, default=Decimal(0.0), db_comment='Оплата услуг водоотведения')
-    pay_drains = models.DecimalField(max_digits=12, decimal_places=2, default=Decimal(0.0), db_comment='Оплата наличия стоков')
-    pay_internet = models.DecimalField(max_digits=12, decimal_places=2, default=Decimal(0.0), db_comment='Оплата интернета')
-    pay_add_equipment = models.DecimalField(max_digits=12, decimal_places=2, default=Decimal(0.0), db_comment='Аренда стендов, мебели')
-    pay_fridge = models.DecimalField(max_digits=12, decimal_places=2, default=Decimal(0.0), db_comment='Аренда холодильных установок')
-    pay_shopwindows = models.DecimalField(max_digits=12, decimal_places=2, default=Decimal(0.0), db_comment='Аренда витрин')
 
     class Meta:
         managed = True
@@ -488,18 +508,13 @@ class TradePlace(models.Model):
                 return "ошибка в данных"
 
 
-class Booking(models.Model):
-    trade_place = models.ForeignKey(TradePlace, models.CASCADE, related_name="bookings", db_comment='Идентификатор торгового места')
-    booked_by = models.ForeignKey(DmUser, models.CASCADE, related_name="bookings", db_column='ng_user', db_comment='Кто забронировал')
-    date_transaction = models.DateTimeField(db_comment='Дата создания записи')
-    booking_status = models.TextField(db_comment='Статус бронирования')  # This field type is a guess.
-    booking_status_case = models.TextField(default='', db_comment='Причина изменения статуса (например, причина отказа)')
+class Booking(DbItem):
+    outlet = models.ForeignKey(TradePlace, on_delete=models.CASCADE, related_name="bookings", db_comment='Идентификатор торгового места')
+    booked_by = models.ForeignKey(DmUser, on_delete=models.CASCADE, related_name="bookings", db_comment='Кто забронировал')
 
     class Meta:
         managed = True
-        ordering = ['-date_transaction']
-        db_table = 'booking'
-        db_table_comment = 'Бронирование торговых мест'
+        ordering = ['-created_at']
         verbose_name = "Бронирование ТМ"
         verbose_name_plural = "Бронирования ТМ"
 
@@ -508,7 +523,6 @@ class Booking(models.Model):
 
 
 # -- NG Data --------------------------------------------------------------------------------------
-
 
 class MkImage(DbItem):  # -- Market images
     image = models.ImageField(upload_to='markets/%Y/%m/%d')  # картинка
@@ -604,12 +618,12 @@ class RdcError(DbItem):  # -- Errors detected by Restore Database Consistency pr
     object = models.CharField(max_length=250)  # -- источник --
     text = models.TextField()  # -- проблема --
 
-    def __str__(self):
-        return f'Ошибка "{self.id}"'
-
     class Meta:
         verbose_name = "Ошибка"
         verbose_name_plural = "Ошибки"
+
+    def __str__(self):
+        return f'Ошибка "{self.id}"'
 
 
 class StuffAction(DbItem):  # -- Stuff actions in admin panel

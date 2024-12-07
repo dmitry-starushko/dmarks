@@ -56,9 +56,9 @@ class MkImageAdmin(admin.ModelAdmin):
 
 @admin.register(Booking)
 class BookingAdmin(admin.ModelAdmin):
-    list_display = ['date_transaction', 'booked_by',  'booking_status', 'booking_status_case']
+    list_display = ['created_at', 'booked_by',  'outlet']
     list_filter = ['booked_by']
-    readonly_fields = ['trade_place']
+    readonly_fields = ['created_at', 'booked_by',  'outlet']
     ordering = ['booked_by']
 
 
