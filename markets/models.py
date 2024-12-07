@@ -95,6 +95,8 @@ class AuxUserData(DbItem):
     itn = models.CharField(max_length=12, validators=[Validators.itn])  # -- ИНН --
     usr_le_extract = models.OneToOneField(File, related_name='usr_le_extract', on_delete=models.SET_NULL, null=True)  # -- выписка из ЕСГРЮЛ, Unified State Register of Legal Entities --
     passport_image = models.OneToOneField(File, related_name='passport_image', on_delete=models.SET_NULL, null=True)  # -- скан паспорта --
+    promo_image = models.ImageField(upload_to='renters/%Y/%m/%d', null=True)  # картинка
+    promo_text = models.TextField(max_length=2048, default='')  # промо-текст
 
     class Meta:
         verbose_name = "Доп. данные"
@@ -102,6 +104,10 @@ class AuxUserData(DbItem):
 
     def __str__(self):
         return f'Данные "{self.user}"'
+
+    @property
+    def image(self):
+        return self.promo_image if self.promo_image else settings.DEF_MK_IMG
 
 
 # -- Legacy data ----------------------------------------------------------------------------------
@@ -451,12 +457,13 @@ class SvgSchema(models.Model):
 
 
 class TradePlace(models.Model):
-    market = models.ForeignKey(Market, models.CASCADE, related_name="trade_places", db_comment='Уникальный идентификатор рынка\r\n')
-    trade_type = models.ForeignKey(TradeType, models.SET_DEFAULT, default=TradeType.default_pk, db_comment='Тип торгового места')
-    trade_place_type = models.ForeignKey(TradePlaceType, models.SET_DEFAULT, default=TradePlaceType.default_pk, db_comment='Занятость торгового места')
-    trade_spec_type_id_act = models.ForeignKey(TradeSpecType, models.SET_DEFAULT, default=TradeSpecType.default_pk, db_column='trade_spec_type_id_act', related_name='tradeplace_trade_spec_type_id_act_set', db_comment='Специализация торгового места (фактическая)')
-    trade_spec_type_id_rec = models.ForeignKey(TradeSpecType, models.SET_DEFAULT, default=TradeSpecType.default_pk, db_column='trade_spec_type_id_rec', db_comment='Специализация торгового места (рекомендованная)')
-    location_sector = models.ForeignKey(TradeSector, models.SET_DEFAULT, default=TradeSector.default_pk, db_comment='id сектор торгового места')
+    market = models.ForeignKey(Market, on_delete=models.CASCADE, related_name="trade_places", db_comment='Уникальный идентификатор рынка\r\n')
+    trade_type = models.ForeignKey(TradeType, on_delete=models.SET_DEFAULT, default=TradeType.default_pk, db_comment='Тип торгового места')
+    trade_place_type = models.ForeignKey(TradePlaceType, on_delete=models.SET_DEFAULT, default=TradePlaceType.default_pk, db_comment='Занятость торгового места')
+    trade_spec_type_id_act = models.ForeignKey(TradeSpecType, on_delete=models.SET_DEFAULT, default=TradeSpecType.default_pk, db_column='trade_spec_type_id_act', related_name='tradeplace_trade_spec_type_id_act_set', db_comment='Специализация торгового места (фактическая)')
+    trade_spec_type_id_rec = models.ForeignKey(TradeSpecType, on_delete=models.SET_DEFAULT, default=TradeSpecType.default_pk, db_column='trade_spec_type_id_rec', db_comment='Специализация торгового места (рекомендованная)')
+    location_sector = models.ForeignKey(TradeSector, on_delete=models.SET_DEFAULT, default=TradeSector.default_pk, db_comment='id сектор торгового места')
+    rented_by = models.ForeignKey(DmUser, on_delete=models.RESTRICT, null=True, db_comment='кем арендовано')
     scheme = models.ForeignKey(SvgSchema, related_name="outlets", on_delete=models.SET_NULL, null=True)
 
     location_number = models.CharField(unique=True, validators=[Validators.outlet_number], db_comment='Номер торгового места')
