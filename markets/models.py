@@ -472,8 +472,8 @@ class TradePlace(models.Model):
     trade_spec_type_id_act = models.ForeignKey(TradeSpecType, on_delete=models.SET_DEFAULT, default=TradeSpecType.default_pk, db_column='trade_spec_type_id_act', related_name='tradeplace_trade_spec_type_id_act_set', db_comment='Специализация торгового места (фактическая)')
     trade_spec_type_id_rec = models.ForeignKey(TradeSpecType, on_delete=models.SET_DEFAULT, default=TradeSpecType.default_pk, db_column='trade_spec_type_id_rec', db_comment='Специализация торгового места (рекомендованная)')
     location_sector = models.ForeignKey(TradeSector, on_delete=models.SET_DEFAULT, default=TradeSector.default_pk, db_comment='id сектор торгового места')
-    rented_by = models.ForeignKey(DmUser, on_delete=models.RESTRICT, null=True, db_comment='кем арендовано')
     scheme = models.ForeignKey(SvgSchema, related_name="outlets", on_delete=models.SET_NULL, null=True)
+    rented_by = models.ForeignKey(DmUser, on_delete=models.RESTRICT, null=True, db_comment='кем арендовано')
 
     location_number = models.CharField(unique=True, validators=[Validators.outlet_number], db_comment='Номер торгового места')
     location_row = models.CharField(default='Не указано', db_comment='Ряд торгового места')
