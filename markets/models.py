@@ -5,6 +5,7 @@ from django.core.validators import RegexValidator
 from django.db import models
 from django.conf import settings
 from django.db.models import Index
+from markets.enums import OutletState
 
 
 class Validators:
@@ -242,7 +243,15 @@ class StreetType(models.Model):
 
 
 class TradePlaceType(models.Model):
-    type_name = models.CharField(unique=True, db_comment='Наименование типа занятости торгового места')
+    type_name_choices = {
+        OutletState.UNKNOWN: "Не указано",
+        OutletState.AVAILABLE_FOR_BOOKING: 'Свободно',
+        OutletState.UNAVAILABLE_FOR_BOOKING: 'Не сдаётся в аренду',
+        OutletState.TEMPORARILY_UNAVAILABLE_FOR_BOOKING: 'Временно не сдается в аренду',
+        OutletState.BOOKED: 'Забронировано',
+        OutletState.RENTED: 'Занято'
+    }
+    type_name = models.CharField(unique=True, max_length=10, choices=type_name_choices.items(), db_comment='Наименование типа занятости торгового места')
     color = models.CharField(max_length=7, default='#ffffff', validators=[Validators.css_color], db_comment='Цвет в формате #ffffff')
     wall_color = models.CharField(max_length=8, default='0xffffff', validators=[Validators.hex], db_comment='Цвет стен ТМ в формате 0xffffff, для 3D')
     roof_color = models.CharField(max_length=8, default='0xffffff', validators=[Validators.hex], db_comment='Цвет крыш ТМ в формате 0xffffff, для 3D')
@@ -250,7 +259,7 @@ class TradePlaceType(models.Model):
 
     @classmethod
     def default_pk(cls):
-        item, _ = cls.objects.get_or_create(type_name="Не указано")
+        item, _ = cls.objects.get_or_create(type_name=OutletState.UNKNOWN)
         return item.pk
 
     class Meta:
