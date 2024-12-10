@@ -1,10 +1,8 @@
-from decimal import Decimal
-from sys import float_info
 from xml.etree import ElementTree as Et
 from django.core.exceptions import ValidationError
 from django.db import transaction
 from django.db.models import Max, Min
-from markets.business.observation_names import Observation
+from markets.enums import Observation
 from markets.decorators import globally_lonely_action
 from markets.models import TradePlace, SvgSchema, Validators, RdcError, Market, GlobalObservation
 

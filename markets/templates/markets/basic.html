@@ -53,7 +53,7 @@
         document.addEventListener('DOMContentLoaded', (event) => {
             {% block dom-loaded-scripts %} {# -- JS code in this block runs on DOM loaded -- #}
             {% include 'markets/js/basic.js' %}
-            const ts_chat = new TsChat("ts-chat", "markets/ws/chat/", "{{parm_ts_greeting}}");
+            const ts_chat = new TsChat("ts-chat", "markets/ws/chat/", ("WebSocket" in window) ? "{{parm_ts_greeting}}" : "{{parm_ts_old_browser_warning}}");
             window.toggle_ts_chat = () => ts_chat.toggle();
             const help_dialog = new HelpDialog("help-dialog");
             window.toggle_help_dialog = (help_id) => help_dialog.toggle(help_id);

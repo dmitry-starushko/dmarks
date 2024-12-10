@@ -33,10 +33,13 @@ class MarketDetailsView(View, BasicContextProvider):
         return 'markets/market-details.html'
 
     @on_exception_returns(HttpResponseBadRequest)
-    def get(self, request, mpk, show):
+    def get(self, request, mpk, show: str, outlet: str | None = None):
+        market_model = Market.objects.get(pk=mpk)
+        outlet_model = market_model.trade_places.get(location_number=str(outlet)) if outlet is not None else None
         return render(request, self.template_name, self.basic_context | {
-            'market': Market.objects.get(pk=mpk),
+            'market': market_model,
             'show_tab': show,
+            'outlet': outlet_model,
             'help_id': 200,
         })
 

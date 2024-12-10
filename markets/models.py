@@ -5,6 +5,7 @@ from django.core.validators import RegexValidator
 from django.db import models
 from django.conf import settings
 from django.db.models import Index
+from markets.enums import OutletState
 
 
 class Validators:
@@ -14,19 +15,23 @@ class Validators:
 
     @staticmethod
     def css_color(value):
-        return Validators._rxv("^#[0-9a-fA-F]{6}$", "Ожидается значение в формате #ffffff")(value)
+        return Validators._rxv('^#[\\da-fA-F]{6}$', "Ожидается значение в формате #ffffff")(value)
 
     @staticmethod
     def hex(value):
-        return Validators._rxv("^0x[0-9a-fA-F]{1,6}$", "Ожидается значение в формате 0xffffff")(value)
+        return Validators._rxv('^0x[\\da-fA-F]{1,6}$', "Ожидается значение в формате 0xffffff")(value)
 
     @staticmethod
     def outlet_number(value):
-        return Validators._rxv("^[0-9]{9}[а-яё]{0,1}$", "Ожидается значение в формате 999999999[a]")(value)
+        return Validators._rxv('^\\d{9}[а-яё]{0,1}$', "Ожидается значение в формате 999999999[a]")(value)
 
     @staticmethod
     def market_id(value):
-        return Validators._rxv("^[0-9]{3}$", "Ожидается значение в формате 999")(value)
+        return Validators._rxv('^\\d{3}$', "Ожидается значение в формате 999")(value)
+
+    @staticmethod
+    def itn(value):
+        return Validators._rxv('^((?:\\d{10})|(?:\\d{12}))$', "Ожидается значение в формате 999")(value)
 
 
 class DbItem(models.Model):
@@ -71,6 +76,39 @@ class DmUser(AbstractUser):
 
     def __str__(self):
         return self.email
+
+
+class File(DbItem):
+    file_name = models.CharField(max_length=512)  # -- имя файла --
+    file_content = models.BinaryField()  # -- двоичный образ файла --
+
+    class Meta:
+        verbose_name = "Файл"
+        verbose_name_plural = "Файлы"
+
+    def __str__(self):
+        return f'Файл {self.file_name}'
+
+
+class AuxUserData(DbItem):
+    user = models.OneToOneField(DmUser, on_delete=models.CASCADE, related_name='aux_data')  # -- ассоциированный пользователь --
+    confirmed = models.BooleanField(default=False)  # -- данные подтверждены администрацией --
+    itn = models.CharField(max_length=12, validators=[Validators.itn])  # -- ИНН --
+    usr_le_extract = models.OneToOneField(File, related_name='usr_le_extract', on_delete=models.SET_NULL, null=True)  # -- выписка из ЕСГРЮЛ, Unified State Register of Legal Entities --
+    passport_image = models.OneToOneField(File, related_name='passport_image', on_delete=models.SET_NULL, null=True)  # -- скан паспорта --
+    promo_image = models.ImageField(upload_to='renters/%Y/%m/%d', null=True)  # картинка
+    promo_text = models.TextField(max_length=2048, default='')  # промо-текст
+
+    class Meta:
+        verbose_name = "Доп. данные"
+        verbose_name_plural = "Доп. данные"
+
+    def __str__(self):
+        return f'Данные "{self.user}"'
+
+    @property
+    def image(self):
+        return self.promo_image if self.promo_image else settings.DEF_MK_IMG
 
 
 # -- Legacy data ----------------------------------------------------------------------------------
@@ -205,7 +243,15 @@ class StreetType(models.Model):
 
 
 class TradePlaceType(models.Model):
-    type_name = models.CharField(unique=True, db_comment='Наименование типа занятости торгового места')
+    type_name_choices = {
+        OutletState.UNKNOWN: "Не указано",
+        OutletState.AVAILABLE_FOR_BOOKING: 'Свободно',
+        OutletState.UNAVAILABLE_FOR_BOOKING: 'Не сдаётся в аренду',
+        OutletState.TEMPORARILY_UNAVAILABLE_FOR_BOOKING: 'Временно не сдается в аренду',
+        OutletState.BOOKED: 'Забронировано',
+        OutletState.RENTED: 'Занято'
+    }
+    type_name = models.CharField(unique=True, max_length=10, choices=type_name_choices.items(), db_comment='Наименование типа занятости торгового места')
     color = models.CharField(max_length=7, default='#ffffff', validators=[Validators.css_color], db_comment='Цвет в формате #ffffff')
     wall_color = models.CharField(max_length=8, default='0xffffff', validators=[Validators.hex], db_comment='Цвет стен ТМ в формате 0xffffff, для 3D')
     roof_color = models.CharField(max_length=8, default='0xffffff', validators=[Validators.hex], db_comment='Цвет крыш ТМ в формате 0xffffff, для 3D')
@@ -213,7 +259,7 @@ class TradePlaceType(models.Model):
 
     @classmethod
     def default_pk(cls):
-        item, _ = cls.objects.get_or_create(type_name="Не указано")
+        item, _ = cls.objects.get_or_create(type_name=OutletState.UNKNOWN)
         return item.pk
 
     class Meta:
@@ -420,13 +466,14 @@ class SvgSchema(models.Model):
 
 
 class TradePlace(models.Model):
-    market = models.ForeignKey(Market, models.CASCADE, related_name="trade_places", db_comment='Уникальный идентификатор рынка\r\n')
-    trade_type = models.ForeignKey(TradeType, models.SET_DEFAULT, default=TradeType.default_pk, db_comment='Тип торгового места')
-    trade_place_type = models.ForeignKey(TradePlaceType, models.SET_DEFAULT, default=TradePlaceType.default_pk, db_comment='Занятость торгового места')
-    trade_spec_type_id_act = models.ForeignKey(TradeSpecType, models.SET_DEFAULT, default=TradeSpecType.default_pk, db_column='trade_spec_type_id_act', related_name='tradeplace_trade_spec_type_id_act_set', db_comment='Специализация торгового места (фактическая)')
-    trade_spec_type_id_rec = models.ForeignKey(TradeSpecType, models.SET_DEFAULT, default=TradeSpecType.default_pk, db_column='trade_spec_type_id_rec', db_comment='Специализация торгового места (рекомендованная)')
-    location_sector = models.ForeignKey(TradeSector, models.SET_DEFAULT, default=TradeSector.default_pk, db_comment='id сектор торгового места')
+    market = models.ForeignKey(Market, on_delete=models.CASCADE, related_name="trade_places", db_comment='Уникальный идентификатор рынка\r\n')
+    trade_type = models.ForeignKey(TradeType, on_delete=models.SET_DEFAULT, default=TradeType.default_pk, db_comment='Тип торгового места')
+    trade_place_type = models.ForeignKey(TradePlaceType, on_delete=models.SET_DEFAULT, default=TradePlaceType.default_pk, db_comment='Занятость торгового места')
+    trade_spec_type_id_act = models.ForeignKey(TradeSpecType, on_delete=models.SET_DEFAULT, default=TradeSpecType.default_pk, db_column='trade_spec_type_id_act', related_name='tradeplace_trade_spec_type_id_act_set', db_comment='Специализация торгового места (фактическая)')
+    trade_spec_type_id_rec = models.ForeignKey(TradeSpecType, on_delete=models.SET_DEFAULT, default=TradeSpecType.default_pk, db_column='trade_spec_type_id_rec', db_comment='Специализация торгового места (рекомендованная)')
+    location_sector = models.ForeignKey(TradeSector, on_delete=models.SET_DEFAULT, default=TradeSector.default_pk, db_comment='id сектор торгового места')
     scheme = models.ForeignKey(SvgSchema, related_name="outlets", on_delete=models.SET_NULL, null=True)
+    rented_by = models.ForeignKey(DmUser, on_delete=models.RESTRICT, null=True, db_comment='кем арендовано')
 
     location_number = models.CharField(unique=True, validators=[Validators.outlet_number], db_comment='Номер торгового места')
     location_row = models.CharField(default='Не указано', db_comment='Ряд торгового места')
@@ -448,18 +495,7 @@ class TradePlace(models.Model):
     impr_add_equipment = models.BooleanField(default=False, db_comment='Наличие стендов, мебели')
     impr_fridge = models.BooleanField(default=False, db_comment='Наличие холодильных установок')
     impr_shopwindow = models.BooleanField(default=False, db_comment='Наличие витрин')
-
     price = models.DecimalField(max_digits=12, decimal_places=2, default=Decimal(0.0), db_comment='Стоимость аренды торгового места в месяц')
-    pay_electricity = models.DecimalField(max_digits=12, decimal_places=2, default=Decimal(0.0), db_comment='Оплата электричества')
-    pay_heat_supply = models.DecimalField(max_digits=12, decimal_places=2, default=Decimal(0.0), db_column='pay_heat_supplay', db_comment='Оплата услуг теплоснабжения')
-    pay_air_conditioning = models.DecimalField(max_digits=12, decimal_places=2, default=Decimal(0.0), db_comment='Оплата за кондиционер')
-    pay_plumbing = models.DecimalField(max_digits=12, decimal_places=2, default=Decimal(0.0), db_comment='Оплата услуг водоснабжения')
-    pay_sewerage = models.DecimalField(max_digits=12, decimal_places=2, default=Decimal(0.0), db_comment='Оплата услуг водоотведения')
-    pay_drains = models.DecimalField(max_digits=12, decimal_places=2, default=Decimal(0.0), db_comment='Оплата наличия стоков')
-    pay_internet = models.DecimalField(max_digits=12, decimal_places=2, default=Decimal(0.0), db_comment='Оплата интернета')
-    pay_add_equipment = models.DecimalField(max_digits=12, decimal_places=2, default=Decimal(0.0), db_comment='Аренда стендов, мебели')
-    pay_fridge = models.DecimalField(max_digits=12, decimal_places=2, default=Decimal(0.0), db_comment='Аренда холодильных установок')
-    pay_shopwindows = models.DecimalField(max_digits=12, decimal_places=2, default=Decimal(0.0), db_comment='Аренда витрин')
 
     class Meta:
         managed = True
@@ -488,18 +524,13 @@ class TradePlace(models.Model):
                 return "ошибка в данных"
 
 
-class Booking(models.Model):
-    trade_place = models.ForeignKey(TradePlace, models.CASCADE, related_name="bookings", db_comment='Идентификатор торгового места')
-    booked_by = models.ForeignKey(DmUser, models.CASCADE, related_name="bookings", db_column='ng_user', db_comment='Кто забронировал')
-    date_transaction = models.DateTimeField(db_comment='Дата создания записи')
-    booking_status = models.TextField(db_comment='Статус бронирования')  # This field type is a guess.
-    booking_status_case = models.TextField(default='', db_comment='Причина изменения статуса (например, причина отказа)')
+class Booking(DbItem):
+    outlet = models.ForeignKey(TradePlace, on_delete=models.CASCADE, related_name="bookings", db_comment='Идентификатор торгового места')
+    booked_by = models.ForeignKey(DmUser, on_delete=models.CASCADE, related_name="bookings", db_comment='Кто забронировал')
 
     class Meta:
         managed = True
-        ordering = ['-date_transaction']
-        db_table = 'booking'
-        db_table_comment = 'Бронирование торговых мест'
+        ordering = ['-created_at']
         verbose_name = "Бронирование ТМ"
         verbose_name_plural = "Бронирования ТМ"
 
@@ -508,7 +539,6 @@ class Booking(models.Model):
 
 
 # -- NG Data --------------------------------------------------------------------------------------
-
 
 class MkImage(DbItem):  # -- Market images
     image = models.ImageField(upload_to='markets/%Y/%m/%d')  # картинка
@@ -604,12 +634,12 @@ class RdcError(DbItem):  # -- Errors detected by Restore Database Consistency pr
     object = models.CharField(max_length=250)  # -- источник --
     text = models.TextField()  # -- проблема --
 
-    def __str__(self):
-        return f'Ошибка "{self.id}"'
-
     class Meta:
         verbose_name = "Ошибка"
         verbose_name_plural = "Ошибки"
+
+    def __str__(self):
+        return f'Ошибка "{self.id}"'
 
 
 class StuffAction(DbItem):  # -- Stuff actions in admin panel
@@ -625,45 +655,3 @@ class StuffAction(DbItem):  # -- Stuff actions in admin panel
     def __str__(self):
         return f'{self.title}'
 
-# -- May be useful - do not kill! -----------------------------------------------------------------
-
-
-# class RenterType(models.Model):
-#     type_name = models.CharField(unique=True, db_comment='Наименование типа арендатора')
-#     descr = models.TextField(blank=True, null=True, db_comment='Описание')
-#
-#     @classmethod
-#     def default_pk(cls):
-#         item, _ = cls.objects.get_or_create(type_name="Не указано")
-#         return item.pk
-#
-#     class Meta:
-#         managed = True
-#         ordering = ['type_name']
-#         db_table = 'renter_type'
-#         db_table_comment = 'Тип арендатора'
-#         verbose_name = "Тип арендатора"
-#         verbose_name_plural = "Типы арендаторов"
-#
-#     def __str__(self):
-#         return f'{self.type_name}'
-#
-#
-# class Renter(models.Model):
-#     renter_name = models.CharField(db_comment='Наименование арендатора')
-#     legal_doc_info = models.CharField(blank=True, null=True, db_comment='Информация об уставных документах')
-#     legal_doc_files = models.JSONField(blank=True, null=True, db_comment='Уставные документы - файлы')
-#     descr = models.TextField(blank=True, null=True, db_comment='Описание')
-#     renter_type = models.ForeignKey(RenterType, models.SET_DEFAULT, default=RenterType.default_pk, db_comment='Тип арендатора')
-#     renter_phone = models.DecimalField(max_digits=11, decimal_places=0, blank=True, null=True, db_comment='Номер телефона')
-#
-#     class Meta:
-#         managed = True
-#         ordering = ['renter_name']
-#         db_table = 'renter'
-#         db_table_comment = 'Информация об арендаторах'
-#         verbose_name = "Арендатор"
-#         verbose_name_plural = "Арендаторы"
-#
-#     def __str__(self):
-#         return f'{self.renter_name}'
