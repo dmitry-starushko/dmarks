@@ -15,7 +15,245 @@ import { View3D } from "view3d";
 {% block content %}
 <section class="market-details-section">
     <div class="market-details-section-title"><h3>{{market.mk_full_name}}</h3></div>
+    <div class="market-details-section-buttons">
+        <button class="buttons-tab active" id="mkdetails-info" >
+            <i class="bi bi-info-circle"></i> ИНФОРМАЦИЯ
+         </button>
+        <button class="buttons-tab" id="mkdetails-tp">
+            <i class="bi bi-list-ul"></i> ТОРГОВЫЕ МЕСТА
+        </button>
+        <button class="buttons-tab" id="mkdetails-scheme">
+            <i class="bi bi-circle-square"></i> СХЕМА
+        </button>
+    </div>
     <div class="market-details-content">
+        <div class="mkdetails-section-info section-block" id="mkdetails-section-info">
+            <div class="mkdetails-section-info-main">
+                <div class="mkdetails-info-title">
+                    <div class="mkdetails-img-info">
+                        <img src="{% thumbnail market.image 200x200 crop %}">
+                    </div>
+                    <div class="mkdetails-short-info">
+                        Тип рынка: <strong>{{market.market_type}}</strong><br>
+                        Внутренний код рынка: <strong>{{market.internal_id}}</strong><br>
+                        Общая площадь рынка: <strong>{{market.market_square}}</strong><br>
+                        График работы: <strong>{{market.schedule}}</strong>
+                    </div>
+                </div>
+                <div class="mkdetails-big-info">
+                    {{market.ads | default:'*К сожалению, текст отсутствует*.' | markdown}}
+                </div>
+            </div>
+
+            <div class="mkdetails-section-info-slide" id="dragSlide"></div>
+            <div class="mkdetails-section-info-detail">
+                 <ul class="tree">
+                  <li>
+                    <details open>
+                      <summary>Детали</summary>
+                      <ul>
+                        <li>
+                          <details open>
+                            <summary>Описание инфраструктуры</summary>
+                            <ul>
+                                <li>Количество парковок: <strong>{{market.infr_parking}}</strong></li>
+                                <li>Количество подъездов: <strong>{{market.infr_entrance}}</strong></li>
+                                <li>Количество санузлов: <strong>{{market.infr_restroom}}</strong></li>
+                                <li>Наличие водопровода: <strong>{{market.mk_water_supply}}</strong></li>
+                                <li>Канализация: <strong>{{market.mk_sewerage}}</strong></li>
+                                <li>Количество складских помещений: <strong>{{market.infr_storage}}</strong></li>
+                                <li>Наличие и состав противопожарных систем: <strong>{{market.infr_fire_protection}}</strong></li>
+                            </ul>
+                          </details>
+                        </li>
+                        <li>
+                          <details open>
+                            <summary>Информация для заключения догворов аренды/приобретения разовго талона</summary>
+                            <ul>
+                                <li>Информация о формах заявлений: <strong>{{market.info_statement_forms}}</strong></li>
+                                <li>Информация о типовых договорах: <strong>{{market.info_contracts}}</strong></li>
+                                <li>Информация о требованиях для оформления договоров/талонов: <strong>{{market.info_contracts_req}}</strong></li>
+                                <li>Информация о копиях правоустанавливающих документов дочернего предприятия: <strong>{{market.info_constitutive}}</strong></li>
+                                <li>Информация о других документах: <strong>{{market.info_other_docs}}</strong></li>
+                                <li>Информация для обращения граждан/ФЛП: <strong>{{market.citizen_appeal}}</strong></li>
+                            </ul>
+                          </details>
+                        </li>
+                          <li>
+                          <details open>
+                            <summary>Информация о географическом расположении рынка</summary>
+                            <ul>
+                                <li>Город: <strong>{{market.geo_city}}</strong></li>
+                                <li>Район города: <strong>{{market.geo_district}}</strong></li>
+                                <li>{{market.geo_street_type.descr}}: <strong>{{market.geo_street}}</strong></li>
+                                <li>Дом: <strong>{{market.geo_house}}</strong></li>
+                            </ul>
+                          </details>
+                        </li>
+                        {% if market.phones.exists %}
+                        <li>
+                          <details open>
+                            <summary>Телефоны:</summary>
+                            <ul>
+                                {% for ph in market.phones.all %}
+                                <li><a href="tel:{{ph}}"><strong>{{ph}}</strong></a></li>
+                                {% endfor %}
+                            </ul>
+                          </details>
+                        </li>
+                        {% endif %}
+                        {% if market.emails.exists %}
+                        <li>
+                          <details open>
+                            <summary>E-mail:</summary>
+                            <ul>
+                                {% for eml in market.emails.all %}
+                                <li><a href="mailto:{{eml}}"><strong>{{eml}}</strong></a></li>
+                                {% endfor %}
+                            </ul>
+                          </details>
+                        </li>
+                        {% endif %}
+                      </ul>
+                    </details>
+                  </li>
+                </ul>
+            </div>
+        </div>
+        <div class="mkdetails-section-tabs" id="mkdetails-section-tabs">
+            <div class="mkdetails-tp-scheme" id="mkdetails-tp-tab"></div>
+            <div class="mkdetails-tp-scheme" id="mkdetails-scheme-tab">
+                <div class="section-block">
+                    <div class="mkdetails-tp-header-block" id="mkdetails-scheme-header"></div>
+                    <div id="v3d" class="v3d">
+                        {% if not market.schemes.first %}
+                        <p>Список схем пуст</p>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            <div class="mkdetails-tp-section-info-detail" id="mkdetails-tp-section-info-detail">
+                <div class="mkdetails-tp-section-info-detail-body">
+                    <div class="mkdetails-tp-section-info-detail-body-panel">
+                        <div class="mkdetails-tp-header-block" style="border-width:0 0 1px 0"></div>
+                        <a href="#" class="" title="Фильтр">
+                            <img src="{% static 'svg/icons/filter-outline.svg' %}" alt="Фильтр"/>
+                        </a>
+                        <a href="#" class="" title="Сброс фильтров">
+                            <img src="{% static 'svg/icons/filter-remove-outline.svg' %}" alt="Сброс фильтров"/>
+                        </a>
+                        <a href="#" class="" title="Полоэкранный режим" id="mkdetails-fullscreen">
+                            <img src="{% static 'svg/icons/fullscreen.svg' %}" alt="Полоэкранный режим"/>
+                        </a>
+                        <a href="#" class="" title="Выбор этажа" id="mk-level">
+                            <img src="{% static 'svg/icons/layers.svg' %}" alt="Выбор этажа"/>
+                        </a>
+                        <a href="#" class="" title="Выбор легенды" onclick="window.dispatchEvent(new CustomEvent('next_legend'));">
+                            <img src="{% static 'svg/icons/crosshairs-gps.svg' %}" alt="Выбор легенды"/>
+                        </a>
+                        <a href="#" class="" title="Сброс настроек" onclick="window.dispatchEvent(new CustomEvent('reset_3d_view'));">
+                            <img src="{% static 'svg/icons/undo.svg' %}" alt="Сброс настроек"/>
+                        </a>
+                        <a href="#" class="" title="3D" onclick="window.dispatchEvent(new CustomEvent('toggle_3d_view'));">
+                            <img src="{% static 'svg/icons/cube-outline.svg' %}" alt="3D"/>
+                        </a>
+                    </div>
+                    <div id="outlet-info" class="mkdetails-tp-section-info-detail-body-info">
+                        {% comment %}
+                        <div class="mkdetails-tp-header-block">Торговое месо №001100512</div>
+                        <div class="mkdetails-tp-section-info-detail-body-info-descr">
+                            <p>Тип: <strong>павильон непродовольтсвенный (мелкророзничная торговля)</strong></p>
+                            <p>Занятость: <strong>Свободно</strong></p>
+                            <p>Возможность выносной торговли: <strong>Нет</strong></p>
+                        </div>
+                        <div class="mkdetails-tp-section-info-detail-body-info-tree">
+                            <ul class="tree">
+                                  <li>
+                                    <details open>
+                                      <summary>Детали</summary>
+                                      <ul>
+                                        <li>
+                                          <details open>
+                                            <summary>Физические параметры</summary>
+                                            <ul>
+                                                <li>Площадь: <strong>57,4</strong></li>
+                                                <li>Длина: <strong>10</strong></li>
+                                                <li>Ширина: <strong>5,74</strong></li>
+                                                <li>Высота: <strong>2,50</strong></li>
+                                            </ul>
+                                          </details>
+                                        </li>
+                                        <li>
+                                          <details open>
+                                            <summary>Благоустройство и оборуование</summary>
+                                            <ul>
+                                                <li>Электричество: <strong>Нет</strong></li>
+                                                <li>Теплоснабжение: <strong>Нет</strong></li>
+                                                <li>Кондиционирование: <strong>Нет</strong></li>
+                                                <li>Водопровод: <strong>Нет</strong></li>
+                                                <li>Канализация: <strong>Нет</strong></li>
+                                                <li>Стоки: <strong>Нет</strong></li>
+                                                <li>Интернет: <strong>Нет</strong></li>
+                                                <li>Тип подключения: <strong>Проводной</strong></li>
+                                            </ul>
+                                          </details>
+                                        </li>
+                                          <li>
+                                          <details open>
+                                            <summary>Информация о географическом расположении рынка</summary>
+                                            <ul>
+                                                <li>Город: <strong>{{market.geo_city}}</strong></li>
+                                                <li>Район города: <strong>{{market.geo_district}}</strong></li>
+                                                <li>{{market.geo_street_type.descr}}: <strong>{{market.geo_street}}</strong></li>
+                                                <li>Дом: <strong>{{market.geo_house}}</strong></li>
+                                            </ul>
+                                          </details>
+                                        </li>
+                                          <li>
+                                          <details open>
+                                            <summary>Контактные данные</summary>
+                                            <ul>
+                                                <li>Телефон: <strong>{{market.phone}}</strong></li>
+                                                <li>Email: <strong>{{market.email}}</strong></li>
+                                            </ul>
+                                          </details>
+                                        </li>
+                                      </ul>
+                                    </details>
+                                  </li>
+                                </ul>
+                        </div>
+                        <div class="mkdetails-tp-section-info-detail-body-info-booking">
+                            <a href="#" class="mkdetails-tp-section-info-detail-body-info-booking-button book-btn">
+                               <img src="{% static 'svg/icons/calendar-check.svg' %}" alt="Выбор легенды"/>
+                                Бронировать
+                            </a>
+                            <a href="#" class="mkdetails-tp-section-info-detail-body-info-booking-button-cancel book-btn">
+                               <img src="{% static 'svg/icons/undo-variant.svg' %}" alt="Выбор легенды"/>
+                            </a>
+                        </div>
+                        {%endcomment%}
+                    </div>
+                </div>
+                <div class="mkdetails-tp-section-info-detail-legend">
+                    <div class="mkdetails-tp-header-block">Легенда - занятость мест</div>
+                    <div class="mkdetails-tp-section-info-detail-legend-body">
+                        {% for k,v in legend.items %}
+                        <div class="mkdetails-tp-section-info-detail-legend-body-item" title="{{v.title}}">
+                            <div class="mkdetails-tp-section-info-detail-legend-body-item-circle" style="background-color:{{v.roof_color_css}};"></div>
+                            <div class="mkdetails-tp-section-info-detail-legend-body-item-text">
+                                {{v.title|truncatechars:9}}
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!--div-- class="market-details-content1">
         <div class="mkdetails-tabs-section" id="mkdetails-tabs-section">
             <ul class="nav nav-tabs" id="mkdetails-tabs" role="tablist">
                 <li class="nav-item" role="presentation">
@@ -263,7 +501,7 @@ import { View3D } from "view3d";
                 </div>
             </div>
         </div>
-    </div>
+    </div-->
 </section>
 
 {# -- Choose Markets Level Window -- #}
@@ -293,12 +531,12 @@ const v3d = new View3D("v3d", "{% url 'api:info_take_urls' %}", {{market.schemes
 {#% comment % TODO !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!#}
 // -- Грубый колхоз с размерами -- надо через стили и вот это вот всё
 // -- Если включить тег comment выше и отрубить нижележащий код, 3д-вид будет иметь 0 высоту
-const v3d_observer = new ResizeObserver((entries) => {
+/*const v3d_observer = new ResizeObserver((entries) => {
     const target = entries[0].target;
     const v = document.getElementById("v3d");
     v.setAttribute("style",`width:100%;height:${target.clientHeight-8}px;`);
 });
-v3d_observer.observe(document.getElementById("mkdetails-scheme-tab"));
+v3d_observer.observe(document.getElementById("mkdetails-scheme-tab"));*/
 {#% endcomment % !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!#}
 {# Current state #}
 const current = {

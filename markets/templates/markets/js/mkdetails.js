@@ -61,25 +61,51 @@
 
 
 
+    var mkdetailsinfo = document.getElementById('mkdetails-section-info');
     var rightPanel = document.getElementById('mkdetails-tp-section-info-detail');
     var tabsSection = document.getElementById('mkdetails-tabs-section');
+
+    var tpTab = document.getElementById('mkdetails-tp-tab');
+    var schemeTab = document.getElementById('mkdetails-scheme-tab');
+    var sectionTabs = document.getElementById('mkdetails-section-tabs');
 
 
     document.getElementById('mkdetails-info').addEventListener("click", () =>
     {
-        rightPanel.style.visibility = "hidden";
-        rightPanel.style.width = "0";
-        tabsSection.style.width = "100%";
+        mkdetailsinfo.style.display = "flex";
+        sectionTabs.style.display = "none";
+        /*rightPanel.style.visibility = "hidden";
+        /*rightPanel.style.width = "0";
+        tabsSection.style.width = "100%";*/
     });
 
-    function ShowRightPanel() {
+    document.getElementById('mkdetails-tp').addEventListener("click", () =>
+    {
+        mkdetailsinfo.style.display = "none";
+        sectionTabs.style.display = "flex";
+        tpTab.style.display = "flex";
+        schemeTab.style.display = "none";
+    });
+
+    document.getElementById('mkdetails-scheme').addEventListener("click", () =>
+    {
+        mkdetailsinfo.style.display = "none";
+        sectionTabs.style.display = "flex";
+        tpTab.style.display = "none";
+        schemeTab.style.display = "block";
+    });
+
+
+    /*function ShowRightPanel() {
+            mkdetailsinfo.style.display = "none";
+            sectionTabs.style.display = "flex";
             rightPanel.style.visibility = "visible";
             rightPanel.style.width = "40%";
             tabsSection.style.width = "60%";
     };
 
     document.getElementById('mkdetails-tp').onclick = ShowRightPanel;
-    document.getElementById('mkdetails-scheme').onclick = ShowRightPanel;
+    document.getElementById('mkdetails-scheme').onclick = ShowRightPanel;*/
 
     document.querySelector("#mkdetails-fullscreen").addEventListener("click", function (event) {
       if (document.fullscreenElement) {
@@ -90,3 +116,32 @@
       // Make the .element div fullscreen.
       document.querySelector(".market-details-section").requestFullscreen();
     });
+
+    /*const buttonstab = document.getElementsByClassName('buttons-tab');
+
+    for (const element of buttonstab) {
+        element.addEventListener("click", e => {
+            console.log("element was clicked", e.target.id, e.target.innerHTML);
+            e.target.classList.add('active');
+        })
+    }*/
+
+function toggleItem(elem) {
+  for (var i = 0; i < elem.length; i++) {
+    elem[i].addEventListener("click", function(e) {
+      var current = this;
+      for (var i = 0; i < elem.length; i++) {
+        if (current != elem[i]) {
+          elem[i].classList.remove('active');
+        } else if (current.classList.contains('active') === true) {
+          current.classList.remove('active');
+        } else {
+          current.classList.add('active')
+        }
+      }
+      e.preventDefault();
+    });
+  };
+}
+
+toggleItem(document.querySelectorAll('.buttons-tab'));
