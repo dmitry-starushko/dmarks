@@ -158,3 +158,87 @@ rangeAreaInput.forEach((input) => {
     }
   });
 });
+
+
+/***** Tristate checkbox ******/
+function tristateHandler(e) {
+  const states = ['true', 'null', 'false']
+
+  const i = states.indexOf(e.target.value) + 1
+  e.target.value = i < states.length ? states[i] : states[0]
+  switch(e.target.value) {
+    case states[0]:
+      e.target.checked = true
+      break
+    case states[1]:
+      e.target.indeterminate = true
+      break
+    default:
+      e.target.checked = false
+  }
+
+  // Sadly, e.target.value is coerced to string
+  //console.log(typeof e.target.value)
+}
+
+/*document.querySelectorAll('input[name=tricheckbox]').onclick = tristateHandler*/
+
+var triStateInputs = document.querySelectorAll('input[name=tricheckbox]')
+for (i = 0; i < triStateInputs.length; i++) {
+  triStateInputs[i].addEventListener('click', function(e) {
+    tristateHandler(e);
+  });
+}
+
+
+/****  Tree checkbox ******/
+
+/*$('input[type="checkbox"]').change(function(e) {
+
+  var checked = $(this).prop("checked"),
+      container = $(this).parent(),
+      siblings = container.siblings();
+
+  container.find('input[type="checkbox"]').prop({
+    indeterminate: false,
+    checked: checked
+  });
+
+  function checkSiblings(el) {
+
+    var parent = el.parent().parent(),
+        all = true;
+
+    el.siblings().each(function() {
+      let returnValue = all = ($(this).children('input[type="checkbox"]').prop("checked") === checked);
+      return returnValue;
+    });
+
+    if (all && checked) {
+
+      parent.children('input[type="checkbox"]').prop({
+        indeterminate: false,
+        checked: checked
+      });
+
+      checkSiblings(parent);
+
+    } else if (all && !checked) {
+
+      parent.children('input[type="checkbox"]').prop("checked", checked);
+      parent.children('input[type="checkbox"]').prop("indeterminate", (parent.find('input[type="checkbox"]:checked').length > 0));
+      checkSiblings(parent);
+
+    } else {
+
+      el.parents("li").children('input[type="checkbox"]').prop({
+        indeterminate: true,
+        checked: false
+      });
+
+    }
+
+  }
+
+  checkSiblings(container);
+});*/

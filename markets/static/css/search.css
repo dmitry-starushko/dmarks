@@ -442,6 +442,10 @@
     outline: 1px solid black;
 }
 
+.search-tp-check:indeterminate {
+    accent-color: black;
+}
+
 .for-checkbox {
     font-size: 10px;
 }
