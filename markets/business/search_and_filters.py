@@ -13,4 +13,4 @@ def filter_markets(text: str):
 
 
 def filter_outlets(filters):
-    return TradePlace.objects.select_related('market', 'trade_place_type', 'trade_spec_type_id_act', 'market__geo_city', 'market__geo_district')
+    return TradePlace.objects.all()

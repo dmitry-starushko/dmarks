@@ -209,7 +209,7 @@ class PV_OutletTableView(APIView):
     def post(self, request, scheme_pk: int, legend: int):
         legend = legend % len(self.legends)
         scheme = SvgSchema.objects.get(pk=scheme_pk)
-        queryset = scheme.outlets.all()
+        queryset = scheme.outlets.select_related('trade_place_type', 'trade_spec_type_id_act')
         if self.request.data:
             for f_name, f_body in self.request.data.items():
                 queryset = apply_filter(queryset, f_name, f_body)
@@ -243,7 +243,7 @@ class PV_FilteredMarketsView(APIView):
 
     @on_exception_returns(HttpResponseBadRequest)
     def post(self, request):
-        markets = filter_markets(request.data['search_text'])
+        markets = filter_markets(request.data['search_text']).select_related('geo_city', 'geo_district', 'geo_street_type')
         context = OrderedDict()
         for m in markets:
             r = context.setdefault(m.geo_city.locality_name, OrderedDict()).setdefault(m.geo_district.locality_name, OrderedDict())
@@ -264,7 +264,7 @@ class PV_FilteredOutletsView(APIView):
     @on_exception_returns(HttpResponseBadRequest)
     def post(self, request):
         markets = dict()
-        outlets = filter_outlets(request.data['filters'] if 'filters' in request.data else None)
+        outlets = filter_outlets(request.data['filters'] if 'filters' in request.data else None).select_related('market', 'trade_place_type', 'trade_spec_type_id_act', 'market__geo_city', 'market__geo_district')
         context = OrderedDict()
         for o in outlets:
             try:
