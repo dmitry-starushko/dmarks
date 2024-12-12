@@ -1,14 +1,14 @@
 {% load static %}
-<ul class="tree">
+<div class="css-treeview css-treeview-light">
+<ul>
     {% for city, dists in context.items %}
     <li>
-        <details open>
-            <summary>{{city}}</summary>
+        <input class="css-treeview-check" type="checkbox" id="mk-search-city-{{ forloop.counter }}" checked="checked" /><label for="mk-search-city-{{ forloop.counter }}">{{city}}</label>
             <ul>
+                {% with city=forloop.counter %}
                 {% for dist, markets in dists.items %}
                 <li>
-                    <details open>
-                        <summary>{{dist}}</summary>
+                    <input class="css-treeview-check" type="checkbox" id="mk-search-dist-{{ city }}-{{ forloop.counter }}" checked="checked" /><label for="mk-search-dist-{{ city }}-{{ forloop.counter }}">{{dist}}</label>
                         <ul>
                             {% for market, detail in markets.items %}
                             <li class="tree-node-result">
@@ -39,8 +39,10 @@
                     </details>
                 </li>
                 {% endfor %}
+                {% endwith %}
             </ul>
         </details>
     </li>
     {% endfor %}
 </ul>
+</div>
