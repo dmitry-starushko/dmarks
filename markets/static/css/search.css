@@ -298,6 +298,8 @@
     -webkit-animation-duration: 0.5s;
     animation-name: animatemk;
     animation-duration: 0.5s;
+    display: flex;
+    flex-direction: column;
 }
 
 /* Add Animation */
