@@ -2,13 +2,13 @@ from collections import OrderedDict
 from django.conf import settings
 from django.shortcuts import render
 from django.template import TemplateDoesNotExist
-from django.urls import reverse
+from django.urls import reverse, NoReverseMatch
 from rest_framework.generics import ListAPIView
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.permissions import AllowAny
 from django.http.response import JsonResponse, HttpResponseBadRequest, HttpResponse
-from markets.business.search_and_filters import apply_filter, filter_markets
+from markets.business.search_and_filters import apply_filter, filter_markets, filter_outlets
 from markets.business.actions import restore_db_consistency
 from markets.decorators import on_exception_returns
 from markets.models import SvgSchema, Market, TradePlaceType, TradeSpecType, TradePlace, TradeSector
@@ -209,7 +209,7 @@ class PV_OutletTableView(APIView):
     def post(self, request, scheme_pk: int, legend: int):
         legend = legend % len(self.legends)
         scheme = SvgSchema.objects.get(pk=scheme_pk)
-        queryset = scheme.outlets.all()
+        queryset = scheme.outlets.select_related('trade_place_type', 'trade_spec_type_id_act')
         if self.request.data:
             for f_name, f_body in self.request.data.items():
                 queryset = apply_filter(queryset, f_name, f_body)
@@ -243,7 +243,7 @@ class PV_FilteredMarketsView(APIView):
 
     @on_exception_returns(HttpResponseBadRequest)
     def post(self, request):
-        markets = filter_markets(request.data['search_text'])
+        markets = filter_markets(request.data['search_text']).select_related('geo_city', 'geo_district', 'geo_street_type')
         context = OrderedDict()
         for m in markets:
             r = context.setdefault(m.geo_city.locality_name, OrderedDict()).setdefault(m.geo_district.locality_name, OrderedDict())
@@ -256,6 +256,29 @@ class PV_FilteredMarketsView(APIView):
                 'link_scheme': reverse('markets:market_details', kwargs={'mpk': m.id, 'show': 'scheme'}),
             }
         return render(request, 'markets/partials/filtered-markets.html', {'context': context})
+
+
+class PV_FilteredOutletsView(APIView):
+    permission_classes = [AllowAny]
+
+    @on_exception_returns(HttpResponseBadRequest)
+    def post(self, request):
+        markets = dict()
+        outlets = filter_outlets(request.data['filters'] if 'filters' in request.data else None).select_related('market', 'trade_place_type', 'trade_spec_type_id_act', 'market__geo_city', 'market__geo_district')
+        context = OrderedDict()
+        for o in outlets:
+            try:
+                r = (context.setdefault(o.market.geo_city.locality_name, OrderedDict()).setdefault(o.market.geo_district.locality_name, OrderedDict()).setdefault(o.market.mk_full_name, OrderedDict()))
+                r[o.location_number] = {
+                    'state': o.trade_place_type,
+                    'specialization': o.trade_spec_type_id_act,
+                    'price': o.price,
+                    'link_outlets': reverse('markets:market_details_outlet', kwargs={'mpk': o.market.id, 'show': 'outlets', 'outlet': o.location_number}),
+                    'link_scheme': reverse('markets:market_details_outlet', kwargs={'mpk': o.market.id, 'show': 'scheme', 'outlet': o.location_number}),
+                }
+            except NoReverseMatch as e:
+                print(e)
+        return render(request, 'markets/partials/filtered-outlets.html', {'context': context})
 
 
 class PV_HelpContentView(APIView):

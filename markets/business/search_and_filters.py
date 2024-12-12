@@ -1,4 +1,4 @@
-from markets.models import Market
+from markets.models import Market, TradePlace
 
 
 def apply_filter(query, filter_name: str, filter_body: str):
@@ -10,3 +10,7 @@ def filter_markets(text: str):
             Market.objects.filter(additional_name__icontains=text) |
             Market.objects.filter(geo_city__locality_name__icontains=text) |
             Market.objects.filter(geo_district__locality_name__icontains=text)).order_by('geo_city__locality_name', 'geo_district__locality_name', 'market_name', 'additional_name')
+
+
+def filter_outlets(filters):
+    return TradePlace.objects.all()
