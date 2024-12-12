@@ -223,7 +223,13 @@
 }
 
 .map-marker:hover {
-filter: invert(75%) sepia(58%) saturate(6435%) hue-rotate(354deg) brightness(101%) contrast(96%);
+    filter: invert(75%) sepia(58%) saturate(6435%) hue-rotate(354deg) brightness(101%) contrast(96%);
+}
+
+.map-marker.active{
+    filter: drop-shadow(0 0 10px red);
+    filter: invert(27%) sepia(93%) saturate(5004%) hue-rotate(239deg) brightness(88%) contrast(111%);
+    transform: scale(1.2);
 }
 
 /* Popup market card */

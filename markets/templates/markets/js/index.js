@@ -101,7 +101,7 @@ var markerLayerText = new ol.layer.Vector({
 
 
 // Add vector layer with a feature and a style using an icon
-var vectorLayer = new ol.layer.Vector({
+/*var vectorLayer = new ol.layer.Vector({
 source: new ol.source.Vector({
   features: [
     new ol.Feature({
@@ -120,6 +120,14 @@ style: new ol.style.Style({
     src: 'http://openlayers.org/en/latest/examples/data/icon.png'
   })
 })
+});*/
+
+var view = new ol.View({
+       projection: 'EPSG:4326',
+       center: [37.902, 48.038],
+       zoom:11,
+       maxZoom:17,
+       minZoom:8
 });
 
 
@@ -142,13 +150,7 @@ var map = new ol.Map({
           collapsible: false
         })
      }),
-    view: new ol.View({
-       projection: 'EPSG:4326',
-       center: [37.902, 48.038],
-       zoom:11,
-       maxZoom:17,
-       minZoom:8
-    })
+    view: view
  });
 
 
@@ -180,6 +182,9 @@ map.addOverlay(popupOverlay);
 map.addOverlay(markerOverlay);*/
 
 
+// Marks
+
+
 // Попап
 const mappopup = document.getElementById("popup-market-card").cloneNode(true);
 const mappopupOverlay = new ol.Overlay({
@@ -192,14 +197,16 @@ map.addOverlay(mappopupOverlay);
  map.addEventListener("click", function (event) {
      //mappopup.style.display = '';
      hide(mappopup, 200);
+     document.querySelectorAll('.map-marker').forEach(e => e.classList.remove('active'));
  });
 
 
 // Функция создания маркеров
 // По клику на маркер, покажется попап
-function createMarker(position, title, text, img, url) {
+function createMarker(position, title, text, img, url, id) {
 //console.log(market);
  const marker = document.getElementById("map-marker").cloneNode(true);
+ marker.name = 'mrk' + id;
  const markerOverlay = new ol.Overlay({
    element: marker,
    positioning: "bottom-center",
@@ -242,7 +249,10 @@ function createMarker(position, title, text, img, url) {
 	// Toggle the content
 	//hide(mappopup, 0);
 
+
+    document.querySelectorAll('.map-marker').forEach(e => e.classList.remove('active'));
 	mappopupOverlay.setPosition(position);
+	/*alert(markerOverlay.getPosition());*/
     mappopup.querySelector("#popup-market-card-title").textContent = title;
     mappopup.querySelector("#popup-market-card-text").textContent = text;
     //mappopup.querySelector("#popup-market-card-img").textContent = "<img src='/media/markets/logo_rd_100.png.100x100_q85_crop.png'>";
@@ -250,6 +260,20 @@ function createMarker(position, title, text, img, url) {
     mappopup.querySelector("#popup-market-url").setAttribute('href', url);
     mappopup.querySelector("#popup-market-url-icon").setAttribute('href', url);
     show(mappopup, 200);
+
+    /*map.setView(new ol.View({
+       projection: 'EPSG:4326',
+       center: mappopupOverlay.getPosition(),
+       zoom:15
+    }));
+    map.renderSync();*/
+
+    //view.centerOn(mappopupOverlay.getPosition(), map.getSize(),[570, 500])
+    view.setZoom(15);
+    view.setCenter(mappopupOverlay.getPosition());
+
+    event.target.classList.add("active");
+
 
  });
 
@@ -328,15 +352,19 @@ var toggle = function (elem, timing) {
 /*createMarker(mposition, '123');*/
 
 {% for item in items %}
-console.log('{% thumbnail item.image 100x100 crop %}');
+/*console.log('{% thumbnail item.image 100x100 crop %}');*/
 createMarker(["{{item.lng}}".replace(',', '.'), "{{item.lat}}".replace(',', '.')],
             '{{item.mk_full_name | truncatechars:32}}',
             '{{item.mk_full_address}}',
-            '{% thumbnail item.image 100x100 crop %}', "{% url 'markets:market_details' mpk=item.id show='info' %}");
+            '{% thumbnail item.image 100x100 crop %}',
+            "{% url 'markets:market_details' mpk=item.id show='info' %}",
+            '{{item.id}}');
 {% endfor %}
 
 if({{iid}}) {
-    window.setTimeout(() => alert("Я страничка, и я должна показать рынок #{{iid}}!"), 500);
+    /*window.setTimeout(() => alert("Я страничка, и я должна показать рынок #{{iid}}!"), 500);*/
+    document.querySelector('[name="mrk{{iid}}"]').click();
+
 }
     //var viewHeight = $(window).height();
     /*var header = $("div[data-role='header']:visible:visible");
