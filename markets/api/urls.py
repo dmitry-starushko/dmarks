@@ -19,6 +19,7 @@ urlpatterns = [
     path('partial/outlet-detail/<str:outlet_number>', views.PV_OutletDetailView.as_view(), name='partial_outlet_detail'),
     path('partial/filtered-markets', views.PV_FilteredMarketsView.as_view(), name='partial_filtered_markets'),
     path('partial/filtered-outlets', views.PV_FilteredOutletsView.as_view(), name='partial_filtered_outlets'),
+    path('partial/outlet-filters/<int:full>', views.PV_OutletFiltersView.as_view(), name='partial_outlet_filters'),
     path('partial/help-content/<int:hid>', views.PV_HelpContentView.as_view(), name='partial_help_content'),
     # --
     path('run/restore-db-consistency', views.RestoreDatabaseConsistencyView.as_view(), name='run_restore_db_consistency'),

@@ -1,0 +1,20 @@
+{% load static %}
+{% for t, tpk in occupation_types.items %}
+<p>{{t}}: {{tpk}}</p>
+{% endfor %}
+{% for t, tpk in specializations.items %}
+<p>{{t}}: {{tpk}}</p>
+{% endfor %}
+{% if full %}
+{% for city, dists in locations.items %}
+<h1>{{city}}</h1>
+{% for dist, markets in dists.items %}
+<h2>Район {{dist}}</h2>
+{% for market, mpk in markets.items %}
+<h5>{{market}}: {{mpk}}</h5>
+{% endfor %}
+{% endfor %}
+{% endfor %}
+{% else %}
+<p>Короткий вариант</p>
+{% endif %}

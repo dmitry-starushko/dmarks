@@ -243,8 +243,8 @@ class PV_FilteredMarketsView(APIView):
 
     @on_exception_returns(HttpResponseBadRequest)
     def post(self, request):
-        markets = filter_markets(request.data['search_text']).select_related('geo_city', 'geo_district', 'geo_street_type')
         context = OrderedDict()
+        markets = filter_markets(request.data['search_text']).select_related('geo_city', 'geo_district', 'geo_street_type')
         for m in markets:
             r = context.setdefault(m.geo_city.locality_name, OrderedDict()).setdefault(m.geo_district.locality_name, OrderedDict())
             r[m.mk_full_name] = {
@@ -263,9 +263,8 @@ class PV_FilteredOutletsView(APIView):
 
     @on_exception_returns(HttpResponseBadRequest)
     def post(self, request):
-        markets = dict()
-        outlets = filter_outlets(request.data['filters'] if 'filters' in request.data else None).select_related('market', 'trade_place_type', 'trade_spec_type_id_act', 'market__geo_city', 'market__geo_district')
         context = OrderedDict()
+        outlets = filter_outlets(request.data['filters'] if 'filters' in request.data else None).select_related('market', 'trade_place_type', 'trade_spec_type_id_act', 'market__geo_city', 'market__geo_district')
         for o in outlets:
             try:
                 r = (context.setdefault(o.market.geo_city.locality_name, OrderedDict()).setdefault(o.market.geo_district.locality_name, OrderedDict()).setdefault(o.market.mk_full_name, OrderedDict()))
@@ -279,6 +278,40 @@ class PV_FilteredOutletsView(APIView):
             except NoReverseMatch as e:
                 print(e)
         return render(request, 'markets/partials/filtered-outlets.html', {'context': context})
+
+
+class PV_OutletFiltersView(APIView):
+    permission_classes = [AllowAny]
+
+    @on_exception_returns(HttpResponseBadRequest)
+    def post(self, request, full):
+        locations = OrderedDict()
+        if full:
+            for m in Market.objects.select_related('geo_city', 'geo_district', 'geo_street_type').order_by('geo_city__locality_name', 'geo_district__locality_name', 'market_name', 'additional_name'):
+                r = locations.setdefault(m.geo_city.locality_name, OrderedDict()).setdefault(m.geo_district.locality_name, OrderedDict())
+                r[m.mk_full_name] = m.id
+        occupation_types = OrderedDict((str(t), t.id) for t in TradePlaceType.objects.order_by('type_name'))
+        specializations = OrderedDict((str(t), t.id) for t in TradeSpecType.objects.order_by('type_name'))
+        facilities = OrderedDict([
+            ('Выносная торговля', 'street_vending'),
+            ('Электричество', 'impr_electricity'),
+            ('Теплоснабжение', 'impr_heat_supply'),
+            ('Кондиционирование', 'impr_air_conditioning'),
+            ('Водопровод', 'impr_plumbing'),
+            ('Канализация', 'impr_sewerage'),
+            ('Стоки', 'impr_drains'),
+            ('Интернет', 'impr_internet'),
+            ('Стенды, мебель', 'impr_add_equipment'),
+            ('Холодильники', 'impr_fridge'),
+            ('Витрины', 'impr_shopwindow'),
+        ])
+        return render(request, 'markets/partials/outlet-filters.html', {
+            'full': not not full,
+            'locations': locations,
+            'specializations': specializations,
+            'occupation_types': occupation_types,
+            'facilities': facilities,
+        })
 
 
 class PV_HelpContentView(APIView):
