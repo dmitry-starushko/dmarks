@@ -49,6 +49,7 @@
         {% block dom-loaded-scripts-imports %}
         import {TsChat} from "ts-chat";
         import {HelpDialog} from "help-dialog";
+        import {OutletFilters} from "search";
         {% endblock %}
         document.addEventListener('DOMContentLoaded', (event) => {
             {% block dom-loaded-scripts %} {# -- JS code in this block runs on DOM loaded -- #}
