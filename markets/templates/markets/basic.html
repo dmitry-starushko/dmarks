@@ -54,11 +54,6 @@
         document.addEventListener('DOMContentLoaded', (event) => {
             {% block dom-loaded-scripts %} {# -- JS code in this block runs on DOM loaded -- #}
             {% include 'markets/js/basic.js' %}
-            const ts_chat = new TsChat("ts-chat", "markets/ws/chat/", ("WebSocket" in window) ? "{{parm_ts_greeting}}" : "{{parm_ts_old_browser_warning}}");
-            window.toggle_ts_chat = () => ts_chat.toggle();
-            const help_dialog = new HelpDialog("help-dialog");
-            window.toggle_help_dialog = (help_id) => help_dialog.toggle(help_id);
-            window.outlet_filters = new OutletFilters();
             {% endblock %}
         });
     </script>
@@ -90,7 +85,7 @@
             <div class="header-right-icons">
                 <a href="#" class="search" title="Поиск" id="search-btn"><i class="bi bi-search"></i></a>
                 <a href="#" class="sign-in" title="Вход в ЛК"><i class="bi bi-box-arrow-in-right"></i><i class="bi bi-person"></i></a>
-                <a href="#" class="help" title="Помощь"><i class="bi bi-question-circle" onclick="window.toggle_help_dialog({{help_id|default:0}});"></i></a>
+                <a href="#" class="help" title="Помощь"><i class="bi bi-question-circle" onclick="window.help_dialog.toggle({{help_id|default:0}});"></i></a>
             </div>
         </div>
         {% endblock %}
@@ -150,7 +145,7 @@
     <script src="{% static 'js/search.js' %}"></script>
     {% endblock %}
     <div class="support-div">{# -- Support Icon -- #}
-        <div class="support-button" onclick="window.toggle_ts_chat();">
+        <div class="support-button" onclick="window.ts_chat.toggle();">
             <img src="{% static 'svg/icons/headset.svg' %}" />
         </div>
     </div>
