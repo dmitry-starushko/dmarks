@@ -58,6 +58,7 @@
             window.toggle_ts_chat = () => ts_chat.toggle();
             const help_dialog = new HelpDialog("help-dialog");
             window.toggle_help_dialog = (help_id) => help_dialog.toggle(help_id);
+            window.outlet_filters = new OutletFilters();
             {% endblock %}
         });
     </script>
