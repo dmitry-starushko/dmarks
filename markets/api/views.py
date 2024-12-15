@@ -11,10 +11,11 @@ from django.http.response import JsonResponse, HttpResponseBadRequest, HttpRespo
 from markets.business.search_and_filters import apply_filter, filter_markets, filter_outlets
 from markets.business.actions import restore_db_consistency
 from markets.decorators import on_exception_returns
-from markets.models import SvgSchema, Market, TradePlaceType, TradeSpecType, TradePlace, TradeSector
+from markets.models import SvgSchema, Market, TradePlaceType, TradeSpecType, TradePlace, TradeSector, GlobalObservation
 from markets.tasks import st_restore_db_consistency
 from redis import Redis
 from .serializers import SchemeSerializer, TradePlaceTypeSerializer, TradeSpecTypeSerializer, TradePlaceSerializerO, TradePlaceSerializerS, TradeSectorSerializer, TradePlaceSerializerSec
+from ..enums import Observation
 
 try:  # To avoid deploy problems
     from transmutation import Svg3DTM
@@ -303,14 +304,24 @@ class PV_OutletFiltersView(APIView):
             ('Интернет', 'impr_internet'),
             ('Стенды, мебель', 'impr_add_equipment'),
             ('Холодильники', 'impr_fridge'),
-            ('Витрины', 'impr_shopwindow'),
+            ('Витрины', 'impr_shopwindow')
         ])
+        price_range = {
+            'min': GlobalObservation.objects.get_or_create(key=Observation.OUTLET_RENTING_COST_MIN)[0].decimal,
+            'max': GlobalObservation.objects.get_or_create(key=Observation.OUTLET_RENTING_COST_MAX)[0].decimal
+        }
+        area_range = {
+            'min': GlobalObservation.objects.get_or_create(key=Observation.OUTLET_AREA_MIN)[0].decimal,
+            'max': GlobalObservation.objects.get_or_create(key=Observation.OUTLET_AREA_MAX)[0].decimal
+        }
         return render(request, 'markets/partials/outlet-filters.html', {
             'full': not not full,
             'locations': locations,
             'specializations': specializations,
             'occupation_types': occupation_types,
             'facilities': facilities,
+            'price_range': price_range,
+            'area_range': area_range
         })
 
 
