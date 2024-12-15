@@ -288,7 +288,9 @@ class PV_OutletFiltersView(APIView):
     def post(self, request, full):
         locations = OrderedDict()
         if full:
-            for m in Market.objects.select_related('geo_city', 'geo_district', 'geo_street_type').order_by('geo_city__locality_name', 'geo_district__locality_name', 'market_name', 'additional_name'):
+            related_fields = ['geo_city', 'geo_district', 'geo_street_type']
+            order_fields = ['geo_city__locality_name', 'geo_district__locality_name', 'market_name', 'additional_name']
+            for m in Market.objects.select_related(*related_fields).order_by(*order_fields):
                 r = locations.setdefault(m.geo_city.locality_name, OrderedDict()).setdefault(m.geo_district.locality_name, OrderedDict())
                 r[m.mk_full_name] = m.id
         occupation_types = OrderedDict((str(t), t.id) for t in TradePlaceType.objects.order_by('type_name'))

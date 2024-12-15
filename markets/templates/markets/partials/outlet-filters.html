@@ -1,20 +1,118 @@
-{% load static %}
-{% for t, tpk in occupation_types.items %}
-<p>{{t}}: {{tpk}}</p>
-{% endfor %}
-{% for t, tpk in specializations.items %}
-<p>{{t}}: {{tpk}}</p>
-{% endfor %}
 {% if full %}
-{% for city, dists in locations.items %}
-<h1>{{city}}</h1>
-{% for dist, markets in dists.items %}
-<h2>Район {{dist}}</h2>
-{% for market, mpk in markets.items %}
-<h5>{{market}}: {{mpk}}</h5>
-{% endfor %}
-{% endfor %}
-{% endfor %}
-{% else %}
-<p>Короткий вариант</p>
+<div class="search-tp-block">
+    <div class="search-tp-block-title">Расположение</div>
+    <div class="search-tp-block-body">
+        <div class="css-treeview">
+            <ul>
+                {% for city, dists in locations.items %}
+                <li>
+                    {% with city_n=forloop.counter %}
+                    <input class="css-treeview-check" type="checkbox" id="tploc-{{city_n}}" checked="checked" />
+                    <label for="tploc-{{city_n}}">
+                        <input class="search-tp-check tploc" type="checkbox" id="option" checked/>
+                        {{city}}
+                    </label>
+                    <ul>
+                        {% for dist, markets in dists.items %}
+                        <li>
+                            {% with dist_n=forloop.counter %}
+                            <input class="css-treeview-check" type="checkbox" id="tploc-{{city_n}}-{{dist_n}}" checked="checked" />
+                            <label for="tploc-{{city_n}}-{{dist_n}}">
+                                <input class="search-tp-check tploc" type="checkbox" checked/>
+                                {{dist}}
+                            </label>
+                            <ul>
+                                {% for market, mpk in markets.items %}
+                                <li><input class="search-tp-check tploc" type="checkbox" value="{{mpk}}" checked>{{market}}</li>
+                                {% endfor %}
+                            </ul>
+                            {% endwith %}
+                        </li>
+                        {% endfor %}
+                    </ul>
+                    {% endwith %}
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+</div>
 {% endif %}
+<div class="search-tp-block">
+    <div class="search-tp-block-title">Специализация</div>
+    <div class="search-tp-block-body">
+        {% for type, tpk in specializations.items %}
+        <div class="search-tp-spec for-checkbox">
+            <input class="search-tp-check" type="checkbox" value="{{tpk}}" checked>
+            {{type}}
+        </div>
+        {% endfor %}
+    </div>
+</div>
+<div class="search-tp-block">
+    <div class="search-tp-block-title">Занятость</div>
+    <div class="search-tp-block-body">
+        {% for type, tpk in occupation_types.items %}
+        <div class="search-tp-type for-checkbox">
+            <input class="search-tp-check" type="checkbox" value="{{tpk}}" checked>
+            {{type}}
+        </div>
+        {% endfor %}
+    </div>
+</div>
+<div class="search-tp-block">
+    <div class="search-tp-block-title">Благоустройство</div>
+    <div class="search-tp-block-body">
+        {% for facility, field in facilities.items %}
+        <div class="search-tp-type for-checkbox">
+            <input class="search-tp-check" type="checkbox" name="tricheckbox" value="false" data-field="{{field}}">
+            {{facility}}
+        </div>
+        {% endfor %}
+    </div>
+</div>
+<div class="search-tp-block">
+    <div class="search-tp-block-title">Прочее</div>
+    <div class="search-tp-block-body">
+        <div class="search-tp-param">
+            <div class="search-tp-inputs for-checkbox">
+                <div class="search-tp-input-label">Номер</div>
+                <input id="search-tp-input-num" class="search-tp-input-num">
+            </div>
+            <div class="search-tp-price-section">
+                <div class="search-tp-inputs search-tp-price-inputs for-checkbox">
+                    <div class="search-tp-input-label">Цена от</div>
+                    <input id="search-tp-input-price-min" class="search-tp-input-price search-tp-input-price-min" value="{{price_range.min | stringformat:'d'}}">
+                    <div class="search-tp-input-label">до</div>
+                    <input id="search-tp-input-price-max" class="search-tp-input-price search-tp-input-price-max" value="{{price_range.max | stringformat:'d'}}">
+                </div>
+                <div class="search-tp-range-block for-checkbox">
+                    <div class="search-tp-price-slider search-tp-slider">
+                        <div class="search-tp-price-progress search-tp-progress"></div>
+                    </div>
+                    <div class="search-tp-price-range-input search-tp-range-input">
+                        <input type="range" class="search-tp-price-range-min" min="{{price_range.min | stringformat:'d'}}" max="{{price_range.max | stringformat:'d'}}" value="{{price_range.min | stringformat:'d'}}" step="100">
+                        <input type="range" class="search-tp-price-range-max" min="{{price_range.min | stringformat:'d'}}" max="{{price_range.max | stringformat:'d'}}" value="{{price_range.max | stringformat:'d'}}" step="100">
+                    </div>
+                </div>
+            </div>
+            <div class="search-tp-area-section">
+                <div class="search-tp-inputs search-tp-area-inputs for-checkbox">
+                    <div class="search-tp-input-label">Площадь от</div>
+                    <input id="search-tp-input-area-min" class="search-tp-input-price search-tp-input-price-min" value="{{area_range.min | stringformat:'d'}}">
+                    <div class="search-tp-input-label">до</div>
+                    <input id="search-tp-input-area-max" class="search-tp-input-price search-tp-input-price-max" value="{{area_range.max | stringformat:'d'}}">
+                </div>
+                <div class="search-tp-range-block for-checkbox">
+                    <div class="search-tp-area-slider search-tp-slider">
+                        <div class="search-tp-area-progress search-tp-progress"></div>
+                    </div>
+                    <div class="search-tp-area-range-input search-tp-range-input">
+                        <input type="range" class="search-tp-area-range-min" min="{{area_range.min | stringformat:'d'}}" max="{{area_range.max | stringformat:'d'}}" value="{{area_range.min | stringformat:'d'}}" step="100">
+                        <input type="range" class="search-tp-area-range-max" min="{{area_range.min | stringformat:'d'}}" max="{{area_range.max | stringformat:'d'}}" value="{{area_range.max | stringformat:'d'}}" step="100">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

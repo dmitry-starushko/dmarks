@@ -7,8 +7,9 @@ var closebtn = document.getElementById("search-close");
 const search_result = document.getElementById("search-market-result");
 
 searchbtn.onclick = function() {
-  searchwindow.style.display = "block";
-  searchinput.focus();
+    dj_load_partial_view("partial_outlet_filters", {full: 1}, {}).then(html => { document.getElementById("outlet-search-top").innerHTML=html; });
+    searchwindow.style.display = "block";
+    searchinput.focus();
 }
 
 closebtn.onclick = function() {
