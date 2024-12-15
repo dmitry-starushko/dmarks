@@ -82,17 +82,32 @@ def restore_db_consistency():
 
 @globally_lonely_action(None)
 def observe_all():
-    # 1. -- Renting cost limits -----------------
     for market in Market.objects.all():
+        # -- Renting cost limits --
         r, _ = market.observations.get_or_create(key=Observation.OUTLET_RENTING_COST_MIN)
         r.decimal = market.trade_places.aggregate(Min('price', default=0))['price__min']
         r.save()
         r, _ = market.observations.get_or_create(key=Observation.OUTLET_RENTING_COST_MAX)
         r.decimal = market.trade_places.aggregate(Max('price', default=0))['price__max']
         r.save()
+        # -- Area limits --
+        r, _ = market.observations.get_or_create(key=Observation.OUTLET_AREA_MIN)
+        r.decimal = market.trade_places.aggregate(Min('meas_area', default=0))['meas_area__min']
+        r.save()
+        r, _ = market.observations.get_or_create(key=Observation.OUTLET_AREA_MAX)
+        r.decimal = market.trade_places.aggregate(Max('meas_area', default=0))['meas_area__max']
+        r.save()
+    # -- Renting cost limits --
     r, _ = GlobalObservation.objects.get_or_create(key=Observation.OUTLET_RENTING_COST_MIN)
     r.decimal = TradePlace.objects.aggregate(Min('price', default=0))['price__min']
     r.save()
     r, _ = GlobalObservation.objects.get_or_create(key=Observation.OUTLET_RENTING_COST_MAX)
     r.decimal = TradePlace.objects.aggregate(Max('price', default=0))['price__max']
+    r.save()
+    # -- Area limits --
+    r, _ = GlobalObservation.objects.get_or_create(key=Observation.OUTLET_AREA_MIN)
+    r.decimal = TradePlace.objects.aggregate(Min('meas_area', default=0))['meas_area__min']
+    r.save()
+    r, _ = GlobalObservation.objects.get_or_create(key=Observation.OUTLET_AREA_MAX)
+    r.decimal = TradePlace.objects.aggregate(Max('meas_area', default=0))['meas_area__max']
     r.save()
