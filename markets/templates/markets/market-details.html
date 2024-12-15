@@ -16,7 +16,7 @@ import { View3D } from "view3d";
 <section class="market-details-section">
     <div class="market-details-section-title"><h3>{{market.mk_full_name}}</h3></div>
     <div class="market-details-section-buttons">
-        <button class="buttons-tab active" id="mkdetails-info" >
+        <button class="buttons-tab" id="mkdetails-info" >
             <i class="bi bi-info-circle"></i> ИНФОРМАЦИЯ
          </button>
         <button class="buttons-tab" id="mkdetails-tp">
@@ -158,92 +158,19 @@ import { View3D } from "view3d";
                             <img src="{% static 'svg/icons/cube-outline.svg' %}" alt="3D"/>
                         </a>
                     </div>
-                    <div id="outlet-info" class="mkdetails-tp-section-info-detail-body-info">
-                        {% comment %}
-                        <div class="mkdetails-tp-header-block">Торговое месо №001100512</div>
-                        <div class="mkdetails-tp-section-info-detail-body-info-descr">
-                            <p>Тип: <strong>павильон непродовольтсвенный (мелкророзничная торговля)</strong></p>
-                            <p>Занятость: <strong>Свободно</strong></p>
-                            <p>Возможность выносной торговли: <strong>Нет</strong></p>
-                        </div>
-                        <div class="mkdetails-tp-section-info-detail-body-info-tree">
-                            <ul class="tree">
-                                  <li>
-                                    <details open>
-                                      <summary>Детали</summary>
-                                      <ul>
-                                        <li>
-                                          <details open>
-                                            <summary>Физические параметры</summary>
-                                            <ul>
-                                                <li>Площадь: <strong>57,4</strong></li>
-                                                <li>Длина: <strong>10</strong></li>
-                                                <li>Ширина: <strong>5,74</strong></li>
-                                                <li>Высота: <strong>2,50</strong></li>
-                                            </ul>
-                                          </details>
-                                        </li>
-                                        <li>
-                                          <details open>
-                                            <summary>Благоустройство и оборуование</summary>
-                                            <ul>
-                                                <li>Электричество: <strong>Нет</strong></li>
-                                                <li>Теплоснабжение: <strong>Нет</strong></li>
-                                                <li>Кондиционирование: <strong>Нет</strong></li>
-                                                <li>Водопровод: <strong>Нет</strong></li>
-                                                <li>Канализация: <strong>Нет</strong></li>
-                                                <li>Стоки: <strong>Нет</strong></li>
-                                                <li>Интернет: <strong>Нет</strong></li>
-                                                <li>Тип подключения: <strong>Проводной</strong></li>
-                                            </ul>
-                                          </details>
-                                        </li>
-                                          <li>
-                                          <details open>
-                                            <summary>Информация о географическом расположении рынка</summary>
-                                            <ul>
-                                                <li>Город: <strong>{{market.geo_city}}</strong></li>
-                                                <li>Район города: <strong>{{market.geo_district}}</strong></li>
-                                                <li>{{market.geo_street_type.descr}}: <strong>{{market.geo_street}}</strong></li>
-                                                <li>Дом: <strong>{{market.geo_house}}</strong></li>
-                                            </ul>
-                                          </details>
-                                        </li>
-                                          <li>
-                                          <details open>
-                                            <summary>Контактные данные</summary>
-                                            <ul>
-                                                <li>Телефон: <strong>{{market.phone}}</strong></li>
-                                                <li>Email: <strong>{{market.email}}</strong></li>
-                                            </ul>
-                                          </details>
-                                        </li>
-                                      </ul>
-                                    </details>
-                                  </li>
-                                </ul>
-                        </div>
-                        <div class="mkdetails-tp-section-info-detail-body-info-booking">
-                            <a href="#" class="mkdetails-tp-section-info-detail-body-info-booking-button book-btn">
-                               <img src="{% static 'svg/icons/calendar-check.svg' %}" alt="Выбор легенды"/>
-                                Бронировать
-                            </a>
-                            <a href="#" class="mkdetails-tp-section-info-detail-body-info-booking-button-cancel book-btn">
-                               <img src="{% static 'svg/icons/undo-variant.svg' %}" alt="Выбор легенды"/>
-                            </a>
-                        </div>
-                        {%endcomment%}
-                    </div>
+                    <div id="outlet-info" class="mkdetails-tp-section-info-detail-body-info"></div>
                 </div>
                 <div class="mkdetails-tp-section-info-detail-legend">
                     <div class="mkdetails-tp-header-block">Легенда - занятость мест</div>
                     <div class="mkdetails-tp-section-info-detail-legend-body">
                         {% for k,v in legend.items %}
                         <div class="mkdetails-tp-section-info-detail-legend-body-item" title="{{v.title}}">
-                            <div class="mkdetails-tp-section-info-detail-legend-body-item-circle" style="background-color:{{v.roof_color_css}};"></div>
+                            <div class="mkdetails-tp-section-info-detail-legend-body-item-circle" style="background-color:{{v.roof_color_css}};" title="{{v.title}}"></div>
+                            {% comment %}
                             <div class="mkdetails-tp-section-info-detail-legend-body-item-text">
                                 {{v.title|truncatechars:9}}
                             </div>
+                            {% endcomment %}
                         </div>
                         {% endfor %}
                     </div>
