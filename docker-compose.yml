@@ -39,7 +39,7 @@ services:
       - REDIS_PORT=6379
       - REDIS_DB=0
       - RABBIT=rabbit
-      - TELEBOT=''
+      - TELEBOT=7995656642:AAE2BD5BZME2rQXbg6OHv0nEAVpGCu_JGLA
     depends_on:
       - db
       - cache
@@ -58,7 +58,7 @@ services:
       - REDIS_PORT=6379
       - REDIS_DB=0
       - RABBIT=rabbit
-      - TELEBOT=''
+      - TELEBOT=7995656642:AAE2BD5BZME2rQXbg6OHv0nEAVpGCu_JGLA
     depends_on:
       - rabbit
       - web
@@ -77,7 +77,7 @@ services:
       - REDIS_PORT=6379
       - REDIS_DB=0
       - RABBIT=rabbit
-      - TELEBOT=''
+      - TELEBOT=7995656642:AAE2BD5BZME2rQXbg6OHv0nEAVpGCu_JGLA
     depends_on:
       - rabbit
       - web
