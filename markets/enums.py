@@ -4,6 +4,8 @@ from enum import StrEnum
 class Observation(StrEnum):
     OUTLET_RENTING_COST_MIN = 'outlet-renting-cost-min'
     OUTLET_RENTING_COST_MAX = 'outlet-renting-cost-max'
+    OUTLET_AREA_MIN = 'outlet-area-min'
+    OUTLET_AREA_MAX = 'outlet-area-max'
 
 
 class OutletState(StrEnum):
