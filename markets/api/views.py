@@ -309,12 +309,12 @@ class PV_OutletFiltersView(APIView):
             ('Витрины', 'impr_shopwindow')
         ])
         price_range = {
-            'min': GlobalObservation.objects.get_or_create(key=Observation.OUTLET_RENTING_COST_MIN)[0].decimal,
-            'max': GlobalObservation.objects.get_or_create(key=Observation.OUTLET_RENTING_COST_MAX)[0].decimal
+            'min': 123,  # TODO GlobalObservation.objects.get_or_create(key=Observation.OUTLET_RENTING_COST_MIN)[0].decimal,
+            'max': 12345,  # TODO GlobalObservation.objects.get_or_create(key=Observation.OUTLET_RENTING_COST_MAX)[0].decimal
         }
         area_range = {
-            'min': GlobalObservation.objects.get_or_create(key=Observation.OUTLET_AREA_MIN)[0].decimal,
-            'max': GlobalObservation.objects.get_or_create(key=Observation.OUTLET_AREA_MAX)[0].decimal
+            'min': 123,  # TODO GlobalObservation.objects.get_or_create(key=Observation.OUTLET_AREA_MIN)[0].decimal,
+            'max': 12345,  # TODO GlobalObservation.objects.get_or_create(key=Observation.OUTLET_AREA_MAX)[0].decimal
         }
         return render(request, 'markets/partials/outlet-filters.html', {
             'full': not not full,

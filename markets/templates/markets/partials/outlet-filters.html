@@ -79,6 +79,7 @@
                 <div class="search-tp-input-label">Номер</div>
                 <input id="search-tp-input-num" class="search-tp-input-num">
             </div>
+            {% if price_range.min < price_range.max %}
             <div class="search-tp-price-section">
                 <div class="search-tp-inputs search-tp-price-inputs for-checkbox">
                     <div class="search-tp-input-label">Цена от</div>
@@ -91,11 +92,13 @@
                         <div class="search-tp-price-progress search-tp-progress"></div>
                     </div>
                     <div class="search-tp-price-range-input search-tp-range-input">
-                        <input type="range" class="search-tp-price-range-min" min="{{price_range.min | stringformat:'d'}}" max="{{price_range.max | stringformat:'d'}}" value="{{price_range.min | stringformat:'d'}}" step="100">
-                        <input type="range" class="search-tp-price-range-max" min="{{price_range.min | stringformat:'d'}}" max="{{price_range.max | stringformat:'d'}}" value="{{price_range.max | stringformat:'d'}}" step="100">
+                        <input type="range" class="search-tp-price-range-min" min="{{price_range.min | stringformat:'d'}}" max="{{price_range.max | stringformat:'d'}}" value="{{price_range.min | stringformat:'d'}}" step="1"> {# Нельзя выставлять step=100, это приводит к обрезанию диапазона #}
+                        <input type="range" class="search-tp-price-range-max" min="{{price_range.min | stringformat:'d'}}" max="{{price_range.max | stringformat:'d'}}" value="{{price_range.max | stringformat:'d'}}" step="1"> {# Нельзя выставлять step=100, это приводит к обрезанию диапазона #}
                     </div>
                 </div>
             </div>
+            {% endif %}
+            {% if area_range.min < area_range.max %}
             <div class="search-tp-area-section">
                 <div class="search-tp-inputs search-tp-area-inputs for-checkbox">
                     <div class="search-tp-input-label">Площадь от</div>
@@ -108,11 +111,12 @@
                         <div class="search-tp-area-progress search-tp-progress"></div>
                     </div>
                     <div class="search-tp-area-range-input search-tp-range-input">
-                        <input type="range" class="search-tp-area-range-min" min="{{area_range.min | stringformat:'d'}}" max="{{area_range.max | stringformat:'d'}}" value="{{area_range.min | stringformat:'d'}}" step="100">
-                        <input type="range" class="search-tp-area-range-max" min="{{area_range.min | stringformat:'d'}}" max="{{area_range.max | stringformat:'d'}}" value="{{area_range.max | stringformat:'d'}}" step="100">
+                        <input type="range" class="search-tp-area-range-min" min="{{area_range.min | stringformat:'d'}}" max="{{area_range.max | stringformat:'d'}}" value="{{area_range.min | stringformat:'d'}}" step="1"> {# Нельзя выставлять step=100, это приводит к обрезанию диапазона #}
+                        <input type="range" class="search-tp-area-range-max" min="{{area_range.min | stringformat:'d'}}" max="{{area_range.max | stringformat:'d'}}" value="{{area_range.max | stringformat:'d'}}" step="1"> {# Нельзя выставлять step=100, это приводит к обрезанию диапазона #}
                     </div>
                 </div>
             </div>
+            {% endif %}
         </div>
     </div>
 </div>
