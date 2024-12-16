@@ -61,6 +61,9 @@ class OutletFilters {
 
     update_search_result(container_id) {
         console.log(this.build_filters());
+        dj_load_partial_view("partial_filtered_outlets", {}, this.build_filters()).then(
+            html => { document.getElementById(container_id).innerHTML = html; }
+        );
     }
 }
 
