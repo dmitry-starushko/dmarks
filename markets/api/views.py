@@ -265,7 +265,7 @@ class PV_FilteredOutletsView(APIView):
     @on_exception_returns(HttpResponseBadRequest)
     def post(self, request):
         context = OrderedDict()
-        outlets = filter_outlets(request.data['filters'] if 'filters' in request.data else None).select_related('market', 'trade_place_type', 'trade_spec_type_id_act', 'market__geo_city', 'market__geo_district')
+        outlets = filter_outlets(request.data or None).select_related('market', 'trade_place_type', 'trade_spec_type_id_act', 'market__geo_city', 'market__geo_district')
         for o in outlets:
             try:
                 r = (context.setdefault(o.market.geo_city.locality_name, OrderedDict()).setdefault(o.market.geo_district.locality_name, OrderedDict()).setdefault(o.market.mk_full_name, OrderedDict()))
@@ -309,11 +309,11 @@ class PV_OutletFiltersView(APIView):
             ('Витрины', 'impr_shopwindow')
         ])
         price_range = {
-            'min': 123,  # TODO GlobalObservation.objects.get_or_create(key=Observation.OUTLET_RENTING_COST_MIN)[0].decimal,
+            'min': 0,  # TODO GlobalObservation.objects.get_or_create(key=Observation.OUTLET_RENTING_COST_MIN)[0].decimal,
             'max': 12345,  # TODO GlobalObservation.objects.get_or_create(key=Observation.OUTLET_RENTING_COST_MAX)[0].decimal
         }
         area_range = {
-            'min': 123,  # TODO GlobalObservation.objects.get_or_create(key=Observation.OUTLET_AREA_MIN)[0].decimal,
+            'min': 0,  # TODO GlobalObservation.objects.get_or_create(key=Observation.OUTLET_AREA_MIN)[0].decimal,
             'max': 12345,  # TODO GlobalObservation.objects.get_or_create(key=Observation.OUTLET_AREA_MAX)[0].decimal
         }
         return render(request, 'markets/partials/outlet-filters.html', {
