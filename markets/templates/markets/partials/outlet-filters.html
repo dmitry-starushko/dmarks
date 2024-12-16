@@ -94,8 +94,8 @@
                         <div class="search-tp-price-progress search-tp-progress"></div>
                     </div>
                     <div class="search-tp-price-range-input search-tp-range-input">
-                        <input type="range" class="search-tp-price-range-min" min="{{price_range.min | stringformat:'d'}}" max="{{price_range.max | stringformat:'d'}}" value="{{price_range.min | stringformat:'d'}}" step="1"> {# Нельзя выставлять step=100, это приводит к обрезанию диапазона #}
-                        <input type="range" class="search-tp-price-range-max" min="{{price_range.min | stringformat:'d'}}" max="{{price_range.max | stringformat:'d'}}" value="{{price_range.max | stringformat:'d'}}" step="1"> {# Нельзя выставлять step=100, это приводит к обрезанию диапазона #}
+                        <input id="price-range-min" type="range" class="search-tp-price-range-min" min="{{price_range.min | stringformat:'d'}}" max="{{price_range.max | stringformat:'d'}}" value="{{price_range.min | stringformat:'d'}}" step="1"> {# Нельзя выставлять step=100, это приводит к обрезанию диапазона #}
+                        <input id="price-range-max" type="range" class="search-tp-price-range-max" min="{{price_range.min | stringformat:'d'}}" max="{{price_range.max | stringformat:'d'}}" value="{{price_range.max | stringformat:'d'}}" step="1"> {# Нельзя выставлять step=100, это приводит к обрезанию диапазона #}
                     </div>
                 </div>
             </div>
@@ -113,8 +113,8 @@
                         <div class="search-tp-area-progress search-tp-progress"></div>
                     </div>
                     <div class="search-tp-area-range-input search-tp-range-input">
-                        <input type="range" class="search-tp-area-range-min" min="{{area_range.min | stringformat:'d'}}" max="{{area_range.max | stringformat:'d'}}" value="{{area_range.min | stringformat:'d'}}" step="1"> {# Нельзя выставлять step=100, это приводит к обрезанию диапазона #}
-                        <input type="range" class="search-tp-area-range-max" min="{{area_range.min | stringformat:'d'}}" max="{{area_range.max | stringformat:'d'}}" value="{{area_range.max | stringformat:'d'}}" step="1"> {# Нельзя выставлять step=100, это приводит к обрезанию диапазона #}
+                        <input id="area-range-min" type="range" class="search-tp-area-range-min" min="{{area_range.min | stringformat:'d'}}" max="{{area_range.max | stringformat:'d'}}" value="{{area_range.min | stringformat:'d'}}" step="1"> {# Нельзя выставлять step=100, это приводит к обрезанию диапазона #}
+                        <input id="area-range-max" type="range" class="search-tp-area-range-max" min="{{area_range.min | stringformat:'d'}}" max="{{area_range.max | stringformat:'d'}}" value="{{area_range.max | stringformat:'d'}}" step="1"> {# Нельзя выставлять step=100, это приводит к обрезанию диапазона #}
                     </div>
                 </div>
             </div>

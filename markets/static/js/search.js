@@ -119,9 +119,9 @@ window.setup_outlet_search = () => {
     });
 
     /**** Range input area ****/
-    const rangeAreaInput = document.querySelectorAll(".search-tp-area-range-input input"),
-      areaInput = document.querySelectorAll(".search-tp-area-inputs input"),
-      rangeArea = document.querySelector(".search-tp-area-slider .search-tp-area-progress");
+    const rangeAreaInput = document.querySelectorAll(".search-tp-area-range-input input");
+    const areaInput = document.querySelectorAll(".search-tp-area-inputs input");
+    const rangeArea = document.querySelector(".search-tp-area-slider .search-tp-area-progress");
     let priceAreaGap = 500;
 
     const initMinArea = parseInt(areaInput[0].value);
@@ -167,31 +167,29 @@ window.setup_outlet_search = () => {
 
     /***** Tristate checkbox ******/
     function tristateHandler(e) {
-      const states = ['true', 'null', 'false']
+      const states = ['null', 'true', 'false']
 
-      const i = states.indexOf(e.target.value) + 1
-      e.target.value = i < states.length ? states[i] : states[0]
-      switch(e.target.value) {
-        case states[0]:
-          e.target.checked = true
-          break
-        case states[1]:
+      const i = (states.indexOf(e.target.value) + 1) % states.length;
+      e.target.value = states[i];
+      switch(i) {
+        case 0:
           e.target.indeterminate = true
           break
-        default:
+        case 1:
+          e.target.checked = true
+          break
+        case 2:
           e.target.checked = false
+          break
       }
-
-      // Sadly, e.target.value is coerced to string
-      //console.log(typeof e.target.value)
     }
 
-    /*document.querySelectorAll('input[name=tricheckbox]').onclick = tristateHandler*/
-
-    var triStateInputs = document.querySelectorAll('input[name=tricheckbox]')
-    for (i = 0; i < triStateInputs.length; i++) {
-      triStateInputs[i].addEventListener('click', function(e) {
+    for (const cb of document.querySelectorAll('input[name=tricheckbox]')) {
+      cb.value = 'null'
+      cb.indeterminate = true;
+      cb.addEventListener('click', function(e) {
         tristateHandler(e);
+        console.log(window.outlet_filters.build_json());
       });
     }
 };
