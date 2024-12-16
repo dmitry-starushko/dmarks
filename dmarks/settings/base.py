@@ -47,7 +47,6 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
                 'markets.processors.processors.parameters_processor',
-                'markets.processors.processors.outlet_states_processor',
             ],
         },
     },
