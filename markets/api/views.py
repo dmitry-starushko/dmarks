@@ -332,14 +332,11 @@ class PV_LegendBodyView(APIView):
 
     legends = [
         {'title': 'По занятости',
-         'model': TradePlaceType,
-         'serializer_class': TradePlaceTypeSerializer},
+         'pairs': lambda: ((r, r.roof_color_css) for r in TradePlaceType.objects.order_by('type_name'))},
         {'title': 'По специализации',
-         'model': TradeSpecType,
-         'serializer_class': TradeSpecTypeSerializer},
-        {'title': 'По сектору',
-         'model': TradeSector,
-         'serializer_class': TradeSectorSerializer},
+         'pairs': lambda: ((r, r.roof_color_css) for r in TradeSpecType.objects.order_by('type_name'))},
+        {'title': 'По секторам',
+         'pairs': lambda: ((r, r.roof_color_css) for r in TradeSector.objects.order_by('sector_name'))},
     ]
 
     @on_exception_returns(HttpResponseBadRequest)
@@ -347,7 +344,7 @@ class PV_LegendBodyView(APIView):
         legend = legend % len(self.legends)
         return render(request, 'markets/partials/legend-body.html', {
             'title': self.legends[legend]['title'],
-            'legend': OrderedDict(),
+            'legend': OrderedDict(self.legends[legend]['pairs']()),
         })
 
 
