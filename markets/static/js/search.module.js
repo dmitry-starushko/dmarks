@@ -65,6 +65,26 @@ class OutletFilters {
             html => { document.getElementById(container_id).innerHTML = html; }
         );
     }
+
+    setup_listeners() {
+        const updater = () => { this.update_search_result('outlet-search-result'); }
+        for(const e of document.querySelectorAll("input[type='checkbox'][data-flag='outlet-filter-2s']")) { e.addEventListener("click", updater); }
+        for(const e of document.querySelectorAll("input[type='checkbox'][data-flag='outlet-filter-3s']")) { e.addEventListener("click", updater); }
+        for(const id of ["search-tp-input-num",
+                         "search-tp-input-price-min",
+                         "search-tp-input-price-max",
+                         "search-tp-input-area-min",
+                         "search-tp-input-area-max",
+                         "price-range-min",
+                         "price-range-max",
+                         "area-range-min",
+                         "area-range-max"]) {
+            const e = document.getElementById(id);
+            if(e) {
+                e.addEventListener("change", updater);
+            }
+        }
+    }
 }
 
 export {OutletFilters};

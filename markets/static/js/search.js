@@ -189,9 +189,10 @@ window.setup_outlet_search = () => {
       cb.indeterminate = true;
       cb.addEventListener('click', function(e) {
         tristateHandler(e);
-        window.outlet_filters.update_search_result('outlet-search-result');
       });
     }
+
+    window.outlet_filters.setup_listeners();
 };
 
 /****  Tree checkbox ******/
