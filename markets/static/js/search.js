@@ -189,7 +189,7 @@ window.setup_outlet_search = () => {
       cb.indeterminate = true;
       cb.addEventListener('click', function(e) {
         tristateHandler(e);
-        console.log(window.outlet_filters.build_json());
+        window.outlet_filters.update_search_result('outlet-search-result');
       });
     }
 };

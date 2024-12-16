@@ -2,7 +2,7 @@ class OutletFilters {
     constructor() {
     }
 
-    build_json() {
+    build_filters() {
         const checkboxes_2s = document.querySelectorAll("input[type='checkbox'][data-flag='outlet-filter-2s']");
         const checkboxes_3s = document.querySelectorAll("input[type='checkbox'][data-flag='outlet-filter-3s']");
 
@@ -57,6 +57,10 @@ class OutletFilters {
         const o_num = document.getElementById('search-tp-input-num').value;
         if(o_num) { filters['outlet-number'] = o_num; }
         return filters;
+    }
+
+    update_search_result(container_id) {
+        console.log(this.build_filters());
     }
 }
 
