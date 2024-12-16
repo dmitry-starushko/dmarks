@@ -160,20 +160,22 @@ import { View3D } from "view3d";
                     </div>
                     <div id="outlet-info" class="mkdetails-tp-section-info-detail-body-info"></div>
                 </div>
-                <div class="mkdetails-tp-section-info-detail-legend">
+                <div id="legend-body-container" class="mkdetails-tp-section-info-detail-legend">
+                    {% comment %} --------------------------
                     <div class="mkdetails-tp-header-block">Легенда - занятость мест</div>
                     <div class="mkdetails-tp-section-info-detail-legend-body">
                         {% for k,v in legend.items %}
                         <div class="mkdetails-tp-section-info-detail-legend-body-item" title="{{v.title}}">
                             <div class="mkdetails-tp-section-info-detail-legend-body-item-circle" style="background-color:{{v.roof_color_css}};" title="{{v.title}}"></div>
-                            {% comment %}
+
                             <div class="mkdetails-tp-section-info-detail-legend-body-item-text">
                                 {{v.title|truncatechars:9}}
                             </div>
-                            {% endcomment %}
+
                         </div>
                         {% endfor %}
                     </div>
+                    ----------------------- {% endcomment %}
                 </div>
             </div>
         </div>
@@ -228,7 +230,12 @@ const update_outlet_table = () => { {# ---------------------------------------- 
     document.getElementById("mkdetails-scheme-header").innerText = current.scheme_name;
     const args = {scheme_pk: current.scheme_pk, legend: current.legend};
     dj_load_partial_view("partial_outlet_table", args, {}).then(
-        html => {document.getElementById("mkdetails-tp-tab").innerHTML = html;}
+        html => { document.getElementById("mkdetails-tp-tab").innerHTML = html; }
+    );
+};
+const update_legend_body = () => { {# ------------------------------------------ Loading legend body partial view --- #}
+    dj_load_partial_view("partial_legend_body", {legend: current.legend}, {}).then(
+        html => { document.getElementById("legend-body-container").innerHTML = html; }
     );
 };
 window.addEventListener("outlet_pointed", (e) => { {# ---------------------------------------------- Outlet hover --- #} // TODO !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -246,6 +253,7 @@ window.addEventListener("outlet_clicked", async (e) => { {# --------------------
 window.addEventListener("next_legend", (_) => { {# ---------------------------------------------- Legend changing --- #}
     current.legend++;
     update_outlet_table();
+    update_legend_body();
 });
 window.addEventListener("market_storey_changed", (e) => { {# ----------------------------- Market storey changing --- #}
     current.scheme_pk = e.detail.scheme_pk;
@@ -253,6 +261,7 @@ window.addEventListener("market_storey_changed", (e) => { {# -------------------
     update_outlet_table();
 });
 update_outlet_table(); {# ---------------------------------------------------------------------------- Initiation --- #}
+update_legend_body();
 if(tab_map.has("{{show_tab}}")) window.setTimeout(()=>{ document.getElementById(tab_map.get("{{show_tab}}")).click(); });
 {% endif %}
 {% endblock %}

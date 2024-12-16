@@ -327,6 +327,30 @@ class PV_OutletFiltersView(APIView):
         })
 
 
+class PV_LegendBodyView(APIView):
+    permission_classes = [AllowAny]
+
+    legends = [
+        {'title': 'По занятости',
+         'model': TradePlaceType,
+         'serializer_class': TradePlaceTypeSerializer},
+        {'title': 'По специализации',
+         'model': TradeSpecType,
+         'serializer_class': TradeSpecTypeSerializer},
+        {'title': 'По сектору',
+         'model': TradeSector,
+         'serializer_class': TradeSectorSerializer},
+    ]
+
+    @on_exception_returns(HttpResponseBadRequest)
+    def post(self, request, legend: int):
+        legend = legend % len(self.legends)
+        return render(request, 'markets/partials/legend-body.html', {
+            'title': self.legends[legend]['title'],
+            'legend': OrderedDict(),
+        })
+
+
 class PV_HelpContentView(APIView):
     permission_classes = [AllowAny]
 
