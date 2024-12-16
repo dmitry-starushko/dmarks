@@ -56,7 +56,7 @@ class OutletFilters {
 
         const o_num = document.getElementById('search-tp-input-num').value;
         if(o_num) { filters['outlet-number'] = o_num; }
-        return JSON.stringify(filters);
+        return filters;
     }
 }
 
