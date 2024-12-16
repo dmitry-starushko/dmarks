@@ -7,23 +7,23 @@
                 {% for city, dists in locations.items %}
                 <li>
                     {% with city_n=forloop.counter %}
-                    <input class="css-treeview-check" type="checkbox" id="tploc-{{city_n}}" checked="checked" />
+                    <input class="css-treeview-check" type="checkbox" id="tploc-{{city_n}}" checked/>
                     <label for="tploc-{{city_n}}">
-                        <input class="search-tp-check tploc" type="checkbox" id="option" checked/>
+                        <input class="search-tp-check tploc" type="checkbox" id="option"/>
                         {{city}}
                     </label>
                     <ul>
                         {% for dist, markets in dists.items %}
                         <li>
                             {% with dist_n=forloop.counter %}
-                            <input class="css-treeview-check" type="checkbox" id="tploc-{{city_n}}-{{dist_n}}" checked="checked" />
+                            <input class="css-treeview-check" type="checkbox" id="tploc-{{city_n}}-{{dist_n}}" checked/>
                             <label for="tploc-{{city_n}}-{{dist_n}}">
-                                <input class="search-tp-check tploc" type="checkbox" checked/>
+                                <input class="search-tp-check tploc" type="checkbox"/>
                                 {{dist}}
                             </label>
                             <ul>
                                 {% for market, mpk in markets.items %}
-                                <li><input class="search-tp-check tploc" type="checkbox" value="{{mpk}}" checked>
+                                <li><input class="search-tp-check tploc" type="checkbox" data-flag="outlet-filter-2s" data-kind="markets" data-pk="{{mpk}}"/>
                                     <label>{{market}}</label>
                                 </li>
                                 {% endfor %}
@@ -45,7 +45,7 @@
     <div class="search-tp-block-body">
         {% for type, tpk in specializations.items %}
         <div class="search-tp-spec for-checkbox">
-            <input class="search-tp-check" type="checkbox" value="{{tpk}}" checked>
+            <input class="search-tp-check" type="checkbox" data-flag="outlet-filter-2s" data-kind="specializations" data-pk="{{tpk}}" checked>
             {{type}}
         </div>
         {% endfor %}
@@ -56,7 +56,7 @@
     <div class="search-tp-block-body">
         {% for type, tpk in occupation_types.items %}
         <div class="search-tp-type for-checkbox">
-            <input class="search-tp-check" type="checkbox" value="{{tpk}}" checked>
+            <input class="search-tp-check" type="checkbox" data-flag="outlet-filter-2s" data-kind="occupation-types" data-pk="{{tpk}}" checked>
             {{type}}
         </div>
         {% endfor %}
@@ -67,7 +67,7 @@
     <div class="search-tp-block-body">
         {% for facility, field in facilities.items %}
         <div class="search-tp-type for-checkbox">
-            <input class="search-tp-check" type="checkbox" name="tricheckbox" value="false" data-field="{{field}}">
+            <input class="search-tp-check" type="checkbox" name="tricheckbox" value="false" data-flag="outlet-filter-3s" data-kind="facilities" data-pk="{{field}}">
             {{facility}}
         </div>
         {% endfor %}
