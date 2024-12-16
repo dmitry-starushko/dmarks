@@ -23,7 +23,9 @@
                             </label>
                             <ul>
                                 {% for market, mpk in markets.items %}
-                                <li><input class="search-tp-check tploc" type="checkbox" value="{{mpk}}" checked>{{market}}</li>
+                                <li><input class="search-tp-check tploc" type="checkbox" value="{{mpk}}" checked>
+                                    <label>{{market}}</label>
+                                </li>
                                 {% endfor %}
                             </ul>
                             {% endwith %}

@@ -84,8 +84,8 @@
 .css-treeview label
 {
     white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+    /*overflow: hidden;
+    text-overflow: ellipsis;*/
 }
 
 .css-treeview label:hover

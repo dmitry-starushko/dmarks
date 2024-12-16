@@ -422,6 +422,7 @@
     width: 100%;
     justify-content: stretch;
     align-items: stretch;
+    height: 250px;
 }
 
 .search-tp-block {
@@ -429,7 +430,7 @@
     height: auto;
     display: flex;
     flex-direction: column;
-    overflow-x: scroll;
+    overflow-x: auto;
 }
 
 .search-tp-block-body {
@@ -437,7 +438,9 @@
     padding: 5px;
     overflow-y:scroll;
     scrollbar-width: thin;
-    flex: 1 0 auto;
+    height: 100%;
+    /*flex: 1 0 auto;*/
+    /*display: flex;*/
 }
 
 .search-tp-check {
@@ -451,6 +454,9 @@
 
 .for-checkbox {
     font-size: 10px;
+    white-space: nowrap;
+    /*overflow: hidden;
+    text-overflow: ellipsis;*/
 }
 
 .search-tp-inputs {

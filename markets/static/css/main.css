@@ -97,9 +97,9 @@ h6 {
 /* Main body
 ------------------------------*/
 .main {
- max-height: -moz-calc(100% - 150px); /* Firefox */
- max-height: -webkit-calc(100% - 150px); /* Chrome, Safari */
- max-height: calc(100% - 150px); /* IE9+ and future browsers */
+ max-height: -moz-calc(100% - 170px); /* Firefox */
+ max-height: -webkit-calc(100% - 170px); /* Chrome, Safari */
+ max-height: calc(100% - 170px); /* IE9+ and future browsers */
  /*height: 100vh;*/
  /*background-color: yellow;*/
  /*height: 80vh;*/
