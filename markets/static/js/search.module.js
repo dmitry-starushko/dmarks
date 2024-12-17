@@ -1,6 +1,7 @@
 class OutletFilters {
     constructor() {
         this._timeout = null;
+        this._abort_controller = null;
     }
 
     build_filters() {
@@ -61,18 +62,19 @@ class OutletFilters {
     }
 
     update_search_result(container_id) {
-        console.log(this.build_filters());
-        dj_load_partial_view("partial_filtered_outlets", {}, this.build_filters()).then(
-            html => { document.getElementById(container_id).innerHTML = html; }
+        if(this._abort_controller) { this._abort_controller.abort(); }
+        this._abort_controller = new AbortController();
+        dj_load_partial_view("partial_filtered_outlets", {}, this.build_filters(), this._abort_controller.signal).then(
+            html => {
+                document.getElementById(container_id).innerHTML = html;
+                this._abort_controller = null;
+            }
         );
     }
 
     setup_listeners() {
         const updater = () => {
-            if(this._timeout) {
-                window.clearTimeout(this._timeout);
-                this._timeout = null;
-            }
+            if(this._timeout) { window.clearTimeout(this._timeout); }
             this._timeout = window.setTimeout(()=>{
                 this._timeout = null;
                 this.update_search_result('outlet-search-result');
