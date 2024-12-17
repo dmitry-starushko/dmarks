@@ -541,15 +541,15 @@ class Booking(DbItem):
 # -- Contacts -------------------------------------------------------------------------------------
 
 class Contact(DbItem):
-    title = models.CharField(max_length=128, default="Не указано")
-    address = models.CharField(max_length=256, default="Не указано")
+    title = models.CharField(max_length=128, default='Не указано')
+    address = models.CharField(max_length=256, default='Не указано')
     city = models.ForeignKey(Locality, models.SET_DEFAULT, default=Locality.default_pk)
-    district = models.ForeignKey(Locality, models.SET_DEFAULT, default=Locality.default_pk)
+    district = models.ForeignKey(Locality, models.SET_DEFAULT, default=Locality.default_pk, related_name='another_contact_set')
 
     class Meta:
         ordering = ['title']
-        verbose_name = "Контакт"
-        verbose_name_plural = "Контакты"
+        verbose_name = 'Контакт'
+        verbose_name_plural = 'Контакты'
 
     def __str__(self):
         return f'{self.title}'
@@ -557,11 +557,11 @@ class Contact(DbItem):
 
 class ContactPhone(DbItem):  # -- Contact phones
     phone = models.CharField(unique=True, max_length=20)
-    market = models.ForeignKey(Contact, related_name="phones", on_delete=models.CASCADE)
+    contact = models.ForeignKey(Contact, related_name='phones', on_delete=models.CASCADE)
 
     class Meta:
-        verbose_name = "Контактный телефон"
-        verbose_name_plural = "Контактные телефоны"
+        verbose_name = 'Контактный телефон'
+        verbose_name_plural = 'Контактные телефоны'
 
     def __str__(self):
         return f'{self.phone}'
@@ -569,11 +569,11 @@ class ContactPhone(DbItem):  # -- Contact phones
 
 class ContactEmail(DbItem):  # -- Contact emails
     email = models.EmailField(unique=True, max_length=255)
-    market = models.ForeignKey(Contact, related_name="emails", on_delete=models.CASCADE)
+    contact = models.ForeignKey(Contact, related_name='emails', on_delete=models.CASCADE)
 
     class Meta:
-        verbose_name = "Контактный email"
-        verbose_name_plural = "Контактные email"
+        verbose_name = 'Контактный email'
+        verbose_name_plural = 'Контактные email'
 
     def __str__(self):
         return f'{self.email}'

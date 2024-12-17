@@ -102,7 +102,6 @@ class StuffActionAdmin(admin.ModelAdmin):
 
 # -------------------------------------------------------------------------------------------------
 
-
 @admin.register(Locality)
 class LocalityAdmin(admin.ModelAdmin):
     list_display = ['locality_name', 'locality_type', 'descr', 'parent']
@@ -162,3 +161,23 @@ class TradeSpecTypeAdmin(admin.ModelAdmin):
 class TradeTypeAdmin(admin.ModelAdmin):
     list_display = ['type_name', 'type_num', 'descr']
     ordering = ['type_name']
+
+
+@admin.register(Contact)
+class ContactAdmin(admin.ModelAdmin):
+    list_display = ['title', 'address', 'city', 'district']
+    ordering = ['title']
+
+
+@admin.register(ContactPhone)
+class ContactPhoneAdmin(admin.ModelAdmin):
+    list_display = ['phone']
+    ordering = ['phone']
+    list_filter = ['contact']
+
+
+@admin.register(ContactEmail)
+class ContactEmailAdmin(admin.ModelAdmin):
+    list_display = ['email']
+    ordering = ['email']
+    list_filter = ['contact']
