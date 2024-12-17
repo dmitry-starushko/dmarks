@@ -77,18 +77,19 @@ window.setup_outlet_search = () => {
     const rangeInput = document.querySelectorAll(".search-tp-price-range-input input");
     const priceInput = document.querySelectorAll(".search-tp-price-inputs input");
     const range = document.querySelector(".search-tp-price-slider .search-tp-price-progress");
-    let priceGap = 500;
+    let priceGap = 1;
     //alert((minVal / rangeInput[0].max) * 100 + "%");
     const initMin = parseInt(priceInput[0].value);
     const initMax = parseInt(priceInput[1].value);
     range.style.left = (initMin / rangeInput[0].max) * 100 + "%";
+    range.style.right = 100 - (initMax / rangeInput[1].max) * 100 + "%";
 
     priceInput.forEach((input) => {
       input.addEventListener("input", (e) => {
         let minPrice = parseInt(priceInput[0].value),
           maxPrice = parseInt(priceInput[1].value);
         if (maxPrice - minPrice >= priceGap && maxPrice <= rangeInput[1].max) {
-          if (e.target.className === "search-tp-input-price-min") {
+          if (e.target.classList.contains("search-tp-input-price-min")) {
             rangeInput[0].value = minPrice;
             range.style.left = (minPrice / rangeInput[0].max) * 100 + "%";
           } else {
@@ -122,7 +123,7 @@ window.setup_outlet_search = () => {
     const rangeAreaInput = document.querySelectorAll(".search-tp-area-range-input input");
     const areaInput = document.querySelectorAll(".search-tp-area-inputs input");
     const rangeArea = document.querySelector(".search-tp-area-slider .search-tp-area-progress");
-    let priceAreaGap = 500;
+    let priceAreaGap = 1;
 
     const initMinArea = parseInt(areaInput[0].value);
     const initMaxArea = parseInt(areaInput[1].value);
@@ -134,7 +135,7 @@ window.setup_outlet_search = () => {
         let minArea = parseInt(areaInput[0].value),
           maxArea = parseInt(areaInput[1].value);
         if (maxArea - minArea >= priceAreaGap && maxArea <= rangeAreaInput[1].max) {
-          if (e.target.className === "search-tp-input-area-min") {
+        if (e.target.classList.contains("search-tp-input-area-min")) {
             rangeAreaInput[0].value = minArea;
             rangeArea.style.left = (minArea / rangeAreaInput[0].max) * 100 + "%";
           } else {
