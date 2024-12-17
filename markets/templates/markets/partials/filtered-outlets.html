@@ -1,30 +1,35 @@
 {% load static %}
-<div class="css-treeview css-treeview-light">
-    <ul>{% for city, dists in context.items %}
-        <li>{% with city_id=forloop.counter %}
-            <input class="css-treeview-check" type="checkbox" id="item-{{city_id}}" checked="checked" /><label for="item-{{city_id}}">{{city}}</label>
-            <ul>{% for dist, markets in dists.items %}
-                <li>{% with dist_id=forloop.counter %}
-                    <input class="css-treeview-check" type="checkbox" id="item-{{city_id}}-{{dist_id}}" checked="checked" /><label for="item-{{city_id}}-{{dist_id}}">{{dist}}</label>
-                    <ul>{% for market, outlets in markets.items %}
-                        <li>{% with market_id=forloop.counter %}
-                            <input class="css-treeview-check" type="checkbox" id="item-{{city_id}}-{{dist_id}}-{{market_id}}" checked="checked" /><label for="item-{{city_id}}-{{dist_id}}-{{market_id}}">{{market}}</label>
-                            <ul>{% for number, detail in outlets.items %}
-                                <li class="tree-node-result">
-                                    <div class="tree-text-title">{{number}}</div>
-                                    <div class="tree-link tree-node-item tree-node-child">
-                                        <a href="{{detail.link_outlets}}" class="" title="Показать в списке"><img src="{% static 'svg/icons/format-list-bulleted.svg' %}" alt="Список торговых мест"/></a>
-                                        <a href="{{detail.link_scheme}}" class="" title="Показать на схеме"><img src="{% static 'svg/icons/cube-outline.svg' %}" alt="Схема"/></a>
-                                    </div>
-                                    <div class="tree-address tree-node-item tree-node-child">{{detail.state}}</div>
-                                    <div class="tree-tp-count tree-node-item tree-node-child">{{detail.specialization}}</div>
-                                    <div class="tree-tp-count tree-node-item tree-node-child">{{detail.price}} р</div>
-                                </li>{% endfor %}
-                            </ul>{% endwith %}
-                        </li>{% endfor %}
-                    </ul>{% endwith %}
-                </li>{% endfor %}
-            </ul>{% endwith %}
-        </li>{% endfor %}
-    </ul>
+<div class="search-tp-result-treeview">
+    <div class="css-treeview css-treeview-light">
+        <ul>{% for city, dists in context.items %}
+            <li>{% with city_id=forloop.counter %}
+                <input class="css-treeview-check" type="checkbox" id="item-{{city_id}}" checked="checked" /><label for="item-{{city_id}}">{{city}}</label>
+                <ul>{% for dist, markets in dists.items %}
+                    <li>{% with dist_id=forloop.counter %}
+                        <input class="css-treeview-check" type="checkbox" id="item-{{city_id}}-{{dist_id}}" checked="checked" /><label for="item-{{city_id}}-{{dist_id}}">{{dist}}</label>
+                        <ul>{% for market, outlets in markets.items %}
+                            <li>{% with market_id=forloop.counter %}
+                                <input class="css-treeview-check" type="checkbox" id="item-{{city_id}}-{{dist_id}}-{{market_id}}" checked="checked" /><label for="item-{{city_id}}-{{dist_id}}-{{market_id}}">{{market}}</label>
+                                <ul>{% for number, detail in outlets.items %}
+                                    <li class="tree-node-result">
+                                        <div class="tree-text-title">{{number}}</div>
+                                        <div class="tree-link tree-node-item tree-node-child">
+                                            <a href="{{detail.link_outlets}}" class="" title="Показать в списке"><img src="{% static 'svg/icons/format-list-bulleted.svg' %}" alt="Список торговых мест"/></a>
+                                            <a href="{{detail.link_scheme}}" class="" title="Показать на схеме"><img src="{% static 'svg/icons/cube-outline.svg' %}" alt="Схема"/></a>
+                                        </div>
+                                        <div class="tree-address tree-node-item tree-node-child">{{detail.state}}</div>
+                                        <div class="tree-tp-count tree-node-item tree-node-child">{{detail.specialization}}</div>
+                                        <div class="tree-tp-count tree-node-item tree-node-child">{{detail.price}} р</div>
+                                    </li>{% endfor %}
+                                </ul>{% endwith %}
+                            </li>{% endfor %}
+                        </ul>{% endwith %}
+                    </li>{% endfor %}
+                </ul>{% endwith %}
+            </li>{% endfor %}
+        </ul>
+    </div>
+</div>
+<div class="search-tp-block-total-result">
+    Количество найденных торговых мест: 1024
 </div>
