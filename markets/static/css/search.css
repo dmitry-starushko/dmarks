@@ -333,9 +333,12 @@
 .search-market-result, .search-tp-result {
     width: 100%;
     height: 300px;
-    /*overflow-y:scroll;*/
     background-color: var(--background-color-search-result);
-    padding: 5px
+    padding: 5px;
+}
+
+.search-market-result {
+    overflow-y:scroll;
 }
 
 .search-tp-result-treeview {
