@@ -345,6 +345,8 @@
 
 .search-tp-block-total-result{
     background-color: var(--background-color-search);
+    padding-left: 5px;
+    color: white;
 }
 
 .search-market-result > .tree {
