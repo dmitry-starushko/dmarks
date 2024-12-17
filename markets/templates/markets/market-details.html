@@ -151,7 +151,7 @@ import { View3D } from "view3d";
                         <a href="#" class="" title="3D" onclick="window.dispatchEvent(new CustomEvent('toggle_3d_view'));">
                             <img src="{% static 'svg/icons/cube-outline.svg' %}" alt="3D"/>
                         </a>
-                        <a href="#" class="" title="Справка" id="mk-help">
+                        <a href="#" class="" title="Справка" onclick="window.help_dialog.toggle({{help_id|default:0}} + 10);" id="mk-help">
                             <img src="{% static 'svg/icons/question-mark-circle.svg' %}" alt="Справка"/>
                         </a>
                     </div>
