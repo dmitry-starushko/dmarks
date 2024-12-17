@@ -136,12 +136,6 @@ import { View3D } from "view3d";
                 <div class="mkdetails-tp-section-info-detail-body">
                     <div class="mkdetails-tp-section-info-detail-body-panel">
                         <div class="mkdetails-tp-header-block" style="border-width:0 0 1px 0"></div>
-                        <a href="#" class="" title="Фильтр">
-                            <img src="{% static 'svg/icons/filter-outline.svg' %}" alt="Фильтр"/>
-                        </a>
-                        <a href="#" class="" title="Сброс фильтров">
-                            <img src="{% static 'svg/icons/filter-remove-outline.svg' %}" alt="Сброс фильтров"/>
-                        </a>
                         <a href="#" class="" title="Полоэкранный режим" id="mkdetails-fullscreen">
                             <img src="{% static 'svg/icons/fullscreen.svg' %}" alt="Полоэкранный режим"/>
                         </a>
@@ -156,6 +150,9 @@ import { View3D } from "view3d";
                         </a>
                         <a href="#" class="" title="3D" onclick="window.dispatchEvent(new CustomEvent('toggle_3d_view'));">
                             <img src="{% static 'svg/icons/cube-outline.svg' %}" alt="3D"/>
+                        </a>
+                        <a href="#" class="" title="Справка" id="mk-help">
+                            <img src="{% static 'svg/icons/question-mark-circle.svg' %}" alt="Справка"/>
                         </a>
                     </div>
                     <div id="outlet-info" class="mkdetails-tp-section-info-detail-body-info"></div>

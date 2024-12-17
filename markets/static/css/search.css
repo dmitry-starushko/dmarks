@@ -449,7 +449,8 @@
 }
 
 .search-tp-check:indeterminate {
-    accent-color: black;
+    accent-color: darkgray;
+     background-color: lightgray;
 }
 
 .for-checkbox {
