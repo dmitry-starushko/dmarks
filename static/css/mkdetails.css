@@ -2,6 +2,9 @@
     --border-width: 1px;
     --border-color: black;
     --border: var(--border-width) solid var(--border-color);
+    --nav-button-active-bg: #fff;
+    --section-bg: #fff;
+    border-color: var(--bs-nav-tabs-link-active-border-color);
 }
 
 
@@ -9,14 +12,16 @@
     width: 100%;
     height: 100%;
     /*overflow: inherit;*/
-    /*display: flex;*/
+    display: flex;
+    flex-direction: column;
 }
 
 
 .market-details-content
 {
     height: 90%;
-    display: flex;
+    /*display: flex;*/
+    background-color: var(--section-bg);
 }
 
 .market-details-section-title {
@@ -30,8 +35,33 @@
   padding: 5px 0;
 }
 
-.mkdetails-section-info {
+.market-details-section-buttons {
     display: flex;
+    background-color: #c0c0c0;
+    padding: 10px 10px 0px 0px;
+}
+
+.market-details-section-buttons > button {
+    background-color: #ccc;
+    color: #707070;
+    margin: 0 1px;
+    padding: 10px;
+    border: none;
+    border-right: 1px solid gray;
+    -moz-border-radius: 0px;
+    -webkit-border-radius: 5px 5px 0px 0px;
+    border-radius: 5px 5px 0px 0px;
+}
+
+.market-details-section-buttons > button.active {
+    color: #000;
+    background-color: var(--nav-button-active-bg);
+    border-color: #dee2e6;
+    border-top: 2px solid var(--active-color);
+}
+
+.mkdetails-section-info {
+    /*display: flex;*/
      /*border: 1px solid #cbd5e0;*/
     height: 100%;
     width: 100%;
@@ -42,8 +72,33 @@
     width: 100%;
 }
 
+.mkdetails-section-tabs {
+    display: flex;
+    justify-align: space-between;
+    height: 100%;
+    padding: 5px;
+}
+
+.mkdetails-tp-scheme {
+   width: 60%;
+   height: 100%;
+}
+
+.mkdetails-tp-scheme > .section-block {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
 #mkdetails-tabs-content, #mkdetails-tabs-content .tab-pane {
     height: 96%;
+}
+
+#mkdetails-tp-tab {
+    width: 60%;
+    height: 100%;
+    /*overflow-y:scroll;*/
 }
 
 .mkdetails-section-info-main {
@@ -123,123 +178,25 @@
     height: 100%;
 }
 
-
-/*  MKdetails Tree  */
-.tree {
-  --spacing: 1.5rem;
-  --radius: 10px;
-  padding-left: 0px;
-  margin-left: 0;
-}
-
-.tree li {
-  display: block;
-  position: relative;
-  padding-left: calc(2 * var(--spacing) - var(--radius) - 2px);
-  font-size: 12px;
-}
-
-.tree ul {
-  margin-left: calc(var(--radius) - var(--spacing));
-  padding-left: 0;
-}
-
-.tree ul li {
-  border-left: 2px solid #ddd;
-}
-
-.tree ul li:last-child {
-  border-color: transparent;
-}
-
-.tree ul li::before {
-  content: '';
-  display: block;
-  position: absolute;
-  top: calc(var(--spacing) / -2);
-  left: -2px;
-  width: calc(var(--spacing) + 2px);
-  height: calc(var(--spacing) + 1px);
-  border: solid #ddd;
-  border-width: 0 0 2px 2px;
-}
-
-.tree summary::marker {
-    color: #aaa;
-}
-
-.tree summary {
-  /*display: block;*/
-  color: #0000ff;
-  cursor: pointer;
-  transition: ease-in-out 0.2s;
-}
-
-.tree summary:hover {
-  font-weight: bold;
-  /*font-size: 1.02em;*/
-}
-
-/*
-.tree summary::marker,
-.tree summary::-webkit-details-marker {
-  display: none;
-}
-
-.tree summary:focus {
-  outline: none;
-}
-
-.tree summary:focus-visible {
-  outline: 1px dotted #000;
-}
-
-
-.tree li::after,
-.tree summary::before {
-  content: '';
-  display: block;
-  position: absolute;
-  top: calc(var(--spacing) / 2 - var(--radius));
-  left: calc(var(--spacing) - var(--radius) - 1px);
-  width: calc(2 * var(--radius));
-  height: calc(2 * var(--radius));
-  border-radius: 50%;
-  background: #ddd;
-}
-
-.triangle {
-  width: 0;
-  height: 0;
-  border: 150px solid transparent;
-  border-top: 0;
-  border-bottom: 300px solid red;
-}
-
-.tree summary::before {
-  z-index: 1;
-  background: #696 url('/static/svg/icons/account.svg') 0 0;
-  background: #696;
-}
-
-.tree details[open] > summary::before {
-  background-position: calc(-2 * var(--radius)) 0;
-}*/
-
 /*****table tm*******/
 .table-tp {
     width: 100%;
     border-collapse: separate;
     border-spacing: 0;
+    height: 50px;
+    /*display: inherit;*/
     /*display: block;*/
-    /*border: 1px solid black;*/
+    /*flex-flow: column;
+    align-items: flex-start;*/
 }
 
 .table-tp > thead {
     text-align: center;
     background: #ddd;
     position: sticky;
-    top: -3px;
+    position: -webkit-sticky;
+    top: 0px;
+    align-self: flex-start;
     /*border: 1px solid black;*/
 }
 
@@ -279,7 +236,10 @@
 
 
 .mkdetails-tp-section-info-main {
-    padding: 5px;
+    /*padding: 5px;*/
+    overflow-y: scroll;
+    height: 100%;
+    width: 100%;
 }
 
 .mkdetails-tp-header-block {
@@ -294,17 +254,21 @@
 /**** right tp panel***/
 .mkdetails-tp-section-info-detail {
     background-color: var(--background-color);
-    margin-top: 42px;
-    flex: 1;
-    width: 0%;
-    visibility: hidden;
-    padding: 7px 5px 5px 5px;
+    /*flex: 1;*/
+    display: flex;
+    flex-direction: column;
+    margin-left: 5px;
+    width: 40%;
+    /*width: 30%;*/
+    /*visibility: hidden;*/
+    /*padding: 0px 5px;*/
     /*position: absolute;*/
 }
 
 .mkdetails-tp-section-info-detail-body {
     display: flex;
-    height: 85%;
+    height: 100%;
+    overflow: auto;
 }
 
 
@@ -399,7 +363,7 @@
 }
 
 .mkdetails-tp-section-info-detail-legend {
-    margin-top: 10px;
+    margin: 10px 0;
 }
 
 .mkdetails-tp-section-info-detail-legend-body {
@@ -410,18 +374,22 @@
     color: black;
     font-size: 10px;
     display: flex;
-    padding: 5px 0;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+    padding: 10px 0;
 }
 
 .mkdetails-tp-section-info-detail-legend-body-item{
     display: flex;
-    padding-left: 5px;
+    padding: 5px;
+    flex: 0 0 10%;
 }
 
 .mkdetails-tp-section-info-detail-legend-body-item-circle{
+    cursor: pointer;
     border-radius: 50%;
-    width: 15px;
-    height: 15px;
+    width: 20px;
+    height: 20px;
     margin-right: 3px;
     border: 2px solid black;
 }

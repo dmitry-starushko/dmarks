@@ -97,7 +97,7 @@
 .market-card:hover {
   border-color: color-mix(in srgb, var(--card-border-hover-color), transparent 50%);
   /*transform: translateY(-5px);*/
-  transform: scale(103%);
+  /*transform: scale(1.1);*/
   box-shadow: 0px 2px 15px rgba(0, 0, 0, 0.4);
 }
 
@@ -223,7 +223,13 @@
 }
 
 .map-marker:hover {
-filter: invert(75%) sepia(58%) saturate(6435%) hue-rotate(354deg) brightness(101%) contrast(96%);
+    filter: invert(75%) sepia(58%) saturate(6435%) hue-rotate(354deg) brightness(101%) contrast(96%);
+}
+
+.map-marker.active{
+    filter: drop-shadow(0 0 10px red);
+    filter: invert(27%) sepia(93%) saturate(5004%) hue-rotate(239deg) brightness(88%) contrast(111%);
+    transform: scale(1.2);
 }
 
 /* Popup market card */
@@ -248,7 +254,7 @@ filter: invert(75%) sepia(58%) saturate(6435%) hue-rotate(354deg) brightness(101
 
 .popup-market-card:hover {
   border-color: color-mix(in srgb, var(--card-border-hover-color), transparent 50%);
-  transform: scale(103%);
+  transform: scale(1.2);
   box-shadow: 0px 2px 15px rgba(0, 0, 0, 0.4);
 }
 

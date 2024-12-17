@@ -26,7 +26,8 @@ class View3D {
                 ground_color,
                 decoration_color,
                 decoration_opacity,
-                listener) {
+                listener,
+                signal) {
         const parent = document.getElementById(parent_id);
         if(!parent) { throw `DOM element #${parent_id} not found`; }
         const width = parent.clientWidth;
@@ -41,7 +42,16 @@ class View3D {
         this._decoration_opacity = decoration_opacity;
         this._events_actl = new AbortController();
         this._csrf_token = Cookies.get('csrftoken');
+        this.set_ready_signal(signal);
         this.__load_scene__(scheme_pk, legend);
+    }
+
+    set_ready_signal(signal) {
+        this._ready_signal = signal;
+    }
+
+    __emit_ready_signal__() {
+        if(this._ready_signal) this._ready_signal();
     }
 
     async __load_scene__(scheme_pk, legend) {
@@ -166,6 +176,7 @@ class View3D {
                     const resize_observer  = new ResizeObserver(() => { this.__on_resize__(); });
                     resize_observer.observe(this._parent);
                     this._resize_observer = resize_observer;
+                    this.__emit_ready_signal__();
                 } else {
                     const msg = "Неверная структура сцены";
                     console.error(msg);
