@@ -35,9 +35,9 @@ import { View3D } from "view3d";
                     </div>
                     <div class="mkdetails-short-info">
                         Тип рынка: <strong>{{market.market_type}}</strong><br>
-                        Внутренний код рынка: <strong>{{market.internal_id}}</strong><br>
+                        Внутренний код рынка: <strong>{{market.market_id}}</strong><br>
                         Общая площадь рынка: <strong>{{market.market_square}}</strong><br>
-                        График работы: <strong>{{market.schedule}}</strong>
+                        График работы: <strong>{{market.schedule | default:"Не указано" | markdown}}</strong>
                     </div>
                 </div>
                 <div class="mkdetails-big-info">
@@ -151,7 +151,7 @@ import { View3D } from "view3d";
                         <a href="#" class="" title="3D" onclick="window.dispatchEvent(new CustomEvent('toggle_3d_view'));">
                             <img src="{% static 'svg/icons/cube-outline.svg' %}" alt="3D"/>
                         </a>
-                        <a href="#" class="" title="Справка" id="mk-help">
+                        <a href="#" class="" title="Справка" onclick="window.help_dialog.toggle({{help_id|default:0}} + 10);" id="mk-help">
                             <img src="{% static 'svg/icons/question-mark-circle.svg' %}" alt="Справка"/>
                         </a>
                     </div>

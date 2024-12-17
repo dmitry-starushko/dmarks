@@ -80,8 +80,7 @@ class OutletFilters {
                 this.update_search_result('outlet-search-result');
             }, 1500);
         };
-        for(const e of document.querySelectorAll("input[type='checkbox'][data-flag='outlet-filter-2s']")) { e.addEventListener("click", updater); }
-        for(const e of document.querySelectorAll("input[type='checkbox'][data-flag='outlet-filter-3s']")) { e.addEventListener("click", updater); }
+        for(const e of document.querySelectorAll("#outlet-search-top input[type='checkbox']")) { e.addEventListener("click", updater); }
         for(const id of ["search-tp-input-num",
                          "search-tp-input-price-min",
                          "search-tp-input-price-max",

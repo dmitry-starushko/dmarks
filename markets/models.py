@@ -369,7 +369,7 @@ class TradeType(models.Model):
 
 
 class Market(models.Model):
-    market_id = models.CharField(max_length=3, unique=True, validators=[Validators.outlet_number], db_comment='Уникальный идентификатор рынка')
+    market_id = models.CharField(max_length=3, unique=True, validators=[Validators.market_id], db_comment='Уникальный идентификатор рынка')
     market_name = models.CharField(max_length=1000, db_comment='Наименование рынка')
     additional_name = models.CharField(max_length=1000, db_comment='Дополнительное наименование')
     market_type = models.ForeignKey(MarketType, models.SET_DEFAULT, default=MarketType.default_pk, db_comment='id - тип рынка')
