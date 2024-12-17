@@ -9,7 +9,7 @@
                     {% with city_n=forloop.counter %}
                     <input class="css-treeview-check" type="checkbox" id="tploc-{{city_n}}" checked/>
                     <label for="tploc-{{city_n}}">
-                        <input class="search-tp-check tploc" type="checkbox" id="option"/>
+                        <input class="tploc" type="checkbox" id="option"/>
                         {{city}}
                     </label>
                     <ul>
@@ -18,12 +18,12 @@
                             {% with dist_n=forloop.counter %}
                             <input class="css-treeview-check" type="checkbox" id="tploc-{{city_n}}-{{dist_n}}" checked/>
                             <label for="tploc-{{city_n}}-{{dist_n}}">
-                                <input class="search-tp-check tploc" type="checkbox"/>
+                                <input class="tploc" type="checkbox"/>
                                 {{dist}}
                             </label>
                             <ul>
                                 {% for market, mpk in markets.items %}
-                                <li><input class="search-tp-check tploc" type="checkbox" data-flag="outlet-filter-2s" data-kind="markets" data-pk="{{mpk}}"/>
+                                <li><input class="tploc" type="checkbox" data-flag="outlet-filter-2s" data-kind="markets" data-pk="{{mpk}}"/>
                                     <span>{{market}}</span>
                                 </li>
                                 {% endfor %}

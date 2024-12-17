@@ -448,6 +448,13 @@
     outline: 1px solid black;
 }
 
+.tploc {
+    vertical-align: middle;
+    width: 10px;
+    accent-color: white;
+    /*outline: 1px solid black;*/
+}
+
 .search-tp-check:indeterminate {
     accent-color: darkgray;
      background-color: lightgray;
