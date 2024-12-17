@@ -1,5 +1,6 @@
 class OutletFilters {
     constructor() {
+        this._timeout = null;
     }
 
     build_filters() {
@@ -67,7 +68,16 @@ class OutletFilters {
     }
 
     setup_listeners() {
-        const updater = () => { this.update_search_result('outlet-search-result'); }
+        const updater = () => {
+            if(this._timeout) {
+                window.clearTimeout(this._timeout);
+                this._timeout = null;
+            }
+            this._timeout = window.setTimeout(()=>{
+                this._timeout = null;
+                this.update_search_result('outlet-search-result');
+            }, 1500);
+        };
         for(const e of document.querySelectorAll("input[type='checkbox'][data-flag='outlet-filter-2s']")) { e.addEventListener("click", updater); }
         for(const e of document.querySelectorAll("input[type='checkbox'][data-flag='outlet-filter-3s']")) { e.addEventListener("click", updater); }
         for(const id of ["search-tp-input-num",
