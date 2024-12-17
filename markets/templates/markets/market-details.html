@@ -35,9 +35,9 @@ import { View3D } from "view3d";
                     </div>
                     <div class="mkdetails-short-info">
                         Тип рынка: <strong>{{market.market_type}}</strong><br>
-                        Внутренний код рынка: <strong>{{market.internal_id}}</strong><br>
+                        Внутренний код рынка: <strong>{{market.market_id}}</strong><br>
                         Общая площадь рынка: <strong>{{market.market_square}}</strong><br>
-                        График работы: <strong>{{market.schedule}}</strong>
+                        График работы: <strong>{{market.schedule | default:"Не указано" | markdown}}</strong>
                     </div>
                 </div>
                 <div class="mkdetails-big-info">
