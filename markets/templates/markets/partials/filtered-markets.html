@@ -12,7 +12,7 @@
                         <ul>
                             {% for market, detail in markets.items %}
                             <li class="tree-node-result">
-                                <div class="tree-text-title tree-node-child">{{market}}</div>
+                                <div class="tree-text-title tree-node-child" title="{{market}}">{{market}}</div>
                                 <div class="tree-link tree-node-item tree-node-child">
                                     <a href="{{detail.link_map}}" class="" title="Показать на карте">
                                         <img src="{% static 'svg/icons/map-marker.svg' %}" alt="Показать на карте"/>

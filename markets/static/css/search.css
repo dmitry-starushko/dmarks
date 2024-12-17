@@ -369,10 +369,16 @@
 .search-tp-result li.tree-node-result {
     display: flex;
     width: 100%;
+    padding-left: 3px;
     /*justify-content: space-between;*/
     /*align-items: flex-end;*/
 }
 
+
+.search-market-result li.tree-node-result:hover,
+.search-tp-result li.tree-node-result:hover {
+    background-color: #1b498f;
+}
 
 .search-market-result li.tree-node-result > .tree-link > a,
 .search-tp-result li.tree-node-result > .tree-link > a {
@@ -410,6 +416,8 @@
 .search-tp-result li.tree-node-result > .tree-text-title {
     flex-grow: 0;
     width: 30%;
+    overflow: hidden;
+    text-overflow: ellipsis;
     /*align-self: flex-end;*/
 }
 
