@@ -266,6 +266,7 @@ class PV_FilteredOutletsView(APIView):
     def post(self, request):
         context = OrderedDict()
         outlets = filter_outlets(request.data or None).select_related('market', 'trade_place_type', 'trade_spec_type_id_act', 'market__geo_city', 'market__geo_district')
+        found = 0
         for o in outlets:
             try:
                 r = (context.setdefault(o.market.geo_city.locality_name, OrderedDict()).setdefault(o.market.geo_district.locality_name, OrderedDict()).setdefault(o.market.mk_full_name, OrderedDict()))
@@ -276,9 +277,13 @@ class PV_FilteredOutletsView(APIView):
                     'link_outlets': reverse('markets:market_details_outlet', kwargs={'mpk': o.market.id, 'show': 'outlets', 'outlet': o.location_number}),
                     'link_scheme': reverse('markets:market_details_outlet', kwargs={'mpk': o.market.id, 'show': 'scheme', 'outlet': o.location_number}),
                 }
+                found += 1
             except NoReverseMatch as e:
                 print(e)
-        return render(request, 'markets/partials/filtered-outlets.html', {'context': context})
+        return render(request, 'markets/partials/filtered-outlets.html', {
+            'context': context,
+            'found': found
+        })
 
 
 class PV_OutletFiltersView(APIView):
@@ -309,12 +314,12 @@ class PV_OutletFiltersView(APIView):
             ('Витрины', 'impr_shopwindow')
         ])
         price_range = {
-            'min': 0,  # TODO GlobalObservation.objects.get_or_create(key=Observation.OUTLET_RENTING_COST_MIN)[0].decimal,
-            'max': 12345,  # TODO GlobalObservation.objects.get_or_create(key=Observation.OUTLET_RENTING_COST_MAX)[0].decimal
+            'min': GlobalObservation.objects.get_or_create(key=Observation.OUTLET_RENTING_COST_MIN)[0].decimal,
+            'max': GlobalObservation.objects.get_or_create(key=Observation.OUTLET_RENTING_COST_MAX)[0].decimal
         }
         area_range = {
-            'min': 0,  # TODO GlobalObservation.objects.get_or_create(key=Observation.OUTLET_AREA_MIN)[0].decimal,
-            'max': 12345,  # TODO GlobalObservation.objects.get_or_create(key=Observation.OUTLET_AREA_MAX)[0].decimal
+            'min': GlobalObservation.objects.get_or_create(key=Observation.OUTLET_AREA_MIN)[0].decimal,
+            'max': GlobalObservation.objects.get_or_create(key=Observation.OUTLET_AREA_MAX)[0].decimal
         }
         return render(request, 'markets/partials/outlet-filters.html', {
             'full': not not full,
