@@ -545,6 +545,7 @@ class Contact(DbItem):
     address = models.CharField(max_length=256, default='Не указано')
     city = models.ForeignKey(Locality, models.SET_DEFAULT, default=Locality.default_pk)
     district = models.ForeignKey(Locality, models.SET_DEFAULT, default=Locality.default_pk, related_name='another_contact_set')
+    image = models.ImageField(upload_to='contacts/%Y/%m/%d')  # картинка
 
     class Meta:
         ordering = ['title']
