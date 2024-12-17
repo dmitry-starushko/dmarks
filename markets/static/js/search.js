@@ -210,7 +210,7 @@ window.setup_outlet_search = () => {
       /*var children = e.target.children;*/
       /*console.log(e.target);*/
       var checkedCount = children.length;
-      alert(checkedCount);
+      /*alert(checkedCount);*/
       for (var i = 0; i < children.length; i++) {
             children[i].checked = this.checked;
         }
