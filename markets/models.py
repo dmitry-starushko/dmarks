@@ -271,7 +271,7 @@ class TradePlaceType(models.Model):
         verbose_name_plural = "Типы занятости ТМ"
 
     def __str__(self):
-        return f'{self.type_name}'
+        return f'{self.get_type_name_display()}'
 
     @property
     def wall_color_css(self):

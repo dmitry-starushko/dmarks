@@ -216,8 +216,8 @@ class PV_OutletTableView(APIView):
                 queryset = apply_filter(queryset, f_name, f_body)
         outlets = [{
             'number': r.location_number,
-            'specialization': r.trade_spec_type_id_act.type_name,
-            'occupation': r.trade_place_type.type_name,
+            'specialization': r.trade_spec_type_id_act,
+            'occupation': r.trade_place_type,
             'price': r.price,
             'color_css': self.legends[legend](r)
         } for r in queryset]
