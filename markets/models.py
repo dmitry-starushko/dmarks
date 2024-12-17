@@ -560,8 +560,8 @@ class ContactPhone(DbItem):  # -- Contact phones
     market = models.ForeignKey(Contact, related_name="phones", on_delete=models.CASCADE)
 
     class Meta:
-        verbose_name = "Телефон"
-        verbose_name_plural = "Телефоны"
+        verbose_name = "Контактный телефон"
+        verbose_name_plural = "Контактные телефоны"
 
     def __str__(self):
         return f'{self.phone}'
@@ -572,8 +572,8 @@ class ContactEmail(DbItem):  # -- Contact emails
     market = models.ForeignKey(Contact, related_name="emails", on_delete=models.CASCADE)
 
     class Meta:
-        verbose_name = "EMail"
-        verbose_name_plural = "EMail"
+        verbose_name = "Контактный email"
+        verbose_name_plural = "Контактные email"
 
     def __str__(self):
         return f'{self.email}'
