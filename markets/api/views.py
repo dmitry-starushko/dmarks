@@ -323,7 +323,7 @@ class PV_OutletFiltersView(APIView):
         a_max = GlobalObservation.objects.get_or_create(key=Observation.OUTLET_AREA_MAX)[0].decimal
         area_range = {
             'min': a_min,
-            'max': a_max if a_min < a_max else a_min + 100
+            'max': a_max if a_min < a_max else a_min + 1000
         }
         return render(request, 'markets/partials/outlet-filters.html', {
             'full': not not full,
