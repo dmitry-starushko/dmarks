@@ -538,7 +538,50 @@ class Booking(DbItem):
         return f'Бронирование {self.id}'
 
 
+# -- Contacts -------------------------------------------------------------------------------------
+
+class Contact(DbItem):
+    title = models.CharField(max_length=128, default='Не указано')
+    image = models.ImageField(upload_to='contacts/%Y/%m/%d')  # картинка
+    address = models.CharField(max_length=256, default='Не указано')
+    city = models.ForeignKey(Locality, models.SET_DEFAULT, default=Locality.default_pk)
+    district = models.ForeignKey(Locality, models.SET_DEFAULT, default=Locality.default_pk, related_name='another_contact_set')
+
+    class Meta:
+        ordering = ['title']
+        verbose_name = 'Контакт'
+        verbose_name_plural = 'Контакты'
+
+    def __str__(self):
+        return f'{self.title}'
+
+
+class ContactPhone(DbItem):  # -- Contact phones
+    phone = models.CharField(unique=True, max_length=20)
+    contact = models.ForeignKey(Contact, related_name='phones', on_delete=models.CASCADE)
+
+    class Meta:
+        verbose_name = 'Контактный телефон'
+        verbose_name_plural = 'Контактные телефоны'
+
+    def __str__(self):
+        return f'{self.phone}'
+
+
+class ContactEmail(DbItem):  # -- Contact emails
+    email = models.EmailField(unique=True, max_length=255)
+    contact = models.ForeignKey(Contact, related_name='emails', on_delete=models.CASCADE)
+
+    class Meta:
+        verbose_name = 'Контактный email'
+        verbose_name_plural = 'Контактные email'
+
+    def __str__(self):
+        return f'{self.email}'
+
+
 # -- NG Data --------------------------------------------------------------------------------------
+
 
 class MkImage(DbItem):  # -- Market images
     image = models.ImageField(upload_to='markets/%Y/%m/%d')  # картинка
@@ -553,7 +596,7 @@ class MkImage(DbItem):  # -- Market images
 
 
 class MarketPhone(DbItem):  # -- Market phones
-    phone = models.CharField(unique=True, max_length=16)
+    phone = models.CharField(unique=True, max_length=20)
     market = models.ForeignKey(Market, related_name="phones", on_delete=models.CASCADE)
 
     class Meta:
@@ -564,7 +607,7 @@ class MarketPhone(DbItem):  # -- Market phones
         return f'{self.phone}'
 
 
-class MarketEmail(DbItem):  # -- Market phones
+class MarketEmail(DbItem):  # -- Market emails
     email = models.EmailField(unique=True, max_length=255)
     market = models.ForeignKey(Market, related_name="emails", on_delete=models.CASCADE)
 
