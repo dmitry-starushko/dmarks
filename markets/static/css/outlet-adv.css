@@ -1,0 +1,41 @@
+:root {
+    --ABFont: "Geologica", sans-serif;
+    --ABFontWeight: 150;
+    --ABFontSize: 10pt;
+}
+
+.outlet-adv-block {
+    width: 100%;
+    height: fit-content;
+    display: flex;
+    flex-flow: row;
+    align-items: start;
+    gap: 1rem;
+    background: #cbf782;
+    padding: 1rem;
+    border: thin solid black;
+    border-top: none;
+
+    font-size: var(--ABFontSize);
+    font-variation-settings: "wght" var(--ABFontWeight);
+    font-weight: var(--ABFontWeight);
+    font-family: var(--ABFont);
+
+    img {
+        max-width: 25%;
+    }
+
+    div {
+        padding: 0.5rem 0.5rem;
+        background: #32ffff50;
+        border: thin solid #00bcd4;
+
+        p {
+            padding: 0rem 0.5rem;
+            &:first-child {
+                color: blue;
+                background: #32ffff50;
+            }
+        }
+    }
+}
