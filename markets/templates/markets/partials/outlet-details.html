@@ -2,7 +2,7 @@
 {% load aux_tags %}
 {% load thumbnail %}
 {% load cache %}
-{#% cache 300 market_detail_outlet_detail hash %#}
+{% cache 300 market_detail_outlet_detail hash %}
 <div class="mkdetails-tp-header-block">Торговое место №{{outlet.location_number}}</div>
 <div class="outlet-adv-block">
     <img src="{% thumbnail outlet.market.image 150x250 crop %}"/>
@@ -84,4 +84,4 @@
        <img src="{% static 'svg/icons/undo-variant.svg' %}" alt="Выбор легенды"/>
     </a>
 </div>
-{#% endcache %#}
+{% endcache %}
