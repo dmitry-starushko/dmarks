@@ -1,14 +1,164 @@
-from rest_framework.generics import RetrieveAPIView
+from django.http import HttpResponseBadRequest
 from rest_framework.permissions import AllowAny
-from markets.models import TradePlace
-from .serializers import TradePlaceSerializer
+from rest_framework.views import APIView
+from ..decorators import on_exception_returns
 
 
-# -- EXT API --
-
-
-class GetOutletView(RetrieveAPIView):
+class MarketCRUDView(APIView):
     permission_classes = [AllowAny]
-    queryset = TradePlace.objects.all()
-    serializer_class = TradePlaceSerializer
-    lookup_field = 'location_number'
+
+    @on_exception_returns(HttpResponseBadRequest)
+    def post(self, request, mid):
+        pass
+
+    @on_exception_returns(HttpResponseBadRequest)
+    def get(self, request, mid):
+        pass
+
+    @on_exception_returns(HttpResponseBadRequest)
+    def put(self, request, mid):
+        pass
+
+    @on_exception_returns(HttpResponseBadRequest)
+    def delete(self, request, mid):
+        pass
+
+
+class MarketOutletsCRUDView(APIView):
+    permission_classes = [AllowAny]
+
+    @on_exception_returns(HttpResponseBadRequest)
+    def post(self, request, mid):
+        pass
+
+    @on_exception_returns(HttpResponseBadRequest)
+    def get(self, request, mid):
+        pass
+
+    @on_exception_returns(HttpResponseBadRequest)
+    def put(self, request, mid):
+        pass
+
+    @on_exception_returns(HttpResponseBadRequest)
+    def delete(self, request, mid):
+        pass
+
+
+class MarketSchemesCRUDView(APIView):
+    permission_classes = [AllowAny]
+
+    @on_exception_returns(HttpResponseBadRequest)
+    def post(self, request, mid):
+        pass
+
+    @on_exception_returns(HttpResponseBadRequest)
+    def get(self, request, mid):
+        pass
+
+    @on_exception_returns(HttpResponseBadRequest)
+    def put(self, request, mid):
+        pass
+
+    @on_exception_returns(HttpResponseBadRequest)
+    def delete(self, request, mid):
+        pass
+
+
+class MarketImagesCRUDView(APIView):
+    permission_classes = [AllowAny]
+
+    @on_exception_returns(HttpResponseBadRequest)
+    def post(self, request, mid):
+        pass
+
+    @on_exception_returns(HttpResponseBadRequest)
+    def get(self, request, mid):
+        pass
+
+    @on_exception_returns(HttpResponseBadRequest)
+    def put(self, request, mid):
+        pass
+
+    @on_exception_returns(HttpResponseBadRequest)
+    def delete(self, request, mid):
+        pass
+
+
+class MarketPhonesCRUDView(APIView):
+    permission_classes = [AllowAny]
+
+    @on_exception_returns(HttpResponseBadRequest)
+    def post(self, request, mid):
+        pass
+
+    @on_exception_returns(HttpResponseBadRequest)
+    def get(self, request, mid):
+        pass
+
+    @on_exception_returns(HttpResponseBadRequest)
+    def put(self, request, mid):
+        pass
+
+    @on_exception_returns(HttpResponseBadRequest)
+    def delete(self, request, mid):
+        pass
+
+
+class MarketEmailsCRUDView(APIView):
+    permission_classes = [AllowAny]
+
+    @on_exception_returns(HttpResponseBadRequest)
+    def post(self, request, mid):
+        pass
+
+    @on_exception_returns(HttpResponseBadRequest)
+    def get(self, request, mid):
+        pass
+
+    @on_exception_returns(HttpResponseBadRequest)
+    def put(self, request, mid):
+        pass
+
+    @on_exception_returns(HttpResponseBadRequest)
+    def delete(self, request, mid):
+        pass
+
+
+class UserCRUDView(APIView):
+    permission_classes = [AllowAny]
+
+    @on_exception_returns(HttpResponseBadRequest)
+    def post(self, request, phone):
+        pass
+
+    @on_exception_returns(HttpResponseBadRequest)
+    def get(self, request, phone):
+        pass
+
+    @on_exception_returns(HttpResponseBadRequest)
+    def put(self, request, phone):
+        pass
+
+    @on_exception_returns(HttpResponseBadRequest)
+    def delete(self, request, phone):
+        pass
+
+
+class UserOutletsCRUDView(APIView):
+    permission_classes = [AllowAny]
+
+    @on_exception_returns(HttpResponseBadRequest)
+    def post(self, request, phone):
+        pass
+
+    @on_exception_returns(HttpResponseBadRequest)
+    def get(self, request, phone):
+        pass
+
+    @on_exception_returns(HttpResponseBadRequest)
+    def put(self, request, phone):
+        pass
+
+    @on_exception_returns(HttpResponseBadRequest)
+    def delete(self, request, phone):
+        pass
