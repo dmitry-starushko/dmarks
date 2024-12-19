@@ -1,8 +1,9 @@
+from collections import OrderedDict
 from django.http import HttpResponseBadRequest
 from django.views import View
 from django.shortcuts import render
 from markets.decorators import on_exception_returns
-from markets.models import Market, TradePlace
+from markets.models import Market, Contact
 
 
 class BasicContextProvider:
@@ -49,9 +50,15 @@ class ContactsView(View, BasicContextProvider):
     def template_name(self):
         return 'markets/contacts.html'
 
+    @on_exception_returns(HttpResponseBadRequest)
     def get(self, request):
-        return render(request, self.template_name, self.basic_context | {
-            'text': 'Здесь будут контакты',
+        data = OrderedDict()
+        contacts = Contact.objects.select_related('city', 'district')
+        for c in contacts:
+            r = data.setdefault(c.city.locality_name, OrderedDict()).setdefault(c.district.locality_name, OrderedDict())
+            r[c.id] = c
+        return render(request, self.template_name, {
+            'data': data,
             'help_id': 300,
         })
 

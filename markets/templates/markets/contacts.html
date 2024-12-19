@@ -1,13 +1,15 @@
 {% extends 'markets/basic.html' %}
-{% load aux_tags %}
+{% load qr_code %}
 {% block content %}
-<h1>{{text}}</h1>
-{{'## Пример текста с *markdown* разметкой'|markdown}}
-{{'**Пример** текста с *markdown* разметкой'|markdown}}
-{# Пример использования legend -- этот параметр доступен во всех шаблонах #}
-{% for k,v in legend.items %}
-<h2 style="color:{{v.wall_color_css}};">#{{k}} {{v.title}} -- в цвете стен</h2>
-<h2 style="color:{{v.roof_color_css}};">#{{k}} {{v.title}} -- в цвете крыши</h2>
+{% for city, dists in data.items %}
+<h1>{{city}}</h1>
+{% for dist, contacts in dists.items %}
+<h2>{{dist}}</h2>
+{% for key, contact in contacts.items %}
+<h3>{{contact.title}}</h3>
+{% qr_from_text contact.qr_text size="T" %}
+{% endfor %}
+{% endfor %}
 {% endfor %}
 {% endblock %}
 

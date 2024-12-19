@@ -555,6 +555,10 @@ class Contact(DbItem):
     def __str__(self):
         return f'{self.title}'
 
+    @property
+    def qr_text(self):
+        return '\n'.join([self.title] + [str(r) for r in self.phones.all()] + [str(r) for r in self.emails.all()])
+
 
 class ContactPhone(DbItem):  # -- Contact phones
     phone = models.CharField(unique=True, max_length=20)

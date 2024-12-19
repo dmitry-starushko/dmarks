@@ -16,6 +16,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'markets.apps.MarketsConfig',
+    'qr_code',
     'pgtrigger',
     'easy_thumbnails',
     'django_filters',
