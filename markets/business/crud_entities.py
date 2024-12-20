@@ -19,17 +19,17 @@ def create_market(market_id: str, data):
                 'storage': int(infr_storage),
                 'water_pipes': bool(infr_water_pipes),
                 'sewerage': bool(infr_sewerage),
-                'sewerage_type': str(infr_sewerage_type),
+                'sewerage_type': str(infr_sewerage_type)
             },
             'geo': {
                 'lat': float(lat),
                 'lng': float(lng),
                 'city': str(geo_city),
                 'district': str(geo_district),
-                'street_type': str(geo_street_type),
                 'street': str(geo_street),
+                'street_type': str(geo_street_type),
                 'house': str(geo_house),
-                'index': str(geo_index),
+                'index': str(geo_index)
             },
             'market_area': float(market_area),
             'schedule': str(schedule),
