@@ -4,10 +4,9 @@ from markets.enums import LocationType
 from markets.models import Locality, LocalityType, Market, MarketType, MarketProfitability, MarketFireProtection, StreetType
 
 
-def create_market(mid: str, data):
+def create_market(market_id: str, data):
     match data:
         case {
-            'market_id': str(market_id),
             'market_name': str(market_name),
             'additional_name': str(additional_name),
             'market_type': str(market_type),
