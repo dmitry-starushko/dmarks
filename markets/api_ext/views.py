@@ -1,6 +1,9 @@
 from django.http import HttpResponseBadRequest
 from rest_framework.permissions import AllowAny
+from rest_framework.response import Response
 from rest_framework.views import APIView
+
+from ..business.crud_entities import create_market
 from ..decorators import on_exception_returns
 
 
@@ -9,7 +12,10 @@ class MarketCRUDView(APIView):
 
     @on_exception_returns(HttpResponseBadRequest)
     def post(self, request, mid):
-        pass
+        result = create_market(mid, request.data)
+        return Response({
+            'result': result
+        })
 
     @on_exception_returns(HttpResponseBadRequest)
     def get(self, request, mid):
