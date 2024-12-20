@@ -1,7 +1,6 @@
 from django.db import transaction
-
 from markets.enums import LocationType
-from markets.models import Locality, LocalityType, Market, MarketType, MarketProfitability, MarketFireProtection, StreetType
+from markets.models import Locality, LocalityType, Market, MarketType, MarketProfitability, MarketFireProtection, StreetType, Validators
 
 
 def create_market(market_id: str, data):
@@ -35,13 +34,9 @@ def create_market(market_id: str, data):
             'market_area': float(market_area),
             'schedule': str(schedule),
             'ads': str(ads)
-        } if infr_parking >= 0 and \
-             infr_entrance >= 0 and \
-             infr_restroom >= 0 and \
-             infr_storage >= 0 and \
-             -90.0 <= lat <= 90.0 and \
-             -180.0 <= lng <= 180.0 and \
-             market_area >= 0.0:
+        } if infr_parking >= 0 and infr_entrance >= 0 and infr_restroom >= 0 and infr_storage >= 0 and market_area >= 0.0 and -90.0 <= lat <= 90.0 and -180.0 <= lng <= 180.0:
+            Validators.market_id(market_id)
+            Validators.postal_code(geo_index)
             with transaction.atomic():
                 city_type, _ = LocalityType.objects.get_or_create(type_name=LocationType.CITY)
                 district_type, _ = LocalityType.objects.get_or_create(type_name=LocationType.DISTRICT)

@@ -4,7 +4,7 @@ from django.contrib.auth.models import AbstractUser
 from django.core.validators import RegexValidator, MinValueValidator, MaxValueValidator
 from django.db import models
 from django.conf import settings
-from django.db.models import Index
+from django.db.models import Index, Q
 from markets.enums import OutletState
 
 
@@ -410,6 +410,15 @@ class Market(models.Model):
         db_table_comment = 'Информация о рынках'
         verbose_name = "Рынок"
         verbose_name_plural = "Рынки"
+        constraints = [
+            models.CheckConstraint(check=Q(infr_parking__gte=0), name="non negative parking"),
+            models.CheckConstraint(check=Q(infr_entrance__gte=0), name="non negative entrance"),
+            models.CheckConstraint(check=Q(infr_restroom__gte=0), name="non negative restroom"),
+            models.CheckConstraint(check=Q(infr_storage__gte=0), name="non negative storage"),
+            models.CheckConstraint(check=Q(market_area__gte=0.0), name="non negative market area"),
+            models.CheckConstraint(check=Q(lat__gte=-90.0) & Q(lat__lte=90.0), name="lat range"),
+            models.CheckConstraint(check=Q(lng__gte=-180.0) & Q(lat__lte=180.0), name="lng range"),
+        ]
 
     def __str__(self):
         return self.mk_full_name
