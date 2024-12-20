@@ -2,8 +2,7 @@ from django.http import HttpResponseBadRequest
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from rest_framework.views import APIView
-
-from ..business.crud_entities import create_market
+from ..business.crud_entities import create_market, update_market, get_market, delete_market
 from ..decorators import on_exception_returns
 
 
@@ -19,15 +18,24 @@ class MarketCRUDView(APIView):
 
     @on_exception_returns(HttpResponseBadRequest)
     def get(self, request, mid):
-        pass
+        result = get_market(mid)
+        return Response({
+            'result': result
+        })
 
     @on_exception_returns(HttpResponseBadRequest)
     def put(self, request, mid):
-        pass
+        result = update_market(mid, request.data)
+        return Response({
+            'result': result
+        })
 
     @on_exception_returns(HttpResponseBadRequest)
     def delete(self, request, mid):
-        pass
+        result = delete_market(mid)
+        return Response({
+            'result': result
+        })
 
 
 class MarketOutletsCRUDView(APIView):
