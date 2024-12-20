@@ -15,3 +15,8 @@ class OutletState(StrEnum):
     TEMPORARILY_UNAVAILABLE_FOR_BOOKING = 'TUNAVFB'
     BOOKED = 'BOOKED'
     RENTED = 'RENTED'
+
+
+class LocationType(StrEnum):
+    CITY = 'г.'
+    DISTRICT = 'г.р-н'
