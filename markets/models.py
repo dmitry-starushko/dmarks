@@ -1,7 +1,7 @@
 from decimal import Decimal
 from django.contrib.auth.base_user import BaseUserManager
 from django.contrib.auth.models import AbstractUser
-from django.core.validators import RegexValidator
+from django.core.validators import RegexValidator, MinValueValidator, MaxValueValidator
 from django.db import models
 from django.conf import settings
 from django.db.models import Index
@@ -381,16 +381,16 @@ class Market(models.Model):
 
     profitability = models.ForeignKey(MarketProfitability, models.SET_DEFAULT, default=MarketProfitability.default_pk, db_comment='id - категория рентабельности')
     infr_fire_protection = models.ForeignKey(MarketFireProtection, models.SET_DEFAULT, default=MarketFireProtection.default_pk, db_comment='id - противопожарные системы')
-    infr_parking = models.SmallIntegerField(default=0, db_comment='Кол-во парковок')
-    infr_entrance = models.SmallIntegerField(default=0, db_comment='Кол-во подъездов')
-    infr_restroom = models.SmallIntegerField(default=0, db_comment='Кол-во санузлов')
+    infr_parking = models.SmallIntegerField(default=0, validators=[MinValueValidator(0)], db_comment='Кол-во парковок')
+    infr_entrance = models.SmallIntegerField(default=0, validators=[MinValueValidator(0)], db_comment='Кол-во подъездов')
+    infr_restroom = models.SmallIntegerField(default=0, validators=[MinValueValidator(0)], db_comment='Кол-во санузлов')
+    infr_storage = models.SmallIntegerField(default=0, validators=[MinValueValidator(0)], db_comment='Кол-во складских помещений')
     infr_water_pipes = models.BooleanField(default=False, db_comment='Наличие водопровода')
     infr_sewerage = models.BooleanField(default=False, db_comment='Наличие канализации')
-    infr_sewerage_type = models.CharField(max_length=1000, default='Не указано', db_comment='Тип канализации')
-    infr_storage = models.SmallIntegerField(default=0, db_comment='Кол-во складских помещений')
+    infr_sewerage_type = models.CharField(max_length=64, default='Не указано', db_comment='Тип канализации')
 
-    lat = models.FloatField(default=0.0, db_comment='Широта - координата рынка')
-    lng = models.FloatField(default=0.0, db_comment='Долгота - координата рынка')
+    lat = models.FloatField(default=0.0, validators=[MinValueValidator(-90.0), MaxValueValidator(90.0)], db_comment='Широта - координата рынка')
+    lng = models.FloatField(default=0.0, validators=[MinValueValidator(-180.0), MaxValueValidator(180.0)], db_comment='Долгота - координата рынка')
     geo_city = models.ForeignKey(Locality, models.SET_DEFAULT, default=Locality.default_pk, db_comment='Город - id')
     geo_district = models.ForeignKey(Locality, models.SET_DEFAULT, default=Locality.default_pk, related_name='markets_geo_district_set', db_comment='Район - id')
     geo_street_type = models.ForeignKey(StreetType, models.SET_DEFAULT, default=StreetType.default_pk, db_comment='Тип улицы - id')
@@ -518,10 +518,10 @@ class TradePlace(models.Model):
     location_number = models.CharField(unique=True, validators=[Validators.outlet_number], db_comment='Номер торгового места')
     location_row = models.CharField(default='Не указано', db_comment='Ряд торгового места')
 
-    meas_area = models.FloatField(default=0.0, db_comment='Площадь места')
-    meas_length = models.FloatField(default=0.0, db_comment='Длина места')
-    meas_height = models.FloatField(default=0.0, db_comment='Высота места')
-    meas_width = models.FloatField(default=0.0, db_comment='Ширина места')
+    meas_area = models.FloatField(default=0.0, validators=[MinValueValidator(0.0)], db_comment='Площадь места')
+    meas_length = models.FloatField(default=0.0, validators=[MinValueValidator(0.0)], db_comment='Длина места')
+    meas_height = models.FloatField(default=0.0, validators=[MinValueValidator(0.0)], db_comment='Высота места')
+    meas_width = models.FloatField(default=0.0, validators=[MinValueValidator(0.0)], db_comment='Ширина места')
 
     street_vending = models.BooleanField(default=False, db_comment='Возможность выносной торговли')
     impr_electricity = models.BooleanField(default=False, db_comment='Наличие электричества')
@@ -531,11 +531,11 @@ class TradePlace(models.Model):
     impr_sewerage = models.BooleanField(default=False, db_comment='Наличие канализации')
     impr_drains = models.BooleanField(default=False, db_comment='Наличие стоков')
     impr_internet = models.BooleanField(default=False, db_comment='Подключение к сети интернет')
-    impr_internet_type_id = models.SmallIntegerField(default=0, db_comment='Тип подключения к сети интернет (0 - не заполнено, 1 - проводной, 2 - беспроводной)')
+    impr_internet_type_id = models.SmallIntegerField(default=0, validators=[MinValueValidator(0), MaxValueValidator(2)], db_comment='Тип подключения к сети интернет (0 - не заполнено, 1 - проводной, 2 - беспроводной)')
     impr_add_equipment = models.BooleanField(default=False, db_comment='Наличие стендов, мебели')
     impr_fridge = models.BooleanField(default=False, db_comment='Наличие холодильных установок')
     impr_shopwindow = models.BooleanField(default=False, db_comment='Наличие витрин')
-    price = models.DecimalField(max_digits=12, decimal_places=2, default=Decimal(0.0), db_comment='Стоимость аренды торгового места в месяц')
+    price = models.DecimalField(max_digits=12, decimal_places=2, default=Decimal(0.0), validators=[MinValueValidator(0.0)], db_comment='Стоимость аренды торгового места в месяц')
 
     class Meta:
         managed = True
