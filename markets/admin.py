@@ -54,12 +54,12 @@ class MkImageAdmin(admin.ModelAdmin):
     ordering = ['market']
 
 
-@admin.register(Booking)
-class BookingAdmin(admin.ModelAdmin):
-    list_display = ['created_at', 'booked_by',  'outlet']
-    list_filter = ['booked_by']
-    readonly_fields = ['created_at', 'booked_by',  'outlet']
-    ordering = ['booked_by']
+# @admin.register(Booking)
+# class BookingAdmin(admin.ModelAdmin):
+#     list_display = ['created_at', 'booked_by',  'outlet']
+#     list_filter = ['booked_by']
+#     readonly_fields = ['created_at', 'booked_by',  'outlet']
+#     ordering = ['booked_by']
 
 
 @admin.register(Parameter)

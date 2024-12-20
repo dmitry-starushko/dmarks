@@ -30,6 +30,10 @@ class Validators:
         return Validators._rxv('^\\d{3}$', "Ожидается значение в формате 999")(value)
 
     @staticmethod
+    def postal_code(value):
+        return Validators._rxv('^\\d{5,6}$', "Ожидается значение в формате 999999")(value)
+
+    @staticmethod
     def itn(value):
         return Validators._rxv('^((?:\\d{10})|(?:\\d{12}))$', "Ожидается значение в формате 999")(value)
 
@@ -370,9 +374,10 @@ class TradeType(models.Model):
 
 class Market(models.Model):
     market_id = models.CharField(max_length=3, unique=True, validators=[Validators.market_id], db_comment='Уникальный идентификатор рынка')
-    market_name = models.CharField(max_length=1000, db_comment='Наименование рынка')
-    additional_name = models.CharField(max_length=1000, db_comment='Дополнительное наименование')
+    market_name = models.CharField(max_length=128, db_comment='Наименование рынка')
+    additional_name = models.CharField(max_length=128, blank=True, default='', db_comment='Дополнительное наименование')
     market_type = models.ForeignKey(MarketType, models.SET_DEFAULT, default=MarketType.default_pk, db_comment='id - тип рынка')
+    branch = models.CharField(max_length=12, default='Не указано', db_comment='Отделение')
 
     profitability = models.ForeignKey(MarketProfitability, models.SET_DEFAULT, default=MarketProfitability.default_pk, db_comment='id - категория рентабельности')
     infr_fire_protection = models.ForeignKey(MarketFireProtection, models.SET_DEFAULT, default=MarketFireProtection.default_pk, db_comment='id - противопожарные системы')
@@ -389,11 +394,10 @@ class Market(models.Model):
     geo_city = models.ForeignKey(Locality, models.SET_DEFAULT, default=Locality.default_pk, db_comment='Город - id')
     geo_district = models.ForeignKey(Locality, models.SET_DEFAULT, default=Locality.default_pk, related_name='markets_geo_district_set', db_comment='Район - id')
     geo_street_type = models.ForeignKey(StreetType, models.SET_DEFAULT, default=StreetType.default_pk, db_comment='Тип улицы - id')
-    geo_street = models.TextField(default='Не указано', db_comment='Наименование улицы')
+    geo_street = models.CharField(max_length=64, default='Не указано', db_comment='Наименование улицы')
     geo_house = models.CharField(max_length=50, default='Не указано', db_comment='Дом')
-    geo_index = models.CharField(max_length=10, default='Не указано', db_comment='Индекс')
-    geo_full_address = models.CharField(default='Не указано', db_comment='Полный адрес через запятую')
-    market_square = models.FloatField(default=0.0, db_comment='Общая площадь рынка')
+    geo_index = models.CharField(max_length=10, validators=[Validators.postal_code], default='Не указано', db_comment='Индекс')
+    market_area = models.FloatField(default=0.0, db_comment='Общая площадь рынка')
 
     schedule = models.TextField(default='Не указано', db_column='shedule', db_comment='График работы')
     ads = models.TextField(default='Не указано', db_comment='Реклама')
@@ -408,7 +412,7 @@ class Market(models.Model):
         verbose_name_plural = "Рынки"
 
     def __str__(self):
-        return f'{self.market_name}:{self.additional_name}'
+        return self.mk_full_name
 
     @property
     def image(self):
@@ -433,7 +437,7 @@ class Market(models.Model):
 
     @property
     def mk_geo_full_address(self):
-        return settings.DISP_RE.sub(' ', self.geo_full_address).strip()
+        return f'{self.geo_city.locality_type} {self.geo_city}, {self.geo_street_type} {self.geo_street}, {self.geo_house}'
 
     @property
     def mk_geo_index(self):
@@ -441,11 +445,11 @@ class Market(models.Model):
 
     @property
     def mk_full_name(self):
-        return f"{self.mk_market_name}, {self.mk_additional_name}"
+        return f'Рынок {self.mk_market_name}{f' ({self.mk_additional_name})' if self.mk_additional_name else ''}'
 
     @property
     def mk_full_address(self):
-        return f"{self.mk_geo_index}, {self.mk_geo_full_address}"
+        return f'{self.mk_geo_index} {self.mk_geo_full_address}'
 
 
 class SvgSchema(models.Model):
@@ -463,6 +467,42 @@ class SvgSchema(models.Model):
 
     def __str__(self):
         return f'Схема #{self.id}, уровень "{self.floor}", рынок "{self.market}"'
+
+
+class MkImage(DbItem):  # -- Market images
+    image = models.ImageField(upload_to='markets/%Y/%m/%d')  # картинка
+    market = models.ForeignKey(Market, related_name="images", on_delete=models.CASCADE)  # рынок
+
+    class Meta:
+        verbose_name = "Изображение"
+        verbose_name_plural = "Изображения"
+
+    def __str__(self):
+        return f'Фотография рынка #{self.market.id}'
+
+
+class MarketPhone(DbItem):  # -- Market phones
+    phone = models.CharField(unique=True, max_length=20)
+    market = models.ForeignKey(Market, related_name="phones", on_delete=models.CASCADE)
+
+    class Meta:
+        verbose_name = "Телефон"
+        verbose_name_plural = "Телефоны"
+
+    def __str__(self):
+        return f'{self.phone}'
+
+
+class MarketEmail(DbItem):  # -- Market emails
+    email = models.EmailField(unique=True, max_length=255)
+    market = models.ForeignKey(Market, related_name="emails", on_delete=models.CASCADE)
+
+    class Meta:
+        verbose_name = "EMail"
+        verbose_name_plural = "EMail"
+
+    def __str__(self):
+        return f'{self.email}'
 
 
 class TradePlace(models.Model):
@@ -524,18 +564,18 @@ class TradePlace(models.Model):
                 return "ошибка в данных"
 
 
-class Booking(DbItem):
-    outlet = models.ForeignKey(TradePlace, on_delete=models.CASCADE, related_name="bookings", db_comment='Идентификатор торгового места')
-    booked_by = models.ForeignKey(DmUser, on_delete=models.CASCADE, related_name="bookings", db_comment='Кто забронировал')
-
-    class Meta:
-        managed = True
-        ordering = ['-created_at']
-        verbose_name = "Бронирование ТМ"
-        verbose_name_plural = "Бронирования ТМ"
-
-    def __str__(self):
-        return f'Бронирование {self.id}'
+# class Booking(DbItem):
+#     outlet = models.ForeignKey(TradePlace, on_delete=models.CASCADE, related_name="bookings", db_comment='Идентификатор торгового места')
+#     booked_by = models.ForeignKey(DmUser, on_delete=models.CASCADE, related_name="bookings", db_comment='Кто забронировал')
+#
+#     class Meta:
+#         managed = True
+#         ordering = ['-created_at']
+#         verbose_name = "Бронирование ТМ"
+#         verbose_name_plural = "Бронирования ТМ"
+#
+#     def __str__(self):
+#         return f'Бронирование {self.id}'
 
 
 # -- Contacts -------------------------------------------------------------------------------------
@@ -585,42 +625,6 @@ class ContactEmail(DbItem):  # -- Contact emails
 
 
 # -- NG Data --------------------------------------------------------------------------------------
-
-
-class MkImage(DbItem):  # -- Market images
-    image = models.ImageField(upload_to='markets/%Y/%m/%d')  # картинка
-    market = models.ForeignKey(Market, related_name="images", on_delete=models.CASCADE)  # рынок
-
-    class Meta:
-        verbose_name = "Изображение"
-        verbose_name_plural = "Изображения"
-
-    def __str__(self):
-        return f'Фотография рынка #{self.market.id}'
-
-
-class MarketPhone(DbItem):  # -- Market phones
-    phone = models.CharField(unique=True, max_length=20)
-    market = models.ForeignKey(Market, related_name="phones", on_delete=models.CASCADE)
-
-    class Meta:
-        verbose_name = "Телефон"
-        verbose_name_plural = "Телефоны"
-
-    def __str__(self):
-        return f'{self.phone}'
-
-
-class MarketEmail(DbItem):  # -- Market emails
-    email = models.EmailField(unique=True, max_length=255)
-    market = models.ForeignKey(Market, related_name="emails", on_delete=models.CASCADE)
-
-    class Meta:
-        verbose_name = "EMail"
-        verbose_name_plural = "EMail"
-
-    def __str__(self):
-        return f'{self.email}'
 
 
 class Parameter(DbItem):  # -- NG Parameters
