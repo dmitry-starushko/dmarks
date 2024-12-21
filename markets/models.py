@@ -517,6 +517,8 @@ class TradePlace(models.Model):
     market = models.ForeignKey(Market, on_delete=models.CASCADE, related_name="trade_places", db_comment='Уникальный идентификатор рынка\r\n')
     location_number = models.CharField(unique=True, validators=[Validators.outlet_number], db_comment='Номер торгового места')
     location_row = models.CharField(default='Не указано', db_comment='Ряд торгового места')
+    price = models.DecimalField(max_digits=12, decimal_places=2, default=Decimal(0.0), validators=[MinValueValidator(0.0)], db_comment='Стоимость аренды торгового места в месяц')
+    street_vending = models.BooleanField(default=False, db_comment='Возможность выносной торговли')
 
     trade_type = models.ForeignKey(TradeType, on_delete=models.SET_DEFAULT, default=TradeType.default_pk, db_comment='Тип торгового места')
     trade_place_type = models.ForeignKey(TradePlaceType, on_delete=models.SET_DEFAULT, default=TradePlaceType.default_pk, db_comment='Занятость торгового места')
@@ -531,7 +533,6 @@ class TradePlace(models.Model):
     meas_height = models.FloatField(default=0.0, validators=[MinValueValidator(0.0)], db_comment='Высота места')
     meas_width = models.FloatField(default=0.0, validators=[MinValueValidator(0.0)], db_comment='Ширина места')
 
-    street_vending = models.BooleanField(default=False, db_comment='Возможность выносной торговли')
     impr_electricity = models.BooleanField(default=False, db_comment='Наличие электричества')
     impr_heat_supply = models.BooleanField(default=False, db_comment='Наличие теплоснабжения')
     impr_air_conditioning = models.BooleanField(default=False, db_comment='Наличие кондиционирования')
@@ -543,7 +544,6 @@ class TradePlace(models.Model):
     impr_add_equipment = models.BooleanField(default=False, db_comment='Наличие стендов, мебели')
     impr_fridge = models.BooleanField(default=False, db_comment='Наличие холодильных установок')
     impr_shopwindow = models.BooleanField(default=False, db_comment='Наличие витрин')
-    price = models.DecimalField(max_digits=12, decimal_places=2, default=Decimal(0.0), validators=[MinValueValidator(0.0)], db_comment='Стоимость аренды торгового места в месяц')
 
     class Meta:
         managed = True
@@ -554,6 +554,7 @@ class TradePlace(models.Model):
         verbose_name = "Торговое место"
         verbose_name_plural = "Торговые места"
         constraints = [
+            models.CheckConstraint(check=Q(impr_internet_type_id__gte=0) & Q(impr_internet_type_id__lte=2), name="internet_type_id range"),
             models.CheckConstraint(check=Q(meas_area__gte=0.0), name="non-negative area"),
             models.CheckConstraint(check=Q(meas_length__gte=0.0), name="non-negative length"),
             models.CheckConstraint(check=Q(meas_height__gte=0.0), name="non-negative height"),
