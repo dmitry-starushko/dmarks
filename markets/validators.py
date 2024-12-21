@@ -10,29 +10,29 @@ class Validators:
     ITN = '^((?:\\d{10})|(?:\\d{12}))$'
 
     @staticmethod
-    def _rxv(rx: str, msg: str):
-        return RegexValidator(regex=rx, message=msg)
+    def _rxv(rx: str):
+        return RegexValidator(regex=rx, message=f'Значение не соответствует регулярному выражению {rx}')
 
     @staticmethod
     def css_color(value):
-        return Validators._rxv(Validators.CSS, "Ожидается значение в формате #ffffff")(value)
+        return Validators._rxv(Validators.CSS)(value)
 
     @staticmethod
     def hex(value):
-        return Validators._rxv(Validators.HEX, "Ожидается значение в формате 0xffffff")(value)
+        return Validators._rxv(Validators.HEX)(value)
 
     @staticmethod
     def outlet_number(value):
-        return Validators._rxv(Validators.ONM, "Ожидается значение в формате 999999999[a]")(value)
+        return Validators._rxv(Validators.ONM)(value)
 
     @staticmethod
     def market_id(value):
-        return Validators._rxv(Validators.MID, "Ожидается значение в формате 999")(value)
+        return Validators._rxv(Validators.MID)(value)
 
     @staticmethod
     def postal_code(value):
-        return Validators._rxv(Validators.POC, "Ожидается значение в формате 999999")(value)
+        return Validators._rxv(Validators.POC)(value)
 
     @staticmethod
     def itn(value):
-        return Validators._rxv(Validators.ITN, "Ожидается значение в формате 999")(value)
+        return Validators._rxv(Validators.ITN)(value)
