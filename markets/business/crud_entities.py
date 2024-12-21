@@ -172,3 +172,125 @@ def update_market(market_id: str, data):
 def delete_market(market_id: str):
     Market.objects.get(market_id=market_id).delete()
     return True
+
+
+# --- Outlets ---
+
+
+def create_market_outlets(market_id: str, data):
+    market = Market.objects.get(market_id=market_id)
+    with transaction.atomic():
+        for olt in data:
+            match olt:
+                case {
+
+                }: pass
+                case _: raise ValueError(olt)
+        return True
+
+
+def get_market_outlets(market_id: str):
+    market = Market.objects.get(market_id=market_id)
+    return False
+
+
+def update_market_outlets(market_id: str, data):
+    market = Market.objects.get(market_id=market_id)
+    return False
+
+
+def delete_market_outlets(market_id: str, data):
+    market = Market.objects.get(market_id=market_id)
+    return False
+
+
+# --- Schemes ---
+
+
+def create_market_schemes(market_id: str, data):
+    # Not implemented for current iteration
+    return False
+
+
+def get_market_schemes(market_id: str):
+    # Not implemented for current iteration
+    return False
+
+
+def update_market_schemes(market_id: str, data):
+    # Not implemented for current iteration
+    return False
+
+
+def delete_market_schemes(market_id: str, data):
+    # Not implemented for current iteration
+    return False
+
+
+# --- Images ---
+
+
+def create_market_images(market_id: str, data):
+    market = Market.objects.get(market_id=market_id)
+    return False
+
+
+def get_market_images(market_id: str):
+    market = Market.objects.get(market_id=market_id)
+    return False
+
+
+def update_market_images(market_id: str, data):
+    market = Market.objects.get(market_id=market_id)
+    return False
+
+
+def delete_market_images(market_id: str, data):
+    market = Market.objects.get(market_id=market_id)
+    return False
+
+
+# --- Phones ---
+
+
+def create_market_phones(market_id: str, data):
+    market = Market.objects.get(market_id=market_id)
+    return False
+
+
+def get_market_phones(market_id: str):
+    market = Market.objects.get(market_id=market_id)
+    return False
+
+
+def update_market_phones(market_id: str, data):
+    market = Market.objects.get(market_id=market_id)
+    return False
+
+
+def delete_market_phones(market_id: str, data):
+    market = Market.objects.get(market_id=market_id)
+    return False
+
+
+# --- Emails ---
+
+
+def create_market_emails(market_id: str, data):
+    market = Market.objects.get(market_id=market_id)
+    return False
+
+
+def get_market_emails(market_id: str):
+    market = Market.objects.get(market_id=market_id)
+    return False
+
+
+def update_market_emails(market_id: str, data):
+    market = Market.objects.get(market_id=market_id)
+    return False
+
+
+def delete_market_emails(market_id: str, data):
+    market = Market.objects.get(market_id=market_id)
+    return False

@@ -411,14 +411,13 @@ class Market(models.Model):
         verbose_name = "Рынок"
         verbose_name_plural = "Рынки"
         constraints = [
-            models.CheckConstraint(check=Q(infr_parking__gte=0), name="non negative parking"),
-            models.CheckConstraint(check=Q(infr_entrance__gte=0), name="non negative entrance"),
-            models.CheckConstraint(check=Q(infr_restroom__gte=0), name="non negative restroom"),
-            models.CheckConstraint(check=Q(infr_storage__gte=0), name="non negative storage"),
-            models.CheckConstraint(check=Q(market_area__gte=0.0), name="non negative market area"),
+            models.CheckConstraint(check=Q(infr_parking__gte=0), name="non-negative parking"),
+            models.CheckConstraint(check=Q(infr_entrance__gte=0), name="non-negative entrance"),
+            models.CheckConstraint(check=Q(infr_restroom__gte=0), name="non-negative restroom"),
+            models.CheckConstraint(check=Q(infr_storage__gte=0), name="non-negative storage"),
+            models.CheckConstraint(check=Q(market_area__gte=0.0), name="non-negative market area"),
             models.CheckConstraint(check=Q(lat__gte=-90.0) & Q(lat__lte=90.0), name="lat range"),
-            models.CheckConstraint(check=Q(lng__gte=-180.0) & Q(lat__lte=180.0), name="lng range"),
-        ]
+            models.CheckConstraint(check=Q(lng__gte=-180.0) & Q(lat__lte=180.0), name="lng range")]
 
     def __str__(self):
         return self.mk_full_name
@@ -516,6 +515,9 @@ class MarketEmail(DbItem):  # -- Market emails
 
 class TradePlace(models.Model):
     market = models.ForeignKey(Market, on_delete=models.CASCADE, related_name="trade_places", db_comment='Уникальный идентификатор рынка\r\n')
+    location_number = models.CharField(unique=True, validators=[Validators.outlet_number], db_comment='Номер торгового места')
+    location_row = models.CharField(default='Не указано', db_comment='Ряд торгового места')
+
     trade_type = models.ForeignKey(TradeType, on_delete=models.SET_DEFAULT, default=TradeType.default_pk, db_comment='Тип торгового места')
     trade_place_type = models.ForeignKey(TradePlaceType, on_delete=models.SET_DEFAULT, default=TradePlaceType.default_pk, db_comment='Занятость торгового места')
     trade_spec_type_id_act = models.ForeignKey(TradeSpecType, on_delete=models.SET_DEFAULT, default=TradeSpecType.default_pk, db_column='trade_spec_type_id_act', related_name='tradeplace_trade_spec_type_id_act_set', db_comment='Специализация торгового места (фактическая)')
@@ -523,9 +525,6 @@ class TradePlace(models.Model):
     location_sector = models.ForeignKey(TradeSector, on_delete=models.SET_DEFAULT, default=TradeSector.default_pk, db_comment='id сектор торгового места')
     scheme = models.ForeignKey(SvgSchema, related_name="outlets", on_delete=models.SET_NULL, null=True)
     rented_by = models.ForeignKey(DmUser, on_delete=models.RESTRICT, null=True, db_comment='кем арендовано')
-
-    location_number = models.CharField(unique=True, validators=[Validators.outlet_number], db_comment='Номер торгового места')
-    location_row = models.CharField(default='Не указано', db_comment='Ряд торгового места')
 
     meas_area = models.FloatField(default=0.0, validators=[MinValueValidator(0.0)], db_comment='Площадь места')
     meas_length = models.FloatField(default=0.0, validators=[MinValueValidator(0.0)], db_comment='Длина места')
@@ -554,6 +553,12 @@ class TradePlace(models.Model):
         indexes = [Index(fields=["location_number"], name='index_by_number')]
         verbose_name = "Торговое место"
         verbose_name_plural = "Торговые места"
+        constraints = [
+            models.CheckConstraint(check=Q(meas_area__gte=0.0), name="non-negative area"),
+            models.CheckConstraint(check=Q(meas_length__gte=0.0), name="non-negative length"),
+            models.CheckConstraint(check=Q(meas_height__gte=0.0), name="non-negative height"),
+            models.CheckConstraint(check=Q(meas_width__gte=0.0), name="non-negative width"),
+            models.CheckConstraint(check=Q(price__gte=0.0), name="non-negative price")]
 
     def __str__(self):
         return f'ТМ #{self.id} <{self.location_number}>'

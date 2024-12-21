@@ -2,7 +2,9 @@ from django.http import HttpResponseBadRequest
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from ..business.crud_entities import create_market, update_market, get_market, delete_market
+from ..business.crud_entities import create_market, update_market, get_market, delete_market, create_market_outlets, get_market_outlets, update_market_outlets, delete_market_outlets, \
+    create_market_schemes, get_market_schemes, update_market_schemes, delete_market_schemes, create_market_images, get_market_images, update_market_images, delete_market_images, create_market_phones, \
+    get_market_phones, update_market_phones, delete_market_phones, create_market_emails, get_market_emails, update_market_emails, delete_market_emails
 from ..decorators import on_exception_returns
 
 
@@ -43,19 +45,31 @@ class MarketOutletsCRUDView(APIView):
 
     @on_exception_returns(HttpResponseBadRequest)
     def post(self, request, mid):
-        pass
+        result = create_market_outlets(mid, request.data)
+        return Response({
+            'result': result
+        })
 
     @on_exception_returns(HttpResponseBadRequest)
     def get(self, request, mid):
-        pass
+        result = get_market_outlets(mid)
+        return Response({
+            'result': result
+        })
 
     @on_exception_returns(HttpResponseBadRequest)
     def put(self, request, mid):
-        pass
+        result = update_market_outlets(mid, request.data)
+        return Response({
+            'result': result
+        })
 
     @on_exception_returns(HttpResponseBadRequest)
     def delete(self, request, mid):
-        pass
+        result = delete_market_outlets(mid, request.data)
+        return Response({
+            'result': result
+        })
 
 
 class MarketSchemesCRUDView(APIView):
@@ -63,19 +77,31 @@ class MarketSchemesCRUDView(APIView):
 
     @on_exception_returns(HttpResponseBadRequest)
     def post(self, request, mid):
-        pass
+        result = create_market_schemes(mid, request.data)
+        return Response({
+            'result': result
+        })
 
     @on_exception_returns(HttpResponseBadRequest)
     def get(self, request, mid):
-        pass
+        result = get_market_schemes(mid)
+        return Response({
+            'result': result
+        })
 
     @on_exception_returns(HttpResponseBadRequest)
     def put(self, request, mid):
-        pass
+        result = update_market_schemes(mid, request.data)
+        return Response({
+            'result': result
+        })
 
     @on_exception_returns(HttpResponseBadRequest)
     def delete(self, request, mid):
-        pass
+        result = delete_market_schemes(mid, request.data)
+        return Response({
+            'result': result
+        })
 
 
 class MarketImagesCRUDView(APIView):
@@ -83,19 +109,31 @@ class MarketImagesCRUDView(APIView):
 
     @on_exception_returns(HttpResponseBadRequest)
     def post(self, request, mid):
-        pass
+        result = create_market_images(mid, request.data)
+        return Response({
+            'result': result
+        })
 
     @on_exception_returns(HttpResponseBadRequest)
     def get(self, request, mid):
-        pass
+        result = get_market_images(mid)
+        return Response({
+            'result': result
+        })
 
     @on_exception_returns(HttpResponseBadRequest)
     def put(self, request, mid):
-        pass
+        result = update_market_images(mid, request.data)
+        return Response({
+            'result': result
+        })
 
     @on_exception_returns(HttpResponseBadRequest)
     def delete(self, request, mid):
-        pass
+        result = delete_market_images(mid, request.data)
+        return Response({
+            'result': result
+        })
 
 
 class MarketPhonesCRUDView(APIView):
@@ -103,19 +141,31 @@ class MarketPhonesCRUDView(APIView):
 
     @on_exception_returns(HttpResponseBadRequest)
     def post(self, request, mid):
-        pass
+        result = create_market_phones(mid, request.data)
+        return Response({
+            'result': result
+        })
 
     @on_exception_returns(HttpResponseBadRequest)
     def get(self, request, mid):
-        pass
+        result = get_market_phones(mid)
+        return Response({
+            'result': result
+        })
 
     @on_exception_returns(HttpResponseBadRequest)
     def put(self, request, mid):
-        pass
+        result = update_market_phones(mid, request.data)
+        return Response({
+            'result': result
+        })
 
     @on_exception_returns(HttpResponseBadRequest)
     def delete(self, request, mid):
-        pass
+        result = delete_market_phones(mid, request.data)
+        return Response({
+            'result': result
+        })
 
 
 class MarketEmailsCRUDView(APIView):
@@ -123,19 +173,31 @@ class MarketEmailsCRUDView(APIView):
 
     @on_exception_returns(HttpResponseBadRequest)
     def post(self, request, mid):
-        pass
+        result = create_market_emails(mid, request.data)
+        return Response({
+            'result': result
+        })
 
     @on_exception_returns(HttpResponseBadRequest)
     def get(self, request, mid):
-        pass
+        result = get_market_emails(mid)
+        return Response({
+            'result': result
+        })
 
     @on_exception_returns(HttpResponseBadRequest)
     def put(self, request, mid):
-        pass
+        result = update_market_emails(mid, request.data)
+        return Response({
+            'result': result
+        })
 
     @on_exception_returns(HttpResponseBadRequest)
     def delete(self, request, mid):
-        pass
+        result = delete_market_emails(mid, request.data)
+        return Response({
+            'result': result
+        })
 
 
 class UserCRUDView(APIView):
