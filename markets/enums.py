@@ -20,3 +20,7 @@ class OutletState(StrEnum):
 class LocationType(StrEnum):
     CITY = 'г.'
     DISTRICT = 'г.р-н'
+
+
+class FUS(StrEnum):  # Frequently Used Strings
+    NS = 'Не указано'

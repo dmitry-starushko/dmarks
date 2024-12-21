@@ -5,7 +5,7 @@ from django.core.validators import RegexValidator, MinValueValidator, MaxValueVa
 from django.db import models
 from django.conf import settings
 from django.db.models import Index, Q
-from markets.enums import OutletState
+from markets.enums import OutletState, FUS
 
 
 class Validators:
@@ -124,7 +124,7 @@ class LocalityType(models.Model):
 
     @classmethod
     def default_pk(cls):
-        item, _ = cls.objects.get_or_create(type_name="Не указано")
+        item, _ = cls.objects.get_or_create(type_name=FUS.NS)
         return item.pk
 
     class Meta:
@@ -147,7 +147,7 @@ class Locality(models.Model):
 
     @classmethod
     def default_pk(cls):
-        item, _ = cls.objects.get_or_create(locality_name="Не указано")
+        item, _ = cls.objects.get_or_create(locality_name=FUS.NS)
         return item.pk
 
     class Meta:
@@ -168,7 +168,7 @@ class MarketFireProtection(models.Model):
 
     @classmethod
     def default_pk(cls):
-        item, _ = cls.objects.get_or_create(fp_name="Не указано")
+        item, _ = cls.objects.get_or_create(fp_name=FUS.NS)
         return item.pk
 
     class Meta:
@@ -189,7 +189,7 @@ class MarketProfitability(models.Model):
 
     @classmethod
     def default_pk(cls):
-        item, _ = cls.objects.get_or_create(profitability_name="Не указано")
+        item, _ = cls.objects.get_or_create(profitability_name=FUS.NS)
         return item.pk
 
     class Meta:
@@ -210,7 +210,7 @@ class MarketType(models.Model):
 
     @classmethod
     def default_pk(cls):
-        item, _ = cls.objects.get_or_create(type_name="Не указано")
+        item, _ = cls.objects.get_or_create(type_name=FUS.NS)
         return item.pk
 
     class Meta:
@@ -231,7 +231,7 @@ class StreetType(models.Model):
 
     @classmethod
     def default_pk(cls):
-        item, _ = cls.objects.get_or_create(type_name="Не указано")
+        item, _ = cls.objects.get_or_create(type_name=FUS.NS)
         return item.pk
 
     class Meta:
@@ -248,7 +248,7 @@ class StreetType(models.Model):
 
 class TradePlaceType(models.Model):
     type_name_choices = {
-        OutletState.UNKNOWN: "Не указано",
+        OutletState.UNKNOWN: FUS.NS,
         OutletState.AVAILABLE_FOR_BOOKING: 'Свободно',
         OutletState.UNAVAILABLE_FOR_BOOKING: 'Не сдаётся в аренду',
         OutletState.TEMPORARILY_UNAVAILABLE_FOR_BOOKING: 'Временно не сдается в аренду',
@@ -295,7 +295,7 @@ class TradeSector(models.Model):
 
     @classmethod
     def default_pk(cls):
-        item, _ = cls.objects.get_or_create(sector_name="Не указано")
+        item, _ = cls.objects.get_or_create(sector_name=FUS.NS)
         return item.pk
 
     class Meta:
@@ -327,7 +327,7 @@ class TradeSpecType(models.Model):
 
     @classmethod
     def default_pk(cls):
-        item, _ = cls.objects.get_or_create(type_name="Не указано")
+        item, _ = cls.objects.get_or_create(type_name=FUS.NS)
         return item.pk
 
     class Meta:
@@ -357,7 +357,7 @@ class TradeType(models.Model):
 
     @classmethod
     def default_pk(cls):
-        item, _ = cls.objects.get_or_create(type_name="Не указано")
+        item, _ = cls.objects.get_or_create(type_name=FUS.NS)
         return item.pk
 
     class Meta:
@@ -377,7 +377,7 @@ class Market(models.Model):
     market_name = models.CharField(max_length=128, db_comment='Наименование рынка')
     additional_name = models.CharField(max_length=128, blank=True, default='', db_comment='Дополнительное наименование')
     market_type = models.ForeignKey(MarketType, models.SET_DEFAULT, default=MarketType.default_pk, db_comment='id - тип рынка')
-    branch = models.CharField(max_length=12, default='Не указано', db_comment='Отделение')
+    branch = models.CharField(max_length=12, default=FUS.NS, db_comment='Отделение')
 
     profitability = models.ForeignKey(MarketProfitability, models.SET_DEFAULT, default=MarketProfitability.default_pk, db_comment='id - категория рентабельности')
     infr_fire_protection = models.ForeignKey(MarketFireProtection, models.SET_DEFAULT, default=MarketFireProtection.default_pk, db_comment='id - противопожарные системы')
@@ -387,20 +387,20 @@ class Market(models.Model):
     infr_storage = models.SmallIntegerField(default=0, validators=[MinValueValidator(0)], db_comment='Кол-во складских помещений')
     infr_water_pipes = models.BooleanField(default=False, db_comment='Наличие водопровода')
     infr_sewerage = models.BooleanField(default=False, db_comment='Наличие канализации')
-    infr_sewerage_type = models.CharField(max_length=64, default='Не указано', db_comment='Тип канализации')
+    infr_sewerage_type = models.CharField(max_length=64, default=FUS.NS, db_comment='Тип канализации')
 
     lat = models.FloatField(default=0.0, validators=[MinValueValidator(-90.0), MaxValueValidator(90.0)], db_comment='Широта - координата рынка')
     lng = models.FloatField(default=0.0, validators=[MinValueValidator(-180.0), MaxValueValidator(180.0)], db_comment='Долгота - координата рынка')
     geo_city = models.ForeignKey(Locality, models.SET_DEFAULT, default=Locality.default_pk, db_comment='Город - id')
     geo_district = models.ForeignKey(Locality, models.SET_DEFAULT, default=Locality.default_pk, related_name='markets_geo_district_set', db_comment='Район - id')
     geo_street_type = models.ForeignKey(StreetType, models.SET_DEFAULT, default=StreetType.default_pk, db_comment='Тип улицы - id')
-    geo_street = models.CharField(max_length=64, default='Не указано', db_comment='Наименование улицы')
-    geo_house = models.CharField(max_length=50, default='Не указано', db_comment='Дом')
-    geo_index = models.CharField(max_length=10, validators=[Validators.postal_code], default='Не указано', db_comment='Индекс')
+    geo_street = models.CharField(max_length=64, default=FUS.NS, db_comment='Наименование улицы')
+    geo_house = models.CharField(max_length=50, default=FUS.NS, db_comment='Дом')
+    geo_index = models.CharField(max_length=10, validators=[Validators.postal_code], default=FUS.NS, db_comment='Индекс')
     market_area = models.FloatField(default=0.0, db_comment='Общая площадь рынка')
 
-    schedule = models.TextField(default='Не указано', db_column='shedule', db_comment='График работы')
-    ads = models.TextField(default='Не указано', db_comment='Реклама')
+    schedule = models.TextField(default=FUS.NS, db_column='shedule', db_comment='График работы')
+    ads = models.TextField(default=FUS.NS, db_comment='Реклама')
     images: models.QuerySet
 
     class Meta:
@@ -462,7 +462,7 @@ class Market(models.Model):
 
 class SvgSchema(models.Model):
     market = models.ForeignKey(Market, on_delete=models.CASCADE, related_name="schemes", db_comment='id рынка')
-    floor = models.CharField(default='Не указано', db_comment='Этаж схемы объекта')
+    floor = models.CharField(default=FUS.NS, db_comment='Этаж схемы объекта')
     order = models.IntegerField(default=0, db_comment='Поле для упорядочивания схем')
     svg_schema = models.TextField(default='', db_comment='svg объекта')
 
@@ -516,7 +516,7 @@ class MarketEmail(DbItem):  # -- Market emails
 class TradePlace(models.Model):
     market = models.ForeignKey(Market, on_delete=models.CASCADE, related_name="trade_places", db_comment='Уникальный идентификатор рынка\r\n')
     location_number = models.CharField(unique=True, validators=[Validators.outlet_number], db_comment='Номер торгового места')
-    location_row = models.CharField(default='Не указано', db_comment='Ряд торгового места')
+    location_row = models.CharField(default=FUS.NS, db_comment='Ряд торгового места')
     price = models.DecimalField(max_digits=12, decimal_places=2, default=Decimal(0.0), validators=[MinValueValidator(0.0)], db_comment='Стоимость аренды торгового места в месяц')
     street_vending = models.BooleanField(default=False, db_comment='Возможность выносной торговли')
 
@@ -596,9 +596,9 @@ class TradePlace(models.Model):
 # -- Contacts -------------------------------------------------------------------------------------
 
 class Contact(DbItem):
-    title = models.CharField(max_length=128, default='Не указано')
+    title = models.CharField(max_length=128, default=FUS.NS)
     image = models.ImageField(upload_to='contacts/%Y/%m/%d')  # картинка
-    address = models.CharField(max_length=256, default='Не указано')
+    address = models.CharField(max_length=256, default=FUS.NS)
     city = models.ForeignKey(Locality, models.SET_DEFAULT, default=Locality.default_pk)
     district = models.ForeignKey(Locality, models.SET_DEFAULT, default=Locality.default_pk, related_name='another_contact_set')
 
