@@ -7,6 +7,7 @@ import django.db.models.deletion
 import django.utils.timezone
 import markets.enums
 import markets.models
+import markets.validators
 
 
 class Migration(migrations.Migration):
@@ -121,7 +122,7 @@ class Migration(migrations.Migration):
             name='Market',
             fields=[
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('market_id', models.CharField(db_comment='Уникальный идентификатор рынка', max_length=3, unique=True, validators=[markets.models.Validators.market_id])),
+                ('market_id', models.CharField(db_comment='Уникальный идентификатор рынка', max_length=3, unique=True, validators=[markets.validators.Validators.market_id])),
                 ('market_name', models.CharField(db_comment='Наименование рынка', max_length=128)),
                 ('additional_name', models.CharField(blank=True, db_comment='Дополнительное наименование', default='', max_length=128)),
                 ('branch', models.CharField(db_comment='Отделение', default='Не указано', max_length=12)),
@@ -136,7 +137,7 @@ class Migration(migrations.Migration):
                 ('lng', models.FloatField(db_comment='Долгота - координата рынка', default=0.0)),
                 ('geo_street', models.CharField(db_comment='Наименование улицы', default='Не указано', max_length=64)),
                 ('geo_house', models.CharField(db_comment='Дом', default='Не указано', max_length=50)),
-                ('geo_index', models.CharField(db_comment='Индекс', default='Не указано', max_length=10, validators=[markets.models.Validators.postal_code])),
+                ('geo_index', models.CharField(db_comment='Индекс', default='Не указано', max_length=10, validators=[markets.validators.Validators.postal_code])),
                 ('market_area', models.FloatField(db_comment='Общая площадь рынка', default=0.0)),
                 ('schedule', models.TextField(db_column='shedule', db_comment='График работы', default='Не указано')),
                 ('ads', models.TextField(db_comment='Реклама', default='Не указано')),
@@ -283,9 +284,9 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('type_name', models.CharField(choices=[(markets.enums.OutletState['UNKNOWN'], 'Не указано'), (markets.enums.OutletState['AVAILABLE_FOR_BOOKING'], 'Свободно'), (markets.enums.OutletState['UNAVAILABLE_FOR_BOOKING'], 'Не сдаётся в аренду'), (markets.enums.OutletState['TEMPORARILY_UNAVAILABLE_FOR_BOOKING'], 'Временно не сдается в аренду'), (markets.enums.OutletState['BOOKED'], 'Забронировано'), (markets.enums.OutletState['RENTED'], 'Занято')], db_comment='Наименование типа занятости торгового места', max_length=10, unique=True)),
-                ('color', models.CharField(db_comment='Цвет в формате #ffffff', default='#ffffff', max_length=7, validators=[markets.models.Validators.css_color])),
-                ('wall_color', models.CharField(db_comment='Цвет стен ТМ в формате 0xffffff, для 3D', default='0xffffff', max_length=8, validators=[markets.models.Validators.hex])),
-                ('roof_color', models.CharField(db_comment='Цвет крыш ТМ в формате 0xffffff, для 3D', default='0xffffff', max_length=8, validators=[markets.models.Validators.hex])),
+                ('color', models.CharField(db_comment='Цвет в формате #ffffff', default='#ffffff', max_length=7, validators=[markets.validators.Validators.css_color])),
+                ('wall_color', models.CharField(db_comment='Цвет стен ТМ в формате 0xffffff, для 3D', default='0xffffff', max_length=8, validators=[markets.validators.Validators.hex])),
+                ('roof_color', models.CharField(db_comment='Цвет крыш ТМ в формате 0xffffff, для 3D', default='0xffffff', max_length=8, validators=[markets.validators.Validators.hex])),
                 ('descr', models.TextField(blank=True, db_comment='Опиcание', null=True)),
             ],
             options={
@@ -302,9 +303,9 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('sector_name', models.CharField(db_comment='Наименование сектора рынка', unique=True)),
-                ('color', models.CharField(db_comment='Цвет в формате #ffffff', default='#ffffff', max_length=7, validators=[markets.models.Validators.css_color])),
-                ('wall_color', models.CharField(db_comment='Цвет стен ТМ в формате 0xffffff, для 3D', default='0xffffff', max_length=8, validators=[markets.models.Validators.hex])),
-                ('roof_color', models.CharField(db_comment='Цвет крыш ТМ в формате 0xffffff, для 3D', default='0xffffff', max_length=8, validators=[markets.models.Validators.hex])),
+                ('color', models.CharField(db_comment='Цвет в формате #ffffff', default='#ffffff', max_length=7, validators=[markets.validators.Validators.css_color])),
+                ('wall_color', models.CharField(db_comment='Цвет стен ТМ в формате 0xffffff, для 3D', default='0xffffff', max_length=8, validators=[markets.validators.Validators.hex])),
+                ('roof_color', models.CharField(db_comment='Цвет крыш ТМ в формате 0xffffff, для 3D', default='0xffffff', max_length=8, validators=[markets.validators.Validators.hex])),
                 ('descr', models.TextField(blank=True, db_comment='Описание', null=True)),
             ],
             options={
@@ -321,9 +322,9 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('type_name', models.CharField(db_comment='Наименование типа специализации торгового места', unique=True)),
-                ('color', models.CharField(db_comment='Цвет в формате #ffffff', default='#ffffff', max_length=7, validators=[markets.models.Validators.css_color])),
-                ('wall_color', models.CharField(db_comment='Цвет стен ТМ в формате 0xffffff, для 3D', default='0xffffff', max_length=8, validators=[markets.models.Validators.hex])),
-                ('roof_color', models.CharField(db_comment='Цвет крыш ТМ в формате 0xffffff, для 3D', default='0xffffff', max_length=8, validators=[markets.models.Validators.hex])),
+                ('color', models.CharField(db_comment='Цвет в формате #ffffff', default='#ffffff', max_length=7, validators=[markets.validators.Validators.css_color])),
+                ('wall_color', models.CharField(db_comment='Цвет стен ТМ в формате 0xffffff, для 3D', default='0xffffff', max_length=8, validators=[markets.validators.Validators.hex])),
+                ('roof_color', models.CharField(db_comment='Цвет крыш ТМ в формате 0xffffff, для 3D', default='0xffffff', max_length=8, validators=[markets.validators.Validators.hex])),
                 ('descr', models.TextField(blank=True, db_comment='Описание', null=True)),
             ],
             options={
@@ -484,7 +485,7 @@ class Migration(migrations.Migration):
                 ('created_at', models.DateTimeField(auto_now_add=True)),
                 ('updated_at', models.DateTimeField(auto_now=True)),
                 ('confirmed', models.BooleanField(default=False)),
-                ('itn', models.CharField(max_length=12, validators=[markets.models.Validators.itn])),
+                ('itn', models.CharField(max_length=12, validators=[markets.validators.Validators.itn])),
                 ('promo_image', models.ImageField(null=True, upload_to='renters/%Y/%m/%d')),
                 ('promo_text', models.TextField(default='', max_length=2048)),
                 ('passport_image', models.OneToOneField(null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='passport_image', to='markets.file')),
@@ -500,7 +501,7 @@ class Migration(migrations.Migration):
             name='TradePlace',
             fields=[
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('location_number', models.CharField(db_comment='Номер торгового места', unique=True, validators=[markets.models.Validators.outlet_number])),
+                ('location_number', models.CharField(db_comment='Номер торгового места', unique=True, validators=[markets.validators.Validators.outlet_number])),
                 ('location_row', models.CharField(db_comment='Ряд торгового места', default='Не указано')),
                 ('meas_area', models.FloatField(db_comment='Площадь места', default=0.0)),
                 ('meas_length', models.FloatField(db_comment='Длина места', default=0.0)),

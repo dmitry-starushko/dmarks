@@ -1,6 +1,7 @@
 from django.db import transaction
 from markets.enums import LocationType, OutletState
-from markets.models import Locality, LocalityType, Market, MarketType, MarketProfitability, MarketFireProtection, StreetType, Validators, TradeType, TradePlaceType, TradeSpecType, TradeSector
+from markets.models import Locality, LocalityType, Market, MarketType, MarketProfitability, MarketFireProtection, StreetType, TradeType, TradePlaceType, TradeSpecType, TradeSector
+from markets.validators import Validators
 
 
 def create_market(market_id: str, data):
