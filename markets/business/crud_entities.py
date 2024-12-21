@@ -217,7 +217,8 @@ def create_market_outlets(market_id: str, data):
                      and meas_length >= 0.0 \
                      and meas_area >= 0.0 \
                      and 0 <= impr_internet_type_id <= 2 \
-                     and trade_place_type in OutletState:
+                     and trade_place_type in OutletState \
+                     and location_number.startswith(market_id):
                     Validators.outlet_number(location_number)
                     market.trade_places.create(
                         location_number=location_number,
@@ -258,7 +259,7 @@ def get_market_outlets(market_id: str):
         'price': olt.price,
         'street_vending': olt.street_vending,
         'trade_type': f'{olt.trade_type}',
-        'trade_place_type': f'{olt.trade_place_type}',
+        'trade_place_type': f'{olt.trade_place_type.type_name}',
         'trade_spec_type_id_act': f'{olt.trade_spec_type_id_act}',
         'trade_spec_type_id_rec': f'{olt.trade_spec_type_id_rec}',
         'location_sector': f'{olt.location_sector}',
@@ -328,7 +329,7 @@ def update_market_outlets(market_id: str, data):
                 r.save()
             else:
                 raise ValueError(olt)
-    return False
+    return True
 
 
 def delete_market_outlets(market_id: str, data):
