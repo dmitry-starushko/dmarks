@@ -22,8 +22,7 @@ class DbItem(models.Model):
 
 class DmUserManager(BaseUserManager):
     def create_user(self, phone, password, email, **extra_fields):
-        if not phone:
-            raise ValueError('Телефон должен быть указан')
+        Validators.phone(phone)
         email = self.normalize_email(email)
         user = self.model(phone=phone, email=email, **extra_fields)
         user.set_password(password)
@@ -502,12 +501,13 @@ class MkImage(DbItem):  # -- Market images
 
 
 class MarketPhone(DbItem):  # -- Market phones
-    phone = models.CharField(unique=True, max_length=20)
+    phone = models.CharField(unique=True, validators=[Validators.phone], max_length=20)
     market = models.ForeignKey(Market, related_name="phones", on_delete=models.CASCADE)
 
     class Meta:
         verbose_name = "Телефон"
         verbose_name_plural = "Телефоны"
+        constraints = [models.CheckConstraint(check=Q(phone__regex=Validators.PNE), name="Market phone regex")]
 
     def __str__(self):
         return f'{self.phone}'
@@ -592,20 +592,6 @@ class TradePlace(models.Model):
                 return "ошибка в данных"
 
 
-# class Booking(DbItem):
-#     outlet = models.ForeignKey(TradePlace, on_delete=models.CASCADE, related_name="bookings", db_comment='Идентификатор торгового места')
-#     booked_by = models.ForeignKey(DmUser, on_delete=models.CASCADE, related_name="bookings", db_comment='Кто забронировал')
-#
-#     class Meta:
-#         managed = True
-#         ordering = ['-created_at']
-#         verbose_name = "Бронирование ТМ"
-#         verbose_name_plural = "Бронирования ТМ"
-#
-#     def __str__(self):
-#         return f'Бронирование {self.id}'
-
-
 # -- Contacts -------------------------------------------------------------------------------------
 
 class Contact(DbItem):
@@ -629,12 +615,13 @@ class Contact(DbItem):
 
 
 class ContactPhone(DbItem):  # -- Contact phones
-    phone = models.CharField(unique=True, max_length=20)
+    phone = models.CharField(unique=True, validators=[Validators.phone], max_length=20)
     contact = models.ForeignKey(Contact, related_name='phones', on_delete=models.CASCADE)
 
     class Meta:
         verbose_name = 'Контактный телефон'
         verbose_name_plural = 'Контактные телефоны'
+        constraints = [models.CheckConstraint(check=Q(phone__regex=Validators.PNE), name="Contact phone regex")]
 
     def __str__(self):
         return f'{self.phone}'

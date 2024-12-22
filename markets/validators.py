@@ -8,6 +8,7 @@ class Validators:
     MID = '^\\d{3}$'
     POC = '^\\d{5,6}$'
     ITN = '^((?:\\d{10})|(?:\\d{12}))$'
+    PNE = '^\\+\\d{1,3}\\(\\d{3}\\)\\d{3}-\\d{2}-\\d{2}$'
 
     @staticmethod
     def _rxv(rx: str):
@@ -36,3 +37,7 @@ class Validators:
     @staticmethod
     def itn(value):
         return Validators._rxv(Validators.ITN)(value)
+
+    @staticmethod
+    def phone(value):
+        return Validators._rxv(Validators.PNE)(value)
