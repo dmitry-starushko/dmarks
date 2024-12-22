@@ -77,6 +77,7 @@ class AuxUserData(DbItem):
     class Meta:
         verbose_name = "Доп. данные"
         verbose_name_plural = "Доп. данные"
+        constraints = [models.CheckConstraint(check=Q(itn__regex=Validators.ITN), name="ITN regex")]
 
     def __str__(self):
         return f'Данные "{self.user}"'
@@ -105,6 +106,7 @@ class LocalityType(models.Model):
         db_table_comment = 'Типы населенных пунктов'
         verbose_name = "Тип локации"
         verbose_name_plural = "Типы локаций"
+        constraints = [models.CheckConstraint(check=~Q(type_name=''), name="LocalityType non-empty name")]
 
     def __str__(self):
         return f'{self.type_name}'
@@ -128,6 +130,7 @@ class Locality(models.Model):
         db_table_comment = 'Населенные пункты'
         verbose_name = "Локация"
         verbose_name_plural = "Локации"
+        constraints = [models.CheckConstraint(check=~Q(locality_name=''), name="Locality non-empty name")]
 
     def __str__(self):
         return f'{self.locality_name}'
@@ -149,6 +152,7 @@ class MarketFireProtection(models.Model):
         db_table_comment = 'Наличие и состав противопожарных систем'
         verbose_name = "Тип противопожарной системы"
         verbose_name_plural = "Типы противопожарных систем"
+        constraints = [models.CheckConstraint(check=~Q(fp_name=''), name="MarketFireProtection non-empty name")]
 
     def __str__(self):
         return f'{self.fp_name}'
@@ -170,6 +174,7 @@ class MarketProfitability(models.Model):
         db_table_comment = 'Категория рентабельности рынка'
         verbose_name = "Категория рентабельности рынка"
         verbose_name_plural = "Категории рентабельности рынка"
+        constraints = [models.CheckConstraint(check=~Q(profitability_name=''), name="MarketProfitability non-empty name")]
 
     def __str__(self):
         return f'{self.profitability_name}'
@@ -191,6 +196,7 @@ class MarketType(models.Model):
         db_table_comment = 'Типы рынков'
         verbose_name = "Тип рынка"
         verbose_name_plural = "Типы рынка"
+        constraints = [models.CheckConstraint(check=~Q(type_name=''), name="MarketType non-empty name")]
 
     def __str__(self):
         return f'{self.type_name}'
@@ -212,6 +218,7 @@ class StreetType(models.Model):
         db_table_comment = 'Типы улиц'
         verbose_name = "Тип улицы"
         verbose_name_plural = "Типы улиц"
+        constraints = [models.CheckConstraint(check=~Q(type_name=''), name="StreetType non-empty name")]
 
     def __str__(self):
         return f'{self.type_name}'
@@ -244,6 +251,19 @@ class TradePlaceType(models.Model):
         db_table_comment = 'Типы занятости торгового места'
         verbose_name = "Тип занятости ТМ"
         verbose_name_plural = "Типы занятости ТМ"
+        constraints = [
+            models.CheckConstraint(check=Q(type_name__in=[
+                OutletState.UNKNOWN,
+                OutletState.AVAILABLE_FOR_BOOKING,
+                OutletState.UNAVAILABLE_FOR_BOOKING,
+                OutletState.TEMPORARILY_UNAVAILABLE_FOR_BOOKING,
+                OutletState.BOOKED,
+                OutletState.RENTED
+            ]), name="TradePlaceType name from set"),
+            models.CheckConstraint(check=Q(color__regex=Validators.CSS), name="TradePlaceType color regex"),
+            models.CheckConstraint(check=Q(wall_color__regex=Validators.HEX), name="TradePlaceType wall_color regex"),
+            models.CheckConstraint(check=Q(roof_color__regex=Validators.HEX), name="TradePlaceType roof_color regex"),
+        ]
 
     def __str__(self):
         return f'{self.get_type_name_display()}'
@@ -276,6 +296,12 @@ class TradeSector(models.Model):
         db_table_comment = 'Сектора рынков'
         verbose_name = "Сектор"
         verbose_name_plural = "Секторы"
+        constraints = [
+            models.CheckConstraint(check=~Q(sector_name=''), name="TradeSector non-empty name"),
+            models.CheckConstraint(check=Q(color__regex=Validators.CSS), name="TradeSector color regex"),
+            models.CheckConstraint(check=Q(wall_color__regex=Validators.HEX), name="TradeSector wall_color regex"),
+            models.CheckConstraint(check=Q(roof_color__regex=Validators.HEX), name="TradeSector roof_color regex"),
+        ]
 
     def __str__(self):
         return f'{self.sector_name}'
@@ -308,6 +334,12 @@ class TradeSpecType(models.Model):
         db_table_comment = 'Типы специализации торгового места'
         verbose_name = "Тип специализации ТМ"
         verbose_name_plural = "Типы специализации ТМ"
+        constraints = [
+            models.CheckConstraint(check=~Q(type_name=''), name="TradeSpecType non-empty name"),
+            models.CheckConstraint(check=Q(color__regex=Validators.CSS), name="TradeSpecType color regex"),
+            models.CheckConstraint(check=Q(wall_color__regex=Validators.HEX), name="TradeSpecType wall_color regex"),
+            models.CheckConstraint(check=Q(roof_color__regex=Validators.HEX), name="TradeSpecType roof_color regex"),
+        ]
 
     def __str__(self):
         return f'{self.type_name}'
@@ -337,6 +369,7 @@ class TradeType(models.Model):
         db_table_comment = 'Типы торгового места'
         verbose_name = "Тип ТМ"
         verbose_name_plural = "Типы ТМ"
+        constraints = [models.CheckConstraint(check=~Q(type_name=''), name="TradeType non-empty name")]
 
     def __str__(self):
         return f'{self.type_name}'
@@ -381,13 +414,21 @@ class Market(models.Model):
         verbose_name = "Рынок"
         verbose_name_plural = "Рынки"
         constraints = [
+            models.CheckConstraint(check=Q(market_id__regex=Validators.MID), name="market_id regex"),
+            models.CheckConstraint(check=Q(geo_index__regex=Validators.POC), name="postal code regex"),
+            models.CheckConstraint(check=~Q(market_name=''), name="non-empty market_name"),
+            models.CheckConstraint(check=~Q(branch=''), name="non-empty branch"),
+            models.CheckConstraint(check=~Q(geo_street=''), name="non-empty street"),
+            models.CheckConstraint(check=~Q(geo_house=''), name="non-empty house"),
+            models.CheckConstraint(check=~Q(schedule=''), name="non-empty schedule"),
             models.CheckConstraint(check=Q(infr_parking__gte=0), name="non-negative parking"),
             models.CheckConstraint(check=Q(infr_entrance__gte=0), name="non-negative entrance"),
             models.CheckConstraint(check=Q(infr_restroom__gte=0), name="non-negative restroom"),
             models.CheckConstraint(check=Q(infr_storage__gte=0), name="non-negative storage"),
             models.CheckConstraint(check=Q(market_area__gte=0.0), name="non-negative market area"),
             models.CheckConstraint(check=Q(lat__gte=-90.0) & Q(lat__lte=90.0), name="lat range"),
-            models.CheckConstraint(check=Q(lng__gte=-180.0) & Q(lat__lte=180.0), name="lng range")]
+            models.CheckConstraint(check=Q(lng__gte=-180.0) & Q(lat__lte=180.0), name="lng range")
+        ]
 
     def __str__(self):
         return self.mk_full_name
@@ -442,6 +483,7 @@ class SvgSchema(models.Model):
         db_table = 'svg_schema'
         verbose_name = "Схема"
         verbose_name_plural = "Схемы"
+        models.CheckConstraint(check=~Q(floor=''), name="non-empty floor"),
 
     def __str__(self):
         return f'Схема #{self.id}, уровень "{self.floor}", рынок "{self.market}"'
@@ -524,6 +566,7 @@ class TradePlace(models.Model):
         verbose_name = "Торговое место"
         verbose_name_plural = "Торговые места"
         constraints = [
+            models.CheckConstraint(check=Q(location_number__regex=Validators.ONM), name="location number regex"),
             models.CheckConstraint(check=Q(impr_internet_type_id__gte=0) & Q(impr_internet_type_id__lte=2), name="internet_type_id range"),
             models.CheckConstraint(check=Q(meas_area__gte=0.0), name="non-negative area"),
             models.CheckConstraint(check=Q(meas_length__gte=0.0), name="non-negative length"),
