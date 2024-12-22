@@ -159,7 +159,7 @@ class TradeSpecTypeAdmin(admin.ModelAdmin):
 
 @admin.register(TradeType)
 class TradeTypeAdmin(admin.ModelAdmin):
-    list_display = ['type_name', 'type_num', 'descr']
+    list_display = ['type_name', 'descr']
     ordering = ['type_name']
 
 

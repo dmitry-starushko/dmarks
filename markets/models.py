@@ -323,7 +323,6 @@ class TradeSpecType(models.Model):
 
 class TradeType(models.Model):
     type_name = models.CharField(unique=True, db_comment='Наименование типа торгового места')
-    type_num = models.SmallIntegerField(unique=True, default=0, db_comment='Код типа объекта')
     descr = models.TextField(blank=True, null=True, db_comment='Описание')
 
     @classmethod
