@@ -8,6 +8,7 @@
         ,"orbit_controls": "{% static 'js/three/controls/OrbitControls.js' %}"
         ,"map_controls": "{% static 'js/three/controls/MapControls.js' %}"
         ,"view3d": "{% static 'js/view3d.module.js' %}"
+        ,"user-actions": "{% static 'js/user-actions.module.js' %}"
         ,"help-dialog": "{% static 'js/help-dialog.module.js' %}"
     }
 }</script>

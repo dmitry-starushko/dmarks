@@ -1,4 +1,6 @@
 import httpx
+from django.conf import settings
+
 from markets.enums import OutletState
 from markets.models import DmUser, TradePlace
 
@@ -15,8 +17,7 @@ def book_outlet(user: DmUser, outlet: TradePlace):
         raise BookingError(f'Статус торгового места {outlet.location_number}: {outlet.trade_place_type}')
     with httpx.Client() as client:
         try:
-            url = 'https://api.telegram.org/bot/sendMessage'  # TODO valid url
-            res = client.post(url,
+            res = client.post(settings.EXT_URL['booking'],
                               headers={'Content-Type': 'application/json'},
                               json={
                                 'user': f'{user.aux_data.itn}',
