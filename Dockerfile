@@ -1,4 +1,4 @@
-FROM archlinux:latest
+FROM manjarolinux/base:latest
 ENV PYTHONDONTWRITEBYTECODE=1
 ENV PYTHONUNBUFFERED=1
 WORKDIR /code
