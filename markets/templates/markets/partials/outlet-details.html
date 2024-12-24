@@ -75,13 +75,19 @@
           </li>
         </ul>
 </div>
+{% if afbk or unbk %}
 <div class="mkdetails-tp-section-info-detail-body-info-booking">
+    {% if afbk %}
     <a href="#" class="mkdetails-tp-section-info-detail-body-info-booking-button book-btn">
        <img src="{% static 'svg/icons/calendar-check.svg' %}" alt="Выбор легенды"/>
         Бронировать
     </a>
+    {% endif %}
+    {% if unbk %}
     <a href="#" class="mkdetails-tp-section-info-detail-body-info-booking-button-cancel book-btn">
        <img src="{% static 'svg/icons/undo-variant.svg' %}" alt="Выбор легенды"/>
     </a>
+    {% endif %}
 </div>
+{% endif %}
 {% endcache %}
