@@ -15,7 +15,7 @@ from markets.models import SvgSchema, Market, TradePlaceType, TradeSpecType, Tra
 from markets.tasks import st_restore_db_consistency
 from redis import Redis
 from .serializers import SchemeSerializer, TradePlaceTypeSerializer, TradeSpecTypeSerializer, TradePlaceSerializerO, TradePlaceSerializerS, TradeSectorSerializer, TradePlaceSerializerSec
-from ..business.booking import get_outlets_in_booking
+from ..business.booking import get_outlets_in_booking, BookingError, book_outlet
 from ..enums import Observation, OutletState
 
 try:  # To avoid deploy problems
@@ -375,8 +375,22 @@ class PV_HelpContentView(APIView):
             return render(request, f'markets/partials/help/help-0.html', {'hid': 0})
 
 
-# -- Actions --------------------------------------------------------------------------------------
+class PV_UserActionView(APIView):
+    permission_classes = [AllowAny]
 
+    @on_exception_returns_response(HttpResponseBadRequest)
+    def post(self, request):
+        match request.data:
+            case {'action': 'book-outlet', 'outlet': str(number)}:
+                try:
+                    book_outlet(request.user, TradePlace.objects.get(location_number=number))  # TODO messages from parameters
+                    return render(request, f'markets/partials/user/message.html', {'message': f'Запрос на бронирование торгового места №{number} принят в обработку. Ожидайте уведомлений.'})
+                except BookingError as e:
+                    return render(request, f'markets/partials/user/message.html', {'message': f'{e}'})
+            case _:
+                return render(request, f'markets/partials/user/message.html', {'message': 'К сожалению, данная операция еще не реализована. Обратитесь к службе технической поддержке сайта.'})
+
+# -- Actions --------------------------------------------------------------------------------------
 
 class RestoreDatabaseConsistencyView(APIView):
     permission_classes = [AllowAny]

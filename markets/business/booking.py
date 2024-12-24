@@ -11,8 +11,8 @@ class BookingError(Exception):
 
 
 def book_outlet(user: DmUser, outlet: TradePlace):
-    if user.aux_data is None or not user.aux_data.confirmed:
-        raise BookingError('Пользователь не прошел процедуру валидации')
+    if not hasattr(user, 'aux_data') or not user.aux_data.confirmed:
+        raise BookingError('Для бронирования торгового места необходимо пройти процедуру валидации в личном кабинете')
     if outlet.trade_place_type.type_name != OutletState.AVAILABLE_FOR_BOOKING:
         raise BookingError(f'Статус торгового места {outlet.location_number}: {outlet.trade_place_type}')
     with httpx.Client() as client:

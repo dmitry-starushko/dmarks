@@ -59,17 +59,6 @@
                         </ul>
                     </details>
                 </li>
-                  {% comment %}
-                  <li>
-                  <details open>
-                    <summary>Контактные данные</summary>
-                    <ul>
-                        <li>Телефон: <strong>{{market.phone}}</strong></li>
-                        <li>Email: <strong>{{market.email}}</strong></li>
-                    </ul>
-                  </details>
-                </li>
-                {% endcomment %}
               </ul>
             </details>
           </li>
@@ -78,7 +67,7 @@
 {% if afbk or unbk %}
 <div class="mkdetails-tp-section-info-detail-body-info-booking">
     {% if afbk %}
-    <a href="#" class="mkdetails-tp-section-info-detail-body-info-booking-button book-btn">
+    <a href="#" class="mkdetails-tp-section-info-detail-body-info-booking-button book-btn" onclick="window.user_actions.book_outlet('{{outlet.location_number}}');">
        <img src="{% static 'svg/icons/calendar-check.svg' %}" alt="Выбор легенды"/>
         Бронировать
     </a>
