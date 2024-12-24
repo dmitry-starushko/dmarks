@@ -15,7 +15,7 @@ from markets.models import SvgSchema, Market, TradePlaceType, TradeSpecType, Tra
 from markets.tasks import st_restore_db_consistency
 from redis import Redis
 from .serializers import SchemeSerializer, TradePlaceTypeSerializer, TradeSpecTypeSerializer, TradePlaceSerializerO, TradePlaceSerializerS, TradeSectorSerializer, TradePlaceSerializerSec
-from ..business.booking import get_booked_outlets
+from ..business.booking import get_outlets_in_booking
 from ..enums import Observation, OutletState
 
 try:  # To avoid deploy problems
@@ -235,7 +235,7 @@ class PV_OutletDetailView(APIView):
     @on_exception_returns_response(HttpResponseBadRequest, 'outlet_number')
     def post(self, request, outlet_number):
         outlet = TradePlace.objects.get(location_number=outlet_number)
-        booked = get_booked_outlets(request.user)
+        booked = get_outlets_in_booking(request.user)
         avail_for_booking = (outlet.trade_place_type.type_name == OutletState.AVAILABLE_FOR_BOOKING) and (outlet_number not in booked)
         unbook = len(booked) > 0
         return render(request, 'markets/partials/outlet-details.html', {

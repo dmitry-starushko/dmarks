@@ -28,7 +28,7 @@ def book_outlet(user: DmUser, outlet: TradePlace):
 
 
 @on_exception_returns(frozenset())
-def get_booked_outlets(user: DmUser):
+def get_outlets_in_booking(user: DmUser):
     if user.aux_data is None or not user.aux_data.confirmed:
         raise RuntimeError()
     with httpx.Client() as client:
