@@ -156,7 +156,7 @@ def update_market(market_id: str, data):
                             case 'lat', float(lat) if -90.0 <= lat <= 90.0: market.lat = lat
                             case 'lng', float(lng) if -180.0 <= lng <= 180.0: market.lng = lng
                             case 'street', str(geo_street): market.geo_street = geo_street
-                            case 'street_type', str(geo_street_type): market.geo_street = StreetType.objects.get_or_create(type_name=geo_street_type)[0]
+                            case 'street_type', str(geo_street_type): market.geo_street_type = StreetType.objects.get_or_create(type_name=geo_street_type)[0]
                             case 'house', str(geo_house): market.geo_house = geo_house
                             case 'index', str(geo_index):
                                 Validators.postal_code(geo_index)
