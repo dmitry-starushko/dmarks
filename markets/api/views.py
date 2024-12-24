@@ -10,7 +10,7 @@ from rest_framework.permissions import AllowAny
 from django.http.response import JsonResponse, HttpResponseBadRequest, HttpResponse
 from markets.business.search_and_filters import apply_filter, filter_markets, filter_outlets
 from markets.business.actions import restore_db_consistency
-from markets.decorators import on_exception_returns
+from markets.decorators import on_exception_returns_response
 from markets.models import SvgSchema, Market, TradePlaceType, TradeSpecType, TradePlace, TradeSector, GlobalObservation
 from markets.tasks import st_restore_db_consistency
 from redis import Redis
@@ -33,7 +33,7 @@ class TakeMarketSchemesListView(ListAPIView):
     permission_classes = [AllowAny]
     serializer_class = SchemeSerializer
 
-    @on_exception_returns(HttpResponseBadRequest)
+    @on_exception_returns_response(HttpResponseBadRequest)
     def get(self, request, *args, **kwargs):
         return super().get(request, *args, **kwargs)
 
@@ -50,7 +50,7 @@ class TakeSchemeGltfView(APIView):
     permission_classes = [AllowAny]
 
     @staticmethod
-    @on_exception_returns(HttpResponseBadRequest, 'scheme_pk')
+    @on_exception_returns_response(HttpResponseBadRequest, 'scheme_pk')
     def get(_, scheme_pk: int):
         key = f'scheme:{scheme_pk}:gltf'
         if (gltf := redis.get(key)) is None:
@@ -67,7 +67,7 @@ class TakeSchemeSvgView(APIView):
     permission_classes = [AllowAny]
 
     @staticmethod
-    @on_exception_returns(HttpResponseBadRequest, 'scheme_pk')
+    @on_exception_returns_response(HttpResponseBadRequest, 'scheme_pk')
     def get(_, scheme_pk: int):
         key = f'scheme:{scheme_pk}:svg'
         if (svg := redis.get(key)) is None:
@@ -82,7 +82,7 @@ class TakeSchemeOutletsStateView(APIView):
     permission_classes = [AllowAny]
     legends = ['trade_place_type_id', 'trade_spec_type_id_act_id', 'location_sector_id']
 
-    @on_exception_returns(HttpResponseBadRequest, 'scheme_pk')
+    @on_exception_returns_response(HttpResponseBadRequest, 'scheme_pk')
     def get(self, _, scheme_pk: int, legend: int):
         legend %= len(self.legends)
         leg_field = self.legends[legend]
@@ -90,7 +90,7 @@ class TakeSchemeOutletsStateView(APIView):
         query = scheme.outlets.values('location_number', leg_field)
         return Response({str(r['location_number']): int(r[leg_field]) for r in query})
 
-    @on_exception_returns(HttpResponseBadRequest, 'scheme_pk')
+    @on_exception_returns_response(HttpResponseBadRequest, 'scheme_pk')
     def post(self, request, scheme_pk: int, legend: int):
         legend %= len(self.legends)
         leg_field = self.legends[legend]
@@ -107,7 +107,7 @@ class TakeSchemeOutletsListView(ListAPIView):
     permission_classes = [AllowAny]
     legends = [TradePlaceSerializerO, TradePlaceSerializerS, TradePlaceSerializerSec]
 
-    @on_exception_returns(HttpResponseBadRequest)
+    @on_exception_returns_response(HttpResponseBadRequest)
     def post(self, request, *args, **kwargs):
         return super().get(request, *args, **kwargs)
 
@@ -131,7 +131,7 @@ class TakeURLView(APIView):
     permission_classes = [AllowAny]
 
     @staticmethod
-    @on_exception_returns(HttpResponseBadRequest)
+    @on_exception_returns_response(HttpResponseBadRequest)
     def post(request):
         data = request.data
         url = reverse(data['path_name'], kwargs=data['args'])
@@ -142,7 +142,7 @@ class TakeURLsView(APIView):
     permission_classes = [AllowAny]
 
     @staticmethod
-    @on_exception_returns(HttpResponseBadRequest)
+    @on_exception_returns_response(HttpResponseBadRequest)
     def post(request):
         data = request.data
         market_pk = int(data['market_pk']) if 'market_pk' in data else None
@@ -178,7 +178,7 @@ class TakeLegendView(ListAPIView):
          'serializer_class': TradeSectorSerializer},
     ]
 
-    @on_exception_returns(HttpResponseBadRequest)
+    @on_exception_returns_response(HttpResponseBadRequest)
     def get(self, request, *args, **kwargs):
         legend = int(self.kwargs['legend']) % len(self.legends)
         return Response({
@@ -206,7 +206,7 @@ class PV_OutletTableView(APIView):
         lambda o: o.location_sector.roof_color_css,
     ]
 
-    @on_exception_returns(HttpResponseBadRequest)
+    @on_exception_returns_response(HttpResponseBadRequest)
     def post(self, request, scheme_pk: int, legend: int):
         legend = legend % len(self.legends)
         scheme = SvgSchema.objects.get(pk=scheme_pk)
@@ -231,7 +231,7 @@ class PV_OutletTableView(APIView):
 class PV_OutletDetailView(APIView):
     permission_classes = [AllowAny]
 
-    @on_exception_returns(HttpResponseBadRequest, 'outlet_number')
+    @on_exception_returns_response(HttpResponseBadRequest, 'outlet_number')
     def post(self, request, outlet_number):
         return render(request, 'markets/partials/outlet-details.html', {
             'outlet': TradePlace.objects.get(location_number=outlet_number),
@@ -242,7 +242,7 @@ class PV_OutletDetailView(APIView):
 class PV_FilteredMarketsView(APIView):
     permission_classes = [AllowAny]
 
-    @on_exception_returns(HttpResponseBadRequest)
+    @on_exception_returns_response(HttpResponseBadRequest)
     def post(self, request):
         context = OrderedDict()
         markets = filter_markets(request.data['search_text']).select_related('geo_city', 'geo_district', 'geo_street_type')
@@ -262,7 +262,7 @@ class PV_FilteredMarketsView(APIView):
 class PV_FilteredOutletsView(APIView):
     permission_classes = [AllowAny]
 
-    @on_exception_returns(HttpResponseBadRequest)
+    @on_exception_returns_response(HttpResponseBadRequest)
     def post(self, request):
         context = OrderedDict()
         outlets = filter_outlets(request.data or None).select_related('market', 'trade_place_type', 'trade_spec_type_id_act', 'market__geo_city', 'market__geo_district')
@@ -289,7 +289,7 @@ class PV_FilteredOutletsView(APIView):
 class PV_OutletFiltersView(APIView):
     permission_classes = [AllowAny]
 
-    @on_exception_returns(HttpResponseBadRequest)
+    @on_exception_returns_response(HttpResponseBadRequest)
     def post(self, request, full):
         locations = OrderedDict()
         if full:
@@ -348,7 +348,7 @@ class PV_LegendBodyView(APIView):
          'pairs': lambda: ((r, r.roof_color_css) for r in TradeSector.objects.order_by('sector_name'))},
     ]
 
-    @on_exception_returns(HttpResponseBadRequest)
+    @on_exception_returns_response(HttpResponseBadRequest)
     def post(self, request, legend: int):
         legend = legend % len(self.legends)
         return render(request, 'markets/partials/legend-body.html', {
@@ -360,7 +360,7 @@ class PV_LegendBodyView(APIView):
 class PV_HelpContentView(APIView):
     permission_classes = [AllowAny]
 
-    @on_exception_returns(HttpResponseBadRequest)
+    @on_exception_returns_response(HttpResponseBadRequest)
     def post(self, request, hid: int):
         try:
             return render(request, f'markets/partials/help/help-{hid}.html', {'hid': hid})
@@ -375,7 +375,7 @@ class RestoreDatabaseConsistencyView(APIView):
     permission_classes = [AllowAny]
 
     @staticmethod
-    @on_exception_returns(HttpResponseBadRequest)
+    @on_exception_returns_response(HttpResponseBadRequest)
     def get(_):
         if restore_db_consistency.launched():
             return Response({

@@ -1,5 +1,6 @@
 import httpx
 from django.conf import settings
+from markets.decorators import on_exception_returns
 from markets.enums import OutletState
 from markets.models import DmUser, TradePlace
 
@@ -26,18 +27,18 @@ def book_outlet(user: DmUser, outlet: TradePlace):
             raise BookingError(f'Ошибка сети: {e}') from e
 
 
-def get_booked_outlets(user: DmUser):  # TODO adopt on_exception_returns for non-view methods
-    empty = frozenset([])
+@on_exception_returns(frozenset())
+def get_booked_outlets(user: DmUser):
     if user.aux_data is None or not user.aux_data.confirmed:
-        return empty
+        raise RuntimeError()
     with httpx.Client() as client:
-        try:
-            res = client.get(settings.EXT_URL['booking'].format(user=user.aux_data.itn))
-            if res.is_error:
-                return empty
-            return res.json()
-        except httpx.TransportError as e:
-            raise BookingError(f'Ошибка сети: {e}') from e
+        res = client.get(settings.EXT_URL['booking'].format(user=user.aux_data.itn))
+        if res.is_error:
+            raise RuntimeError()
+        result = res.json()
+    match result:
+        case [*items]: return frozenset(f'{i}' for i in items)
+        case _: raise RuntimeError()
 
 
 def unbook_all(user_id):

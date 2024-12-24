@@ -2,7 +2,7 @@ from collections import OrderedDict
 from django.http import HttpResponseBadRequest
 from django.views import View
 from django.shortcuts import render
-from markets.decorators import on_exception_returns
+from markets.decorators import on_exception_returns_response
 from markets.models import Market, Contact
 
 
@@ -33,7 +33,7 @@ class MarketDetailsView(View, BasicContextProvider):
     def template_name(self):
         return 'markets/market-details.html'
 
-    @on_exception_returns(HttpResponseBadRequest)
+    @on_exception_returns_response(HttpResponseBadRequest)
     def get(self, request, mpk, show: str, outlet: str | None = None):
         market_model = Market.objects.get(pk=mpk)
         outlet_model = market_model.trade_places.get(location_number=str(outlet)) if outlet is not None else None
@@ -50,7 +50,7 @@ class ContactsView(View, BasicContextProvider):
     def template_name(self):
         return 'markets/contacts.html'
 
-    @on_exception_returns(HttpResponseBadRequest)
+    @on_exception_returns_response(HttpResponseBadRequest)
     def get(self, request):
         data = OrderedDict()
         contacts = Contact.objects.select_related('city', 'district')
@@ -68,7 +68,7 @@ class Scheme3DView(View, BasicContextProvider):
     def template_name(self):
         return 'markets/scheme3d.html'
 
-    @on_exception_returns(HttpResponseBadRequest)
+    @on_exception_returns_response(HttpResponseBadRequest)
     def get(self, request, scheme_pk):
         return render(request, self.template_name, self.basic_context | {
             'scheme_pk': scheme_pk

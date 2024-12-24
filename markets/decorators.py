@@ -5,7 +5,7 @@ from threading import Lock
 redis = Redis(host=settings.REDIS_HOST, port=settings.REDIS_PORT, db=settings.REDIS_DB)
 
 
-def on_exception_returns(response_class, name=None):
+def on_exception_returns_response(response_class, name=None):
     """For API View`s methods. Defines response_class for response if some exceptions was raised.
     Also, prevents DDOS via frequently calls of failing methods"""
     def decorator(function):
@@ -24,6 +24,17 @@ def on_exception_returns(response_class, name=None):
                 response.content = str(e)
                 return response
         proxy.__doc__ = qln
+        return proxy
+    return decorator
+
+
+def on_exception_returns(result):
+    def decorator(function):
+        def proxy(*args, **kwargs):
+            try:
+                return function(*args, **kwargs)
+            except Exception as e:
+                return result
         return proxy
     return decorator
 
