@@ -25,6 +25,7 @@ def pt_observe_all():
 def pt_delete_obsolete_notifications():
     delete_obsolete_notifications()
 
+
 @shared_task
 def st_restore_db_consistency():
     restore_db_consistency()
