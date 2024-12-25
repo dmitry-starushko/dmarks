@@ -446,3 +446,20 @@ def delete_market_emails(market_id: str, data):
     # Not implemented for current iteration
     market = Market.objects.get(market_id=market_id)
     return False
+
+
+# --- Emails ---
+
+def create_notifications(itn: str | None, data):
+    # Not implemented for current iteration
+    return False
+
+
+def get_notifications(itn: str | None):
+    # Not implemented for current iteration
+    return False
+
+
+def delete_notifications(itn: str | None, data):
+    # Not implemented for current iteration
+    return False

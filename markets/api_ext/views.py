@@ -4,7 +4,8 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from ..business.crud_entities import create_market, update_market, get_market, delete_market, create_market_outlets, get_market_outlets, update_market_outlets, delete_market_outlets, \
     create_market_schemes, get_market_schemes, update_market_schemes, delete_market_schemes, create_market_images, get_market_images, update_market_images, delete_market_images, create_market_phones, \
-    get_market_phones, update_market_phones, delete_market_phones, create_market_emails, get_market_emails, update_market_emails, delete_market_emails
+    get_market_phones, update_market_phones, delete_market_phones, create_market_emails, get_market_emails, update_market_emails, delete_market_emails, create_notifications, get_notifications, \
+    delete_notifications
 from ..decorators import on_exception_returns_response
 
 
@@ -238,3 +239,28 @@ class UserOutletsCRUDView(APIView):
     @on_exception_returns_response(HttpResponseBadRequest)
     def delete(self, request, phone):
         pass
+
+
+class NotificationsCRUDView(APIView):
+    permission_classes = [AllowAny]
+
+    @on_exception_returns_response(HttpResponseBadRequest)
+    def post(self, request, itn=None):
+        result = create_notifications(itn, request.data)
+        return Response({
+            'result': result
+        })
+
+    @on_exception_returns_response(HttpResponseBadRequest)
+    def get(self, request, itn=None):
+        result = get_notifications(itn)
+        return Response({
+            'result': result
+        })
+
+    @on_exception_returns_response(HttpResponseBadRequest)
+    def delete(self, request, itn=None):
+        result = delete_notifications(itn, request.data)
+        return Response({
+            'result': result
+        })
