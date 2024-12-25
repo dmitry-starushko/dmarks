@@ -254,7 +254,6 @@ def create_market_outlets(market_id: str, data):
 def get_market_outlets(market_id: str):
     market = Market.objects.get(market_id=market_id)
     return [{
-        'market': market.market_id,
         'location_number': olt.location_number,
         'location_row': olt.location_row,
         'price': olt.price,
