@@ -4,8 +4,8 @@ from django.contrib.auth.models import AbstractUser
 from django.core.validators import MinValueValidator, MaxValueValidator
 from django.db import models
 from django.conf import settings
-from django.db.models import Index, Q
-from markets.enums import OutletState, FUS
+from django.db.models import Index, Q, F
+from markets.enums import OutletState, FUS, NotificationType
 from markets.validators import Validators
 
 
@@ -251,14 +251,7 @@ class TradePlaceType(models.Model):
         verbose_name = "Тип занятости ТМ"
         verbose_name_plural = "Типы занятости ТМ"
         constraints = [
-            models.CheckConstraint(check=Q(type_name__in=[
-                OutletState.UNKNOWN,
-                OutletState.AVAILABLE_FOR_BOOKING,
-                OutletState.UNAVAILABLE_FOR_BOOKING,
-                OutletState.TEMPORARILY_UNAVAILABLE_FOR_BOOKING,
-                OutletState.BOOKED,
-                OutletState.RENTED
-            ]), name="TradePlaceType name from set"),
+            models.CheckConstraint(check=Q(type_name__in=[i.value for i in OutletState]), name="TradePlaceType name from set"),
             models.CheckConstraint(check=Q(color__regex=Validators.CSS), name="TradePlaceType color regex"),
             models.CheckConstraint(check=Q(wall_color__regex=Validators.HEX), name="TradePlaceType wall_color regex"),
             models.CheckConstraint(check=Q(roof_color__regex=Validators.HEX), name="TradePlaceType roof_color regex"),
@@ -590,6 +583,45 @@ class TradePlace(models.Model):
                 return "беспроводное"
             case _:
                 return "ошибка в данных"
+
+
+# -- Events & Notifications -----------------------------------------------------------------------
+
+class Notification(DbItem):
+    type_choices = {
+        NotificationType.INFORMATION: 'Информация',
+        NotificationType.WARNING: 'Важная информация',
+        NotificationType.ALERT: 'Критическая информация',
+    }
+    user = models.ForeignKey(DmUser, on_delete=models.CASCADE, related_name='notifications', null=True)  # NULL for broadcast
+    published = models.DateField()
+    unpublished = models.DateField()
+    calendar_event = models.BooleanField()
+    type = models.CharField(max_length=4, choices=type_choices.items(), default=NotificationType.INFORMATION)
+    text = models.TextField()
+    attachment = models.OneToOneField(File, on_delete=models.PROTECT, null=True)
+    read = models.BooleanField(default=False)
+
+    class Meta:
+        managed = True
+        ordering = ['published']
+        indexes = [
+            Index(fields=["published"], name='index_by_published'),
+            Index(fields=["unpublished"], name='index_by_unpublished')]
+        verbose_name = "Уведомление"
+        verbose_name_plural = "Уведомления"
+        constraints = [
+            models.CheckConstraint(check=~Q(text=''), name="non-empty notification text"),
+            models.CheckConstraint(check=~(Q(user__isnull=True) & Q(read=True)), name="broadcast notification can not be 'read'"),
+            models.CheckConstraint(check=Q(type__in=[i.value for i in NotificationType]), name="type values from set"),
+            models.CheckConstraint(check=Q(published__lt=F('unpublished')), name="unpublished after published")]
+
+    def __str__(self):
+        return f'{'Событие' if self.calendar_event else 'Уведомление'} #{self.id}'
+
+    @property
+    def broadcast(self):
+        return self.user is None
 
 
 # -- Contacts -------------------------------------------------------------------------------------

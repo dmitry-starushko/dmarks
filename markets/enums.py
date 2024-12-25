@@ -17,6 +17,12 @@ class OutletState(StrEnum):
     RENTED = 'RENTED'
 
 
+class NotificationType(StrEnum):
+    INFORMATION = 'INFO'
+    WARNING = 'WARN'
+    ALERT = 'ALRT'
+
+
 class LocationType(StrEnum):
     CITY = 'г.'
     DISTRICT = 'г.р-н'
