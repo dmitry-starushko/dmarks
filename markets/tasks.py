@@ -1,6 +1,6 @@
 from celery import shared_task
 from dmarks import celery
-from markets.business.actions import restore_db_consistency, observe_all
+from markets.business.actions import restore_db_consistency, observe_all, delete_obsolete_notifications
 from markets.business.tech_support import send_message_to_ts, collect_messages_from_ts
 
 
@@ -8,6 +8,7 @@ from markets.business.tech_support import send_message_to_ts, collect_messages_f
 def setup_periodic_tasks(sender, **kwargs):
     sender.add_periodic_task(10.0, pt_collect_messages_from_ts.s(), name='collect messages')
     sender.add_periodic_task(3600.0, pt_observe_all.s(), name='observe all observables')
+    sender.add_periodic_task(12 * 3600.0, pt_delete_obsolete_notifications.s(), name='delete obsolete notifications')
 
 
 @celery.app.task
@@ -19,6 +20,10 @@ def pt_collect_messages_from_ts():
 def pt_observe_all():
     observe_all()
 
+
+@celery.app.task
+def pt_delete_obsolete_notifications():
+    delete_obsolete_notifications()
 
 @shared_task
 def st_restore_db_consistency():
