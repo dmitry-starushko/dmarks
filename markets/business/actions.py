@@ -1,10 +1,11 @@
+import datetime
 from xml.etree import ElementTree as Et
 from django.core.exceptions import ValidationError
 from django.db import transaction
 from django.db.models import Max, Min
 from markets.enums import Observation
 from markets.decorators import globally_lonely_action
-from markets.models import TradePlace, SvgSchema, RdcError, Market, GlobalObservation
+from markets.models import TradePlace, SvgSchema, RdcError, Market, GlobalObservation, Notification
 from markets.validators import Validators
 
 try:  # To avoid deploy problems
@@ -79,6 +80,13 @@ def restore_db_consistency():
         for key, value in errors.items():
             for err in value:
                 RdcError.objects.create(object=key, text=err)
+
+
+@globally_lonely_action(None)
+def delete_obsolete_notifications():
+    today = datetime.datetime.today()
+    for ntf in Notification.objects.filter(unpublished__lt=today, read=True):
+        ntf.delete()
 
 
 @globally_lonely_action(None)

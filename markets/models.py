@@ -620,6 +620,12 @@ class Notification(DbItem):
     def __str__(self):
         return f'{'Событие' if self.calendar_event else 'Уведомление'} #{self.id}'
 
+    def delete(self, *args, **kwargs):
+        attachment = self.attachment
+        super().delete(*args, **kwargs)
+        if attachment is not None:
+            attachment.delete()
+
     @property
     def broadcast(self):
         return self.user is None

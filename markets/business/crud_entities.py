@@ -498,9 +498,5 @@ def delete_notifications(itn: str | None, data):
     manager = user.notifications if user is not None else Notification.objects
     with transaction.atomic():
         for npk in data:
-            ntf = manager.get(pk=npk)
-            attachment = ntf.attachment
-            ntf.delete()
-            if attachment is not None:
-                attachment.delete()
+            manager.get(pk=npk).delete()
     return True
