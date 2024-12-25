@@ -1,7 +1,9 @@
 from django.db import transaction
 from markets.enums import LocationType, OutletState
-from markets.models import Locality, LocalityType, Market, MarketType, MarketProfitability, MarketFireProtection, StreetType, TradeType, TradePlaceType, TradeSpecType, TradeSector
+from markets.models import Locality, LocalityType, Market, MarketType, MarketProfitability, MarketFireProtection, StreetType, TradeType, TradePlaceType, TradeSpecType, TradeSector, DmUser, \
+    Notification, File
 from markets.validators import Validators
+import base64
 
 
 def create_market(market_id: str, data):
@@ -451,15 +453,50 @@ def delete_market_emails(market_id: str, data):
 # --- Emails ---
 
 def create_notifications(itn: str | None, data):
-    # Not implemented for current iteration
-    return False
+    args = {
+        'user': DmUser.objects.get(aux_data__itn=itn) if itn is not None else None,
+        'read': False
+    }
+    with transaction.atomic():
+        for ntf in data:
+            match ntf:
+                case {**items}:
+                    for key, value in items.items():
+                        match key, value:
+                            case 'published', str(_): args |= {key: value}
+                            case 'unpublished', str(_): args |= {key: value}
+                            case 'calendar_event', bool(_): args |= {key: value}
+                            case 'type', str(_): args |= {key: value}
+                            case 'text', str(_): args |= {key: value}
+                            case 'attachment', {
+                                'file_name': str(file_name),
+                                'file_content': str(file_content)
+                            }: args |= {'attachment': File.objects.create(file_name=file_name, file_content=base64.b64decode(file_content.encode('ascii')))}
+                            case _: raise ValueError((key, value))
+                    Notification.objects.create(**args)
+                    return True
+                case _: raise ValueError(ntf)
 
 
 def get_notifications(itn: str | None):
-    # Not implemented for current iteration
-    return False
+    user = DmUser.objects.get(aux_data__itn=itn) if itn is not None else None
+    query = user.notifications.all() if user is not None else Notification.objects.filter(user__isnull=True)
+    return [{
+        'id': ntf.id,
+        'published': f'{ntf.published}',
+        'unpublished':  f'{ntf.unpublished}',
+        'calendar_event':  ntf.calendar_event,
+        'type': ntf.type,
+        'text': ntf.text,
+        'has-attachment': ntf.attachment is not None,
+        'read':  ntf.read
+    } for ntf in query]
 
 
 def delete_notifications(itn: str | None, data):
-    # Not implemented for current iteration
-    return False
+    user = DmUser.objects.get(aux_data__itn=itn) if itn is not None else None
+    manager = user.notifications if user is not None else Notification.objects
+    with transaction.atomic():
+        for npk in data:
+            manager.get(pk=npk).delete()
+    return True

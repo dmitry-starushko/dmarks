@@ -59,6 +59,7 @@ class File(DbItem):
     class Meta:
         verbose_name = "Файл"
         verbose_name_plural = "Файлы"
+        constraints = [models.CheckConstraint(check=~Q(file_name=''), name="File non-empty name")]
 
     def __str__(self):
         return f'Файл {self.file_name}'
@@ -67,7 +68,7 @@ class File(DbItem):
 class AuxUserData(DbItem):
     user = models.OneToOneField(DmUser, on_delete=models.CASCADE, related_name='aux_data')  # -- ассоциированный пользователь --
     confirmed = models.BooleanField(default=False)  # -- данные подтверждены администрацией --
-    itn = models.CharField(max_length=12, validators=[Validators.itn])  # -- ИНН --
+    itn = models.CharField(max_length=12, unique=True, validators=[Validators.itn])  # -- ИНН --
     usr_le_extract = models.OneToOneField(File, related_name='usr_le_extract', on_delete=models.SET_NULL, null=True)  # -- выписка из ЕСГРЮЛ, Unified State Register of Legal Entities --
     passport_image = models.OneToOneField(File, related_name='passport_image', on_delete=models.SET_NULL, null=True)  # -- скан паспорта --
     promo_image = models.ImageField(upload_to='renters/%Y/%m/%d', null=True)  # картинка
