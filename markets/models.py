@@ -1,3 +1,4 @@
+import base64
 from decimal import Decimal
 from django.contrib.auth.base_user import BaseUserManager
 from django.contrib.auth.models import AbstractUser
@@ -50,6 +51,10 @@ class DmUser(AbstractUser):
     def __str__(self):
         return self.email
 
+    @property
+    def confirmed(self):
+        return hasattr(self, 'aux_data') and self.aux_data.confirmed
+
 
 class File(DbItem):
     file_name = models.CharField(max_length=512)  # -- имя файла --
@@ -62,6 +67,13 @@ class File(DbItem):
 
     def __str__(self):
         return f'Файл {self.file_name}'
+
+    @property
+    def as_dictionary(self):
+        return {
+            'file_name': self.file_name,
+            'file_content_b64': base64.b64encode(self.file_content).decode('ascii')
+        }
 
 
 class AuxUserData(DbItem):

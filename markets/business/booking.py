@@ -10,7 +10,7 @@ class BookingError(Exception):
         super().__init__(message)
 
 
-def book_outlet(user: DmUser, outlet: TradePlace):
+def book_outlet(user: DmUser, outlet: TradePlace):  # TODO text from params
     if not hasattr(user, 'aux_data') or not user.aux_data.confirmed:
         raise BookingError('Для бронирования торгового места необходимо пройти процедуру валидации в личном кабинете')
     if outlet.trade_place_type.type_name != OutletState.AVAILABLE_FOR_BOOKING:

@@ -450,7 +450,7 @@ def delete_market_emails(market_id: str, data):
     return False
 
 
-# --- Emails ---
+# --- Notifications ---
 
 def create_notifications(itn: str | None, data):
     args = {

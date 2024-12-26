@@ -387,12 +387,18 @@ class PV_UserActionView(APIView):
                     return render(request, f'markets/partials/user/message.html', {'message': f'Запрос на бронирование торгового места №{number} принят в обработку. Ожидайте уведомлений.'})
                 except BookingError as e:
                     return render(request, f'markets/partials/user/message.html', {'message': f'{e}'})
+
             case {'action': 'unbook-all'}:
                 unbooked = unbook_all(request.user)
                 message = f'Отменена заявка на бронирование торговых мест {', '.join(unbooked)}' if unbooked else 'Ни одна заявка на бронирование не была отменена'
                 return render(request, f'markets/partials/user/message.html', {'message': message})
+
+            case {'action': 'init-confirmation'}:
+                return render(request, f'markets/partials/user/message.html', {'message': 'Операция еще не реализована'})
+
             case _:
                 return render(request, f'markets/partials/user/message.html', {'message': 'К сожалению, данная операция еще не реализована. Обратитесь к службе технической поддержке сайта.'})
+
 
 # -- Actions --------------------------------------------------------------------------------------
 
