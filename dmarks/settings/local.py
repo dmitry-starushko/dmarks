@@ -1,3 +1,4 @@
+from rest_framework.permissions import AllowAny
 from .base import *
 
 DEBUG = True
@@ -24,3 +25,5 @@ TELEBOT_ID = os.environ.get('TELEBOT')
 EXT_URL = {
     'booking': 'http://192.168.0.199:3001/booking/'
 }
+
+EXT_API_PERMISSIONS = [AllowAny]

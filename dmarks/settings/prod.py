@@ -1,3 +1,4 @@
+from rest_framework.permissions import IsAdminUser
 from .base import *
 
 DEBUG = False
@@ -31,3 +32,5 @@ TELEBOT_ID = os.environ.get('TELEBOT')
 EXT_URL = {
     'booking': ''
 }
+
+EXT_API_PERMISSIONS = [IsAdminUser]

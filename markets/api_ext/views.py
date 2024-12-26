@@ -1,5 +1,5 @@
+from django.conf import settings
 from django.http import HttpResponseBadRequest
-from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from ..business.crud_entities import create_market, update_market, get_market, delete_market, create_market_outlets, get_market_outlets, update_market_outlets, delete_market_outlets, \
@@ -10,7 +10,7 @@ from ..decorators import on_exception_returns_response
 
 
 class MarketCRUDView(APIView):
-    permission_classes = [AllowAny]
+    permission_classes = settings.EXT_API_PERMISSIONS
 
     @on_exception_returns_response(HttpResponseBadRequest)
     def post(self, request, mid):
@@ -42,7 +42,7 @@ class MarketCRUDView(APIView):
 
 
 class MarketOutletsCRUDView(APIView):
-    permission_classes = [AllowAny]
+    permission_classes = settings.EXT_API_PERMISSIONS
 
     @on_exception_returns_response(HttpResponseBadRequest)
     def post(self, request, mid):
@@ -74,7 +74,7 @@ class MarketOutletsCRUDView(APIView):
 
 
 class MarketSchemesCRUDView(APIView):
-    permission_classes = [AllowAny]
+    permission_classes = settings.EXT_API_PERMISSIONS
 
     @on_exception_returns_response(HttpResponseBadRequest)
     def post(self, request, mid):
@@ -106,7 +106,7 @@ class MarketSchemesCRUDView(APIView):
 
 
 class MarketImagesCRUDView(APIView):
-    permission_classes = [AllowAny]
+    permission_classes = settings.EXT_API_PERMISSIONS
 
     @on_exception_returns_response(HttpResponseBadRequest)
     def post(self, request, mid):
@@ -138,7 +138,7 @@ class MarketImagesCRUDView(APIView):
 
 
 class MarketPhonesCRUDView(APIView):
-    permission_classes = [AllowAny]
+    permission_classes = settings.EXT_API_PERMISSIONS
 
     @on_exception_returns_response(HttpResponseBadRequest)
     def post(self, request, mid):
@@ -170,7 +170,7 @@ class MarketPhonesCRUDView(APIView):
 
 
 class MarketEmailsCRUDView(APIView):
-    permission_classes = [AllowAny]
+    permission_classes = settings.EXT_API_PERMISSIONS
 
     @on_exception_returns_response(HttpResponseBadRequest)
     def post(self, request, mid):
@@ -202,7 +202,7 @@ class MarketEmailsCRUDView(APIView):
 
 
 class UserCRUDView(APIView):
-    permission_classes = [AllowAny]
+    permission_classes = settings.EXT_API_PERMISSIONS
 
     @on_exception_returns_response(HttpResponseBadRequest)
     def post(self, request, phone):
@@ -222,7 +222,7 @@ class UserCRUDView(APIView):
 
 
 class UserOutletsCRUDView(APIView):
-    permission_classes = [AllowAny]
+    permission_classes = settings.EXT_API_PERMISSIONS
 
     @on_exception_returns_response(HttpResponseBadRequest)
     def post(self, request, phone):
@@ -242,7 +242,7 @@ class UserOutletsCRUDView(APIView):
 
 
 class NotificationsCRUDView(APIView):
-    permission_classes = [AllowAny]
+    permission_classes = settings.EXT_API_PERMISSIONS
 
     @on_exception_returns_response(HttpResponseBadRequest)
     def post(self, request, itn=None):
