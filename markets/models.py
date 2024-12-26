@@ -19,7 +19,6 @@ class DbItem(models.Model):
 
 # -- DmUser ---------------------------------------------------------------------------------------
 
-
 class DmUserManager(BaseUserManager):
     def create_user(self, phone, password, email, **extra_fields):
         Validators.phone(phone)
@@ -685,7 +684,6 @@ class ContactEmail(DbItem):  # -- Contact emails
 
 
 # -- NG Data --------------------------------------------------------------------------------------
-
 
 class Parameter(DbItem):  # -- NG Parameters
     key = models.CharField(primary_key=True, max_length=50)  # -- ключ --
