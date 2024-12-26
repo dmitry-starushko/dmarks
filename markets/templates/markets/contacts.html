@@ -1,15 +1,33 @@
 {% extends 'markets/basic.html' %}
+{% load static %}
+{% load thumbnail %}
 {% load qr_code %}
+{% block header-styles %}
+{{block.super}}
+<link href="{% static 'css/contacts.css' %}" rel="stylesheet">
+{% endblock %}
 {% block content %}
-{% for city, dists in data.items %}
-<h1>{{city}}</h1>
-{% for dist, contacts in dists.items %}
-<h2>{{dist}}</h2>
-{% for key, contact in contacts.items %}
-<h3>{{contact.title}}</h3>
-{% qr_from_text contact.qr_text size="T" %}
-{% endfor %}
-{% endfor %}
-{% endfor %}
+<div class="contact-block">
+    {% for city, dists in data.items %}
+    <h1>{{city}}</h1>
+        {% for dist, contacts in dists.items %}
+        <h2>{{dist}}</h2>
+        <div class="contact-cards">
+            {% for key, contact in contacts.items %}
+            <div class="contact-card">
+                <div class="contact-card-image">
+                    {% thumbnail contact.image 100x100 crop as thumb %}
+                    <img src="{{ thumb.url }}" />
+                </div>
+                <div class="contact-card-body">
+                    <h3>{{contact.title}}</h3>
+                    {% qr_from_text contact.qr_text size="T" %}
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% endfor %}
+    {% endfor %}
+</div>
 {% endblock %}
 
