@@ -22,6 +22,10 @@ class UserActions {
         this.__action__({action:"unbook-all"});
     }
 
+    init_confirmation(number) {
+        this.__action__({action:"init-confirmation"});
+    }
+
     close_dialog() {
         this._dialog.style.opacity = "0.0";
         window.setTimeout(()=>this._dialog.close(), 450);
