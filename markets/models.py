@@ -96,7 +96,6 @@ class AuxUserData(DbItem):
 
 # -- Legacy data ----------------------------------------------------------------------------------
 
-
 class LocalityType(models.Model):
     type_name = models.CharField(unique=True, db_comment='Наименование типа')
     descr = models.TextField(blank=True, null=True, db_comment='Описание')
