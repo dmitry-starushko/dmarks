@@ -82,6 +82,13 @@ class AuxUserData(DbItem):
     def __str__(self):
         return f'Данные "{self.user}"'
 
+    def delete(self, *args, **kwargs):
+        if self.usr_le_extract is not None:
+            self.usr_le_extract.delete()
+        if self.passport_image is not None:
+            self.passport_image.delete()
+        super().delete(*args, **kwargs)
+
     @property
     def image(self):
         return self.promo_image if self.promo_image else settings.DEF_MK_IMG
