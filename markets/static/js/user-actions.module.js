@@ -19,6 +19,7 @@ class UserActions {
     }
 
     unbook_all(number) {
+        this.__action__({action:"unbook-all"});
     }
 
     close_dialog() {

@@ -15,7 +15,7 @@ from markets.models import SvgSchema, Market, TradePlaceType, TradeSpecType, Tra
 from markets.tasks import st_restore_db_consistency
 from redis import Redis
 from .serializers import SchemeSerializer, TradePlaceTypeSerializer, TradeSpecTypeSerializer, TradePlaceSerializerO, TradePlaceSerializerS, TradeSectorSerializer, TradePlaceSerializerSec
-from ..business.booking import get_outlets_in_booking, BookingError, book_outlet
+from ..business.booking import get_outlets_in_booking, BookingError, book_outlet, unbook_all
 from ..enums import Observation, OutletState
 
 try:  # To avoid deploy problems
@@ -387,6 +387,10 @@ class PV_UserActionView(APIView):
                     return render(request, f'markets/partials/user/message.html', {'message': f'Запрос на бронирование торгового места №{number} принят в обработку. Ожидайте уведомлений.'})
                 except BookingError as e:
                     return render(request, f'markets/partials/user/message.html', {'message': f'{e}'})
+            case {'action': 'unbook-all'}:
+                unbooked = unbook_all(request.user)
+                message = f'Отменена заявка на бронирование торговых мест {', '.join(unbooked)}' if unbooked else 'Ни одна заявка на бронирование не была отменена'
+                return render(request, f'markets/partials/user/message.html', {'message': message})
             case _:
                 return render(request, f'markets/partials/user/message.html', {'message': 'К сожалению, данная операция еще не реализована. Обратитесь к службе технической поддержке сайта.'})
 

@@ -41,5 +41,17 @@ def get_outlets_in_booking(user: DmUser):
         case _: raise RuntimeError()
 
 
-def unbook_all(user_id):
-    pass
+@on_exception_returns(frozenset())
+def unbook_all(user: DmUser):
+    if user.aux_data is None or not user.aux_data.confirmed:
+        raise RuntimeError()
+    with httpx.Client() as client:
+        res = client.delete(settings.EXT_URL['booking'].format(user=user.aux_data.itn))
+        if res.is_error:
+            raise RuntimeError()
+        result = res.json()
+    match result:
+        case [*items]:
+            return frozenset(f'{i}' for i in items)
+        case _:
+            raise RuntimeError()
