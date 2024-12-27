@@ -2,13 +2,13 @@ from django.conf import settings
 from django.http import HttpResponseBadRequest
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from ..business.confirmation import set_user_confirmed
-from ..business.crud_entities import create_market, update_market, get_market, delete_market, create_market_outlets, get_market_outlets, update_market_outlets, delete_market_outlets, \
+from markets.business.confirmation import set_user_confirmed
+from markets.business.crud_entities import create_market, update_market, get_market, delete_market, create_market_outlets, get_market_outlets, update_market_outlets, delete_market_outlets, \
     create_market_schemes, get_market_schemes, update_market_schemes, delete_market_schemes, create_market_images, get_market_images, update_market_images, delete_market_images, create_market_phones, \
     get_market_phones, update_market_phones, delete_market_phones, create_market_emails, get_market_emails, update_market_emails, delete_market_emails, create_notifications, get_notifications, \
     delete_notifications
-from ..decorators import on_exception_returns_response
-from ..models import DmUser
+from markets.decorators import on_exception_returns_response
+from markets.models import DmUser
 
 
 class MarketCRUDView(APIView):

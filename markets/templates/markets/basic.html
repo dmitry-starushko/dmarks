@@ -85,7 +85,7 @@
             </nav>
             <div class="header-right-icons">
                 <a href="#" class="search" title="Поиск" id="search-btn"><i class="bi bi-search"></i></a>
-                <a href="#" class="sign-in" title="Вход в ЛК"><i class="bi bi-box-arrow-in-right"></i><i class="bi bi-person"></i></a>
+                <a href="{% url 'renter:renter' %}" class="sign-in" title="Вход в ЛК"><i class="bi bi-box-arrow-in-right"></i><i class="bi bi-person"></i></a>
                 <a href="#" class="help" title="Помощь"><i class="bi bi-question-circle" onclick="window.help_dialog.toggle({{help_id|default:0}});"></i></a>
             </div>
         </div>
