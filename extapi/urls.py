@@ -1,7 +1,7 @@
 from django.urls import path
-from . import views
+from extapi import views
 
-app_name = 'markets'
+app_name = 'extapi'
 
 urlpatterns = [
     path('markets/<str:mid>/', views.MarketCRUDView.as_view(), name='market_crud'),

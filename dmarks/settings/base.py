@@ -16,6 +16,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'markets.apps.MarketsConfig',
+    'extapi.apps.ExtapiConfig',
     'renter.apps.RenterConfig',
     'qr_code',
     'pgtrigger',
