@@ -38,19 +38,16 @@
   display: flex;
   flex-wrap: wrap;
   margin: 1rem;
+  justify-content: flex-start;
   /*scrollbar-gutter: stable;
   overflow-y:scroll;
   scrollbar-width: thin;
   scrollbar-color: #c4c4c5 #f5f5f5;*/
 }
 
-.contact-card-image {
-    width: 100px;
-    height: 100px;
-}
 
 .contact-card {
-   flex: 1 1 24%;
+   flex: 1 1 30%;
    background-color: #fff;
    margin: 5px;
    padding: 5px;
@@ -60,4 +57,41 @@
    /*height: 150px;*/
    max-height: 250px;
    display: flex;
+}
+
+.contact-card-image {
+    width: 100px;
+    height: 100px;
+}
+
+.contact-card-body {
+    padding: 0 1rem;
+    width: 100%;
+    height: 100%;
+}
+
+.contact-card-body-title {
+    text-align: right;
+    font-size: 1.4rem;
+    border-bottom: 1px solid;
+}
+
+.contact-card-body-info {
+    display: flex;
+    width: 100%;
+    margin-top: 1.2rem;
+}
+
+.contact-card-body-info-contacts {
+    width: 70%;
+}
+
+.contact-card-body-info-qr {
+    width: 30%;
+    height: 100%;
+}
+
+.contact-card-body-info-qr > svg {
+    width: 100%;
+    height: 100%;
 }

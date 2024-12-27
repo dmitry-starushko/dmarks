@@ -2,6 +2,7 @@
 {% load static %}
 {% load thumbnail %}
 {% load qr_code %}
+{% block title %}{{block.super}}Контакты{% endblock %}
 {% block header-styles %}
 {{block.super}}
 <link href="{% static 'css/contacts.css' %}" rel="stylesheet">
@@ -20,8 +21,27 @@
                     <img src="{{ thumb.url }}" />
                 </div>
                 <div class="contact-card-body">
-                    <h3>{{contact.title}}</h3>
-                    {% qr_from_text contact.qr_text size="T" %}
+                    <div class="contact-card-body-title">{{contact.title}}</div>
+                    <div class="contact-card-body-subtitle">{{contact.city}}, {{contact.district}}, {{contact.address}}</div>
+                    <div class="contact-card-body-info">
+                        <div class="contact-card-body-info-contacts">
+                            {% for phone in contact.phones.all %}
+                            <div class="contact-card-body-info-contact">
+                                <i class="bi bi-telephone-fill"></i>
+                                <a href="tel:{{phone}}">{{phone}}</a>
+                            </div>
+                            {% endfor %}
+                            {% for email in contact.emails.all %}
+                            <div class="contact-card-body-info-contact">
+                                <i class="bi bi-envelope-at-fill"></i>
+                                <a href="mailto:{{email}}">{{email}}</a>
+                            </div>
+                            {% endfor %}
+                        </div>
+                        <div class="contact-card-body-info-qr">
+                            {% qr_from_text contact.qr_text size="T" %}
+                        </div>
+                    </div>
                 </div>
             </div>
             {% endfor %}
