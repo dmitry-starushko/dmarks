@@ -17,8 +17,8 @@
             {% for key, contact in contacts.items %}
             <div class="contact-card">
                 <div class="contact-card-image">
-                    {% thumbnail contact.image 100x100 crop as thumb %}
-                    <img src="{{ thumb.url }}" />
+                    {# thumbnail contact.image 100x100 crop as thumb #}
+                    <img src="{{ contact.image.url }}" />
                 </div>
                 <div class="contact-card-body">
                     <div class="contact-card-body-title">{{contact.title}}</div>
