@@ -1,0 +1,123 @@
+:root {
+    /*--border-width: 1px;
+    --border-color: black;
+    --border: var(--border-width) solid var(--border-color);
+    --nav-button-active-bg: #fff;
+    --section-bg: #fff;
+    border-color: var(--bs-nav-tabs-link-active-border-color);*/
+    --header1: #00bcd4;
+    --header2: #6dcb8c;
+}
+
+
+.contact-block {
+    display: flex;
+    flex-direction: column;
+    background-color: #c4c4c5;
+    height: 100%;
+    margin: 10px 0;
+    padding: 5px;
+    overflow-y:scroll;
+    scrollbar-width: thin;
+}
+
+.contact-block > h1 {
+    width: 100%;
+    background: var(--header1);
+    margin: 0;
+    padding: 0.6rem;
+    font-size: 24px;
+}
+
+.contact-block > h2 {
+    width: 100%;
+    background: var(--header2);
+    padding: 0.6rem 2rem;
+    font-size: 20px;
+}
+
+.contact-cards {
+  display: flex;
+  flex-wrap: wrap;
+  margin: 1rem;
+  justify-content: flex-start;
+  /*scrollbar-gutter: stable;
+  overflow-y:scroll;
+  scrollbar-width: thin;
+  scrollbar-color: #c4c4c5 #f5f5f5;*/
+}
+
+
+.contact-card {
+   flex: 0 0 32%;
+   background-color: #fff;
+   margin: 5px;
+   padding: 5px;
+   border: 2px solid color-mix(in srgb, var(--card-border-color), transparent 50%);
+   border-radius: 5px;
+   transition: ease-in-out 0.2s;
+   /*height: 150px;*/
+   max-height: 250px;
+   display: flex;
+}
+
+.contact-card-image {
+}
+
+.contact-card-image > img {
+    width: 100px;
+    height: 100%;
+}
+
+.contact-card-body {
+    padding: 0 0.4rem;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.contact-card-body-title {
+    text-align: right;
+    font-size: 1.4rem;
+    border-bottom: 1px solid;
+}
+
+.contact-card-body-info {
+    display: flex;
+    width: 100%;
+    margin-top: 1.2rem;
+    height: 100%;
+}
+
+.contact-card-body-info-contacts {
+    width: 70%;
+    scrollbar-gutter: stable;
+    overflow-y:scroll;
+    scrollbar-width: thin;
+    scrollbar-color: #c4c4c5 #f5f5f5;
+    flex: 1;
+}
+
+.contact-card-body-info-contact {
+    font-family: "geologica";
+    font-size: 12px;
+    display: flex;
+}
+
+.contact-card-body-info-contact-icon {
+    margin-right: 5px;
+}
+
+.contact-card-body-info-qr {
+    height: 100%;
+    display: flex;
+    align-self: flex-end;
+}
+
+.contact-card-body-info-qr > svg {
+    min-width: 120px;
+    min-height: 120px;
+    align-self: flex-end;
+    /*height: 100%;*/
+}

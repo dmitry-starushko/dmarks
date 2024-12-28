@@ -22,6 +22,11 @@ class UserActions {
     }
 
     unbook_all(number) {
+        this.__action__({action:"unbook-all"});
+    }
+
+    init_confirmation(number) {
+        this.__action__({action:"init-confirmation"});
     }
 
     close_dialog() {
