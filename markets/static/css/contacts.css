@@ -102,6 +102,11 @@
 .contact-card-body-info-contact {
     font-family: "geologica";
     font-size: 12px;
+    display: flex;
+}
+
+.contact-card-body-info-contact-icon {
+    margin-right: 5px;
 }
 
 .contact-card-body-info-qr {

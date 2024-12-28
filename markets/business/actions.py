@@ -83,6 +83,11 @@ def restore_db_consistency():
 
 
 @globally_lonely_action(None)
+def logrotate():
+    pass  # TODO implement
+
+
+@globally_lonely_action(None)
 def delete_obsolete_notifications():
     today = datetime.datetime.today()
     for ntf in Notification.objects.filter(unpublished__lt=today, read=True):

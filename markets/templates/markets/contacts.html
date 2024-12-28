@@ -25,18 +25,33 @@
                     <div class="contact-card-body-subtitle">{{contact.city}}, {{contact.district}}, {{contact.address}}</div>
                     <div class="contact-card-body-info">
                         <div class="contact-card-body-info-contacts">
-                            {% for phone in contact.phones.all %}
-                            <div class="contact-card-body-info-contact">
-                                <i class="bi bi-telephone-fill"></i>
-                                <a href="tel:{{phone}}">{{phone}}</a>
-                            </div>
-                            {% endfor %}
-                            {% for email in contact.emails.all %}
-                            <div class="contact-card-body-info-contact">
-                                <i class="bi bi-envelope-at-fill"></i>
-                                <a href="mailto:{{email}}">{{email}}</a>
-                            </div>
-                            {% endfor %}
+
+                            {% if contact.phones.exists %}
+                                <div class="contact-card-body-info-contact">
+                                    <div class="contact-card-body-info-contact-icon">
+                                        <i class="bi bi-telephone-fill"></i>
+                                    </div>
+                                    <div class="contact-card-body-info-contact-row">
+                                        {% for phone in contact.phones.all %}
+                                            <a href="tel:{{phone}}">{{phone}}</a>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                            {% endif %}
+
+                            {% if contact.emails.exists %}
+                                <div class="contact-card-body-info-contact">
+                                    <div class="contact-card-body-info-contact-icon">
+                                        <i class="bi bi-envelope-at-fill"></i>
+                                    </div>
+                                    <div class="contact-card-body-info-contact-row">
+                                        {% for email in contact.emails.all %}
+                                        <a href="mailto:{{email}}">{{email}}</a>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                            {% endif %}
+
                         </div>
                         <div class="contact-card-body-info-qr">
                             {% qr_from_text contact.qr_text size="T" %}
