@@ -1,8 +1,12 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <script src="{% static 'js/js.cookie.min.js' %}"></script>
+    {% include 'markets/js/reverse.js' %}
+    {% include 'renter/js/importmap.js' %}
 </head>
 <body>
 <p>Тут будет Личный Кабинет!</p>
