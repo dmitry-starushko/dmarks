@@ -22,9 +22,10 @@ from django.conf.urls.static import static
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('markets/', include('markets.urls', namespace='markets')),
-    path('api/', include('markets.api.urls', namespace='api')),
     path('renter/', include('renter.urls', namespace='renter')),
-    path('extapi/', include('extapi.urls', namespace='extapi')),
+    path('api/', include('markets.api.urls', namespace='api')),
+    path('api/', include('renter.api.urls', namespace='renter-api')),
+    path('extapi/', include('extapi.urls', namespace='extern-api')),
 ]
 
 if settings.DEBUG:

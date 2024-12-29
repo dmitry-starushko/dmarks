@@ -8,7 +8,7 @@
     <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Geologica:wght@100..900&display=swap" rel="stylesheet">
     <script src="{% static 'js/js.cookie.min.js' %}"></script>
-    {% include 'markets/js/reverse.js' %}
+    {% include 'markets/js/reverse.js' with namespace='renter-api' %}
     {% include 'renter/js/importmap.js' %}
     <script type="module">
         import {Calendar} from "calendar";
