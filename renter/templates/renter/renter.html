@@ -1,8 +1,19 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <link href="https://fonts.googleapis.com" rel="preconnect">
+    <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Geologica:wght@100..900&display=swap" rel="stylesheet">
+    <script src="{% static 'js/js.cookie.min.js' %}"></script>
+    {% include 'markets/js/reverse.js' %}
+    {% include 'renter/js/importmap.js' %}
+    <script type="module">
+        import {Calendar} from "calendar";
+        document.addEventListener('DOMContentLoaded', (event) => { {% include 'renter/js/renter.js' %} });
+    </script>
 </head>
 <body>
 

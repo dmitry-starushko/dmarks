@@ -1,0 +1,1 @@
+window.calendar = new Calendar();
