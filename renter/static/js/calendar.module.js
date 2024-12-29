@@ -9,7 +9,8 @@ class Calendar {
     }
 
     update() {
-        dj_load_partial_view("partial_calendar", {year: this._year, month: this._month}, {}).then(
+        const date = new Date();
+        dj_load_partial_view("partial_calendar", {year: this._year, month: this._month}, {year: date.getFullYear(), month: date.getMonth() + 1, day: date.getDate()}).then(
             html => { this._container.innerHTML = html; }
         );
     }

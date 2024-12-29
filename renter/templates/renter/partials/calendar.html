@@ -1,59 +1,22 @@
 <div class="calendar">
     <div class="calendar-controls">
         <button>&larr;</button>
-        <p>2025 Декабрь</p>
+        <p>{{title}}</p>
         <button>&rarr;</button>
     </div>
     <div class="calendar-body">
-        <div class="wd-name">Пн</div>
-        <div class="wd-name">Вт</div>
-        <div class="wd-name">Ср</div>
-        <div class="wd-name">Чт</div>
-        <div class="wd-name">Пт</div>
-        <div class="wd-name">Сб</div>
-        <div class="wd-name">Вс</div>
-        <div class="prev">24</div>
-        <div class="prev">25</div>
-        <div class="prev">26</div>
-        <div class="prev">27</div>
-        <div class="prev">28</div>
-        <div class="prev">29</div>
-        <div>01</div>
-        <div>02</div>
-        <div>03</div>
-        <div>04</div>
-        <div>05</div>
-        <div>06</div>
-        <div>07</div>
-        <div>08</div>
-        <div>09</div>
-        <div>10</div>
-        <div>11</div>
-        <div>12</div>
-        <div>13</div>
-        <div>14</div>
-        <div>15</div>
-        <div class="events">16</div>
-        <div>17</div>
-        <div>18</div>
-        <div>19</div>
-        <div>20</div>
-        <div class="events">21</div>
-        <div>22</div>
-        <div>23</div>
-        <div class="events">24</div>
-        <div>25</div>
-        <div>26</div>
-        <div>27</div>
-        <div class="today events">28</div>
-        <div>29</div>
-        <div>30</div>
-        <div>31</div>
-        <div class="next">01</div>
-        <div class="next">02</div>
-        <div class="next">03</div>
-        <div class="next">04</div>
-        <div class="next">05</div>
+        {% for wd in week_days %}
+        <div class="wd-name">{{wd}}</div>
+        {% endfor %}
+        {% for d in p_days %}
+        <div class="prev">{{d}}</div>
+        {% endfor %}
+        {% for d in c_days %}
+        <div{% if d == today %} class="today"{% endif %}>{{d}}</div>
+        {% endfor %}
+        {% for d in n_days %}
+        <div class="next">{{d}}</div>
+        {% endfor %}
     </div>
 </div>
 
