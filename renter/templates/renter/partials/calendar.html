@@ -1,65 +1,3 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-    <style>
-    .calendar {
-        display: flex;
-        flex-flow: column;
-        gap: 1px;
-        
-        .calendar-controls {
-            display: flex;
-            flex-flow: row;
-            align-items: center;
-            justify-content: center;
-            gap: 1rem;
-            color: white;
-            background: sandybrown;
-        }
-        
-        .calendar-body {
-            display: grid;
-            grid-template-columns: repeat(7, minmax(3rem, 1fr));
-            grid-auto-rows: 2rem;
-            grid-auto-flow: row;
-            gap: 1px;
-            
-            * {
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                font-weight: normal;
-                color: moccasin;
-                background: mediumturquoise;
-                
-                &.wd-name {
-                    color: white;
-                    background: sandybrown;
-                }
-                
-                &.prev, &.next {
-                    color: cyan;
-                    background: lightcyan;
-                    font-weight: 100;
-                }
-                
-                &.today {
-                    background: steelblue;
-                }
-                
-                &.events {
-                    color: gold;
-                    font-weight: bold;
-                    cursor: pointer;
-                }
-            }
-        }
-    }
-    </style>
-</head>
-<body>
 <div class="calendar">
     <div class="calendar-controls">
         <button>&larr;</button>
@@ -118,5 +56,4 @@
         <div class="next">05</div>
     </div>
 </div>
-</body>
-</html>
+
