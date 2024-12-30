@@ -14,6 +14,26 @@ class Calendar {
             html => { this._container.innerHTML = html; }
         );
     }
+
+    prev_month() {
+        if (--this._month == 0) {
+            this._month = 12;
+            this._year--;
+        }
+        this.update();
+    }
+
+    next_month() {
+        if (++this._month == 13) {
+            this._month = 1;
+            this._year++;
+        }
+        this.update();
+    }
+
+    day_click(d) {
+        alert(d);
+    }
 }
 
 export { Calendar };

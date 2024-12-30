@@ -1,8 +1,8 @@
 <div class="calendar">
     <div class="calendar-controls">
-        <button>&larr;</button>
+        <button onclick="window.calendar.prev_month();">&larr;</button>
         <p>{{title}}</p>
-        <button>&rarr;</button>
+        <button onclick="window.calendar.next_month();">&rarr;</button>
     </div>
     <div class="calendar-body">
         {% for wd in week_days %}
@@ -11,8 +11,8 @@
         {% for d in p_days %}
         <div class="prev">{{d}}</div>
         {% endfor %}
-        {% for d in c_days %}
-        <div{% if d == today %} class="today"{% endif %}>{{d}}</div>
+        {% for d,v in c_days.items %}
+        <div{% if v.class %} class="{{v.class}}"{% endif %}{% if v.click %} onclick="window.calendar.day_click('{{v.click}}');"{% endif %}>{{d}}</div>
         {% endfor %}
         {% for d in n_days %}
         <div class="next">{{d}}</div>

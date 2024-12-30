@@ -27,6 +27,7 @@
             font-weight: normal;
             color: moccasin;
             background: mediumturquoise;
+            cursor: default;
 
             &.wd-name {
                 color: white;
