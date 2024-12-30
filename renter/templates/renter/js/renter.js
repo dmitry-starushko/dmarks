@@ -21,3 +21,4 @@ btnClose.addEventListener('click', () => { // start an event listener to the men
 })
 
 window.calendar = new Calendar("calendar-container");
+window.calendar_events = new Notifications("calendar-events");

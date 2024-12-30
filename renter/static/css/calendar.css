@@ -14,6 +14,10 @@
     --CLDGap: 1px;
 }
 
+*:has(>.calendar) {
+    max-width: 35rem;
+}
+
 .calendar {
     display: flex;
     flex-flow: column;
