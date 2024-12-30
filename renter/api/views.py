@@ -56,3 +56,18 @@ class PV_CalendarView(APIView):
                 })
             case _: raise ValueError(request.data)
 
+
+class PV_NotificationsView(APIView):
+    permission_classes = [AllowAny]
+
+    @on_exception_returns_response(HttpResponseBadRequest)
+    def post(self, request, year: int, month: int, day: int, calendar: bool):
+        date = f'{year}-{month}-{day}'
+        calendar = bool(calendar)
+        notifications = Notification.objects.filter(user__isnull=True, calendar_event=calendar, published__lte=date, unpublished__gt=date)
+        if hasattr(request.user, 'notifications'):
+            notifications |= request.user.notifications.filter(calendar_event=calendar, published__lte=date, unpublished__gt=date)
+        return render(request, 'renter/partials/notifications.html', {
+            'notifications': notifications
+        })
+
