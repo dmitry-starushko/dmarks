@@ -7,6 +7,7 @@
     <link href="https://fonts.googleapis.com" rel="preconnect">
     <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Geologica:wght@100..900&display=swap" rel="stylesheet"> {# ---- Styles #}
+    <link href="{% static 'css/renter.css' %}" rel="stylesheet">
     <link href="{% static 'css/calendar.css' %}" rel="stylesheet">
     <script src="{% static 'js/js.cookie.min.js' %}"></script> {# ------------------------------------------------------ Scripts #}
     {% include 'markets/js/reverse.js' with namespace='renter-api' %}
@@ -17,7 +18,26 @@
     </script>
 </head>
 <body>
-<p>Тут будет Личный Кабинет!</p>
-<div id="calendar-container" style="width:50vw;min-width:25rem;">{# Календарь подгружается в #calendar-container #}</div>
+<div class="main-body">
+    {# left sidebar #}
+    <div class="leftSidebar" style="display:flex" id="leftSidebar">
+      <button class="w3-bar-item w3-button w3-large" onclick="sidebar_close()">Close &times;</button>
+      <a href="#" class="w3-bar-item w3-button">Регистрационная карточка</a>
+      <a href="#" class="w3-bar-item w3-button">Визитная карточка</a>
+      <a href="#" class="w3-bar-item w3-button">Мои договоры</a>
+      <a href="#" class="w3-bar-item w3-button">Мои заявления</a>
+      <a href="#" class="w3-bar-item w3-button">Мои договоры</a>
+      <a href="#" class="w3-bar-item w3-button">История действий</a>
+      <a href="#" class="w3-bar-item w3-button">Информационная панель</a>
+    </div>
+
+    <div id="main">
+        <div class="navbar">
+            <button id="openNav" class="w3-button w3-teal w3-xlarge" onclick="sidebar_open()">&#9776;</button>
+        </div>
+        <p>Тут будет Личный Кабинет!</p>
+        <div id="calendar-container" style="width:50vw;min-width:25rem;">{# Календарь подгружается в #calendar-container #}</div>
+    </div>
+</div>
 </body>
 </html>
