@@ -1,1 +1,15 @@
-<p>Здесь будут уведомления!</p>
+{% load aux_tags %}
+<div class="notifications-header">
+    <label>{{year|stringformat:'d'}}/{{month|stringformat:'d'}}/{{day|stringformat:'d'}}</label>
+</div>
+<div class="notifications-body">
+{% if notifications %}
+{% for n in notifications %}
+    <div class="notification {{n.type}}">
+        {{n.text|markdown}}
+    </div>
+{% endfor %}
+{% else %}
+<p>Нет уведомлений</p>
+{% endif %}
+</div>

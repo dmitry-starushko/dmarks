@@ -18,9 +18,9 @@ class OutletState(StrEnum):
 
 
 class NotificationType(StrEnum):
-    INFORMATION = 'INFO'
-    WARNING = 'WARN'
-    ALERT = 'ALRT'
+    INFORMATION = 'info'
+    WARNING = 'warn'
+    ALERT = 'alrt'
 
 
 class LocationType(StrEnum):

@@ -68,6 +68,9 @@ class PV_NotificationsView(APIView):
         if hasattr(request.user, 'notifications'):
             notifications |= request.user.notifications.filter(calendar_event=calendar, published__lte=date, unpublished__gt=date)
         return render(request, 'renter/partials/notifications.html', {
+            'year': year,
+            'month': month,
+            'day': day,
             'notifications': notifications
         })
 
