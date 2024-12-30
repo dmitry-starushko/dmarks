@@ -378,24 +378,30 @@ class PV_HelpContentView(APIView):
 class PV_UserActionView(APIView):
     permission_classes = [AllowAny]
 
-    @on_exception_returns_response(HttpResponseBadRequest)
+    @on_exception_returns_response(HttpResponseBadRequest)  # TODO перенести в renter-api ?
     def post(self, request):
         match request.data:
+            # -- Бронирование ТМ --
             case {'action': 'book-outlet', 'outlet': str(number)}:
                 try:
                     book_outlet(request.user, TradePlace.objects.get(location_number=number))  # TODO messages from parameters
-                    return render(request, f'markets/partials/user/message.html', {'message': f'Запрос на бронирование торгового места №{number} принят в обработку. Ожидайте уведомлений.'})
+                    return render(request, f'markets/partials/user/message.html', {
+                        'message': f'Запрос на бронирование торгового места №{number} принят в обработку. Ожидайте уведомлений.'
+                    })
                 except BookingError as e:
                     return render(request, f'markets/partials/user/message.html', {'message': f'{e}'})
-
+            # -- Отмена бронирований --
             case {'action': 'unbook-all'}:
                 unbooked = unbook_all(request.user)
-                message = f'Отменена заявка на бронирование торговых мест {', '.join(unbooked)}' if unbooked else 'Ни одна заявка на бронирование не была отменена'
-                return render(request, f'markets/partials/user/message.html', {'message': message})
-
+                return render(request, f'markets/partials/user/message.html', {
+                    'message': f'Отменена заявка на бронирование торговых мест {', '.join(unbooked)}' if unbooked else 'Ни одна заявка на бронирование не была отменена'
+                })
+            # -- Заявка на верификацию --
             case {'action': 'init-confirmation'}:
-                return render(request, f'markets/partials/user/message.html', {'message': 'Операция еще не реализована'})
-
+                return render(request, f'markets/partials/user/message.html', {
+                    'message': 'Операция еще не реализована'
+                })
+            # -- Что-то вне списка реализованных акций --
             case _:
                 return render(request, f'markets/partials/user/message.html', {'message': 'К сожалению, данная операция еще не реализована. Обратитесь к службе технической поддержке сайта.'})
 
