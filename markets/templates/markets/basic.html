@@ -42,8 +42,8 @@
     <script src="{% static 'vendor/php-email-form/validate.js' %}"></script>
     <script src="{% static 'vendor/aos/aos.js' %}"></script>
     <script src="{% static 'vendor/swiper/swiper-bundle.min.js' %}"></script>
+    {% include 'markets/js/reverse.js' with namespace='api' %}
     {% include 'markets/js/importmap.js' %}
-    {% include 'markets/js/reverse.js' %}
     {% endblock %}
     <script type="module">
         {% block dom-loaded-scripts-imports %}

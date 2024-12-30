@@ -611,13 +611,13 @@ class Notification(DbItem):
         NotificationType.WARNING: 'Важная информация',
         NotificationType.ALERT: 'Критическая информация',
     }
-    user = models.ForeignKey(DmUser, on_delete=models.CASCADE, related_name='notifications', null=True)  # NULL for broadcast
+    user = models.ForeignKey(DmUser, on_delete=models.CASCADE, related_name='notifications', null=True, blank=True)  # NULL for broadcast
     published = models.DateField()
     unpublished = models.DateField()
     calendar_event = models.BooleanField()
     type = models.CharField(max_length=4, choices=type_choices.items(), default=NotificationType.INFORMATION)
     text = models.TextField()
-    attachment = models.OneToOneField(File, on_delete=models.PROTECT, null=True)
+    attachment = models.OneToOneField(File, on_delete=models.PROTECT, null=True, blank=True)
     read = models.BooleanField(default=False)
 
     class Meta:

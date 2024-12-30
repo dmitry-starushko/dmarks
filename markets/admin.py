@@ -54,14 +54,6 @@ class MkImageAdmin(admin.ModelAdmin):
     ordering = ['market']
 
 
-# @admin.register(Booking)
-# class BookingAdmin(admin.ModelAdmin):
-#     list_display = ['created_at', 'booked_by',  'outlet']
-#     list_filter = ['booked_by']
-#     readonly_fields = ['created_at', 'booked_by',  'outlet']
-#     ordering = ['booked_by']
-
-
 @admin.register(Parameter)
 class ParamAdmin(admin.ModelAdmin):
     list_display = ['key', 'value', 'preload', 'description']
@@ -161,6 +153,13 @@ class TradeSpecTypeAdmin(admin.ModelAdmin):
 class TradeTypeAdmin(admin.ModelAdmin):
     list_display = ['type_name', 'descr']
     ordering = ['type_name']
+
+
+@admin.register(Notification)
+class NotificationAdmin(admin.ModelAdmin):
+    list_display = ['user', 'published', 'unpublished', 'calendar_event', 'type', 'text', 'read']
+    list_filter = ['user']
+    ordering = ['-published']
 
 
 @admin.register(Contact)

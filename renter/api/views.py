@@ -1,0 +1,58 @@
+import datetime
+from calendar import monthrange
+
+from django.http import HttpResponseBadRequest
+from django.shortcuts import render
+from rest_framework.permissions import AllowAny
+from rest_framework.views import APIView
+from markets.decorators import on_exception_returns_response
+from markets.models import Notification
+
+
+# -- Partial views --------------------------------------------------------------------------------
+
+class PV_CalendarView(APIView):
+    permission_classes = [AllowAny]
+
+    @on_exception_returns_response(HttpResponseBadRequest)
+    def post(self, request, year: int, month: int):
+        cwd, cdn = monthrange(year, month)
+
+        def cal_days():
+            _, pdn = monthrange(year, (month - 2) % 12 + 1)
+            ndn = (- cwd - cdn) % 7
+            pr = [i + pdn - 6 for i in range(7)][-cwd:] if cwd else []
+            cr = [i + 1 for i in range(cdn)]
+            nx = [i + 1 for i in range(ndn)]
+            return pr, cr, nx
+
+        match request.data:
+            case {'year': int(user_year), 'month': int(user_month), 'day': int(user_day)}:
+                p_ds, c_ds, n_ds = cal_days()
+                date_first = f'{year}-{month}-1'
+                date_last = f'{year}-{month}-{cdn}'
+                events = Notification.objects.filter(user__isnull=True, calendar_event=True, published__lte=date_last, unpublished__gt=date_first)
+                if hasattr(request.user, 'notifications'):
+                    events |= request.user.notifications.filter(calendar_event=True, published__lte=date_last, unpublished__gt=date_first)
+                c_ds = {d: {'class': set(), 'click': False} for d in c_ds}
+                if user_year == year and user_month == month and user_day in c_ds:
+                    c_ds[user_day]['class'].add('today')
+                for d, v in c_ds.items():
+                    for event in events:
+                        if event.published <= datetime.date(year, month, d) < event.unpublished:
+                            v['class'].add('events')
+                            v['click'] = True
+                            break
+                for d, v in c_ds.items():
+                    v['class'] = ' '.join(v['class'])
+                    if v['click']:
+                        v['click'] = f'{year}-{month}-{d}'
+                return render(request, 'renter/partials/calendar.html', {
+                    'title': f'{year} {('Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь')[(month - 1) % 12]}',
+                    'week_days': ('Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс'),
+                    'p_days': p_ds,
+                    'c_days': c_ds,
+                    'n_days': n_ds
+                })
+            case _: raise ValueError(request.data)
+
