@@ -1,1 +1,1 @@
-window.calendar = new Calendar();
+window.calendar = new Calendar("calendar-container");
