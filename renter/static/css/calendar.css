@@ -15,7 +15,8 @@
 }
 
 *:has(>.calendar) {
-    max-width: 35rem;
+    max-width: 35rem !important;
+    border: solid thin var(--CLDTopBkgColor) !important;
 }
 
 .calendar {
