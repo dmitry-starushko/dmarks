@@ -215,9 +215,12 @@ h6 {
 }
 
 .main-block-item {
-    border-bottom: 1px solid var(--heading-line-color);
     padding-bottom: 25px;
     margin-bottom: 35px;
+    border: 1px solid #dadada;
+    border-radius: 10px;
+    padding: 5px 15px;
+        border-bottom: 1px solid var(--heading-line-color);
 }
 
 .main-block-item > h2{
