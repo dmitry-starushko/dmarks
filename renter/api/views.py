@@ -46,7 +46,8 @@ class PV_CalendarView(APIView):
                 for d, v in c_ds.items():
                     v['class'] = ' '.join(v['class'])
                     if v['click']:
-                        v['click'] = f'{year}-{month}-{d}'
+                        # v['click'] = f'{year}-{month}-{d}'
+                        v['click'] = {'year': year, 'month': month, 'day': d}
                 return render(request, 'renter/partials/calendar.html', {
                     'title': f'{year} {('Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь')[(month - 1) % 12]}',
                     'week_days': ('Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс'),

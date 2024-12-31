@@ -1,7 +1,14 @@
 class Notifications {
-    constructor(container_id) {
+    constructor(container_id, calendar) {
         this._container = document.getElementById(container_id);
         if(!this._container) { throw `DOM element #${container_id} not found`; }
+        this._calendar = calendar;
+    }
+
+    update(year, month, day) {
+        dj_load_partial_view("partial_notifications", {year: year, month: month, day: day, calendar: this._calendar}, {}).then(
+            html => { this._container.innerHTML = html; }
+        );
     }
 }
 

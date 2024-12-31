@@ -6,6 +6,9 @@ class Calendar {
         this._year = date.getFullYear();
         this._month = date.getMonth() + 1;
         this.update();
+        if(window.calendar_events) {
+            window.calendar_events.update(this._year, this._month, date.getDate());
+        }
     }
 
     update() {
@@ -31,8 +34,10 @@ class Calendar {
         this.update();
     }
 
-    day_click(d) {
-        alert(d);
+    day_click(y, m, d) {
+        if(window.calendar_events) {
+            window.calendar_events.update(y, m, d);
+        }
     }
 }
 
