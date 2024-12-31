@@ -20,5 +20,5 @@ btnClose.addEventListener('click', () => { // start an event listener to the men
   menuContent.classList.toggle("display-none"); // toggle the class display-none according to the user click
 })
 
-window.calendar = new Calendar("calendar-container");
 window.calendar_events = new Notifications("calendar-events");
+window.calendar = new Calendar("calendar-container");
