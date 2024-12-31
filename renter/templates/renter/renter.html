@@ -53,7 +53,6 @@
           <span>Сообщения</span>
       </a>
     </div>
-
     <div id="main" class="">
         <div class="navbar">
             <a href="#" class="lsb-item" title="Скрыть/показать левую панель">
@@ -65,20 +64,13 @@
             <div class="main-block-item" id="calendar-anchor">
                 <h2>Календарь событий</h2>
                 <div class="calendar-block">
-                    <div id="calendar-container" style="width:50vw;min-width:25rem;">{# Календарь подгружается в #calendar-container #}</div>
-                    <div id="calendar-events" class="calendar-event">
-                        {% comment %}
-                        <div class="calendar-event-sign"><span class="red"></span>Важная информация</div>
-                        <div class="calendar-event-date"><span>30.12.2024</span> - <span>01.01.2025</span></div>
-                        <div class="calendar-event-text">Очень важная информация</div>
-                        {% endcomment %}
-                    </div>
+                    <div id="calendar-container" style="width:50vw;min-width:25rem;">{# Календарь подгружается сюда #}</div>
+                    <div id="calendar-events" class="calendar-event">{# Календарные события грузятся сюда #}</div>
                 </div>
             </div>
-
             <div class="main-block-item" id="regcard-anchor">
                 <h2>Регистрационная карточка</h2>
-                <div> </div>
+                <div></div>
             </div>
         </div>
     </div>
