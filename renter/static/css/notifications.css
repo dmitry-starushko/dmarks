@@ -1,8 +1,10 @@
 *:has(>.notifications-header) {
-    background: lavender;
-    padding: 0.5rem;
-    font-family: "Geologica";
-    font-variation-settings: "wght" 300;
+    border-radius: 0 !important;
+    border: solid thin lightsteelblue !important;
+    padding: 0 !important;
+    background: lavender  !important;
+    font-family: "Geologica"  !important;
+    font-variation-settings: "wght" 300  !important;
 }
 
 .notifications-header {
