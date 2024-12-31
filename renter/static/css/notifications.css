@@ -1,0 +1,48 @@
+*:has(>.notifications-header) {
+    background: lavender;
+    padding: 0.5rem;
+    font-family: "Geologica";
+    font-variation-settings: "wght" 300;
+}
+
+.notifications-header {
+    color: lightsteelblue;
+    background: steelblue;
+    padding: 0.5rem;
+}
+
+.notifications-body {
+    display: flex;
+    flex-flow: column;
+    gap: 0.25rem;
+
+    label {
+        color: gray;
+        margin: 0.5rem;
+    }
+
+    .notification {
+        padding: 0.5rem;
+        border-left: solid medium steelblue;
+
+        h1, h2, h3, h4, h5, h6, p {
+            margin: 0;
+        }
+
+        &.warn {
+            h1, h2, h3, h4, h5, h6 {
+                color: white;
+            }
+            color: cornsilk;
+            background: goldenrod;
+        }
+
+        &.alrt {
+            h1, h2, h3, h4, h5, h6 {
+                color: yellow;
+            }
+            color: white;
+            background: orangered;
+        }
+    }
+}
