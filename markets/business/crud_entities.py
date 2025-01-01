@@ -468,7 +468,7 @@ def create_notifications(itn: str | None, data):
                             case 'calendar_event', bool(_): args |= {key: value}
                             case 'type', str(_): args |= {key: value}
                             case 'text', str(_): args |= {key: value}
-                            case 'attachment', {  # Не описывать в документации к данной итерации
+                            case 'attachment', {  # -- Не описывать в документации к данной итерации --
                                 'file_name': str(file_name),
                                 'file_content': str(file_content)
                             }: args |= {'attachment': File.objects.create(file_name=file_name, file_content=base64.b64decode(file_content.encode('ascii')))}
