@@ -16,6 +16,7 @@
 
 *:has(>.calendar) {
     max-width: 35rem !important;
+    max-height: fit-content !important;
     border: solid thin var(--CLDTopBkgColor) !important;
 }
 
@@ -23,7 +24,7 @@
     display: flex;
     flex-flow: column;
     gap: var(--CLDGap);
-    
+
     font-size: var(--CLDFontSize);
     font-variation-settings: "wght" var(--CLDFontWeight);
     font-weight: var(--CLDFontWeight);
