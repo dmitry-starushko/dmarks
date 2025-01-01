@@ -159,6 +159,7 @@ class TradeTypeAdmin(admin.ModelAdmin):
 class NotificationAdmin(admin.ModelAdmin):
     list_display = ['user', 'published', 'unpublished', 'calendar_event', 'type', 'text', 'read']
     list_filter = ['user']
+    readonly_fields = ['read', 'attachment']
     ordering = ['-published']
 
 
