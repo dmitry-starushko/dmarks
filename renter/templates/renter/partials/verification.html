@@ -10,7 +10,7 @@
     {% endif %}
 </div>
 {% if form %}
-<form class="verification">
+<form class="verification" method="post" action="{% url 'renter-api:partial_verification' %}" enctype="multipart/form-data">
     {% csrf_token %}
     {{form.as_div}}
     <input type="submit" title="Отправить данные для верификации" value="Отправить для верификации">
