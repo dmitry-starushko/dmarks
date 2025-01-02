@@ -16,6 +16,7 @@ div.verification {
         padding: 1rem;
         border: solid thin steelblue;
         border-radius: 2rem;
+        width: fit-content;
 
         &.alert {
             color: white;

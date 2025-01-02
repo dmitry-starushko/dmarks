@@ -4,15 +4,14 @@
     <label>Ваш ИНН: {{user.aux_data.itn}}</label>
     {% else %}
     <label class="alert">Вы не прошли процедуру верификации.</label>
+    {% if user.aux_data %}
+    <label>Процесс верификации еще не завершен.</label>
+    {% endif %}
     {% endif %}
 </div>
 {% if form %}
 <form class="verification">
     {{form.as_div}}
-    {% if user.aux_data %}
-    <input type="submit" title="Отправить повторно" value="Отправить для верификации (повторно)">
-    {% else %}
-    <input type="submit" title="Отправить" value="Отправить для верификации">
-    {% endif %}
+    <input type="submit" title="Отправить данные для верификации" value="Отправить для верификации">
 </form>
 {% endif %}
