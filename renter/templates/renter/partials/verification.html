@@ -1,1 +1,18 @@
-<p>Тут будет форма верификации</p>
+<div class="verification">
+    {% if user.confirmed %}
+    <label>Вы прошли процедуру верификации.</label>
+    <label>Ваш ИНН: {{user.aux_data.itn}}</label>
+    {% else %}
+    <label class="alert">Вы не прошли процедуру верификации.</label>
+    {% endif %}
+</div>
+{% if form %}
+<form class="verification">
+    {{form.as_div}}
+    {% if user.aux_data %}
+    <input type="submit" title="Отправить повторно" value="Отправить для верификации (повторно)">
+    {% else %}
+    <input type="submit" title="Отправить" value="Отправить для верификации">
+    {% endif %}
+</form>
+{% endif %}

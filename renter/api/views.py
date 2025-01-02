@@ -7,6 +7,7 @@ from rest_framework.permissions import AllowAny
 from rest_framework.views import APIView
 from markets.decorators import on_exception_returns_response
 from markets.models import Notification
+from renter.forms.verification import VerificationForm
 
 
 # -- Partial views --------------------------------------------------------------------------------
@@ -81,4 +82,12 @@ class PV_VerificationView(APIView):
 
     @on_exception_returns_response(HttpResponseBadRequest)
     def post(self, request):
-        return render(request, 'renter/partials/verification.html', {})
+        user = request.user
+        form = None
+        context = {'user': user}
+        if hasattr(user, 'aux_data'):
+            if not user.aux_data.confirmed:
+                context |= {'form': VerificationForm(initial={'itn': f'{user.aux_data.itn}'})}
+        else:
+            context |= {'form': VerificationForm()}
+        return render(request, 'renter/partials/verification.html', context)

@@ -1,0 +1,49 @@
+*:has(>.verification) {
+    display: flex;
+    flex-flow: column;
+    gap: 1rem;
+}
+
+div.verification {
+    width: 50%;
+    display: flex;
+    flex-flow: column;
+    gap: 0.5rem;
+
+    label {
+        color: steelblue;
+        background: lightsteelblue;
+        padding: 1rem;
+        border: solid thin steelblue;
+        border-radius: 1rem;
+
+        &.alert {
+            color: white;
+            background: orangered;
+            border-color: yellow;
+        }
+    }
+}
+
+form.verification {
+    width: 50%;
+    min-width: fit-content;
+    display: flex;
+    flex-flow: column;
+    gap: 1rem;
+
+    * {
+        font-family: "Geologica"  !important;
+        font-variation-settings: "wght" 300  !important;
+    }
+
+    div {
+        display: flex;
+        flex-flow: column;
+        gap: 0.5rem;
+
+        label {
+            color: steelblue;
+        }
+    }
+}
