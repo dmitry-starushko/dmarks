@@ -15,7 +15,7 @@ div.verification {
         background: lightsteelblue;
         padding: 1rem;
         border: solid thin steelblue;
-        border-radius: 1rem;
+        border-radius: 2rem;
 
         &.alert {
             color: white;
