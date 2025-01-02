@@ -3,6 +3,8 @@ class Notifications {
         this._container = document.getElementById(container_id);
         if(!this._container) { throw `DOM element #${container_id} not found`; }
         this._calendar = calendar;
+        const date = new Date();
+        this.update(date.getFullYear(), date.getMonth() + 1, date.getDate());
     }
 
     update(year, month, day) {

@@ -10,12 +10,14 @@
     <link href="{% static 'css/renter.css' %}" rel="stylesheet">
     <link href="{% static 'css/calendar.css' %}" rel="stylesheet">
     <link href="{% static 'css/notifications.css' %}" rel="stylesheet">
+    <link href="{% static 'css/verification.css' %}" rel="stylesheet">
     <script src="{% static 'js/js.cookie.min.js' %}"></script> {# ------------------------------------------------------ Scripts #}
     {% include 'markets/js/reverse.js' with namespace='renter-api' %}
     {% include 'renter/js/importmap.js' %}
     <script type="module">
         import {Calendar} from "calendar";
         import {Notifications} from "notifications";
+        import {Verification} from "verification";
         document.addEventListener('DOMContentLoaded', (event) => { {% include 'renter/js/renter.js' %} });
     </script>
 </head>
@@ -74,7 +76,7 @@
             </div>
             <div class="main-block-item" id="regcard-anchor">
                 <h2>Регистрационная карточка</h2>
-                <div></div>
+                <div id="verification-container"></div>
             </div>
         </div>
     </div>

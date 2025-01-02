@@ -75,3 +75,10 @@ class PV_NotificationsView(APIView):
             'notifications': notifications
         })
 
+
+class PV_VerificationView(APIView):
+    permission_classes = [AllowAny]
+
+    @on_exception_returns_response(HttpResponseBadRequest)
+    def post(self, request):
+        return render(request, 'renter/partials/verification.html', {})
