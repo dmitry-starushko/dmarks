@@ -11,6 +11,7 @@
 </div>
 {% if form %}
 <form class="verification">
+    {% csrf_token %}
     {{form.as_div}}
     <input type="submit" title="Отправить данные для верификации" value="Отправить для верификации">
 </form>
