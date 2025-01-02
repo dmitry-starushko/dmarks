@@ -12,7 +12,7 @@
         <div class="prev">{{d}}</div>
         {% endfor %}
         {% for d,v in c_days.items %}
-        <div{% if v.class %} class="{{v.class}}"{% endif %}{% if v.click %} onclick="window.calendar.day_click('{{v.click}}');"{% endif %}>{{d}}</div>
+        <div{% if v.class %} class="{{v.class}}"{% endif %}{% if v.click %} onclick="window.calendar.day_click({{v.click.year|stringformat:'d'}}, {{v.click.month|stringformat:'d'}}, {{v.click.day|stringformat:'d'}});"{% endif %}>{{d}}</div>
         {% endfor %}
         {% for d in n_days %}
         <div class="next">{{d}}</div>

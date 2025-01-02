@@ -468,13 +468,12 @@ def create_notifications(itn: str | None, data):
                             case 'calendar_event', bool(_): args |= {key: value}
                             case 'type', str(_): args |= {key: value}
                             case 'text', str(_): args |= {key: value}
-                            case 'attachment', {
+                            case 'attachment', {  # -- Не описывать в документации к данной итерации --
                                 'file_name': str(file_name),
                                 'file_content': str(file_content)
                             }: args |= {'attachment': File.objects.create(file_name=file_name, file_content=base64.b64decode(file_content.encode('ascii')))}
                             case _: raise ValueError((key, value))
-                    Notification.objects.create(**args)
-                    return True
+                    return Notification.objects.create(**args).id
                 case _: raise ValueError(ntf)
 
 
@@ -488,7 +487,7 @@ def get_notifications(itn: str | None):
         'calendar_event':  ntf.calendar_event,
         'type': ntf.type,
         'text': ntf.text,
-        'has-attachment': ntf.attachment is not None,
+        # 'has-attachment': ntf.attachment is not None,
         'read':  ntf.read
     } for ntf in query]
 
