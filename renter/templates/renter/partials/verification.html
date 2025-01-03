@@ -3,14 +3,15 @@
     <label>Вы прошли процедуру верификации.</label>
     <label>Ваш ИНН: {{user.aux_data.itn}}</label>
     {% else %}
-    <label class="alert">Вы не прошли процедуру верификации.</label>
     {% if user.aux_data %}
-    <label>Процесс верификации еще не завершен.</label>
+    <label>Процесс верификации еще не завершен. Ожидайте уведомлений.</label>
+    {% else %}
+    <label class="alert">Вы не прошли процедуру верификации.</label>
     {% endif %}
     {% endif %}
 </div>
 {% if form %}
-<form class="verification" method="post" action="{% url 'renter-api:partial_verification' %}" enctype="multipart/form-data">
+<form class="verification" method="post" action="{% url 'renter-api:action_verification_data' %}" enctype="multipart/form-data">
     {% csrf_token %}
     {{form.as_div}}
     <input type="submit" title="Отправить данные для верификации" value="Отправить для верификации">

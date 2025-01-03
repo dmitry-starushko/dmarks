@@ -38,7 +38,7 @@ def init_confirmation(user: DmUser):  # TODO text from params
             raise ConfirmationError(f'Ошибка сети: {e}') from e
 
 
-def set_user_confirmed(user: DmUser):
+def set_user_confirmed(user: DmUser):  # TODO negative confirmation
     if not user.confirmed:
         if not hasattr(user, 'aux_data'):
             raise ConfirmationError('Валидация не может быть проведена без предоставления дополнительных данных')

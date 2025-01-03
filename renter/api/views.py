@@ -1,12 +1,12 @@
 import datetime
 from calendar import monthrange
-
+from django.db import transaction
 from django.http import HttpResponseBadRequest
 from django.shortcuts import render
 from rest_framework.permissions import AllowAny
 from rest_framework.views import APIView
 from markets.decorators import on_exception_returns_response
-from markets.models import Notification
+from markets.models import Notification, AuxUserData, File
 from renter.forms.verification import VerificationForm
 
 
@@ -87,3 +87,23 @@ class PV_VerificationView(APIView):
         if not hasattr(user, 'aux_data'):
             context |= {'form': VerificationForm()}
         return render(request, 'renter/partials/verification.html', context)
+
+
+class FormActionVerificationDataView(APIView):
+    permission_classes = [AllowAny]
+
+    @on_exception_returns_response(HttpResponseBadRequest)
+    def post(self, request):
+        form = VerificationForm(request.POST, request.FILES)
+        if form.is_valid():
+            ule = request.FILES['usr_le_extract']
+            pim = request.FILES['passport_scan']
+            with transaction.atomic():
+                AuxUserData.objects.create(
+                    user=request.user,
+                    itn=form.cleaned_data['itn'],
+                    usr_le_extract=File.objects.create(file_name=ule.name, file_content=ule.read()),
+                    passport_image=File.objects.create(file_name=pim.name, file_content=pim.read())
+                )
+            # TODO notify 1C
+        return render(request, 'renter/partials/verification.html', {})
