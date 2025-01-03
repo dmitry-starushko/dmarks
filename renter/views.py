@@ -1,8 +1,9 @@
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import render
 from django.views import View
 
 
-class RenterView(View):
+class RenterView(LoginRequiredMixin, View):
     @property
     def template_name(self):
         return 'renter/renter.html'
