@@ -2,14 +2,14 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Вход</title>
 </head>
 <body>
 <form class="login" method="post" action="{% url 'renter:login' %}">
     {% csrf_token %}
     {{form.as_div}}
     <input type="hidden" name="next" value="{{next}}" />
-    <input type="submit" value="Log-in">
+    <input type="submit" value="Войти">
 </form>
 </body>
 </html>
