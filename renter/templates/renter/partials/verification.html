@@ -1,7 +1,10 @@
 <div class="verification">
     {% if user.confirmed %}
     <label>Вы прошли процедуру верификации.</label>
-    <label>Ваш ИНН: {{user.aux_data.itn}}</label>
+    <label>ИНН: {{user.aux_data.itn}}</label>
+    {% for key, val in reg_card.items %}
+    <label>{{key}}: {{val}}</label>
+    {% endfor %}
     {% else %}
     {% if user.aux_data %}
     <label>Процесс верификации еще не завершен. Ожидайте уведомлений.</label>

@@ -30,3 +30,6 @@ class LocationType(StrEnum):
 
 class FUS(StrEnum):  # Frequently Used Strings
     NS = 'Не указано'
+    UNV = 'Пользователь не верифицирован'
+    SRE = 'Запрос к серверу завершился ошибкой'
+    USR = 'Неожиданный ответ сервера'

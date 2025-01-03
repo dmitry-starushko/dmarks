@@ -2,9 +2,10 @@ import datetime
 from calendar import monthrange
 from django.db import transaction
 from django.http import HttpResponseBadRequest
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from rest_framework.permissions import AllowAny
 from rest_framework.views import APIView
+from markets.business.confirmation import init_confirmation, get_reg_card
 from markets.decorators import on_exception_returns_response
 from markets.models import Notification, AuxUserData, File
 from renter.forms.verification import VerificationForm
@@ -83,7 +84,7 @@ class PV_VerificationView(APIView):
     @on_exception_returns_response(HttpResponseBadRequest)
     def post(self, request):
         user = request.user
-        context = {'user': user}
+        context = {'user': user, 'reg_card': get_reg_card(user)}
         if not hasattr(user, 'aux_data'):
             context |= {'form': VerificationForm()}
         return render(request, 'renter/partials/verification.html', context)
@@ -105,5 +106,6 @@ class FormActionVerificationDataView(APIView):
                     usr_le_extract=File.objects.create(file_name=ule.name, file_content=ule.read()),
                     passport_image=File.objects.create(file_name=pim.name, file_content=pim.read())
                 )
-            # TODO notify 1C
-        return render(request, 'renter/partials/verification.html', {})
+                init_confirmation(request.user)
+            return redirect('renter:renter')
+        raise RuntimeError('Ошибка в данных')
