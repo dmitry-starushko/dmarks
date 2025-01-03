@@ -3,10 +3,52 @@
 <head>
     <meta charset="UTF-8">
     <title>Вход</title>
+    <style>
+        body {
+            height: 100vh;
+            margin:0;
+            display: flex;
+            flex-flow: column;
+            align-items: center;
+            justify-content: center;
+
+            form.login {
+                padding: 2rem;
+                display: flex;
+                flex-flow: column;
+                gap:1rem;
+                background: lavender;
+                border: solid thin steelblue;
+
+                header {
+                    display: flex;
+                    flex-flow: column;
+                    align-items: center;
+                    justify-content: center;
+                    padding: 0.25rem;
+                    color: lavender;
+                    background: steelblue;
+                    margin: -2rem -2rem 0 -2rem;
+                }
+
+                div {
+                    display: flex;
+                    flex-flow: column;
+                    gap: 0.25rem;
+                }
+
+                > input {
+                    padding: 1rem;
+                    margin-top: 1rem;
+                }
+            }
+        }
+    </style>
 </head>
 <body>
 <form class="login" method="post" action="{% url 'renter:login' %}">
     {% csrf_token %}
+    <header><h2>Вход</h2></header>
     {{form.as_div}}
     <input type="hidden" name="next" value="{{next}}" />
     <input type="submit" value="Войти">
