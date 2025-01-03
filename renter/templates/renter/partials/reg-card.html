@@ -1,4 +1,4 @@
-<div class="verification">
+<div class="reg-card">
     {% if user.confirmed %}
     <label>Вы прошли процедуру верификации.</label>
     <label>ИНН: {{user.aux_data.itn}}</label>
@@ -14,7 +14,7 @@
     {% endif %}
 </div>
 {% if form %}
-<form class="verification" method="post" action="{% url 'renter-api:action_verification_data' %}" enctype="multipart/form-data">
+<form class="reg-card" method="post" action="{% url 'renter-api:action_verification_data' %}" enctype="multipart/form-data">
     {% csrf_token %}
     {{form.as_div}}
     <input type="submit" title="Отправить данные для верификации" value="Отправить для верификации">

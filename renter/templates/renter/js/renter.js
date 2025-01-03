@@ -23,4 +23,4 @@ btnClose.addEventListener('click', () => { // start an event listener to the men
 window.messages = new Notifications("messages-container", 0);
 window.calendar_events = new Notifications("calendar-events", 1);
 window.calendar = new Calendar("calendar-container");
-window.verification = new Verification("verification-container");
+window.reg_card = new RegCard("reg-card-container");

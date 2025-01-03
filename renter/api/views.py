@@ -78,7 +78,7 @@ class PV_NotificationsView(APIView):
         })
 
 
-class PV_VerificationView(APIView):
+class PV_RegCardView(APIView):
     permission_classes = [AllowAny]
 
     @on_exception_returns_response(HttpResponseBadRequest)
@@ -87,7 +87,7 @@ class PV_VerificationView(APIView):
         context = {'user': user, 'reg_card': get_reg_card(user)}
         if not hasattr(user, 'aux_data'):
             context |= {'form': VerificationForm()}
-        return render(request, 'renter/partials/verification.html', context)
+        return render(request, 'renter/partials/reg-card.html', context)
 
 
 class FormActionVerificationDataView(APIView):
