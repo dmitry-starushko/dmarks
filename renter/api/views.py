@@ -90,7 +90,7 @@ class PV_RegCardView(APIView):
         return render(request, 'renter/partials/reg-card.html', context)
 
 
-class FormActionVerificationDataView(APIView):
+class ActionVerificationDataView(APIView):
     permission_classes = [AllowAny]
 
     @on_exception_returns_response(HttpResponseBadRequest)
