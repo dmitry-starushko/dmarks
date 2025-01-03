@@ -83,6 +83,12 @@ AUTH_PASSWORD_VALIDATORS = [
 
 AUTH_USER_MODEL = "markets.DmUser"
 
+LOGIN_REDIRECT_URL = 'renter:renter'
+
+LOGIN_URL = 'renter:login'
+
+LOGOUT_URL = 'renter:logout'
+
 LANGUAGE_CODE = 'ru-ru'
 
 TIME_ZONE = 'UTC'
