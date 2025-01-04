@@ -217,7 +217,7 @@ h6 {
 .main-block-item {
     margin: 0 2rem 2.5rem 1rem;
     padding: 0 0 0 1.5rem;
-    border-left: solid thick steelblue;
+    border-left: solid medium steelblue;
 }
 
 .main-block-item > h2{
