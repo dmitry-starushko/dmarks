@@ -30,13 +30,13 @@ class DmUserManager(BaseUserManager):
         return user
 
     def create_superuser(self, phone, password, email, **extra_fields):
-        extra_fields.setdefault("is_staff", True)
-        extra_fields.setdefault("is_superuser", True)
-        extra_fields.setdefault("is_active", True)
-        if extra_fields.get("is_staff") is not True:
-            raise ValueError("Суперпользователь должен иметь is_staff=True.")
-        if extra_fields.get("is_superuser") is not True:
-            raise ValueError("Суперпользователь должен иметь is_superuser=True.")
+        extra_fields.setdefault('is_staff', True)
+        extra_fields.setdefault('is_superuser', True)
+        extra_fields.setdefault('is_active', True)
+        if extra_fields.get('is_staff') is not True:
+            raise ValueError('Суперпользователь должен иметь is_staff=True.')
+        if extra_fields.get('is_superuser') is not True:
+            raise ValueError('Суперпользователь должен иметь is_superuser=True.')
         return self.create_user(phone, password, email, **extra_fields)
 
 
@@ -44,8 +44,8 @@ class DmUser(AbstractUser):
     username = None
     phone = models.CharField(unique=True, max_length=16, null=False, blank=False)
     email = models.EmailField(unique=True, max_length=255)
-    USERNAME_FIELD = "phone"
-    REQUIRED_FIELDS = ["first_name", "last_name", "email"]
+    USERNAME_FIELD = 'phone'
+    REQUIRED_FIELDS = ['first_name', 'last_name', 'email']
     objects = DmUserManager()
 
     def __str__(self):
