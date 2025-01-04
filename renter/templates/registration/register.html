@@ -5,5 +5,6 @@
     <header><h2>Регистрация</h2></header>
     {{form.as_div}}
     <input type="submit" value="Зарегистрироваться">
+    <a href="{% url 'markets:index' %}">Вернуться к сайту</a>
 </form>
 {% endblock %}
