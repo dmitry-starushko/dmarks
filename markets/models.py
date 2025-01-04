@@ -55,6 +55,10 @@ class DmUser(AbstractUser):
     def confirmed(self):
         return hasattr(self, 'aux_data') and self.aux_data.confirmed
 
+    @property
+    def full_name(self):
+        return f'{self.first_name} {self.last_name}'
+
 
 class File(DbItem):
     file_name = models.CharField(max_length=512)  # -- имя файла --
