@@ -3,7 +3,7 @@ from calendar import monthrange
 from django.db import transaction
 from django.http import HttpResponseBadRequest
 from django.shortcuts import render, redirect
-from rest_framework.permissions import AllowAny
+from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.views import APIView
 from markets.business.confirmation import init_confirmation, get_reg_card
 from markets.decorators import on_exception_returns_response
@@ -14,7 +14,7 @@ from renter.forms.verification import VerificationForm
 # -- Partial views --------------------------------------------------------------------------------
 
 class PV_CalendarView(APIView):
-    permission_classes = [AllowAny]
+    permission_classes = [IsAuthenticated]
 
     @on_exception_returns_response(HttpResponseBadRequest)
     def post(self, request, year: int, month: int):
@@ -61,7 +61,7 @@ class PV_CalendarView(APIView):
 
 
 class PV_NotificationsView(APIView):
-    permission_classes = [AllowAny]
+    permission_classes = [IsAuthenticated]
 
     @on_exception_returns_response(HttpResponseBadRequest)
     def post(self, request, year: int, month: int, day: int, calendar: bool):
@@ -79,7 +79,7 @@ class PV_NotificationsView(APIView):
 
 
 class PV_RegCardView(APIView):
-    permission_classes = [AllowAny]
+    permission_classes = [IsAuthenticated]
 
     @on_exception_returns_response(HttpResponseBadRequest)
     def post(self, request):
@@ -91,7 +91,7 @@ class PV_RegCardView(APIView):
 
 
 class ActionVerificationDataView(APIView):
-    permission_classes = [AllowAny]
+    permission_classes = [IsAuthenticated]
 
     @on_exception_returns_response(HttpResponseBadRequest)
     def post(self, request):

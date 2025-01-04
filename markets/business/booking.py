@@ -10,9 +10,9 @@ class BookingError(Exception):
         super().__init__(message)
 
 
-def book_outlet(user: DmUser, outlet: TradePlace):  # TODO text from params
+def book_outlet(user: DmUser, outlet: TradePlace):  # TODO error texts from params
     if not user.confirmed:
-        raise BookingError('Для бронирования торгового места необходимо пройти процедуру валидации в личном кабинете')
+        raise BookingError('Для бронирования торгового места необходимо пройти процедуру верификации в личном кабинете')
     if outlet.trade_place_type.type_name != OutletState.AVAILABLE_FOR_BOOKING:
         raise BookingError(f'Статус торгового места {outlet.location_number}: {outlet.trade_place_type}')
     with httpx.Client() as client:
