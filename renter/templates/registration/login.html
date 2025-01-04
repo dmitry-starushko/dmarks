@@ -6,5 +6,6 @@
     {{form.as_div}}
     <input type="hidden" name="next" value="{{next}}" />
     <input type="submit" value="Войти">
+    <a href="{% url 'renter:register' %}">Зарегистрироваться</a>
 </form>
 {% endblock %}
