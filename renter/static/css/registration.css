@@ -5,6 +5,8 @@ body {
     flex-flow: column;
     align-items: center;
     justify-content: center;
+    background-image: url("/static/bitmaps/bkgs/bkg_002.webp");
+    background-attachment: fixed;
 
     a {
         display: inline-flex;
@@ -21,6 +23,7 @@ body {
         gap:1rem;
         background: lavender;
         border: solid thin steelblue;
+        box-shadow: 0px 2rem 3rem rgba(0, 0, 0, 0.25);
 
         header {
             display: flex;
