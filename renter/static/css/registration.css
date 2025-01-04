@@ -5,7 +5,7 @@ body {
     flex-flow: column;
     align-items: center;
     justify-content: center;
-    background-image: url("/static/bitmaps/bkgs/bkg_002.webp");
+    background-image: url("/static/bitmaps/bkgs/bkg_001.webp");
     background-attachment: fixed;
 
     a {
@@ -17,7 +17,7 @@ body {
     }
 
     form {
-        padding: 2rem;
+        padding: 3rem;
         display: flex;
         flex-flow: column;
         gap:1rem;
@@ -34,7 +34,7 @@ body {
             padding: 0.25rem;
             color: lavender;
             background: steelblue;
-            margin: -2rem -2rem 0 -2rem;
+            margin: -3rem -3rem 0 -3rem;
         }
 
         div {
