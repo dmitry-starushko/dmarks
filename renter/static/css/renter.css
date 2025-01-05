@@ -194,6 +194,12 @@ h6 {
             }
 
      }
+     form button {
+        color: var(--color-items-leftsidebar);
+        background-color: transparent;
+        border: none;
+     }
+
      a:hover span {
         text-decoration: none;
        color: var(--background-color-items-leftsidebar);
