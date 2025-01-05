@@ -182,7 +182,8 @@ h6 {
 
      a, form {
          display: flex;
-         flex-direction: column;
+         /*flex-direction: column;*/
+         align-items: center;
          width: 100%;
              img {
                 filter: invert(90%) sepia(6%) saturate(1102%) hue-rotate(178deg) brightness(99%) contrast(92%);
@@ -198,6 +199,9 @@ h6 {
         color: var(--color-items-leftsidebar);
         background-color: transparent;
         border: none;
+        display: flex;
+        align-items: center;
+        cursor: pointer;
      }
 
      a:hover span {
