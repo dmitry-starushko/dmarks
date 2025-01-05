@@ -54,6 +54,20 @@
           <img src="{% static 'svg/icons/calendar-select.svg' %}" alt="История действий"/>
           <span>История действий</span>
       </a>
+      <div class="lsb-item last-lsb-item">
+          <a href="../markets/" class="last-lsb-item-div">
+              <img src="{% static 'svg/icons/home-map-marker.svg' %}" alt="История действий"/>
+              <span>На сайт</span>
+          </a>
+          <a href="#" class="last-lsb-item-div">
+              <form id="logout-form" method="post" action="/admin/logout/" name="logout-form">
+                    <input type="hidden">
+                    <img src="{% static 'svg/icons/exit-to-app.svg' %}" alt="История действий"/>
+                    <span onclick="logout-form.submit()">Выход</span>
+                    <button type="submit">Выйти</button>
+                </form>
+          </a>
+      </div>
     </div>
     <div id="main" class="">
         <div class="navbar">
