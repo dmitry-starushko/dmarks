@@ -88,7 +88,7 @@
                 {% if user.is_authenticated %}
                 <a class="sign-in" title="Выход" onclick="document.getElementById('basic-logout-form').submit();"><form id="basic-logout-form" method="post" action="{% url 'renter:logout' %}">{% csrf_token %}<i class="bi bi-box-arrow-left"></i></form></a>
                 {% else %}
-                <a class="sign-in" title="Авторизация" onclick="window.location=`{% url 'renter:login' %}?next=${window.location.href}`;"><i class="bi bi-box-arrow-in-right"></i></a>
+                <a class="sign-in" title="Авторизация" onclick="window.location=`{% url 'renter:login' %}?next=${window.location.pathname}`;"><i class="bi bi-box-arrow-in-right"></i></a>
                 {% endif %}
                 <a href="{% url 'renter:renter' %}" class="sign-in" title="Вход в ЛК"><i class="bi bi-person"></i></a>
                 <a href="#" class="help" title="Помощь"><i class="bi bi-question-circle" onclick="window.help_dialog.toggle({{help_id|default:0}});"></i></a>
