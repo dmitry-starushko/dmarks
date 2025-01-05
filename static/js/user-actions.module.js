@@ -7,12 +7,9 @@ class UserActions {
     __action__(action) {
         dj_load_partial_view("partial_user_action", {}, action).then(
             html => {
-                html = html.trim();
-                if(html) {
-                    this._dialog.getElementsByTagName("section").item(0).innerHTML = html;
-                    this._dialog.showModal();
-                    this._dialog.style.opacity = "1.0";
-                }
+                this._dialog.getElementsByTagName("section").item(0).innerHTML = html;
+                this._dialog.showModal();
+                this._dialog.style.opacity = "1.0";
             }
         );
     }

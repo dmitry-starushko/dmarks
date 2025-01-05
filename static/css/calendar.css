@@ -1,0 +1,82 @@
+:root {
+    --CLDTopColor: white;
+    --CLDTopBkgColor: sandybrown;
+    --CLDDayColor: moccasin;
+    --CLDDayBkgColor: mediumturquoise;
+    --CLDInactiveDayColor: cyan;
+    --CLDInactiveDayBkgColor: lightcyan;
+    --CLDEventsDayColor: gold;
+    --CLDTodayBkgColor: steelblue;
+    --CLDFont: "Geologica", sans-serif;
+    --CLDFontWeight: 100;
+    --CLDEventsDayFontWeight: 500;
+    --CLDFontSize: 12pt;
+    --CLDGap: 1px;
+}
+
+*:has(>.calendar) {
+    max-width: 35rem !important;
+    max-height: fit-content !important;
+    border: solid thin var(--CLDTopBkgColor) !important;
+}
+
+.calendar {
+    display: flex;
+    flex-flow: column;
+    gap: var(--CLDGap);
+
+    font-size: var(--CLDFontSize);
+    font-variation-settings: "wght" var(--CLDFontWeight);
+    font-weight: var(--CLDFontWeight);
+    font-family: var(--CLDFont);
+
+    .calendar-controls {
+        display: flex;
+        flex-flow: row;
+        align-items: center;
+        justify-content: center;
+        gap: 1rem;
+        color: var(--CLDTopColor);
+        background: var(--CLDTopBkgColor);
+    }
+
+    .calendar-body {
+        display: grid;
+        grid-template-columns: repeat(7, minmax(3rem, 1fr));
+        grid-auto-rows: 2rem;
+        grid-auto-flow: row;
+        gap: var(--CLDGap);
+
+        * {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: normal;
+            color: var(--CLDDayColor);
+            background: var(--CLDDayBkgColor);
+            cursor: default;
+
+            &.wd-name {
+                color: var(--CLDTopColor);
+                background: var(--CLDTopBkgColor);
+            }
+
+            &.prev, &.next {
+                color: var(--CLDInactiveDayColor);
+                background: var(--CLDInactiveDayBkgColor);
+                font-weight: 100;
+            }
+
+            &.today {
+                background: var(--CLDTodayBkgColor);
+            }
+
+            &.events {
+                color: var(--CLDEventsDayColor);
+                font-variation-settings: "wght" var(--CLDEventsDayFontWeight);
+                font-weight: bold;
+                cursor: pointer;
+            }
+        }
+    }
+}

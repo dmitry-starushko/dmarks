@@ -1,0 +1,52 @@
+*:has(>.notifications-header) {
+    border-radius: 0 !important;
+    border: solid thin lightsteelblue !important;
+    padding: 0 !important;
+    background: lavender  !important;
+    font-family: "Geologica"  !important;
+    font-variation-settings: "wght" 300  !important;
+}
+
+.notifications-header {
+    color: lightsteelblue;
+    background: steelblue;
+    padding: 0.5rem;
+}
+
+.notifications-body {
+    display: flex;
+    flex-flow: column;
+    gap: 0.25rem;
+
+    label {
+        color: gray;
+        margin: 0.5rem;
+    }
+
+    .notification {
+        padding: 0.5rem;
+        border-left: solid medium steelblue;
+        color: steelblue;
+
+        h1, h2, h3, h4, h5, h6, p {
+            margin: 0;
+            color: steelblue;
+        }
+
+        &.warn {
+            h1, h2, h3, h4, h5, h6 {
+                color: white;
+            }
+            color: cornsilk;
+            background: goldenrod;
+        }
+
+        &.alrt {
+            h1, h2, h3, h4, h5, h6 {
+                color: yellow;
+            }
+            color: white;
+            background: orangered;
+        }
+    }
+}
