@@ -60,7 +60,8 @@
               <span>На сайт</span>
           </a>
           <a href="#" class="last-lsb-item-div">
-              <form id="logout-form" method="post" action="/admin/logout/" name="logout-form">
+              <form id="logout-form" method="post" action="{% url 'renter:logout' %}" name="logout-form">
+                    {% csrf_token %}
                     <input type="hidden">
                     <img src="{% static 'svg/icons/exit-to-app.svg' %}" alt="История действий"/>
                     {# <span onclick="document.getElementById('logout-form').submit();">Выход</span> #}
