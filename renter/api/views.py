@@ -1,5 +1,6 @@
 import datetime
 from calendar import monthrange
+from django.contrib.auth import logout
 from django.db import transaction
 from django.http import HttpResponseBadRequest
 from django.shortcuts import render, redirect
@@ -109,3 +110,12 @@ class ActionVerificationDataView(APIView):
                 init_confirmation(request.user)
             return redirect('renter:renter')
         raise RuntimeError('Ошибка в данных')
+
+
+class LogoutView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    @on_exception_returns_response(HttpResponseBadRequest)
+    def post(self, request):
+        logout(request)
+        return redirect('markets:index')
