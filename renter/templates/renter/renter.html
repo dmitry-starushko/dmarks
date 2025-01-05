@@ -10,12 +10,14 @@
     <link href="{% static 'css/renter.css' %}" rel="stylesheet">
     <link href="{% static 'css/calendar.css' %}" rel="stylesheet">
     <link href="{% static 'css/notifications.css' %}" rel="stylesheet">
+    <link href="{% static 'css/reg-card.css' %}" rel="stylesheet">
     <script src="{% static 'js/js.cookie.min.js' %}"></script> {# ------------------------------------------------------ Scripts #}
     {% include 'markets/js/reverse.js' with namespace='renter-api' %}
     {% include 'renter/js/importmap.js' %}
     <script type="module">
         import {Calendar} from "calendar";
         import {Notifications} from "notifications";
+        import {RegCard} from "reg-card";
         document.addEventListener('DOMContentLoaded', (event) => { {% include 'renter/js/renter.js' %} });
     </script>
 </head>
@@ -23,14 +25,18 @@
 <div class="main-body">
     {# left sidebar #}
     <div class="leftSidebar" id="leftSidebar">
-      <div class="username">Иванов Иван Иванович</div>
-      <a href="#calendar-anchor" class="lsb-item" title="Календарь">
-          <img src="{% static 'svg/icons/calendar-check.svg' %}" alt="Календарь"/>
-          <span>Календарь</span>
-      </a>
+      <div class="username">{{user.full_name}}</div>
       <a href="#regcard-anchor" class="lsb-item" title="Регистрационная карточка">
           <img src="{% static 'svg/icons/home.svg' %}" alt="Регистрационная карточка"/>
           <span>Регистрационная карточка</span>
+      </a>
+      <a href="#messages-anchor" class="lsb-item" title="Сообщения">
+          <img src="{% static 'svg/icons/message-text.svg' %}" alt="Сообщения"/>
+          <span>Сообщения</span>
+      </a>
+      <a href="#calendar-anchor" class="lsb-item" title="Календарь">
+          <img src="{% static 'svg/icons/calendar-check.svg' %}" alt="Календарь"/>
+          <span>Календарь</span>
       </a>
       <a href="#" class="lsb-item" title="Визитная карточка">
           <img src="{% static 'svg/icons/account-card-details.svg' %}" alt="Визитная карточка"/>
@@ -48,10 +54,6 @@
           <img src="{% static 'svg/icons/calendar-select.svg' %}" alt="История действий"/>
           <span>История действий</span>
       </a>
-      <a href="#messages-anchor" class="lsb-item" title="Сообщения">
-          <img src="{% static 'svg/icons/message-text.svg' %}" alt="Сообщения"/>
-          <span>Сообщения</span>
-      </a>
     </div>
     <div id="main" class="">
         <div class="navbar">
@@ -61,6 +63,10 @@
             <h2>Личный кабинет в системе интерактивных карт ГП "Рынки Донбасса"</h2>
         </div>
         <div class="main-block">
+            <div class="main-block-item" id="regcard-anchor">
+                <h2>Регистрационная карточка</h2>
+                <div id="reg-card-container"></div>
+            </div>
             <div class="main-block-item" id="messages-anchor">
                 <h2>Сообщения</h2>
                 <div id="messages-container">{# Сообщения грузятся сюда #}</div>
@@ -71,10 +77,6 @@
                     <div id="calendar-container" style="width:50vw;min-width:25rem;">{# Календарь подгружается сюда #}</div>
                     <div id="calendar-events" class="calendar-event">{# Календарные события грузятся сюда #}</div>
                 </div>
-            </div>
-            <div class="main-block-item" id="regcard-anchor">
-                <h2>Регистрационная карточка</h2>
-                <div></div>
             </div>
         </div>
     </div>

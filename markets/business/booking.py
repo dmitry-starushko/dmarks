@@ -1,7 +1,7 @@
 import httpx
 from django.conf import settings
 from markets.decorators import on_exception_returns
-from markets.enums import OutletState
+from markets.enums import OutletState, FUS
 from markets.models import DmUser, TradePlace
 
 
@@ -10,9 +10,9 @@ class BookingError(Exception):
         super().__init__(message)
 
 
-def book_outlet(user: DmUser, outlet: TradePlace):  # TODO text from params
-    if not hasattr(user, 'aux_data') or not user.aux_data.confirmed:
-        raise BookingError('Для бронирования торгового места необходимо пройти процедуру валидации в личном кабинете')
+def book_outlet(user: DmUser, outlet: TradePlace):  # TODO error texts from params
+    if not user.confirmed:
+        raise BookingError('Для бронирования торгового места необходимо пройти процедуру верификации в личном кабинете')
     if outlet.trade_place_type.type_name != OutletState.AVAILABLE_FOR_BOOKING:
         raise BookingError(f'Статус торгового места {outlet.location_number}: {outlet.trade_place_type}')
     with httpx.Client() as client:
@@ -29,29 +29,27 @@ def book_outlet(user: DmUser, outlet: TradePlace):  # TODO text from params
 
 @on_exception_returns(frozenset())
 def get_outlets_in_booking(user: DmUser):
-    if user.aux_data is None or not user.aux_data.confirmed:
-        raise RuntimeError()
+    if not user.confirmed:
+        raise RuntimeError(FUS.UNV)
     with httpx.Client() as client:
         res = client.get(settings.EXT_URL['booking'].format(user=user.aux_data.itn))
         if res.is_error:
-            raise RuntimeError()
+            raise RuntimeError(FUS.SRE)
         result = res.json()
     match result:
         case [*items]: return frozenset(f'{i}' for i in items)
-        case _: raise RuntimeError()
+        case _: raise RuntimeError(FUS.USR)
 
 
 @on_exception_returns(frozenset())
 def unbook_all(user: DmUser):
-    if user.aux_data is None or not user.aux_data.confirmed:
-        raise RuntimeError()
+    if not user.confirmed:
+        raise RuntimeError(FUS.UNV)
     with httpx.Client() as client:
         res = client.delete(settings.EXT_URL['booking'].format(user=user.aux_data.itn))
         if res.is_error:
-            raise RuntimeError()
+            raise RuntimeError(FUS.SRE)
         result = res.json()
     match result:
-        case [*items]:
-            return frozenset(f'{i}' for i in items)
-        case _:
-            raise RuntimeError()
+        case [*items]: return frozenset(f'{i}' for i in items)
+        case _: raise RuntimeError(FUS.USR)

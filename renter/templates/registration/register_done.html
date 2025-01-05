@@ -1,0 +1,6 @@
+{% extends 'registration/basic.html' %}
+{% block body-content %}
+<h2>Добро пожаловать, {{user.first_name}}!</h2>
+<p>Ваша учетная запись успешно создана.
+Теперь Вы можете <a href="{% url 'renter:login' %}">войти на сайт</a>.</p>
+{% endblock %}

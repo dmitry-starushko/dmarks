@@ -1,0 +1,10 @@
+{% extends 'registration/basic.html' %}
+{% block body-content %}
+<form class="registration" method="post" action="{% url 'renter:register' %}">
+    {% csrf_token %}
+    <header><h2>Регистрация</h2></header>
+    {{form.as_div}}
+    <input type="submit" value="Зарегистрироваться">
+    <a href="{% url 'markets:index' %}">Вернуться к сайту</a>
+</form>
+{% endblock %}

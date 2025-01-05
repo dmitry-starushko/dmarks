@@ -1,0 +1,22 @@
+<div class="reg-card">
+    {% if user.confirmed %}
+    <label>Вы прошли процедуру верификации.</label>
+    <label>ИНН: {{user.aux_data.itn}}</label>
+    {% for key, val in reg_card.items %}
+    <label>{{key}}: {{val}}</label>
+    {% endfor %}
+    {% else %}
+    {% if user.aux_data %}
+    <label>Процесс верификации еще не завершен. Ожидайте уведомлений.</label>
+    {% else %}
+    <label class="alert">Вы не прошли процедуру верификации.</label>
+    {% endif %}
+    {% endif %}
+</div>
+{% if form %}
+<form class="reg-card" method="post" action="{% url 'renter-api:action_verification_data' %}" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{form.as_div}}
+    <input type="submit" title="Отправить данные для верификации" value="Отправить для верификации">
+</form>
+{% endif %}

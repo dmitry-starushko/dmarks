@@ -1,0 +1,63 @@
+body {
+    height: 100vh;
+    margin:0;
+    display: flex;
+    flex-flow: column;
+    align-items: center;
+    justify-content: center;
+    background-image: url("/static/bitmaps/bkgs/bkg_001.webp");
+    background-attachment: fixed;
+
+    a {
+        display: inline-flex;
+        flex-flow: column;
+        align-items: center;
+        justify-content: center;
+        color: steelblue;
+    }
+
+    form {
+        padding: 3rem;
+        display: flex;
+        flex-flow: column;
+        gap:1rem;
+        background: lavender;
+        border: solid thin steelblue;
+        box-shadow: 0px 2rem 3rem rgba(0, 0, 0, 0.25);
+        width: min(30rem, 50vw);
+
+        header {
+            display: flex;
+            flex-flow: column;
+            align-items: center;
+            justify-content: center;
+            padding: 0.25rem;
+            color: lavender;
+            background: steelblue;
+            margin: -3rem -3rem 0 -3rem;
+        }
+
+        div {
+            display: flex;
+            flex-flow: column;
+            gap: 0.25rem;
+
+            label {
+                color: steelblue;
+            }
+        }
+
+        input {
+                padding: 0.5rem;
+                border-radius: 0.33rem;
+                border: solid thin steelblue;
+                outline: none;
+                color: steelblue;
+            }
+
+        >input {
+            padding: 1rem;
+            margin-top: 1rem;
+        }
+    }
+}

@@ -208,7 +208,7 @@ class UserConfirmedView(APIView):
 
     @on_exception_returns_response(HttpResponseBadRequest)
     def post(self, request, itn):
-        result = set_user_confirmed(DmUser.objects.get(aux_data__itn=itn))
+        result = set_user_confirmed(DmUser.objects.get(aux_data__itn=itn), request.data)
         return Response({
             'result': result
         })

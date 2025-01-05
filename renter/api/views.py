@@ -1,18 +1,20 @@
 import datetime
 from calendar import monthrange
-
+from django.db import transaction
 from django.http import HttpResponseBadRequest
-from django.shortcuts import render
-from rest_framework.permissions import AllowAny
+from django.shortcuts import render, redirect
+from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.views import APIView
+from markets.business.confirmation import init_confirmation, get_reg_card
 from markets.decorators import on_exception_returns_response
-from markets.models import Notification
+from markets.models import Notification, AuxUserData, File
+from renter.forms.verification import VerificationForm
 
 
 # -- Partial views --------------------------------------------------------------------------------
 
 class PV_CalendarView(APIView):
-    permission_classes = [AllowAny]
+    permission_classes = [IsAuthenticated]
 
     @on_exception_returns_response(HttpResponseBadRequest)
     def post(self, request, year: int, month: int):
@@ -59,7 +61,7 @@ class PV_CalendarView(APIView):
 
 
 class PV_NotificationsView(APIView):
-    permission_classes = [AllowAny]
+    permission_classes = [IsAuthenticated]
 
     @on_exception_returns_response(HttpResponseBadRequest)
     def post(self, request, year: int, month: int, day: int, calendar: bool):
@@ -75,3 +77,35 @@ class PV_NotificationsView(APIView):
             'notifications': notifications
         })
 
+
+class PV_RegCardView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    @on_exception_returns_response(HttpResponseBadRequest)
+    def post(self, request):
+        user = request.user
+        context = {'user': user, 'reg_card': get_reg_card(user)}
+        if not hasattr(user, 'aux_data'):
+            context |= {'form': VerificationForm()}
+        return render(request, 'renter/partials/reg-card.html', context)
+
+
+class ActionVerificationDataView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    @on_exception_returns_response(HttpResponseBadRequest)
+    def post(self, request):
+        form = VerificationForm(request.POST, request.FILES)
+        if form.is_valid():
+            ule = request.FILES['usr_le_extract']
+            pim = request.FILES['passport_scan']
+            with transaction.atomic():
+                AuxUserData.objects.create(
+                    user=request.user,
+                    itn=form.cleaned_data['itn'],
+                    usr_le_extract=File.objects.create(file_name=ule.name, file_content=ule.read()),
+                    passport_image=File.objects.create(file_name=pim.name, file_content=pim.read())
+                )
+                init_confirmation(request.user)
+            return redirect('renter:renter')
+        raise RuntimeError('Ошибка в данных')

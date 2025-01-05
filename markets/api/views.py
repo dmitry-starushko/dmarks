@@ -6,7 +6,7 @@ from django.urls import reverse, NoReverseMatch
 from rest_framework.generics import ListAPIView
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from rest_framework.permissions import AllowAny
+from rest_framework.permissions import AllowAny, IsAuthenticated
 from django.http.response import JsonResponse, HttpResponseBadRequest, HttpResponse
 from markets.business.search_and_filters import apply_filter, filter_markets, filter_outlets
 from markets.business.actions import restore_db_consistency
@@ -234,10 +234,11 @@ class PV_OutletDetailView(APIView):
 
     @on_exception_returns_response(HttpResponseBadRequest, 'outlet_number')
     def post(self, request, outlet_number):
+        user = request.user
         outlet = TradePlace.objects.get(location_number=outlet_number)
         booked = get_outlets_in_booking(request.user)
-        avail_for_booking = (outlet.trade_place_type.type_name == OutletState.AVAILABLE_FOR_BOOKING) and (outlet_number not in booked)
-        unbook = len(booked) > 0
+        avail_for_booking = user.is_authenticated and (outlet.trade_place_type.type_name == OutletState.AVAILABLE_FOR_BOOKING) and (outlet_number not in booked)
+        unbook = user.is_authenticated and len(booked) > 0
         return render(request, 'markets/partials/outlet-details.html', {
             'outlet': outlet,
             'afbk': avail_for_booking,
@@ -376,9 +377,9 @@ class PV_HelpContentView(APIView):
 
 
 class PV_UserActionView(APIView):
-    permission_classes = [AllowAny]
+    permission_classes = [IsAuthenticated]
 
-    @on_exception_returns_response(HttpResponseBadRequest)  # TODO перенести в renter-api ?
+    @on_exception_returns_response(HttpResponseBadRequest)
     def post(self, request):
         match request.data:
             # -- Бронирование ТМ --
@@ -390,17 +391,14 @@ class PV_UserActionView(APIView):
                     })
                 except BookingError as e:
                     return render(request, f'markets/partials/user/message.html', {'message': f'{e}'})
+
             # -- Отмена бронирований --
             case {'action': 'unbook-all'}:
                 unbooked = unbook_all(request.user)
                 return render(request, f'markets/partials/user/message.html', {
                     'message': f'Отменена заявка на бронирование торговых мест {', '.join(unbooked)}' if unbooked else 'Ни одна заявка на бронирование не была отменена'
                 })
-            # -- Заявка на верификацию --
-            case {'action': 'init-confirmation'}:
-                return render(request, f'markets/partials/user/message.html', {
-                    'message': 'Операция еще не реализована'
-                })
+
             # -- Что-то вне списка реализованных акций --
             case _:
                 return render(request, f'markets/partials/user/message.html', {

@@ -31,7 +31,8 @@ TELEBOT_ID = os.environ.get('TELEBOT')
 
 EXT_URL = {
     'booking': '',
-    'confirmation': ''
+    'confirmation': '',
+    'reg-card': '',
 }
 
 EXT_API_PERMISSIONS = [IsAdminUser]
