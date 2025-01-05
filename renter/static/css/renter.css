@@ -212,21 +212,20 @@ h6 {
     overflow-y:scroll;
     scrollbar-width: thin;
     /*height: 100%;*/
-}
 
-.main-block-item {
-    padding-bottom: 25px;
-    margin-bottom: 35px;
-    border: 1px solid #dadada;
-    border-radius: 10px;
-    padding: 5px 15px;
-        border-bottom: 1px solid var(--heading-line-color);
-}
+    .main-block-item {
+        padding-bottom: 25px;
+        margin-bottom: 35px;
+        border: 1px solid #dadada;
+        border-radius: 10px;
+        padding: 5px 15px 15px 15px;
+        /*border-bottom: 1px solid var(--heading-line-color);*/
+    }
 
-.main-block-item > h2{
-    color: var(--heading-color);
+    .main-block-item > h2{
+        color: var(--heading-color);
+    }
 }
-
 /*** Calendar events ***/
 .calendar-block {
     display: flex;

@@ -1,6 +1,6 @@
 {% load aux_tags %}
 <div class="notifications-header">
-    <label>{{year|stringformat:'d'}}/{{month|stringformat:'d'}}/{{day|stringformat:'d'}}</label>
+    <label>{{day|stringformat:'d'}}.{{month|stringformat:'d'}}.{{year|stringformat:'d'}}</label>
 </div>
 <div class="notifications-body">
 {% if notifications %}
