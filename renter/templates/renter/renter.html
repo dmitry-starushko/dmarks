@@ -63,9 +63,8 @@
               <form id="logout-form" method="post" action="{% url 'renter:logout' %}" name="logout-form">
                     {% csrf_token %}
                     <input type="hidden">
-                    <img src="{% static 'svg/icons/exit-to-app.svg' %}" alt="История действий"/>
-                    <span onclick="logout-form.submit()">Выход</span>
-                    <button type="submit">Выйти</button>
+                     {# <span onclick="document.getElementById('logout-form').submit();">Выход</span> #}
+                    <button type="submit"><img src="{% static 'svg/icons/exit-to-app.svg' %}" alt="История действий"/> <span>Выйти</span></button>
                 </form>
           </a>
       </div>
