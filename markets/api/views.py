@@ -248,7 +248,7 @@ class PV_OutletDetailView(APIView):
 
 
 class PV_FilteredMarketsView(APIView):
-    permission_classes = [AllowAny]
+    permission_classes = [IsAuthenticated]
 
     @on_exception_returns_response(HttpResponseBadRequest)
     def post(self, request):
@@ -268,7 +268,7 @@ class PV_FilteredMarketsView(APIView):
 
 
 class PV_FilteredOutletsView(APIView):
-    permission_classes = [AllowAny]
+    permission_classes = [IsAuthenticated]
 
     @on_exception_returns_response(HttpResponseBadRequest)
     def post(self, request):
@@ -295,7 +295,7 @@ class PV_FilteredOutletsView(APIView):
 
 
 class PV_OutletFiltersView(APIView):
-    permission_classes = [AllowAny]
+    permission_classes = [IsAuthenticated]
 
     @on_exception_returns_response(HttpResponseBadRequest)
     def post(self, request, full):
