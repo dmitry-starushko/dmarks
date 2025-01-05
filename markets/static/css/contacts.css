@@ -113,6 +113,9 @@
     height: 100%;
     display: flex;
     align-self: flex-end;
+    >svg {
+        border: solid thin black;
+    }
 }
 
 .contact-card-body-info-qr > svg {
