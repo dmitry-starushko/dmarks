@@ -1,4 +1,5 @@
 from collections import OrderedDict
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import HttpResponseBadRequest
 from django.views import View
 from django.shortcuts import render
@@ -46,7 +47,7 @@ class MarketDetailsView(View, BasicContextProvider):
         })
 
 
-class ContactsView(View, BasicContextProvider):
+class ContactsView(LoginRequiredMixin, View, BasicContextProvider):
     @property
     def template_name(self):
         return 'markets/contacts.html'
