@@ -7,11 +7,12 @@ from markets.models import Market, Contact
 
 
 class BasicContextProvider:
-    @property
-    def basic_context(self):
+    @staticmethod
+    def basic_context(request):
         return {
             'page_title': 'Рынки Донбасса',
             'body_class': 'index-page',
+            'user': request.user,
         }
 
 
@@ -21,7 +22,7 @@ class IndexView(View, BasicContextProvider):
         return 'markets/index.html'
 
     def get(self, request, mpk: int | None = None):
-        return render(request, self.template_name, self.basic_context | {
+        return render(request, self.template_name, self.basic_context(request) | {
             'markets': Market.objects.all(),
             'mpk': int(mpk) if mpk is not None else 0,
             'help_id': 100,
@@ -37,7 +38,7 @@ class MarketDetailsView(View, BasicContextProvider):
     def get(self, request, mpk, show: str, outlet: str | None = None):
         market_model = Market.objects.get(pk=mpk)
         outlet_model = market_model.trade_places.get(location_number=str(outlet)) if outlet is not None else None
-        return render(request, self.template_name, self.basic_context | {
+        return render(request, self.template_name, self.basic_context(request) | {
             'market': market_model,
             'show_tab': show,
             'outlet': outlet_model,
@@ -57,7 +58,7 @@ class ContactsView(View, BasicContextProvider):
         for c in contacts:
             r = data.setdefault(c.city.locality_name, OrderedDict()).setdefault(c.district.locality_name, OrderedDict())
             r[c.id] = c
-        return render(request, self.template_name, {
+        return render(request, self.template_name, self.basic_context(request) | {
             'data': data,
             'help_id': 300,
         })
@@ -70,6 +71,6 @@ class Scheme3DView(View, BasicContextProvider):
 
     @on_exception_returns_response(HttpResponseBadRequest)
     def get(self, request, scheme_pk):
-        return render(request, self.template_name, self.basic_context | {
+        return render(request, self.template_name, self.basic_context(request) | {
             'scheme_pk': scheme_pk
         })
