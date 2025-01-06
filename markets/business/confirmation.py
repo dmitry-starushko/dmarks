@@ -26,7 +26,7 @@ def init_confirmation(user: DmUser):  # TODO text from params
                               headers={'Content-Type': 'application/json'},
                               json={
                                   'first-name': user.first_name,
-                                  'last_name': user.last_name,
+                                  'last-name': user.last_name,
                                   'phone': user.phone,
                                   'email': user.email,
                                   'itn': user.aux_data.itn,
