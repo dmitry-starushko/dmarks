@@ -1,6 +1,6 @@
 {% load aux_tags %}
 <div class="notifications-header">
-    <label>{{day|stringformat:'d'}}.{{month|stringformat:'d'}}.{{year|stringformat:'d'}}</label>
+    <label>{{day|stringformat:'02d'}}.{{month|stringformat:'02d'}}.{{year|stringformat:'d'}}</label>
 </div>
 <div class="notifications-body">
 {% if notifications %}

@@ -75,8 +75,8 @@ class File(DbItem):
     @property
     def as_dictionary(self):
         return {
-            'file_name': self.file_name,
-            'file_content_b64': base64.b64encode(self.file_content).decode('ascii')
+            'file-name': self.file_name,
+            'file-content-b64': base64.b64encode(self.file_content).decode('ascii')
         }
 
 
