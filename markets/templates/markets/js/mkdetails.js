@@ -138,6 +138,12 @@ function toggleItem(elem) {
 
 toggleItem(document.querySelectorAll('.buttons-tab'));
 
+var trs = document.querySelectorAll('.table-tp-row');
+for(var i = 0; i < trs.length; i++){
+    alert('123');
+    trs[i].addEventListener("click", function(){this.className += " selected";});
+}
+
 /*var mkdetailtabs = document.querySelectorAll('.buttons-tab')
 for (i = 0; i < mkdetailtabs.length; i++) {
   mkdetailtabs[i].addEventListener('click', function(e) {

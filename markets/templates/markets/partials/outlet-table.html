@@ -13,7 +13,7 @@
             </thead>
             <tbody>
             {% for tp in outlets %}
-            <tr onclick="window.dispatchEvent(new CustomEvent('outlet_clicked', { detail: { id: '{{tp.number}}' }}));">
+            <tr onclick="window.dispatchEvent(new CustomEvent('outlet_clicked', { detail: { id: '{{tp.number}}' }}));" class="table-tp-row">
                 <td><div style="color:{{tp.color_css}}">{{tp.number}}</div></td>
                 <td>{{tp.specialization}}</td>
                 <td>{{tp.occupation}}</td>
