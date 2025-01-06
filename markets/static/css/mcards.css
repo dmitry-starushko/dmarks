@@ -83,7 +83,7 @@
 }
 
 .market-card {
-   flex: 1 1 24%;
+   flex: 0 0 24%;
    background-color: #fff;
    margin: 5px;
    padding: 5px;
