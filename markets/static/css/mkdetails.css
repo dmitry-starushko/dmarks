@@ -406,3 +406,8 @@
     border: 2px solid black;
 }
 
+
+.mkdetails-tp-empty {
+    text-align: center;
+    margin: 15px 0;
+}
