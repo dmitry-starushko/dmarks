@@ -61,7 +61,7 @@
    display: flex;
 }
 
-@media (max-width: 1400px) {
+@media (max-width: 1600px) {
     .contact-card {
         flex: 0 0 49%;
     }
