@@ -1,6 +1,8 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.shortcuts import render
+from django.db import transaction
+from django.shortcuts import render, redirect
 from django.views import View
+from renter.forms.business_card import BusinessCardForm
 from renter.forms.registration import RegistrationForm
 
 
@@ -10,9 +12,32 @@ class RenterView(LoginRequiredMixin, View):
         return 'renter/renter.html'
 
     def get(self, request):
+        user = request.user
+        chunks = f'{user.aux_data.promo_text}'.split('\n\n', 1) if user.confirmed else []
+        slogan = chunks[0] if chunks else ''
+        other_text = chunks[1] if len(chunks) > 1 else ''
+        business_card = {
+            'business_card': BusinessCardForm(initial={
+                'slogan': slogan,
+                'promo_text': other_text
+            })
+        } if user.confirmed else {}
         return render(request, self.template_name, {
-            'user': request.user
-        })
+            'user': user
+        } | business_card)
+
+    def post(self, request):
+        business_card = BusinessCardForm(request.POST, request.FILES)
+        if business_card.is_valid():
+            user = request.user
+            if user.confirmed:
+                cd = business_card.cleaned_data
+                pimg = request.FILES['promo_image']
+                with transaction.atomic():
+                    user.aux_data.promo_text = '\n\n'.join([cd['slogan'], cd['promo_text']])
+                    user.aux_data.promo_image.save(pimg.name, pimg)
+                    user.aux_data.save()
+        return redirect('renter:renter')
 
 
 class RegistrationView(View):

@@ -11,6 +11,7 @@
     <link href="{% static 'css/calendar.css' %}" rel="stylesheet">
     <link href="{% static 'css/notifications.css' %}" rel="stylesheet">
     <link href="{% static 'css/reg-card.css' %}" rel="stylesheet">
+    <link href="{% static 'css/business-card.css' %}" rel="stylesheet">
     <script src="{% static 'js/js.cookie.min.js' %}"></script> {# ------------------------------------------------------ Scripts #}
     {% include 'markets/js/reverse.js' with namespace='renter-api' %}
     {% include 'renter/js/importmap.js' %}
@@ -38,7 +39,7 @@
           <img src="{% static 'svg/icons/calendar-check.svg' %}" alt="Календарь"/>
           <span>Календарь</span>
       </a>
-      <a href="#" class="lsb-item" title="Визитная карточка">
+      <a href="#business-card" class="lsb-item" title="Визитная карточка">
           <img src="{% static 'svg/icons/account-card-details.svg' %}" alt="Визитная карточка"/>
           <span>Визитная карточка</span>
       </a>
@@ -90,6 +91,12 @@
                 <div class="calendar-block">
                     <div id="calendar-container" style="width:50vw;min-width:25rem;">{# Календарь подгружается сюда #}</div>
                     <div id="calendar-events" class="calendar-event">{# Календарные события грузятся сюда #}</div>
+                </div>
+            </div>
+            <div class="main-block-item" id="business-card">
+                <h2>Визитная карточка</h2>
+                <div>
+                {% include 'renter/include/business-card.html' %}
                 </div>
             </div>
         </div>

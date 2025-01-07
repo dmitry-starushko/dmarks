@@ -1,0 +1,9 @@
+{% if business_card %}
+<form class="business-card" method="post" enctype="multipart/form-data">
+{% csrf_token %}
+{{business_card.as_div}}
+<input type="submit" title="Сохранить" value="Сохранить визитную карточку">
+</form>
+{% else %}
+<label>Изменять данные Визитной карточки могут только верифицированные пользователи</label>
+{% endif %}
