@@ -35,8 +35,7 @@ def unrent_outlets(user: DmUser, data):
                         olet.save()
                     else:
                         raise ValueError(number)
-        case _:
-            raise ValueError(data)
+        case _: raise ValueError(data)
     return True
 
 
