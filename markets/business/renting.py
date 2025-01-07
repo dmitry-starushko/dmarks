@@ -1,10 +1,6 @@
-import httpx
-from django.conf import settings
 from django.db import transaction
-
-from markets.decorators import on_exception_returns
-from markets.enums import OutletState, FUS
-from markets.models import DmUser, TradePlace
+from markets.enums import OutletState
+from markets.models import DmUser, TradePlace, TradePlaceType
 
 
 def rent_outlets(user: DmUser, data):
@@ -19,7 +15,7 @@ def rent_outlets(user: DmUser, data):
                         if olet.rented_by is not None:
                             raise ValueError(f'Торговое место {number} уже арендовано')
                         olet.rented_by = user
-                        olet.trade_place_type = OutletState.RENTED
+                        olet.trade_place_type = TradePlaceType.objects.get_or_create(type_name=OutletState.RENTED)[0]
                         olet.save()
                     else:
                         raise ValueError(number)
@@ -27,31 +23,22 @@ def rent_outlets(user: DmUser, data):
     return True
 
 
-@on_exception_returns(frozenset())
-def get_outlets_in_renting(user: DmUser):
-    return False
-    # if not user.confirmed:
-    #     raise RuntimeError(FUS.UNV)
-    # with httpx.Client() as client:
-    #     res = client.get(settings.EXT_URL['booking'].format(user=user.aux_data.itn))
-    #     if res.is_error:
-    #         raise RuntimeError(FUS.SRE)
-    #     result = res.json()
-    # match result:
-    #     case [*items]: return frozenset(f'{i}' for i in items)
-    #     case _: raise RuntimeError(FUS.USR)
-
-
-@on_exception_returns(frozenset())
 def unrent_outlets(user: DmUser, data):
-    return False
-    # if not user.confirmed:
-    #     raise RuntimeError(FUS.UNV)
-    # with httpx.Client() as client:
-    #     res = client.delete(settings.EXT_URL['booking'].format(user=user.aux_data.itn))
-    #     if res.is_error:
-    #         raise RuntimeError(FUS.SRE)
-    #     result = res.json()
-    # match result:
-    #     case [*items]: return frozenset(f'{i}' for i in items)
-    #     case _: raise RuntimeError(FUS.USR)
+    match data:
+        case [*numbers]:
+            with transaction.atomic():
+                for number in numbers:
+                    if isinstance(number, str):
+                        olet: TradePlace = user.rented_outlets.get(location_number=number)
+                        olet.rented_by = None
+                        olet.trade_place_type = TradePlaceType.objects.get_or_create(type_name=OutletState.AVAILABLE_FOR_BOOKING)[0]
+                        olet.save()
+                    else:
+                        raise ValueError(number)
+        case _:
+            raise ValueError(data)
+    return True
+
+
+def get_outlets_in_renting(user: DmUser):
+    return [i['location_number'] for i in user.rented_outlets.values('location_number')]
