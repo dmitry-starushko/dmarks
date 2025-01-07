@@ -19,7 +19,9 @@
 
 #map {
     width: 100%;
-    height: 100%;
+    height: -moz-calc(100vh - 250px); /* Firefox */
+    height: -webkit-calc(100vh - 250px); /* Chrome, Safari */
+    height: calc(100vh - 250px); /* IE9+ and future browsers */
 }
 
 /*--------------------------------------------------------------
@@ -29,16 +31,15 @@
   display: grid;
   flex-wrap: wrap;
   background-color: #c4c4c5;
-  height: 85vh;
   scrollbar-gutter: stable;
   overflow-y:scroll;
   scrollbar-width: thin;
   scrollbar-color: #c4c4c5 #f5f5f5;
   grid-template-columns: repeat(auto-fit, minmax(17rem, 1fr));
   grid-auto-flow: row;
-  height: -moz-calc(100vh - 250px); /* Firefox */
-  height: -webkit-calc(100vh - 250px); /* Chrome, Safari */
-  height: calc(100vh - 250px); /* IE9+ and future browsers */
+  height: -moz-calc(100vh - 240px); /* Firefox */
+  height: -webkit-calc(100vh - 240px); /* Chrome, Safari */
+  height: calc(100vh - 240px); /* IE9+ and future browsers */
   /*grid-auto-rows: 5rem;
   gap: 0.25rem;*/
   /*bottom: 0;*/

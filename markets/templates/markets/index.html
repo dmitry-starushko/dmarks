@@ -37,9 +37,9 @@
         <div class="tab-pane fade" id="maplist" role="tabpanel" aria-labelledby="profile-tab">
             <div class="market-cards section-block">
                 {% for market in markets %}
-                    <div class="market-card">
+                    <div class="market-card" title="{{market.mk_full_name}}">
                         <div class="market-card-title">
-                            {{market.mk_full_name|truncatechars:21}}
+                            {{market.mk_full_name|truncatechars:31}}
                         </div>
                         <!--div class="market-card-title">
                             {{market.market_name|add:", "|add:market.additional_name }}
