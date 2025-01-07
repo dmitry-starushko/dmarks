@@ -553,7 +553,7 @@ class TradePlace(models.Model):
     trade_spec_type_id_rec = models.ForeignKey(TradeSpecType, on_delete=models.SET_DEFAULT, default=TradeSpecType.default_pk, db_column='trade_spec_type_id_rec', db_comment='Специализация торгового места (рекомендованная)')
     location_sector = models.ForeignKey(TradeSector, on_delete=models.SET_DEFAULT, default=TradeSector.default_pk, db_comment='id сектор торгового места')
     scheme = models.ForeignKey(SvgSchema, related_name="outlets", on_delete=models.SET_NULL, null=True)
-    rented_by = models.ForeignKey(DmUser, on_delete=models.RESTRICT, null=True, db_comment='кем арендовано')
+    rented_by = models.ForeignKey(DmUser, on_delete=models.RESTRICT, null=True, related_name='rented_outlets', db_comment='кем арендовано')
 
     meas_area = models.FloatField(default=0.0, validators=[MinValueValidator(0.0)], db_comment='Площадь места')
     meas_length = models.FloatField(default=0.0, validators=[MinValueValidator(0.0)], db_comment='Длина места')

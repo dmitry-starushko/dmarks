@@ -7,6 +7,7 @@ from markets.business.crud_entities import create_market, update_market, get_mar
     create_market_schemes, get_market_schemes, update_market_schemes, delete_market_schemes, create_market_images, get_market_images, update_market_images, delete_market_images, create_market_phones, \
     get_market_phones, update_market_phones, delete_market_phones, create_market_emails, get_market_emails, update_market_emails, delete_market_emails, create_notifications, get_notifications, \
     delete_notifications
+from markets.business.renting import rent_outlets, get_outlets_in_renting, unrent_outlets
 from markets.decorators import on_exception_returns_response
 from markets.models import DmUser
 
@@ -214,6 +215,13 @@ class UserConfirmedView(APIView):
         })
 
     @on_exception_returns_response(HttpResponseBadRequest)
+    def put(self, request, itn):
+        result = set_user_confirmed(DmUser.objects.get(aux_data__itn=itn), request.data)
+        return Response({
+            'result': result
+        })
+
+    @on_exception_returns_response(HttpResponseBadRequest)
     def get(self, request, itn):
         result = DmUser.objects.get(aux_data__itn=itn).confirmed
         return Response({
@@ -226,19 +234,31 @@ class UserRentedOutletsView(APIView):
 
     @on_exception_returns_response(HttpResponseBadRequest)
     def post(self, request, itn):
-        pass
+        result = rent_outlets(DmUser.objects.get(aux_data__itn=itn), request.data)
+        return Response({
+            'result': result
+        })
 
     @on_exception_returns_response(HttpResponseBadRequest)
     def get(self, request, itn):
-        pass
+        result = get_outlets_in_renting(DmUser.objects.get(aux_data__itn=itn))
+        return Response({
+            'result': result
+        })
 
     @on_exception_returns_response(HttpResponseBadRequest)
     def put(self, request, itn):
-        pass
+        result = rent_outlets(DmUser.objects.get(aux_data__itn=itn), request.data)
+        return Response({
+            'result': result
+        })
 
     @on_exception_returns_response(HttpResponseBadRequest)
     def delete(self, request, itn):
-        pass
+        result = unrent_outlets(DmUser.objects.get(aux_data__itn=itn), request.data)
+        return Response({
+            'result': result
+        })
 
 
 class NotificationsCRUDView(APIView):
