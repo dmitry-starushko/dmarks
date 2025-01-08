@@ -300,7 +300,11 @@ def update_market_outlets(market_id: str, data):
                         case 'price', float(price) if price >= 0.0: r.price = price
                         case 'street_vending', bool(street_vending): r.street_vending = street_vending
                         case 'trade_type', str(trade_type): r.trade_type = TradeType.objects.get_or_create(type_name=trade_type)[0]
-                        case 'trade_place_type', str(trade_place_type) if trade_place_type in OutletState: r.trade_place_type = TradePlaceType.objects.get_or_create(type_name=trade_place_type)[0]
+                        case 'trade_place_type', str(trade_place_type) if trade_place_type in OutletState:
+                            match r.rented_by, trade_place_type:
+                                case None, _: r.trade_place_type = TradePlaceType.objects.get_or_create(type_name=trade_place_type)[0]
+                                case _, OutletState.RENTED: r.trade_place_type = TradePlaceType.objects.get_or_create(type_name=OutletState.RENTED)[0]
+                                case _: raise ValueError(f'Статус ТМ {r.location_number} не может быть изменен на {trade_place_type}: ТМ арендовано')
                         case 'trade_spec_type_id_act', str(trade_spec_type_id_act): r.trade_spec_type_id_act = TradeSpecType.objects.get_or_create(type_name=trade_spec_type_id_act)[0]
                         case 'trade_spec_type_id_rec', str(trade_spec_type_id_rec): r.trade_spec_type_id_rec = TradeSpecType.objects.get_or_create(type_name=trade_spec_type_id_rec)[0]
                         case 'location_sector', str(location_sector): r.location_sector = TradeSector.objects.get_or_create(sector_name=location_sector)[0]
