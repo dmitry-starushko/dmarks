@@ -5,13 +5,20 @@
 {% cache 300 market_detail_outlet_detail hash %}
 <div class="mkdetails-tp-header-block">Торговое место №{{outlet.location_number}}</div>
 <div class="mkdetails-tp-section">
+{% with promo_image=outlet.promo_image %}
+{% with promo_text=outlet.promo_text %}
+{% if promo_image or promo_text %}
 <div class="outlet-adv-block">
-    <img src="{% thumbnail outlet.market.image 150x250 crop %}"/>
-    <div>
-        {{"Здесь будет слоган!" | markdown}}
-        {{"Здесь будет короткое описание торговой точки. Здесь будет короткое описание торговой точки. Здесь будет короткое описание торговой точки. Здесь будет короткое описание торговой точки. Здесь будет короткое описание торговой точки." | markdown}}
-    </div>
+    {% if promo_image %}
+    <img src="{% thumbnail promo_image 150x250 crop %}"/>
+    {% endif %}
+    {% if promo_text %}
+    <div>{{promo_text | markdown}}</div>
+    {% endif %}
 </div>
+{% endif %}
+{% endwith %}
+{% endwith %}
 <div class="mkdetails-tp-section-info-detail-body-info-descr">
     <p>Тип: <strong>{{outlet.trade_type}}</strong></p>
     <p>Занятость: <strong>{{outlet.trade_place_type}}</strong></p>

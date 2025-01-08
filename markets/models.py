@@ -59,6 +59,18 @@ class DmUser(AbstractUser):
     def full_name(self):
         return f'{self.first_name} {self.last_name}'
 
+    @property
+    def itn(self):
+        return self.aux_data.itn if hasattr(self, 'aux_data') else None
+
+    @property
+    def promo_image(self):
+        return self.aux_data.promo_image if hasattr(self, 'aux_data') else None
+
+    @property
+    def promo_text(self):
+        return self.aux_data.promo_text if hasattr(self, 'aux_data') else None
+
 
 class File(DbItem):
     file_name = models.CharField(max_length=512)  # -- имя файла --
@@ -103,10 +115,6 @@ class AuxUserData(DbItem):
         if self.passport_image is not None:
             self.passport_image.delete()
         super().delete(*args, **kwargs)
-
-    @property
-    def image(self):
-        return self.promo_image if self.promo_image else settings.DEF_MK_IMG
 
 
 # -- Legacy data ----------------------------------------------------------------------------------
@@ -605,6 +613,14 @@ class TradePlace(models.Model):
                 return "беспроводное"
             case _:
                 return "ошибка в данных"
+
+    @property
+    def promo_image(self):
+        return self.rented_by.promo_image if self.rented_by else None
+
+    @property
+    def promo_text(self):
+        return self.rented_by.promo_text if self.rented_by else None
 
 
 # -- Events & Notifications -----------------------------------------------------------------------

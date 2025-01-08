@@ -254,7 +254,7 @@
 /**** right tp panel***/
 
 .mkdetails-tp-section {
-    overflow-y:scroll;
+    overflow-y: hidden;
     height: 100%;
     display: flex;
     flex-direction: column;
@@ -310,7 +310,13 @@
     flex-direction: column;
     flex: 1;
     height: 100%;
-    /*border: 1px solid black;*/
+    &:empty {
+        border: solid thin black;
+        background: white;
+        background-image: url(/static/bitmaps/bkgs/bkg_002.webp);
+        background-repeat: no-repeat;
+        background-position: center;
+    }
 }
 
 .mkdetails-tp-section-info-detail-body-info-descr {
