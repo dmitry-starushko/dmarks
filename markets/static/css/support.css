@@ -12,7 +12,6 @@
 }
 
 .support-button {
-    /*background: linear-gradient(95deg, rgb(0, 85, 201) 20%, rgb(24, 185, 212) 80%);*/
     margin-right: 20px;
     border-radius: 65px !important;
     box-shadow: 0 19px 38px 0 rgba(34, 36, 43, .3);
@@ -25,7 +24,7 @@
     text-align: center;
     transform: scale(1);
     width: 50px;
-    animation: pulse 2s infinite;
+    animation: pulse 5s infinite;
     background-color: rgba(34, 36, 43, .1);
     cursor: pointer;
 }
