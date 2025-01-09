@@ -14,6 +14,7 @@
     <link href="{% static 'css/business-card.css' %}" rel="stylesheet">
     <link href="{% static 'css/ts-chat.css' %}" rel="stylesheet">
     <link href="{% static 'css/help-dialog.css' %}" rel="stylesheet">
+    <style>.help-dialog > main > header { width: calc(100% - 2rem) !important; }</style>
     <script src="{% static 'js/js.cookie.min.js' %}"></script> {# ------------------------------------------------------ Scripts #}
     {% include 'markets/js/reverse.js' with namespace='renter-api' %}
     {% include 'renter/js/importmap.js' %}
@@ -59,9 +60,13 @@
           <img src="{% static 'svg/icons/calendar-select.svg' %}" alt="История действий"/>
           <span>История действий</span>
       </a>
+      <a class="lsb-item" title="Справка" style="cursor:pointer;" onclick="window.help_dialog.toggle({{help_id|default:0}});">
+          <img src="{% static 'svg/icons/help-box.svg' %}" alt="Справка"/>
+          <span>Справка</span>
+      </a>
       <div class="lsb-item last-lsb-item">
           <a href="../markets/" class="last-lsb-item-div">
-              <img src="{% static 'svg/icons/home-map-marker.svg' %}" alt="История действий"/>
+              <img src="{% static 'svg/icons/home-map-marker.svg' %}" alt="На сайт"/>
               <span>На сайт</span>
           </a>
           <a href="#" class="last-lsb-item-div">
@@ -69,7 +74,7 @@
                     {% csrf_token %}
                     <input type="hidden">
                      {# <span onclick="document.getElementById('logout-form').submit();">Выход</span> #}
-                    <button type="submit"><img src="{% static 'svg/icons/exit-to-app.svg' %}" alt="История действий"/> <span>Выйти</span></button>
+                    <button type="submit"><img src="{% static 'svg/icons/exit-to-app.svg' %}" alt="Выйти"/> <span>Выйти</span></button>
                 </form>
           </a>
       </div>

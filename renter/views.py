@@ -23,7 +23,8 @@ class RenterView(LoginRequiredMixin, View):
             })
         } if user.confirmed else {}
         return render(request, self.template_name, {
-            'user': user
+            'user': user,
+            'help_id': 400,
         } | business_card)
 
     def post(self, request):
