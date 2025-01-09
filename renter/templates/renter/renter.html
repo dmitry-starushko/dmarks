@@ -13,6 +13,7 @@
     <link href="{% static 'css/reg-card.css' %}" rel="stylesheet">
     <link href="{% static 'css/business-card.css' %}" rel="stylesheet">
     <link href="{% static 'css/ts-chat.css' %}" rel="stylesheet">
+    <link href="{% static 'css/help-dialog.css' %}" rel="stylesheet">
     <script src="{% static 'js/js.cookie.min.js' %}"></script> {# ------------------------------------------------------ Scripts #}
     {% include 'markets/js/reverse.js' with namespace='renter-api' %}
     {% include 'renter/js/importmap.js' %}
@@ -21,6 +22,7 @@
         import {Notifications} from "notifications";
         import {RegCard} from "reg-card";
         import {TsChat} from "ts-chat";
+        import {HelpDialog} from "help-dialog";
         document.addEventListener('DOMContentLoaded', (event) => { {% include 'renter/js/renter.js' %} });
     </script>
 </head>
@@ -104,5 +106,6 @@
 </div>
 <img class="renter-ts-button" src="{% static 'svg/icons/headset.svg' %}" onclick="window.ts_chat.toggle();"/>
 {% include 'markets/include/ts-chat.html' with ts_chat_id="ts-chat" %}
+{% include 'markets/include/context-help-dialog.html' with dialog_id='help-dialog' %}
 </body>
 </html>
