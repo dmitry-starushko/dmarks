@@ -24,3 +24,4 @@ window.messages = new Notifications("messages-container", 0);
 window.calendar_events = new Notifications("calendar-events", 1);
 window.calendar = new Calendar("calendar-container");
 window.reg_card = new RegCard("reg-card-container");
+window.ts_chat = new TsChat("ts-chat", "markets/ws/chat/", ("WebSocket" in window) ? "{{parm_ts_greeting}}" : "{{parm_ts_old_browser_warning}}");
