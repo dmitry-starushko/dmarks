@@ -224,6 +224,11 @@ window.addEventListener("outlet_clicked", async (e) => { {# --------------------
         dj_load_partial_view("partial_outlet_detail", {outlet_number: e.detail.id}, {}).then(
             html => {document.getElementById("outlet-info").innerHTML = html;}
         );
+
+        for (const tr of document.querySelectorAll('tr.table-tp-row')) {
+            tr.classList.remove('selected');
+            tr.classList.add(tr.getElementsByTagName('td')[0].textContent === e.detail.id ? 'selected' : 'clean');
+        }
     } else {
         document.getElementById("outlet-info").innerHTML = "";
     }

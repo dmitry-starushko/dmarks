@@ -138,15 +138,6 @@ function toggleItem(elem) {
 
 toggleItem(document.querySelectorAll('.buttons-tab'));
 
-
-/****** clicked table row ***/
-var trs = document.querySelectorAll('.table-tp-row');
-for(var i = 0; i < trs.length; i++){
-    alert('123');
-    trs[i].addEventListener("click", function(){this.className += " selected";});
-}
-
-
 /***** sorting table ******/
 
 /*function compareValues(a, b) {
