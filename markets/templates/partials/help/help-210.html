@@ -1,9 +1,16 @@
 {% load aux_tags %}
-{{"# Панель управления" | markdown}}
-{{"Здесь будет справка по панели управления" | markdown}}
-{{"#### Кнопка 'Полноэкранный режим'" | markdown}}
-{{"#### Кнопка 'Выбор этажа'" | markdown}}
-{{"#### Кнопка 'Выбор легенды'" | markdown}}
-{{"#### Кнопка 'Сброс настроек'" | markdown}}
-{{"#### Кнопка '3D'" | markdown}}
-{{"#### Кнопка 'Справка'" | markdown}}
+{% load static %}
+{{"## Панель управления" | markdown}}
+{{"Панель управления предоставляет элементы управления, позволяющие изменять различные аспекты отображения информации о рынке." | markdown}}
+<figure><img src="{% static 'svg/icons/fullscreen.svg' %}" /></figure>
+<figcaption>{{"Кнопка *Полноэкранный режим* позволяет включить или выключить полноэкранный режим отображения информации о рынке." | markdown}}</figcaption>
+<figure><img src="{% static 'svg/icons/layers.svg' %}" /></figure>
+<figcaption>{{"Кнопка *Выбор этажа* позволяет выбрать этаж или уровень рынка для отображения." | markdown}}</figcaption>
+<figure><img src="{% static 'svg/icons/crosshairs-gps.svg' %}" /></figure>
+<figcaption>{{"Кнопка *Выбор легенды* переключает варианты раскраски торговых мест в зависимости от их свойств." | markdown}}</figcaption>
+<figure><img src="{% static 'svg/icons/undo.svg' %}" /></figure>
+<figcaption>{{"Кнопка *Сброс настроек* восстанавливает положение камеры по умолчанию." | markdown}}</figcaption>
+<figure><img src="{% static 'svg/icons/cube-outline.svg' %}" /></figure>
+<figcaption>{{"Кнопка *3D* переключает варианты проекции, используемые для изображения схемы рынка" | markdown}}</figcaption>
+<figure><img src="{% static 'svg/icons/question-mark-circle.svg' %}" /></figure>
+<figcaption>{{"Кнопка *Справка* позволяет прочитать эту справку." | markdown}}</figcaption>
