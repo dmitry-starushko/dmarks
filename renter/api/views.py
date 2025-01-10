@@ -71,12 +71,17 @@ class PV_NotificationsView(APIView):
         notifications = Notification.objects.filter(user__isnull=True, calendar_event=calendar, published__lte=date, unpublished__gt=date)
         if hasattr(request.user, 'notifications'):
             notifications |= request.user.notifications.filter(calendar_event=calendar, published__lte=date, unpublished__gt=date)
-        return render(request, 'renter/partials/notifications.html', {
+        response = render(request, 'renter/partials/notifications.html', {
             'year': year,
             'month': month,
             'day': day,
             'notifications': notifications
         })
+        for ntf in notifications:
+            if ntf.user is not None:
+                ntf.read = True
+                ntf.save()
+        return response
 
 
 class PV_RegCardView(APIView):
