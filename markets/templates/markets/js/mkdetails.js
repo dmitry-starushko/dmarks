@@ -138,11 +138,125 @@ function toggleItem(elem) {
 
 toggleItem(document.querySelectorAll('.buttons-tab'));
 
+
+/****** clicked table row ***/
 var trs = document.querySelectorAll('.table-tp-row');
 for(var i = 0; i < trs.length; i++){
     alert('123');
     trs[i].addEventListener("click", function(){this.className += " selected";});
 }
+
+
+/***** sorting table ******/
+
+/*function compareValues(a, b) {
+  // return -1/0/1 based on what you "know" a and b
+  // are here. Numbers, text, some custom case-insensitive
+  // and natural number ordering, etc. That's up to you.
+  // A typical "do whatever JS would do" is:
+  return (a<b) ? -1 : (a>b) ? 1 : 0;
+}
+
+function sortTable(colnum) {
+  // get all the rows in this table:
+  let rows = Array.from(table.querySelectorAll(`tr`));
+
+  // but ignore the heading row:
+  rows = rows.slice(1);
+
+  // set up the queryselector for getting the indicated
+  // column from a row, so we can compare using its value:
+  let qs = `td:nth-child(${colnum})`;
+
+  // and then just... sort the rows:
+  rows.sort( (r1,r2) => {
+    // get each row's relevant column
+    let t1 = r1.querySelector(qs);
+    let t2 = r2.querySelector(qs);
+
+    // and then effect sorting by comparing their content:
+    return compareValues(t1.textContent,t2.textContent);
+  });
+
+  // and then the magic part that makes the sorting appear on-page:
+  rows.forEach(row => table.appendChild(row));
+}
+
+const table = document.getElementById('mkdetails-tp-table');
+if (table !== null) {
+    table.querySelectorAll('.sort-th').forEach((th, position) => {
+    alert('123');
+      th.addEventListener('click', evt => sortTable(position));
+    });
+}*/
+
+/*const headers = table.querySelectorAll('.sort-th');
+const tableBody = table.querySelector('tbody');
+const rows = tableBody.querySelectorAll('tr');
+
+// Track sort directions
+const directions = Array.from(headers).map(function (header) {
+    return '';
+});
+
+// Transform the content of given cell in given column
+const transform = function (index, content) {
+    // Get the data type of column
+    const type = headers[index].getAttribute('data-type');
+    switch (type) {
+        case 'number':
+            return parseFloat(content);
+        case 'string':
+        default:
+            return content;
+    }
+};
+
+const sortColumn = function (index) {
+    // Get the current direction
+    const direction = directions[index] || 'asc';
+
+    // A factor based on the direction
+    const multiplier = direction === 'asc' ? 1 : -1;
+
+    const newRows = Array.from(rows);
+
+    newRows.sort(function (rowA, rowB) {
+        const cellA = rowA.querySelectorAll('td')[index].innerHTML;
+        const cellB = rowB.querySelectorAll('td')[index].innerHTML;
+
+        const a = transform(index, cellA);
+        const b = transform(index, cellB);
+
+        switch (true) {
+            case a > b:
+                return 1 * multiplier;
+            case a < b:
+                return -1 * multiplier;
+            case a === b:
+                return 0;
+        }
+    });
+
+    // Remove old rows
+    [].forEach.call(rows, function (row) {
+        tableBody.removeChild(row);
+    });
+
+    // Reverse the direction
+    directions[index] = direction === 'asc' ? 'desc' : 'asc';
+
+    // Append new row
+    newRows.forEach(function (newRow) {
+        tableBody.appendChild(newRow);
+    });
+};
+
+[].forEach.call(headers, function (header, index) {
+    header.addEventListener('click', function () {
+        sortColumn(index);
+    });
+});*/
 
 /*var mkdetailtabs = document.querySelectorAll('.buttons-tab')
 for (i = 0; i < mkdetailtabs.length; i++) {
