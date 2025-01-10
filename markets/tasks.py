@@ -9,7 +9,7 @@ def setup_periodic_tasks(sender, **kwargs):
     sender.add_periodic_task(11.0, pt_collect_messages_from_ts.s(), name='collect messages')
     sender.add_periodic_task(3600.0, pt_observe_all.s(), name='observe all observables')
     sender.add_periodic_task(13 * 3600.0, pt_delete_obsolete_notifications.s(), name='delete obsolete notifications')
-    sender.add_periodic_task(17 * 3600.0, pt_delete_obsolete_notifications.s(), name='logrotate')
+    sender.add_periodic_task(17 * 3600.0, pt_logrotate.s(), name='logrotate')
 
 
 @celery.app.task
