@@ -635,7 +635,7 @@ class Notification(DbItem):
     published = models.DateField()
     unpublished = models.DateField()
     calendar_event = models.BooleanField()
-    question_uuid = models.UUIDField(null=True, blank=True)
+    question_uuid = models.UUIDField(unique=True, null=True, blank=True)
     type = models.CharField(max_length=4, choices=type_choices.items(), default=NotificationType.INFORMATION)
     text = models.TextField(max_length=4096)
     attachment = models.OneToOneField(File, on_delete=models.PROTECT, null=True, blank=True)
