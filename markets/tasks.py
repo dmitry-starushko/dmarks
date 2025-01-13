@@ -1,6 +1,7 @@
 from celery import shared_task
 from dmarks import celery
 from markets.business.actions import restore_db_consistency, observe_all, delete_obsolete_notifications, logrotate
+from markets.business.answering import send_question_answer
 from markets.business.tech_support import send_message_to_ts, collect_messages_from_ts
 
 
@@ -40,3 +41,8 @@ def st_restore_db_consistency():
 @shared_task
 def st_send_message_to_ts(from_name, cids, message):
     send_message_to_ts(from_name, cids, message)
+
+
+@shared_task
+def st_send_question_answer(itn: str, question_uuid: str, answer: bool):
+    send_question_answer(itn, question_uuid, answer)

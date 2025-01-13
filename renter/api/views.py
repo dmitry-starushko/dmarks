@@ -11,6 +11,7 @@ from rest_framework.views import APIView
 from markets.business.confirmation import init_confirmation, get_reg_card, ConfirmationError
 from markets.decorators import on_exception_returns_response
 from markets.models import Notification, AuxUserData, File
+from markets.tasks import st_send_question_answer
 from renter.forms.verification import VerificationForm
 
 
@@ -129,11 +130,14 @@ class SendAnswerView(APIView):
 
     @on_exception_returns_response(HttpResponseBadRequest)
     def post(self, request):
+        user = request.user
         data = request.data
         match data:
             case {'question_uuid': str(uuid), 'answer': bool(answer)}:
-                ntf = request.user.notifications.get(question_uuid=uuid)
+                ntf = user.notifications.get(question_uuid=uuid)
+                st_send_question_answer.delay(user.itn, uuid, answer)
                 ntf.text += f'\n\n> *Вы ответили: «{'Да' if answer else 'Нет'}»*'
+                ntf.question_uuid = None
                 ntf.save()
             case _: raise ValueError(data)
         return Response({'result': 'Yess'})

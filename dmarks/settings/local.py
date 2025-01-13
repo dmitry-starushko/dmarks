@@ -26,6 +26,7 @@ EXT_URL = {
     'booking': 'http://192.168.0.199:3001/booking/',
     'confirmation': 'http://192.168.0.199:3001/confirmation/',
     'reg-card': 'http://192.168.0.199:3001/reg-card/',
+    'answers': 'http://192.168.0.199:3001/confirmation/',
 }
 
 EXT_API_PERMISSIONS = [AllowAny]

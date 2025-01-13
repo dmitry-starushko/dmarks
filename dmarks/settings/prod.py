@@ -33,6 +33,7 @@ EXT_URL = {
     'booking': '',
     'confirmation': '',
     'reg-card': '',
+    'answers': '',
 }
 
 EXT_API_PERMISSIONS = [IsAdminUser]
