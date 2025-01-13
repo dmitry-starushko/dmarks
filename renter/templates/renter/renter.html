@@ -24,7 +24,12 @@
         import {RegCard} from "reg-card";
         import {TsChat} from "ts-chat";
         import {HelpDialog} from "help-dialog";
-        document.addEventListener('DOMContentLoaded', (event) => { {% include 'renter/js/renter.js' %} });
+        document.addEventListener('DOMContentLoaded', (event) => {
+            {% include 'renter/js/renter.js' %}
+            {% if message %}
+            window.setTimeout(() => alert("{{message}}"), 500);
+            {% endif %}
+        });
     </script>
 </head>
 <body>

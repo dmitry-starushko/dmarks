@@ -4,9 +4,10 @@ from django.contrib.auth import logout
 from django.db import transaction
 from django.http import HttpResponseBadRequest
 from django.shortcuts import render, redirect
-from rest_framework.permissions import AllowAny, IsAuthenticated
+from django.utils.http import urlsafe_base64_encode
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.views import APIView
-from markets.business.confirmation import init_confirmation, get_reg_card
+from markets.business.confirmation import init_confirmation, get_reg_card, ConfirmationError
 from markets.decorators import on_exception_returns_response
 from markets.models import Notification, AuxUserData, File
 from renter.forms.verification import VerificationForm
@@ -105,15 +106,20 @@ class ActionVerificationDataView(APIView):
         if form.is_valid():
             ule = request.FILES['usr_le_extract']
             pim = request.FILES['passport_scan']
+            response = redirect('renter:renter')
             with transaction.atomic():
-                AuxUserData.objects.create(
+                aux_data = AuxUserData.objects.create(
                     user=request.user,
                     itn=form.cleaned_data['itn'],
                     usr_le_extract=File.objects.create(file_name=ule.name, file_content=ule.read()),
                     passport_image=File.objects.create(file_name=pim.name, file_content=pim.read())
                 )
-                init_confirmation(request.user)
-            return redirect('renter:renter')
+                try:
+                    init_confirmation(request.user)
+                except ConfirmationError as e:
+                    aux_data.delete()
+                    response['Location'] += f'?message={urlsafe_base64_encode('Произошла ошибка обращения к серверу. Данные не были отправлены!'.encode('utf-8'))}'
+            return response
         raise RuntimeError('Ошибка в данных')
 
 
