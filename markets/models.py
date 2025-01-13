@@ -635,8 +635,9 @@ class Notification(DbItem):
     published = models.DateField()
     unpublished = models.DateField()
     calendar_event = models.BooleanField()
+    question_uuid = models.UUIDField(null=True, blank=True)
     type = models.CharField(max_length=4, choices=type_choices.items(), default=NotificationType.INFORMATION)
-    text = models.TextField()
+    text = models.TextField(max_length=4096)
     attachment = models.OneToOneField(File, on_delete=models.PROTECT, null=True, blank=True)
     read = models.BooleanField(default=False)
 
@@ -645,12 +646,14 @@ class Notification(DbItem):
         ordering = ['published']
         indexes = [
             Index(fields=["published"], name='index_by_published'),
-            Index(fields=["unpublished"], name='index_by_unpublished')]
+            Index(fields=["unpublished"], name='index_by_unpublished'),
+            Index(fields=["question_uuid"], name='index_by_question_uuid'),]
         verbose_name = "Уведомление"
         verbose_name_plural = "Уведомления"
         constraints = [
             models.CheckConstraint(check=~Q(text=''), name="non-empty notification text"),
             models.CheckConstraint(check=~(Q(user__isnull=True) & Q(read=True)), name="broadcast notification can not be 'read'"),
+            models.CheckConstraint(check=~(Q(user__isnull=True) & Q(question_uuid__isnull=False)), name="broadcast notification can not be 'question'"),
             models.CheckConstraint(check=Q(type__in=[i.value for i in NotificationType]), name="type values from set"),
             models.CheckConstraint(check=Q(published__lt=F('unpublished')), name="unpublished after published")]
 
