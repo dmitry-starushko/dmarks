@@ -18,8 +18,8 @@ def init_confirmation(user: DmUser):  # TODO text from params
         raise ConfirmationError('Для начала процесса валидации необходимо указать дополнительные персональные данные')
     if user.aux_data.usr_le_extract is None:
         raise ConfirmationError('Отсутствует выписка из ЕГРЮЛ')
-    if user.aux_data.passport_image is None:
-        raise ConfirmationError('Отсутствует скан паспорта')
+    # if user.aux_data.passport_image is None:
+    #     raise ConfirmationError('Отсутствует скан паспорта')
     with httpx.Client() as client:
         try:
             res = client.post(settings.EXT_URL['confirmation'].format(user=user.aux_data.itn),
@@ -31,7 +31,7 @@ def init_confirmation(user: DmUser):  # TODO text from params
                                   'email': user.email,
                                   'itn': user.aux_data.itn,
                                   'usrle': user.aux_data.usr_le_extract.as_dictionary,
-                                  'passport': user.aux_data.passport_image.as_dictionary,
+                                  # 'passport': user.aux_data.passport_image.as_dictionary,
                               })
             if res.is_error:
                 raise ConfirmationError(f'В верификации отказано: {res.text or 'без пояснений'}')

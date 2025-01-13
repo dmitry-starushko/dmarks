@@ -105,14 +105,14 @@ class ActionVerificationDataView(APIView):
         form = VerificationForm(request.POST, request.FILES)
         if form.is_valid():
             ule = request.FILES['usr_le_extract']
-            pim = request.FILES['passport_scan']
+            # pim = request.FILES['passport_scan']
             response = redirect('renter:renter')
             with transaction.atomic():
                 aux_data = AuxUserData.objects.create(
                     user=request.user,
                     itn=form.cleaned_data['itn'],
                     usr_le_extract=File.objects.create(file_name=ule.name, file_content=ule.read()),
-                    passport_image=File.objects.create(file_name=pim.name, file_content=pim.read())
+                    # passport_image=File.objects.create(file_name=pim.name, file_content=pim.read())
                 )
                 try:
                     init_confirmation(request.user)
