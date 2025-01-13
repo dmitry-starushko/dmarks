@@ -130,6 +130,12 @@ class SendAnswerView(APIView):
     @on_exception_returns_response(HttpResponseBadRequest)
     def post(self, request):
         data = request.data
+        match data:
+            case {'question_uuid': str(uuid), 'answer': bool(answer)}:
+                ntf = request.user.notifications.get(question_uuid=uuid)
+                ntf.text += f'\n\n> *Вы ответили: «{'Да' if answer else 'Нет'}»*'
+                ntf.save()
+            case _: raise ValueError(data)
         return Response({'result': 'Yess'})
 
 

@@ -10,7 +10,7 @@
         {% if n.question_uuid %}
         <div class="buttons">
             <button onclick="window.asender.send('{{n.question_uuid}}', true).then(_=>{location.reload(true);})">Да</button>
-            <button onclick="window.asender.send('{{n.question_uuid}}', false).then(_=>{location.reload(true);)">Нет</button>
+            <button onclick="window.asender.send('{{n.question_uuid}}', false).then(_=>{location.reload(true);})">Нет</button>
         </div>
         {% endif %}
     </div>
