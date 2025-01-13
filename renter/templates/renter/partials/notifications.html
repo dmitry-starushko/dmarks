@@ -7,6 +7,12 @@
 {% for n in notifications %}
     <div class="notification {{n.type}}">
         {{n.text|markdown}}
+        {% if n.question_uuid %}
+        <div class="buttons">
+            <button onclick="window.asender.send('{{n.question_uuid}}', true).then(_=>{location.reload(true);})">Да</button>
+            <button onclick="window.asender.send('{{n.question_uuid}}', false).then(_=>{location.reload(true);)">Нет</button>
+        </div>
+        {% endif %}
     </div>
 {% endfor %}
 {% else %}

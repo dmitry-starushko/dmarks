@@ -470,6 +470,7 @@ def create_notifications(itn: str | None, data):
                             case 'published', str(_): args |= {key: value}
                             case 'unpublished', str(_): args |= {key: value}
                             case 'calendar_event', bool(_): args |= {key: value}
+                            case 'question_uuid', str(_): args |= {key: value}
                             case 'type', str(_): args |= {key: value}
                             case 'text', str(_): args |= {key: value}
                             case 'attachment', {  # -- Не описывать в документации к данной итерации --

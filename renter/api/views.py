@@ -6,6 +6,7 @@ from django.http import HttpResponseBadRequest
 from django.shortcuts import render, redirect
 from django.utils.http import urlsafe_base64_encode
 from rest_framework.permissions import IsAuthenticated
+from rest_framework.response import Response
 from rest_framework.views import APIView
 from markets.business.confirmation import init_confirmation, get_reg_card, ConfirmationError
 from markets.decorators import on_exception_returns_response
@@ -121,6 +122,15 @@ class ActionVerificationDataView(APIView):
                     response['Location'] += f'?message={urlsafe_base64_encode('Произошла ошибка обращения к серверу. Данные не были отправлены!'.encode('utf-8'))}'
             return response
         raise RuntimeError('Ошибка в данных')
+
+
+class SendAnswerView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    @on_exception_returns_response(HttpResponseBadRequest)
+    def post(self, request):
+        data = request.data
+        return Response({'result': 'Yess'})
 
 
 class LogoutView(APIView):
