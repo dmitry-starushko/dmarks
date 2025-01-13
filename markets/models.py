@@ -6,7 +6,7 @@ from django.core.validators import MinValueValidator, MaxValueValidator
 from django.db import models
 from django.conf import settings
 from django.db.models import Index, Q, F
-from markets.enums import OutletState, FUS, NotificationType
+from markets.enums import OutletState, FUS, NotificationType, LogRecordKind
 from markets.validators import Validators
 
 
@@ -799,3 +799,16 @@ class StuffAction(DbItem):  # -- Stuff actions in admin panel
     def __str__(self):
         return f'{self.title}'
 
+
+class LogRecord(DbItem):  # -- Stuff actions in admin panel
+    user = models.ForeignKey(DmUser, on_delete=models.CASCADE, related_name='log_records', null=True, blank=True)  # NULL for common log
+    kind = models.CharField(max_length=10, default=LogRecordKind.INFO)
+    text = models.TextField(max_length=1024)
+
+    class Meta:
+        ordering = ["created_at"]
+        verbose_name = "Запись журнала"
+        verbose_name_plural = "Записи журнала"
+
+    def __str__(self):
+        return f'{self.type}:{self.text}'

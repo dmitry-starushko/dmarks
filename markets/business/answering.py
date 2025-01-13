@@ -1,6 +1,9 @@
 import httpx
 from django.conf import settings
 
+from markets.business.logimpl import ilog
+from markets.enums import LogRecordKind
+
 
 def deliver_answer(itn: str, question_uuid: str, answer: bool):
     with httpx.Client() as client:
@@ -12,6 +15,6 @@ def deliver_answer(itn: str, question_uuid: str, answer: bool):
                                   'question_uuid': question_uuid,
                                   'answer': answer})
             if res.is_error:
-                pass  # TODO log undelivered answer
+                ilog(None, f'Ответ {answer} на вопрос {question_uuid} от пользователя {itn} не доставлен: ответ сервера {res.status_code}', LogRecordKind.ERROR)
         except httpx.TransportError as e:
-            pass  # TODO log undelivered answer
+            ilog(None, f'Ответ {answer} на вопрос {question_uuid} от пользователя {itn} не доставлен: исключение {e}', LogRecordKind.ERROR)
