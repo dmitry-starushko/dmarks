@@ -1,8 +1,9 @@
 import datetime
 from calendar import monthrange
+from io import BytesIO
 from django.contrib.auth import logout
 from django.db import transaction
-from django.http import HttpResponseBadRequest
+from django.http import HttpResponseBadRequest, FileResponse
 from django.shortcuts import render, redirect
 from django.utils.http import urlsafe_base64_encode
 from rest_framework.permissions import IsAuthenticated
@@ -122,6 +123,20 @@ class ActionVerificationDataView(APIView):
                     response['Location'] += f'?message={urlsafe_base64_encode('Произошла ошибка обращения к серверу. Данные не были отправлены!'.encode('utf-8'))}'
             return response
         raise RuntimeError('Ошибка в данных')
+
+
+class DownloadLogView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        content = BytesIO()
+        for r in request.user.log_records.order_by('-created_at'):
+            content.write(f'{r.created_at} | {r.kind:8} | {r.text}\n'.encode())
+        content.seek(0)
+        response = FileResponse(content)
+        response['Content-Type'] = 'application/x-binary'
+        response['Content-Disposition'] = f'attachment; filename="log{request.user.phone}-{datetime.datetime.now()}.txt"'
+        return response
 
 
 class SendAnswerView(APIView):

@@ -11,4 +11,5 @@ urlpatterns = [
     path('partial/help-content/<int:hid>/', PV_HelpContentView.as_view(), name='partial_help_content'),
     path('action/verification-data/', views.ActionVerificationDataView.as_view(), name='action_verification_data'),
     path('action/send-answer/', views.SendAnswerView.as_view(), name='send_answer'),
+    path('action/download-log/', views.DownloadLogView.as_view(), name='download_log'),
 ]
