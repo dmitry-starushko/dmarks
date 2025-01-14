@@ -811,4 +811,4 @@ class LogRecord(DbItem):  # -- Stuff actions in admin panel
         verbose_name_plural = "Записи журнала"
 
     def __str__(self):
-        return f'{self.type}:{self.text}'
+        return f'{self.kind}@{self.created_at}'
