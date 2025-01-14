@@ -37,8 +37,9 @@ def init_confirmation(user: DmUser):
                               })
             if res.is_error:
                 reason = f'{res.text or 'без пояснений'}'
-                dlog_warn(user, f'Пользователю {user.phone} отказано в верификации: {reason}')
+                dlog_warn(user, f'Пользователю {user.phone} отказано в процедуре верификации: {reason}')
                 raise ConfirmationError(f'В верификации отказано: {reason}')
+            dlog_info(user, f'Запрос пользователя {user.phone} на инициацию процедуры верификации отправлен серверу')
             return True
         except httpx.TransportError as e:
             dlog_error(user, f'Запрос пользователя {user.phone} на верификацию не удалось отправить: {e}')
