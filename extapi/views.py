@@ -1,5 +1,6 @@
 from django.conf import settings
 from django.http import HttpResponseBadRequest
+from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from markets.business.confirmation import set_user_confirmed
@@ -284,3 +285,50 @@ class NotificationsCRUDView(APIView):
         return Response({
             'result': result
         })
+
+
+# TODO kill Dummy1C
+
+class Dummy1C(APIView):
+    permission_classes = [AllowAny]
+
+    @on_exception_returns_response(HttpResponseBadRequest)
+    def post(self, request, operation):
+        match operation:
+            case 'confirmation':
+                return Response(True)
+            case 'booking':
+                return Response(True)
+            case 'regcard':
+                return Response(True)
+            case 'answers':
+                return Response(True)
+
+    @on_exception_returns_response(HttpResponseBadRequest)
+    def get(self, request, operation):
+        match operation:
+            case 'confirmation':
+                return Response(True)
+            case 'booking':
+                return Response(['000000000'])
+            case 'regcard':
+                return Response({
+                    'Арендовано торговых мест': '1',
+                    'Вид деятельности': 'КОД',
+                    'Параметр 1': 'значение 1',
+                    'Параметр 2': 'значение 2',
+                })
+            case 'answers':
+                return Response(True)
+
+    @on_exception_returns_response(HttpResponseBadRequest)
+    def delete(self, request, operation):
+        match operation:
+            case 'confirmation':
+                return Response(True)
+            case 'booking':
+                return Response(['000000000'])
+            case 'regcard':
+                return Response(True)
+            case 'answers':
+                return Response(True)
