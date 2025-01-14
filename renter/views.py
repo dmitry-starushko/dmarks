@@ -3,6 +3,7 @@ from django.db import transaction
 from django.shortcuts import render, redirect
 from django.utils.http import urlsafe_base64_decode
 from django.views import View
+from markets.business.logging import dlog_info
 from renter.forms.business_card import BusinessCardForm
 from renter.forms.registration import RegistrationForm
 
@@ -43,6 +44,7 @@ class RenterView(LoginRequiredMixin, View):
                     user.aux_data.promo_text = '\n\n'.join([cd['slogan'], cd['promo_text']])
                     user.aux_data.promo_image.save(pimg.name, pimg)
                     user.aux_data.save()
+                dlog_info(user, f'Пользователь {user.phone} изменил данные визитной карточки')
         return redirect('renter:renter')
 
 

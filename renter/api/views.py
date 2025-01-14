@@ -10,6 +10,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from markets.business.confirmation import init_confirmation, get_reg_card, ConfirmationError
+from markets.business.logging import dlog_info
 from markets.decorators import on_exception_returns_response
 from markets.models import Notification, AuxUserData, File
 from markets.tasks import st_deliver_answer
@@ -153,6 +154,7 @@ class SendAnswerView(APIView):
                 ntf.text += f'\n\n> *Вы ответили: «{'Да' if answer else 'Нет'}»*'
                 ntf.question_uuid = None
                 ntf.save()
+                dlog_info(user, f'Пользователь {user.phone} ответил {'Да' if answer else 'Нет'} на вопрос {uuid}')
             case _: raise ValueError(data)
         return Response({'result': True})
 

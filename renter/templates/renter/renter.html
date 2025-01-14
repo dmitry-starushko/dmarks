@@ -53,6 +53,8 @@
           <img src="{% static 'svg/icons/account-card-details.svg' %}" alt="Визитная карточка"/>
           <span>Визитная карточка</span>
       </a>
+      {% comment %}
+        TODO удалить нафиг
       <a href="#" class="lsb-item" title="Мои договоры">
           <img src="{% static 'svg/icons/clipboard-text.svg' %}" alt="Мои договоры"/>
           <span>Мои договоры</span>
@@ -61,6 +63,7 @@
           <img src="{% static 'svg/icons/email.svg' %}" alt="Мои заявления"/>
           <span>Мои заявления</span>
       </a>
+      {% endcomment %}
       <a href="{% url 'renter-api:download_log' %}" class="lsb-item" title="История действий">
           <img src="{% static 'svg/icons/calendar-select.svg' %}" alt="История действий"/>
           <span>История действий</span>

@@ -1,4 +1,5 @@
 from django.db import transaction
+from markets.business.logging import dlog_info
 from markets.enums import OutletState
 from markets.models import DmUser, TradePlace, TradePlaceType
 
@@ -8,6 +9,7 @@ def rent_outlets(user: DmUser, data):
         raise ValueError(f'Пользователь {user.aux_data.itn} не верифицирован')
     match data:
         case [*numbers]:
+            dlog_info(user, f'Получен запрос на включение торговых мест {', '.join(numbers)} в арендный список пользователя {user.phone}')
             with transaction.atomic():
                 for number in numbers:
                     if isinstance(number, str):
@@ -20,12 +22,14 @@ def rent_outlets(user: DmUser, data):
                     else:
                         raise ValueError(number)
         case _: raise ValueError(data)
+    dlog_info(user, f'Запрос на включение торговых мест {', '.join(numbers)} в арендный список пользователя {user.phone} выполнен')
     return True
 
 
 def unrent_outlets(user: DmUser, data):
     match data:
         case [*numbers]:
+            dlog_info(user, f'Получен запрос на исключение торговых мест {', '.join(numbers)} из арендного списка пользователя {user.phone}')
             with transaction.atomic():
                 for number in numbers:
                     if isinstance(number, str):
@@ -36,6 +40,7 @@ def unrent_outlets(user: DmUser, data):
                     else:
                         raise ValueError(number)
         case _: raise ValueError(data)
+    dlog_info(user, f'Запрос на исключение торговых мест {', '.join(numbers)} из арендного списка пользователя {user.phone} выполнен')
     return True
 
 
