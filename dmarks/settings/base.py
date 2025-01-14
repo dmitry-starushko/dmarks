@@ -140,3 +140,6 @@ CHANNEL_LAYERS = {
         }
     }
 }
+
+LOG_KINDS = frozenset()
+

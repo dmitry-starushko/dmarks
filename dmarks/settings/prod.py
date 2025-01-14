@@ -1,4 +1,5 @@
 from rest_framework.permissions import IsAdminUser
+from markets.enums import LogRecordKind
 from .base import *
 
 DEBUG = False
@@ -37,3 +38,6 @@ EXT_URL = {
 }
 
 EXT_API_PERMISSIONS = [IsAdminUser]
+
+LOG_KINDS = frozenset({k for k in LogRecordKind})
+
