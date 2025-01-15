@@ -31,10 +31,10 @@ CELERY_BROKER_URL = f'pyamqp://guest@rabbit'
 TELEBOT_ID = os.environ.get('TELEBOT')
 
 EXT_URL = {
-    'booking': 'http://web/extapi/dummy1c/booking/',
-    'confirmation': 'http://web/extapi/dummy1c/confirmation/',
-    'reg-card': 'http://web/extapi/dummy1c/regcard/',
-    'answers': 'http://web/extapi/dummy1c/answers/',
+    'booking': 'http://web:8000/extapi/dummy1c/booking/',
+    'confirmation': 'http://web:8000/extapi/dummy1c/confirmation/',
+    'reg-card': 'http://web:8000/extapi/dummy1c/regcard/',
+    'answers': 'http://web:8000/extapi/dummy1c/answers/',
 }
 
 EXT_API_PERMISSIONS = [IsAdminUser]
