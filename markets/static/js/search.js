@@ -36,8 +36,12 @@ searchinput.onkeyup = () => {
     if (text.length >= min_symbols) {
         globalTimeout = setTimeout(() => {
             globalTimeout = null;
+            document.querySelector(".search-market-top > img").classList.add("pulsation");
             dj_load_partial_view("partial_filtered_markets", {}, {search_text: text})
-                .then(html => {search_result.innerHTML = html;});
+                .then(html => {
+                    search_result.innerHTML = html;
+                    document.querySelector(".search-market-top > img").classList.remove("pulsation");
+                });
         }, 1000);
     }
 }
