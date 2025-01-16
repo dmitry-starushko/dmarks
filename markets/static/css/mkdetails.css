@@ -348,6 +348,7 @@
 .mkdetails-tp-section-info-detail-body-info-booking {
     margin-top: 10px;
     display: flex;
+    gap: 10px;
 }
 
 .book-btn {
@@ -374,7 +375,6 @@
 
 .mkdetails-tp-section-info-detail-body-info-booking-button-cancel {
     background-color: #ff9966;
-    margin-left: 10px;
 }
 
 .mkdetails-tp-section-info-detail-body-info-booking-button-cancel:hover {
