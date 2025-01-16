@@ -27,6 +27,7 @@ EXT_URL = {
     'confirmation': 'http://localhost:8000/extapi/dummy1c/confirmation/',
     'reg-card': 'http://localhost:8000/extapi/dummy1c/regcard/',
     'answers': 'http://localhost:8000/extapi/dummy1c/answers/',
+    'market-info': 'http://localhost:8000/extapi/dummy1c/market-info/',
 }
 
 EXT_API_PERMISSIONS = [AllowAny]

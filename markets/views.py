@@ -2,6 +2,7 @@ from collections import OrderedDict
 from django.http import HttpResponseBadRequest
 from django.views import View
 from django.shortcuts import render
+from markets.business.aux_info import get_market_info
 from markets.decorators import on_exception_returns_response
 from markets.models import Market, Contact
 
@@ -40,6 +41,7 @@ class MarketDetailsView(View, BasicContextProvider):
         outlet_model = market_model.trade_places.get(location_number=str(outlet)) if outlet is not None else None
         return render(request, self.template_name, self.basic_context(request) | {
             'market': market_model,
+            'aux_info': get_market_info(market_model.market_id),
             'show_tab': show,
             'outlet': outlet_model,
             'help_id': 200,

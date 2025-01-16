@@ -35,6 +35,7 @@ EXT_URL = {
     'confirmation': 'http://web:8000/extapi/dummy1c/confirmation/',
     'reg-card': 'http://web:8000/extapi/dummy1c/regcard/',
     'answers': 'http://web:8000/extapi/dummy1c/answers/',
+    'market-info': 'http://web:8000/extapi/dummy1c/market-info/',
 }
 
 EXT_API_PERMISSIONS = [IsAdminUser]

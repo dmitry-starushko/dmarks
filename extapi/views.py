@@ -303,6 +303,8 @@ class Dummy1C(APIView):
                 return Response(True)
             case 'answers':
                 return Response(True)
+            case 'market-info':
+                return Response(True)
 
     @on_exception_returns_response(HttpResponseBadRequest)
     def get(self, request, operation):
@@ -313,13 +315,24 @@ class Dummy1C(APIView):
                 return Response(['000000000'])
             case 'regcard':
                 return Response({
-                    'Арендовано торговых мест': '1',
-                    'Вид деятельности': 'КОД',
-                    'Параметр 1': 'значение 1',
-                    'Параметр 2': 'значение 2',
+                    'Источник': 'API 1C',
+                    'Параметр_1': 'Значение_1',
+                    'Параметр_2': 'Значение_2',
+                    'Параметр_3': 'Значение_3',
+                    '...': '...',
+                    'Параметр_N': 'Значение_N',
                 })
             case 'answers':
                 return Response(True)
+            case 'market-info':
+                return Response({
+                    'Источник': 'API 1C',
+                    'Параметр_1': 'Значение_1',
+                    'Параметр_2': 'Значение_2',
+                    'Параметр_3': 'Значение_3',
+                    '...': '...',
+                    'Параметр_N': 'Значение_N',
+                })
 
     @on_exception_returns_response(HttpResponseBadRequest)
     def delete(self, request, operation):
@@ -331,4 +344,6 @@ class Dummy1C(APIView):
             case 'regcard':
                 return Response(True)
             case 'answers':
+                return Response(True)
+            case 'market-info':
                 return Response(True)
