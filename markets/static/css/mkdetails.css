@@ -54,6 +54,10 @@
     -moz-border-radius: 0px;
     -webkit-border-radius: 5px 5px 0px 0px;
     border-radius: 5px 5px 0px 0px;
+    display: flex;
+    flex-flow: row;
+    gap: 0.5rem;
+    align-items: center;
 }
 
 .market-details-section-buttons > button.active {
