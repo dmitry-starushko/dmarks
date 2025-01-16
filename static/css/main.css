@@ -736,6 +736,12 @@ section.main-map-section .tab-content
   color: var(--default-color);
 }
 
+footer {
+    a {
+        cursor: pointer;
+    }
+}
+
 /*--------------------------------------------------------------
 # Preloader
 --------------------------------------------------------------*/
