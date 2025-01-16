@@ -9,7 +9,8 @@ from django.utils.http import urlsafe_base64_encode
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from markets.business.confirmation import init_confirmation, get_reg_card, ConfirmationError
+from markets.business.confirmation import init_confirmation, ConfirmationError
+from markets.business.aux_info import get_reg_card
 from markets.business.logging import dlog_info
 from markets.decorators import on_exception_returns_response
 from markets.models import Notification, AuxUserData, File
