@@ -457,12 +457,14 @@ def delete_market_emails(market_id: str, data):
 # --- Notifications ---
 
 def create_notifications(itn: str | None, data):
-    args = {
-        'user': DmUser.objects.get(aux_data__itn=itn) if itn is not None else None,
-        'read': False
-    }
+    user = DmUser.objects.get(aux_data__itn=itn) if itn is not None else None
+    result = []
     with transaction.atomic():
         for ntf in data:
+            args = {
+                'user': user,
+                'read': False
+            }
             match ntf:
                 case {**items}:
                     for key, value in items.items():
@@ -478,8 +480,9 @@ def create_notifications(itn: str | None, data):
                                 'file_content': str(file_content)
                             }: args |= {'attachment': File.objects.create(file_name=file_name, file_content=base64.b64decode(file_content.encode('ascii')))}
                             case _: raise ValueError((key, value))
-                    return Notification.objects.create(**args).id
+                    result.append(Notification.objects.create(**args).id)
                 case _: raise ValueError(ntf)
+        return result
 
 
 def get_notifications(itn: str | None):
