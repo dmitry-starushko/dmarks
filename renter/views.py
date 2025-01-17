@@ -43,8 +43,10 @@ class RenterView(LoginRequiredMixin, View):
                 with transaction.atomic():
                     user.aux_data.promo_text = '\n\n'.join([cd['slogan'], cd['promo_text']])
                     user.aux_data.promo_image.save(pimg.name, pimg)
+                    user.aux_data.promo_enabled = False
                     user.aux_data.save()
                 dlog_info(user, f'Пользователь {user.phone} изменил данные визитной карточки')
+                # TODO notify 1C
         return redirect('renter:renter')
 
 
