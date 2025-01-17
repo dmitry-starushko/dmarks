@@ -71,6 +71,10 @@ class DmUser(AbstractUser):
     def promo_text(self):
         return self.aux_data.promo_text if hasattr(self, 'aux_data') else None
 
+    @property
+    def promo_enabled(self):
+        return self.aux_data.promo_enabled if hasattr(self, 'aux_data') else None
+
 
 class File(DbItem):
     file_name = models.CharField(max_length=512)  # -- имя файла --
@@ -617,11 +621,11 @@ class TradePlace(models.Model):
 
     @property
     def promo_image(self):
-        return self.rented_by.promo_image if self.rented_by else None
+        return self.rented_by.promo_image if self.rented_by and self.rented_by.promo_enabled else None
 
     @property
     def promo_text(self):
-        return self.rented_by.promo_text if self.rented_by else None
+        return self.rented_by.promo_text if self.rented_by and self.rented_by.promo_enabled else None
 
 
 # -- Events & Notifications -----------------------------------------------------------------------
