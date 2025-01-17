@@ -1,11 +1,10 @@
 import httpx
 from django.conf import settings
-
 from markets.business.logimpl import ilog
 from markets.enums import LogRecordKind
 
 
-def deliver_answer(itn: str, question_uuid: str, answer: bool):
+def deliver_answer(itn: str | None, question_uuid: str, answer: bool):
     with httpx.Client() as client:
         try:
             res = client.post(settings.EXT_URL['answers'],

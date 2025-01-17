@@ -36,6 +36,7 @@ EXT_URL = {
     'reg-card': 'http://web:8000/extapi/dummy1c/regcard/',
     'answers': 'http://web:8000/extapi/dummy1c/answers/',
     'market-info': 'http://web:8000/extapi/dummy1c/market-info/',
+    'moderation': 'http://web:8000/extapi/dummy1c/moderation/',
 }
 
 EXT_API_PERMISSIONS = [IsAdminUser]
