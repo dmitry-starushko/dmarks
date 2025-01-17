@@ -100,6 +100,7 @@ class AuxUserData(DbItem):
     passport_image = models.OneToOneField(File, related_name='passport_image', on_delete=models.SET_NULL, null=True)  # -- скан паспорта --
     promo_image = models.ImageField(upload_to='renters/%Y/%m/%d', null=True)  # картинка
     promo_text = models.TextField(max_length=2048, default='')  # промо-текст
+    promo_enabled = models.BooleanField(default=False)  # -- промо-информация модерирована и разрешена к показу --
 
     class Meta:
         verbose_name = "Доп. данные"
