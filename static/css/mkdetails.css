@@ -54,6 +54,10 @@
     -moz-border-radius: 0px;
     -webkit-border-radius: 5px 5px 0px 0px;
     border-radius: 5px 5px 0px 0px;
+    display: flex;
+    flex-flow: row;
+    gap: 0.5rem;
+    align-items: center;
 }
 
 .market-details-section-buttons > button.active {
@@ -348,6 +352,7 @@
 .mkdetails-tp-section-info-detail-body-info-booking {
     margin-top: 10px;
     display: flex;
+    gap: 10px;
 }
 
 .book-btn {
@@ -374,7 +379,6 @@
 
 .mkdetails-tp-section-info-detail-body-info-booking-button-cancel {
     background-color: #ff9966;
-    margin-left: 10px;
 }
 
 .mkdetails-tp-section-info-detail-body-info-booking-button-cancel:hover {
