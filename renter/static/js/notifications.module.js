@@ -12,6 +12,16 @@ class Notifications {
             html => { this._container.innerHTML = html; }
         );
     }
-}
+};
+
+class AnswerSender {
+    constructor() {
+    }
+
+    async send(uuid, answer) {
+        return await dj_api_call("send_answer", {}, {question_uuid: uuid, answer: answer});
+    }
+};
 
 export { Notifications };
+export { AnswerSender };

@@ -64,10 +64,12 @@ class OutletFilters {
     update_search_result(container_id) {
         if(this._abort_controller) { this._abort_controller.abort(); }
         this._abort_controller = new AbortController();
+        document.querySelector(".search-market-top > img").classList.add("pulsation");
         dj_load_partial_view("partial_filtered_outlets", {}, this.build_filters(), this._abort_controller.signal).then(
             html => {
-                document.getElementById(container_id).innerHTML = html;
                 this._abort_controller = null;
+                document.getElementById(container_id).innerHTML = html;
+                document.querySelector(".search-market-top > img").classList.remove("pulsation");
             }
         );
     }

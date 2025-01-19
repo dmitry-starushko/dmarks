@@ -54,6 +54,10 @@
     -moz-border-radius: 0px;
     -webkit-border-radius: 5px 5px 0px 0px;
     border-radius: 5px 5px 0px 0px;
+    display: flex;
+    flex-flow: row;
+    gap: 0.5rem;
+    align-items: center;
 }
 
 .market-details-section-buttons > button.active {
@@ -348,6 +352,7 @@
 .mkdetails-tp-section-info-detail-body-info-booking {
     margin-top: 10px;
     display: flex;
+    gap: 10px;
 }
 
 .book-btn {
@@ -374,7 +379,6 @@
 
 .mkdetails-tp-section-info-detail-body-info-booking-button-cancel {
     background-color: #ff9966;
-    margin-left: 10px;
 }
 
 .mkdetails-tp-section-info-detail-body-info-booking-button-cancel:hover {
@@ -391,30 +395,20 @@
     background-color: #ebebeb;
     border-style: solid;
     border-color: black;
-    border-width: 0 1px 1px 1px;
-    color: black;
-    font-size: 10px;
+    border-width: 0 thin thin thin;
     display: flex;
-    justify-content: flex-start;
-    flex-wrap: wrap;
-    padding: 10px 0;
+    flex-flow: row wrap;
+    justify-content: center;
+    gap: 0.35rem;
+    padding: 0.5rem;
+    > div {
+        cursor: pointer;
+        width: 1.62rem;
+        height: 1rem;
+        border: solid thin black;
+        border-radius: 0.33rem;
+    }
 }
-
-.mkdetails-tp-section-info-detail-legend-body-item{
-    display: flex;
-    padding: 5px;
-    flex: 0 0 10%;
-}
-
-.mkdetails-tp-section-info-detail-legend-body-item-circle{
-    cursor: pointer;
-    border-radius: 50%;
-    width: 20px;
-    height: 20px;
-    margin-right: 3px;
-    border: 2px solid black;
-}
-
 
 .mkdetails-tp-empty {
     text-align: center;

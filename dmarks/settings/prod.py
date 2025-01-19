@@ -1,4 +1,5 @@
 from rest_framework.permissions import IsAdminUser
+from markets.enums import LogRecordKind
 from .base import *
 
 DEBUG = False
@@ -30,9 +31,15 @@ CELERY_BROKER_URL = f'pyamqp://guest@rabbit'
 TELEBOT_ID = os.environ.get('TELEBOT')
 
 EXT_URL = {
-    'booking': '',
-    'confirmation': '',
-    'reg-card': '',
+    'booking': 'http://web:8000/extapi/dummy1c/booking/',
+    'confirmation': 'http://web:8000/extapi/dummy1c/confirmation/',
+    'reg-card': 'http://web:8000/extapi/dummy1c/regcard/',
+    'answers': 'http://web:8000/extapi/dummy1c/answers/',
+    'market-info': 'http://web:8000/extapi/dummy1c/market-info/',
+    'moderation': 'http://web:8000/extapi/dummy1c/moderation/',
 }
 
 EXT_API_PERMISSIONS = [IsAdminUser]
+
+LOG_KINDS = frozenset({k for k in LogRecordKind})
+

@@ -22,6 +22,9 @@
     height: 90%;
     /*display: flex;*/
     background-color: var(--section-bg);
+    max-height: -moz-calc(100vh - 300px); /* Firefox */
+    max-height: -webkit-calc(100vh - 300px); /* Chrome, Safari */
+    max-height: calc(100vh - 300px); /* IE9+ and future browsers */
 }
 
 .market-details-section-title {
@@ -51,6 +54,10 @@
     -moz-border-radius: 0px;
     -webkit-border-radius: 5px 5px 0px 0px;
     border-radius: 5px 5px 0px 0px;
+    display: flex;
+    flex-flow: row;
+    gap: 0.5rem;
+    align-items: center;
 }
 
 .market-details-section-buttons > button.active {
@@ -230,15 +237,15 @@
 }
 
 .table-tp tr.selected {
-    background-color: #000;
-    color: #FFF;
+    background-color: #535353;
+    color: #fff;
 }
 
 
 .mkdetails-tp-section-info-main {
     /*padding: 5px;*/
     overflow-y: scroll;
-    height: 100%;
+    /*height: 97%;*/
     width: 100%;
 }
 
@@ -252,6 +259,14 @@
 
 
 /**** right tp panel***/
+
+.mkdetails-tp-section {
+    overflow-y: hidden;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
 .mkdetails-tp-section-info-detail {
     background-color: var(--background-color);
     /*flex: 1;*/
@@ -259,6 +274,7 @@
     flex-direction: column;
     margin-left: 5px;
     width: 40%;
+    height: 100%;
     /*width: 30%;*/
     /*visibility: hidden;*/
     /*padding: 0px 5px;*/
@@ -300,7 +316,14 @@
     display: flex;
     flex-direction: column;
     flex: 1;
-    /*border: 1px solid black;*/
+    height: 100%;
+    &:empty {
+        border: solid thin black;
+        background: white;
+        background-image: url(/static/bitmaps/bkgs/bkg_002.webp);
+        background-repeat: no-repeat;
+        background-position: center;
+    }
 }
 
 .mkdetails-tp-section-info-detail-body-info-descr {
@@ -329,6 +352,7 @@
 .mkdetails-tp-section-info-detail-body-info-booking {
     margin-top: 10px;
     display: flex;
+    gap: 10px;
 }
 
 .book-btn {
@@ -355,7 +379,6 @@
 
 .mkdetails-tp-section-info-detail-body-info-booking-button-cancel {
     background-color: #ff9966;
-    margin-left: 10px;
 }
 
 .mkdetails-tp-section-info-detail-body-info-booking-button-cancel:hover {
@@ -363,34 +386,31 @@
 }
 
 .mkdetails-tp-section-info-detail-legend {
-    margin: 10px 0;
+    padding: 10px 0 0 0;
+    margin-top: auto;
+    /*height: 100%;*/
 }
 
 .mkdetails-tp-section-info-detail-legend-body {
     background-color: #ebebeb;
     border-style: solid;
     border-color: black;
-    border-width: 0 1px 1px 1px;
-    color: black;
-    font-size: 10px;
+    border-width: 0 thin thin thin;
     display: flex;
-    justify-content: flex-start;
-    flex-wrap: wrap;
-    padding: 10px 0;
+    flex-flow: row wrap;
+    justify-content: center;
+    gap: 0.35rem;
+    padding: 0.5rem;
+    > div {
+        cursor: pointer;
+        width: 1.62rem;
+        height: 1rem;
+        border: solid thin black;
+        border-radius: 0.33rem;
+    }
 }
 
-.mkdetails-tp-section-info-detail-legend-body-item{
-    display: flex;
-    padding: 5px;
-    flex: 0 0 10%;
+.mkdetails-tp-empty {
+    text-align: center;
+    margin: 15px 0;
 }
-
-.mkdetails-tp-section-info-detail-legend-body-item-circle{
-    cursor: pointer;
-    border-radius: 50%;
-    width: 20px;
-    height: 20px;
-    margin-right: 3px;
-    border: 2px solid black;
-}
-

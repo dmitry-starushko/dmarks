@@ -1,7 +1,10 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db import transaction
 from django.shortcuts import render, redirect
+from django.utils.http import urlsafe_base64_decode
 from django.views import View
+from markets.business.logging import dlog_info
+from markets.tasks import st_moderate_promo_data
 from renter.forms.business_card import BusinessCardForm
 from renter.forms.registration import RegistrationForm
 
@@ -22,10 +25,14 @@ class RenterView(LoginRequiredMixin, View):
                 'promo_text': other_text
             })
         } if user.confirmed else {}
+        parm_msg = request.GET.get('message', None)
+        message = {
+            'message': urlsafe_base64_decode(parm_msg).decode('utf-8')
+        } if parm_msg is not None else {}
         return render(request, self.template_name, {
             'user': user,
             'help_id': 400,
-        } | business_card)
+        } | business_card | message)
 
     def post(self, request):
         business_card = BusinessCardForm(request.POST, request.FILES)
@@ -37,7 +44,10 @@ class RenterView(LoginRequiredMixin, View):
                 with transaction.atomic():
                     user.aux_data.promo_text = '\n\n'.join([cd['slogan'], cd['promo_text']])
                     user.aux_data.promo_image.save(pimg.name, pimg)
+                    user.aux_data.promo_enabled = False
                     user.aux_data.save()
+                    st_moderate_promo_data.delay(user.itn)
+                dlog_info(user, f'Пользователь {user.phone} изменил данные визитной карточки; инициирована модерация')
         return redirect('renter:renter')
 
 

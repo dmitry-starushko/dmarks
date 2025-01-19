@@ -1,5 +1,6 @@
 from django.conf import settings
 from django.http import HttpResponseBadRequest
+from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from markets.business.confirmation import set_user_confirmed
@@ -7,6 +8,7 @@ from markets.business.crud_entities import create_market, update_market, get_mar
     create_market_schemes, get_market_schemes, update_market_schemes, delete_market_schemes, create_market_images, get_market_images, update_market_images, delete_market_images, create_market_phones, \
     get_market_phones, update_market_phones, delete_market_phones, create_market_emails, get_market_emails, update_market_emails, delete_market_emails, create_notifications, get_notifications, \
     delete_notifications
+from markets.business.moderation import set_promo_data_moderated
 from markets.business.renting import rent_outlets, get_outlets_in_renting, unrent_outlets
 from markets.decorators import on_exception_returns_response
 from markets.models import DmUser
@@ -261,6 +263,24 @@ class UserRentedOutletsView(APIView):
         })
 
 
+class UserModeratedView(APIView):
+    permission_classes = settings.EXT_API_PERMISSIONS
+
+    @on_exception_returns_response(HttpResponseBadRequest)
+    def post(self, request, itn):
+        result = set_promo_data_moderated(DmUser.objects.get(aux_data__itn=itn), request.data)
+        return Response({
+            'result': result
+        })
+
+    @on_exception_returns_response(HttpResponseBadRequest)
+    def put(self, request, itn):
+        result = set_promo_data_moderated(DmUser.objects.get(aux_data__itn=itn), request.data)
+        return Response({
+            'result': result
+        })
+
+
 class NotificationsCRUDView(APIView):
     permission_classes = settings.EXT_API_PERMISSIONS
 
@@ -284,3 +304,71 @@ class NotificationsCRUDView(APIView):
         return Response({
             'result': result
         })
+
+
+# TODO kill Dummy1C
+
+class Dummy1C(APIView):
+    permission_classes = [AllowAny]
+
+    @on_exception_returns_response(HttpResponseBadRequest)
+    def post(self, request, operation):
+        match operation:
+            case 'confirmation':
+                return Response(True)
+            case 'booking':
+                return Response(True)
+            case 'regcard':
+                return Response(True)
+            case 'answers':
+                return Response(True)
+            case 'market-info':
+                return Response(True)
+            case 'moderation':
+                return Response(True)
+
+    @on_exception_returns_response(HttpResponseBadRequest)
+    def get(self, request, operation):
+        match operation:
+            case 'confirmation':
+                return Response(True)
+            case 'booking':
+                return Response(['000000000'])
+            case 'regcard':
+                return Response({
+                    'Источник': 'API 1C',
+                    'Параметр_1': 'Значение_1',
+                    'Параметр_2': 'Значение_2',
+                    'Параметр_3': 'Значение_3',
+                    '...': '...',
+                    'Параметр_N': 'Значение_N',
+                })
+            case 'answers':
+                return Response(True)
+            case 'market-info':
+                return Response({
+                    'Источник': 'API 1C',
+                    'Параметр_1': 'Значение_1',
+                    'Параметр_2': 'Значение_2',
+                    'Параметр_3': 'Значение_3',
+                    '...': '...',
+                    'Параметр_N': 'Значение_N',
+                })
+            case 'moderation':
+                return Response(True)
+
+    @on_exception_returns_response(HttpResponseBadRequest)
+    def delete(self, request, operation):
+        match operation:
+            case 'confirmation':
+                return Response(True)
+            case 'booking':
+                return Response(['000000000'])
+            case 'regcard':
+                return Response(True)
+            case 'answers':
+                return Response(True)
+            case 'market-info':
+                return Response(True)
+            case 'moderation':
+                return Response(True)

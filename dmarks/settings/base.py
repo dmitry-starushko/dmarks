@@ -1,6 +1,7 @@
 import os
 import re
 from pathlib import Path
+from markets.enums import LogRecordKind
 
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
 
@@ -140,3 +141,17 @@ CHANNEL_LAYERS = {
         }
     }
 }
+
+LOG_KINDS = frozenset()
+
+LOG_TTL_DAYS_DEFAULT = 100
+
+LOG_TTL_DAYS = {
+    LogRecordKind.INFO: LOG_TTL_DAYS_DEFAULT,
+    LogRecordKind.WARNING: LOG_TTL_DAYS_DEFAULT,
+    LogRecordKind.ERROR: LOG_TTL_DAYS_DEFAULT,
+    LogRecordKind.FATAL: LOG_TTL_DAYS_DEFAULT,
+}
+
+
+

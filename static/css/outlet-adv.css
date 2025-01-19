@@ -23,18 +23,22 @@
 
     img {
         max-width: 25%;
+        border: thin solid #00bcd4;
     }
 
     div {
-        padding: 0.5rem 0.5rem;
+        padding: 0.5rem;
         background: #32ffff50;
         border: thin solid #00bcd4;
+        flex: 1 1 auto;
 
         p {
             padding: 0rem 0.5rem;
             &:first-child {
                 color: blue;
                 background: #32ffff50;
+                font-variation-settings: "wght" 300;
+                font-weight: 300;
             }
         }
     }

@@ -1,14 +1,20 @@
 import datetime
 from calendar import monthrange
+from io import BytesIO
 from django.contrib.auth import logout
 from django.db import transaction
-from django.http import HttpResponseBadRequest
+from django.http import HttpResponseBadRequest, FileResponse
 from django.shortcuts import render, redirect
-from rest_framework.permissions import AllowAny, IsAuthenticated
+from django.utils.http import urlsafe_base64_encode
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.response import Response
 from rest_framework.views import APIView
-from markets.business.confirmation import init_confirmation, get_reg_card
+from markets.business.confirmation import init_confirmation, ConfirmationError
+from markets.business.aux_info import get_reg_card
+from markets.business.logging import dlog_info
 from markets.decorators import on_exception_returns_response
 from markets.models import Notification, AuxUserData, File
+from markets.tasks import st_deliver_answer
 from renter.forms.verification import VerificationForm
 
 
@@ -49,7 +55,6 @@ class PV_CalendarView(APIView):
                 for d, v in c_ds.items():
                     v['class'] = ' '.join(v['class'])
                     if v['click']:
-                        # v['click'] = f'{year}-{month}-{d}'
                         v['click'] = {'year': year, 'month': month, 'day': d}
                 return render(request, 'renter/partials/calendar.html', {
                     'title': f'{year} {('Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь')[(month - 1) % 12]}',
@@ -104,17 +109,55 @@ class ActionVerificationDataView(APIView):
         form = VerificationForm(request.POST, request.FILES)
         if form.is_valid():
             ule = request.FILES['usr_le_extract']
-            pim = request.FILES['passport_scan']
+            # pim = request.FILES['passport_scan']
+            response = redirect('renter:renter')
             with transaction.atomic():
-                AuxUserData.objects.create(
+                aux_data = AuxUserData.objects.create(
                     user=request.user,
                     itn=form.cleaned_data['itn'],
                     usr_le_extract=File.objects.create(file_name=ule.name, file_content=ule.read()),
-                    passport_image=File.objects.create(file_name=pim.name, file_content=pim.read())
+                    # passport_image=File.objects.create(file_name=pim.name, file_content=pim.read())
                 )
-                init_confirmation(request.user)
-            return redirect('renter:renter')
+                try:
+                    init_confirmation(request.user)
+                except ConfirmationError as e:
+                    aux_data.delete()
+                    response['Location'] += f'?message={urlsafe_base64_encode('Произошла ошибка обращения к серверу. Данные не были отправлены!'.encode('utf-8'))}'
+            return response
         raise RuntimeError('Ошибка в данных')
+
+
+class DownloadLogView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        content = BytesIO()
+        for r in request.user.log_records.order_by('-created_at'):
+            content.write(f'{r.created_at} | {r.kind:8} | {r.text}\n'.encode())
+        content.seek(0)
+        response = FileResponse(content)
+        response['Content-Type'] = 'application/x-binary'
+        response['Content-Disposition'] = f'attachment; filename="log{request.user.phone}-{datetime.datetime.now()}.txt"'
+        return response
+
+
+class SendAnswerView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    @on_exception_returns_response(HttpResponseBadRequest)
+    def post(self, request):
+        user = request.user
+        data = request.data
+        match data:
+            case {'question_uuid': str(uuid), 'answer': bool(answer)}:
+                ntf = user.notifications.get(question_uuid=uuid)
+                st_deliver_answer.delay(user.itn, uuid, answer)
+                ntf.text += f'\n\n> *Вы ответили: «{'Да' if answer else 'Нет'}»*'
+                ntf.question_uuid = None
+                ntf.save()
+                dlog_info(user, f'Пользователь {user.phone} ответил {'Да' if answer else 'Нет'} на вопрос {uuid}')
+            case _: raise ValueError(data)
+        return Response({'result': True})
 
 
 class LogoutView(APIView):

@@ -6,13 +6,15 @@ var min_symbols = 3;
 var closebtn = document.getElementById("search-close");
 const search_result = document.getElementById("search-market-result");
 
-searchbtn.onclick = function() {
-    dj_load_partial_view("partial_outlet_filters", {full: 1}, {}).then(html => {
-        document.getElementById("outlet-search-top").innerHTML=html;
-        window.setup_outlet_search();
-    });
-    searchwindow.style.display = "block";
-    searchinput.focus();
+if (searchbtn !== null) {
+    searchbtn.onclick = function() {
+        dj_load_partial_view("partial_outlet_filters", {full: 1}, {}).then(html => {
+            document.getElementById("outlet-search-top").innerHTML=html;
+            window.setup_outlet_search();
+        });
+        searchwindow.style.display = "block";
+        searchinput.focus();
+    }
 }
 
 closebtn.onclick = function() {
@@ -34,8 +36,12 @@ searchinput.onkeyup = () => {
     if (text.length >= min_symbols) {
         globalTimeout = setTimeout(() => {
             globalTimeout = null;
+            document.querySelector(".search-market-top > img").classList.add("pulsation");
             dj_load_partial_view("partial_filtered_markets", {}, {search_text: text})
-                .then(html => {search_result.innerHTML = html;});
+                .then(html => {
+                    search_result.innerHTML = html;
+                    document.querySelector(".search-market-top > img").classList.remove("pulsation");
+                });
         }, 1000);
     }
 }
@@ -200,24 +206,31 @@ window.setup_outlet_search = () => {
   for (var i = 0; i < loccheckboxes.length; i++) {
       loccheckboxes[i].onclick = function(e) {
 
+      //var root = e.target.closest("input.tpparent").querySelectorAll("input.tpnode:checked");
+      var root = e.target.closest("li.parent");
+      //console.log(root);
+
       /*var checkedCount = document.querySelectorAll('input.subOption:checked').length;
 
       checkall.checked = checkedCount > 0;
       checkall.indeterminate = checkedCount > 0 && checkedCount < checkboxes.length;*/
 
       /*var children = loccheckboxes[i].querySelectorAll("input[type='checkbox']");*/
+
       var children = e.target.closest("li").querySelectorAll("input.tpnode");
+      //var children = root.querySelectorAll("ul")[0].querySelectorAll("input.tpnode");
       /*var children = e.target.children;*/
       /*console.log(e.target);*/
-      var checkedCount = children.length;
-      /*alert(checkedCount);*/
+      var checkedCount = root.querySelectorAll("ul")[0].querySelectorAll("input.tpnode").length;
+      /*console.log(checkedCount + ' - ' + root.querySelectorAll("ul")[0].querySelectorAll("input.tpnode:checked").length);*/
       for (var i = 0; i < children.length; i++) {
             children[i].checked = this.checked;
         }
+
       /*children.checked = checkedCount > 0;
-      children.checked = true;
-      children.checked = "checked";*/
-      /*children.indeterminate = checkedCount > 0 && checkedCount < loccheckboxes.length;*/
+      children.checked = true;*/
+      root.querySelectorAll("input.tpnode")[0].checked = root.querySelectorAll("ul")[0].querySelectorAll("input.tpnode:checked").length > 0;
+      root.querySelectorAll("input.tpnode")[0].indeterminate = checkedCount > 0 && checkedCount > root.querySelectorAll("ul")[0].querySelectorAll("input.tpnode:checked").length;
     }
   }
 

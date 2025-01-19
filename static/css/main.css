@@ -96,6 +96,20 @@ h6 {
 
 /* Main body
 ------------------------------*/
+
+@media (min-width: 1600px) {
+    .container, .container-lg, .container-md, .container-sm, .container-xl, .container-xxl {
+        max-width: 1520px;
+    }
+}
+
+@media (min-width: 2000px) {
+    .container, .container-lg, .container-md, .container-sm, .container-xl, .container-xxl {
+        max-width: 1920px;
+    }
+}
+
+
 .main {
  max-height: -moz-calc(100% - 170px); /* Firefox */
  max-height: -webkit-calc(100% - 170px); /* Chrome, Safari */
@@ -177,6 +191,7 @@ h6 {
   padding: 10px 0;
   transition: all 0.5s;
   z-index: 997;
+  height: 80px;
   min-height: 60px;
 }
 
@@ -719,6 +734,12 @@ section.main-map-section .tab-content
 
 .footer .credits a {
   color: var(--default-color);
+}
+
+footer {
+    a {
+        cursor: pointer;
+    }
 }
 
 /*--------------------------------------------------------------
@@ -2347,6 +2368,10 @@ section,
 .tree summary:hover {
   font-weight: bold;
   /*font-size: 1.02em;*/
+}
+
+.sign-in, .sign-in > form {
+    cursor: pointer;
 }
 
 /*

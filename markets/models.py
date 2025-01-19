@@ -6,7 +6,7 @@ from django.core.validators import MinValueValidator, MaxValueValidator
 from django.db import models
 from django.conf import settings
 from django.db.models import Index, Q, F
-from markets.enums import OutletState, FUS, NotificationType
+from markets.enums import OutletState, FUS, NotificationType, LogRecordKind
 from markets.validators import Validators
 
 
@@ -71,6 +71,10 @@ class DmUser(AbstractUser):
     def promo_text(self):
         return self.aux_data.promo_text if hasattr(self, 'aux_data') else None
 
+    @property
+    def promo_enabled(self):
+        return self.aux_data.promo_enabled if hasattr(self, 'aux_data') else None
+
 
 class File(DbItem):
     file_name = models.CharField(max_length=512)  # -- имя файла --
@@ -100,6 +104,7 @@ class AuxUserData(DbItem):
     passport_image = models.OneToOneField(File, related_name='passport_image', on_delete=models.SET_NULL, null=True)  # -- скан паспорта --
     promo_image = models.ImageField(upload_to='renters/%Y/%m/%d', null=True)  # картинка
     promo_text = models.TextField(max_length=2048, default='')  # промо-текст
+    promo_enabled = models.BooleanField(default=False)  # -- промо-информация модерирована и разрешена к показу --
 
     class Meta:
         verbose_name = "Доп. данные"
@@ -616,11 +621,11 @@ class TradePlace(models.Model):
 
     @property
     def promo_image(self):
-        return self.rented_by.promo_image if self.rented_by else None
+        return self.rented_by.promo_image if self.rented_by and self.rented_by.promo_enabled else None
 
     @property
     def promo_text(self):
-        return self.rented_by.promo_text if self.rented_by else None
+        return self.rented_by.promo_text if self.rented_by and self.rented_by.promo_enabled else None
 
 
 # -- Events & Notifications -----------------------------------------------------------------------
@@ -635,8 +640,9 @@ class Notification(DbItem):
     published = models.DateField()
     unpublished = models.DateField()
     calendar_event = models.BooleanField()
+    question_uuid = models.UUIDField(unique=True, null=True, blank=True)
     type = models.CharField(max_length=4, choices=type_choices.items(), default=NotificationType.INFORMATION)
-    text = models.TextField()
+    text = models.TextField(max_length=4096)
     attachment = models.OneToOneField(File, on_delete=models.PROTECT, null=True, blank=True)
     read = models.BooleanField(default=False)
 
@@ -645,12 +651,14 @@ class Notification(DbItem):
         ordering = ['published']
         indexes = [
             Index(fields=["published"], name='index_by_published'),
-            Index(fields=["unpublished"], name='index_by_unpublished')]
+            Index(fields=["unpublished"], name='index_by_unpublished'),
+            Index(fields=["question_uuid"], name='index_by_question_uuid'),]
         verbose_name = "Уведомление"
         verbose_name_plural = "Уведомления"
         constraints = [
             models.CheckConstraint(check=~Q(text=''), name="non-empty notification text"),
             models.CheckConstraint(check=~(Q(user__isnull=True) & Q(read=True)), name="broadcast notification can not be 'read'"),
+            models.CheckConstraint(check=~(Q(user__isnull=True) & Q(question_uuid__isnull=False)), name="broadcast notification can not be 'question'"),
             models.CheckConstraint(check=Q(type__in=[i.value for i in NotificationType]), name="type values from set"),
             models.CheckConstraint(check=Q(published__lt=F('unpublished')), name="unpublished after published")]
 
@@ -796,3 +804,16 @@ class StuffAction(DbItem):  # -- Stuff actions in admin panel
     def __str__(self):
         return f'{self.title}'
 
+
+class LogRecord(DbItem):  # -- Stuff actions in admin panel
+    user = models.ForeignKey(DmUser, on_delete=models.CASCADE, related_name='log_records', null=True, blank=True)  # NULL for common log
+    kind = models.CharField(max_length=10, default=LogRecordKind.INFO)
+    text = models.TextField(max_length=1024)
+
+    class Meta:
+        ordering = ["created_at"]
+        verbose_name = "Запись журнала"
+        verbose_name_plural = "Записи журнала"
+
+    def __str__(self):
+        return f'{self.kind}@{self.created_at}'

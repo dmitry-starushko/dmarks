@@ -13,6 +13,9 @@ urlpatterns = [
     # --
     path('users/<str:itn>/confirmed/', views.UserConfirmedView.as_view(), name='user_confirmed'),
     path('users/<str:itn>/rented-outlets/', views.UserRentedOutletsView.as_view(), name='user_rented_outlets'),
+    path('users/<str:itn>/moderated/', views.UserModeratedView.as_view(), name='user_moderated'),
     path('users/<str:itn>/notifications/', views.NotificationsCRUDView.as_view(), name='user_notifications_crud'),
     path('notifications/', views.NotificationsCRUDView.as_view(), name='notifications_crud'),
+    # --
+    path('dummy1c/<str:operation>/', views.Dummy1C.as_view(), name='dummy_1c'),
 ]

@@ -33,3 +33,10 @@ class FUS(StrEnum):  # Frequently Used Strings
     UNV = 'Пользователь не верифицирован'
     SRE = 'Запрос к серверу завершился ошибкой'
     USR = 'Неожиданный ответ сервера'
+
+
+class LogRecordKind(StrEnum):
+    INFO = 'info'
+    WARNING = 'warning'
+    ERROR = 'error'
+    FATAL = 'fatal'

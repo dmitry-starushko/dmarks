@@ -20,11 +20,16 @@
     {% include 'renter/js/importmap.js' %}
     <script type="module">
         import {Calendar} from "calendar";
-        import {Notifications} from "notifications";
+        import {Notifications, AnswerSender} from "notifications";
         import {RegCard} from "reg-card";
         import {TsChat} from "ts-chat";
         import {HelpDialog} from "help-dialog";
-        document.addEventListener('DOMContentLoaded', (event) => { {% include 'renter/js/renter.js' %} });
+        document.addEventListener('DOMContentLoaded', (event) => {
+            {% include 'renter/js/renter.js' %}
+            {% if message %}
+            window.setTimeout(() => alert("{{message}}"), 500);
+            {% endif %}
+        });
     </script>
 </head>
 <body>
@@ -48,6 +53,8 @@
           <img src="{% static 'svg/icons/account-card-details.svg' %}" alt="Визитная карточка"/>
           <span>Визитная карточка</span>
       </a>
+      {% comment %}
+        TODO удалить нафиг
       <a href="#" class="lsb-item" title="Мои договоры">
           <img src="{% static 'svg/icons/clipboard-text.svg' %}" alt="Мои договоры"/>
           <span>Мои договоры</span>
@@ -56,7 +63,8 @@
           <img src="{% static 'svg/icons/email.svg' %}" alt="Мои заявления"/>
           <span>Мои заявления</span>
       </a>
-      <a href="#" class="lsb-item" title="История действий">
+      {% endcomment %}
+      <a href="{% url 'renter-api:download_log' %}" class="lsb-item" title="История действий">
           <img src="{% static 'svg/icons/calendar-select.svg' %}" alt="История действий"/>
           <span>История действий</span>
       </a>

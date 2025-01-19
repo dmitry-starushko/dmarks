@@ -1,11 +1,12 @@
 import datetime
 from xml.etree import ElementTree as Et
+from django.conf import settings
 from django.core.exceptions import ValidationError
 from django.db import transaction
 from django.db.models import Max, Min
-from markets.enums import Observation
+from markets.enums import Observation, LogRecordKind
 from markets.decorators import globally_lonely_action
-from markets.models import TradePlace, SvgSchema, RdcError, Market, GlobalObservation, Notification
+from markets.models import TradePlace, SvgSchema, RdcError, Market, GlobalObservation, Notification, LogRecord
 from markets.validators import Validators
 
 try:  # To avoid deploy problems
@@ -84,14 +85,19 @@ def restore_db_consistency():
 
 @globally_lonely_action(None)
 def logrotate():
-    pass  # TODO implement
+    today = datetime.datetime.today()
+    for kind in LogRecordKind:
+        try:
+            ttl = settings.LOG_TTL_DAYS[kind]
+        except KeyError:
+            ttl = settings.LOG_TTL_DAYS_DEFAULT
+        LogRecord.objects.filter(created_at__lt=today-datetime.timedelta(days=ttl)).delete()
 
 
 @globally_lonely_action(None)
 def delete_obsolete_notifications():
     today = datetime.datetime.today()
-    for ntf in Notification.objects.filter(unpublished__lt=today, read=True, calendar_event=False):
-        ntf.delete()
+    Notification.objects.filter(unpublished__lt=today, read=True, calendar_event=False).delete()
 
 
 @globally_lonely_action(None)

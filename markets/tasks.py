@@ -1,7 +1,11 @@
 from celery import shared_task
 from dmarks import celery
 from markets.business.actions import restore_db_consistency, observe_all, delete_obsolete_notifications, logrotate
+from markets.business.answering import deliver_answer
+from markets.business.logimpl import ilog
+from markets.business.moderation import moderate_promo_data
 from markets.business.tech_support import send_message_to_ts, collect_messages_from_ts
+from markets.enums import LogRecordKind
 
 
 @celery.app.on_after_finalize.connect
@@ -40,3 +44,20 @@ def st_restore_db_consistency():
 @shared_task
 def st_send_message_to_ts(from_name, cids, message):
     send_message_to_ts(from_name, cids, message)
+
+
+@shared_task
+def st_deliver_answer(itn: str, question_uuid: str, answer: bool):
+    deliver_answer(itn, question_uuid, answer)
+
+
+@shared_task
+def st_moderate_promo_data(itn: str):
+    moderate_promo_data(itn)
+
+
+@shared_task
+def st_log(upk: int | None, text: str, kind: LogRecordKind):
+    ilog(upk, text, kind)
+
+

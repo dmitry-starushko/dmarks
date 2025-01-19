@@ -37,6 +37,9 @@
             h1, h2, h3, h4, h5, h6 {
                 color: white;
             }
+            p {
+                color: cornsilk;
+            }
             color: cornsilk;
             background: goldenrod;
         }
@@ -45,8 +48,26 @@
             h1, h2, h3, h4, h5, h6 {
                 color: yellow;
             }
+            p {
+                color: white;
+            }
             color: white;
             background: orangered;
+        }
+
+        .buttons {
+            margin-top: 0.5rem;
+            display: flex;
+            flex-flow: row;
+            padding: 0.5rem;
+            gap: 0.5rem;
+            background: steelblue;
+            width: 10rem;
+
+            button {
+                flex: 1 1 auto;
+                cursor: pointer;
+            }
         }
     }
 }

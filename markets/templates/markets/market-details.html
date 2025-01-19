@@ -62,20 +62,19 @@ import { View3D } from "view3d";
                             </ul>
                           </details>
                         </li>
+                        {% if aux_info %}
                         <li>
                           <details open>
-                            <summary>Информация для заключения догворов аренды/приобретения разовго талона</summary>
+                            <summary>Дополнительная информация о рынке</summary>
                             <ul>
-                                <li>Информация о формах заявлений: <strong>{{market.info_statement_forms}}</strong></li>
-                                <li>Информация о типовых договорах: <strong>{{market.info_contracts}}</strong></li>
-                                <li>Информация о требованиях для оформления договоров/талонов: <strong>{{market.info_contracts_req}}</strong></li>
-                                <li>Информация о копиях правоустанавливающих документов дочернего предприятия: <strong>{{market.info_constitutive}}</strong></li>
-                                <li>Информация о других документах: <strong>{{market.info_other_docs}}</strong></li>
-                                <li>Информация для обращения граждан/ФЛП: <strong>{{market.citizen_appeal}}</strong></li>
+                                {% for key,value in aux_info.items %}
+                                <li>{{key}}: <strong>{{value}}</strong></li>
+                                {% endfor %}
                             </ul>
                           </details>
                         </li>
-                          <li>
+                        {% endif %}
+                        <li>
                           <details open>
                             <summary>Информация о географическом расположении рынка</summary>
                             <ul>

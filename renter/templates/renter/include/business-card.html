@@ -3,6 +3,15 @@
 {% csrf_token %}
 {{business_card.as_div}}
 <input type="submit" title="Сохранить" value="Сохранить визитную карточку">
+{% if user.promo_text or user.promo_image %}
+<div>
+    {% if user.promo_enabled %}
+    <label>Данные одобрены модератором</label>
+    {% else %}
+    <label style="color:orangered;">Данные не одобрены модератором</label>
+    {% endif %}
+</div>
+{% endif %}
 </form>
 {% else %}
 <label>Изменять данные Визитной карточки могут только верифицированные пользователи</label>
