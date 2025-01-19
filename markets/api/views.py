@@ -211,10 +211,11 @@ class PV_OutletTableView(APIView):
     def post(self, request, scheme_pk: int, legend: int):
         legend = legend % len(self.legends)
         scheme = SvgSchema.objects.get(pk=scheme_pk)
-        queryset = scheme.outlets.select_related('trade_place_type', 'trade_spec_type_id_act')
+        ordering = ['-trade_place_type__type_name', 'location_number']
+        queryset = scheme.outlets.select_related('trade_place_type', 'trade_spec_type_id_act').order_by(*ordering)
         if self.request.data:
             for f_name, f_body in self.request.data.items():
-                queryset = apply_filter(queryset, f_name, f_body)
+                queryset = apply_filter(queryset, f_name, f_body)  # TODO filters gone
         outlets = [{
             'number': r.location_number,
             'specialization': r.trade_spec_type_id_act,
@@ -225,7 +226,7 @@ class PV_OutletTableView(APIView):
         return render(request, 'markets/partials/outlet-table.html', {
             'title': scheme.floor,
             'outlets': outlets,
-            'hash': f'{hash((scheme_pk, legend))})'
+            'hash': f'{hash((scheme_pk, legend, ">".join(ordering)))})'
         })
 
 
