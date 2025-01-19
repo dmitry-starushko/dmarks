@@ -14,7 +14,7 @@ from markets.decorators import on_exception_returns_response
 from markets.models import SvgSchema, Market, TradePlaceType, TradeSpecType, TradePlace, TradeSector, GlobalObservation
 from markets.tasks import st_restore_db_consistency
 from redis import Redis
-from .serializers import SchemeSerializer, TradePlaceTypeSerializer, TradeSpecTypeSerializer, TradeSectorSerializer
+from .serializers import TradePlaceTypeSerializer, TradeSpecTypeSerializer, TradeSectorSerializer
 from ..business.booking import get_outlets_in_booking, BookingError, book_outlet, unbook_all
 from ..enums import Observation, OutletState
 
@@ -27,25 +27,7 @@ except ModuleNotFoundError:
 redis = Redis(host=settings.REDIS_HOST, port=settings.REDIS_PORT, db=settings.REDIS_DB)
 
 
-# -- Markets API ----------------------------------------------------------------------------------
-
-
-class TakeMarketSchemesListView(ListAPIView):
-    permission_classes = [AllowAny]
-    serializer_class = SchemeSerializer
-
-    @on_exception_returns_response(HttpResponseBadRequest)
-    def get(self, request, *args, **kwargs):
-        return super().get(request, *args, **kwargs)
-
-    def get_queryset(self):
-        market_pk = int(self.kwargs['market_pk'])
-        market = Market.objects.get(pk=market_pk)
-        return market.schemes.all()
-
-
 # -- Scheme API --
-
 
 class TakeSchemeGltfView(APIView):
     permission_classes = [AllowAny]
@@ -128,11 +110,7 @@ class TakeURLsView(APIView):
         scheme_pk = int(data['scheme_pk']) if 'scheme_pk' in data else None
         legend = int(data['legend']) if 'legend' in data else None
         response = {}
-        response |= {'url_market_schemes': reverse('api:markets_take_schemes', kwargs={'market_pk': market_pk})} \
-            if market_pk is not None else {}
         response |= {'url_scheme_outlets_state': reverse('api:schemes_take_outlets_state', kwargs={'scheme_pk': scheme_pk, 'legend': legend})} \
-            if scheme_pk is not None and legend is not None else {}
-        response |= {'url_scheme_outlets_list': reverse('api:schemes_take_outlets_list', kwargs={'scheme_pk': scheme_pk, 'legend': legend})} \
             if scheme_pk is not None and legend is not None else {}
         response |= {'url_scheme_gltf': reverse('api:schemes_take_gltf', kwargs={'scheme_pk': scheme_pk})} \
             if scheme_pk is not None else {}
