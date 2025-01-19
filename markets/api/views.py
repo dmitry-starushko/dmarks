@@ -8,7 +8,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from django.http.response import JsonResponse, HttpResponseBadRequest, HttpResponse
-from markets.business.search_and_filters import apply_filter, filter_markets, filter_outlets
+from markets.business.search_and_filters import filter_markets, filter_outlets
 from markets.business.actions import restore_db_consistency
 from markets.decorators import on_exception_returns_response
 from markets.models import SvgSchema, Market, TradePlaceType, TradeSpecType, TradePlace, TradeSector, GlobalObservation
@@ -74,14 +74,11 @@ class TakeSchemeOutletsStateView(APIView):
         return Response({str(r['location_number']): int(r[leg_field]) for r in query})
 
     @on_exception_returns_response(HttpResponseBadRequest, 'scheme_pk')
-    def post(self, request, scheme_pk: int, legend: int):
+    def post(self, _, scheme_pk: int, legend: int):
         legend %= len(self.legends)
         leg_field = self.legends[legend]
         scheme = SvgSchema.objects.get(pk=scheme_pk)
         query = scheme.outlets.all()
-        if request.data:
-            for f_name, f_body in request.data.items():
-                query = apply_filter(query, f_name, f_body)
         query = query.values('location_number', leg_field)
         return Response({str(r['location_number']): int(r[leg_field]) for r in query})
 
@@ -106,7 +103,6 @@ class TakeURLsView(APIView):
     @on_exception_returns_response(HttpResponseBadRequest)
     def post(request):
         data = request.data
-        market_pk = int(data['market_pk']) if 'market_pk' in data else None
         scheme_pk = int(data['scheme_pk']) if 'scheme_pk' in data else None
         legend = int(data['legend']) if 'legend' in data else None
         response = {}
@@ -169,9 +165,6 @@ class PV_OutletTableView(APIView):
         scheme = SvgSchema.objects.get(pk=scheme_pk)
         ordering = ['-trade_place_type__type_name', 'location_number']
         queryset = scheme.outlets.select_related('trade_place_type', 'trade_spec_type_id_act').order_by(*ordering)
-        if self.request.data:
-            for f_name, f_body in self.request.data.items():
-                queryset = apply_filter(queryset, f_name, f_body)  # TODO filters gone
         outlets = [{
             'number': r.location_number,
             'specialization': r.trade_spec_type_id_act,
