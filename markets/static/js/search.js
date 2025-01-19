@@ -196,7 +196,7 @@ window.setup_outlet_search = () => {
     }
 
     var loccheckboxes = document.querySelectorAll('input.tploc');
-    console.log(loccheckboxes.length);
+    /*console.log(loccheckboxes.length);*/
     /*checkall = document.getElementById('option');*/
 
   for (var i = 0; i < loccheckboxes.length; i++) {
@@ -204,7 +204,8 @@ window.setup_outlet_search = () => {
 
       //var root = e.target.closest("input.tpparent").querySelectorAll("input.tpnode:checked");
       var root = e.target.closest("li.parent");
-      //console.log(root);
+      var mainroot = root.closest('ul').closest("li.parent");
+      console.log(mainroot);
 
       /*var checkedCount = document.querySelectorAll('input.subOption:checked').length;
 
@@ -227,6 +228,10 @@ window.setup_outlet_search = () => {
       children.checked = true;*/
       root.querySelectorAll("input.tpnode")[0].checked = root.querySelectorAll("ul")[0].querySelectorAll("input.tpnode:checked").length > 0;
       root.querySelectorAll("input.tpnode")[0].indeterminate = checkedCount > 0 && checkedCount > root.querySelectorAll("ul")[0].querySelectorAll("input.tpnode:checked").length;
+      if(mainroot !== null) {
+          mainroot.querySelectorAll("input.tpnode")[0].checked = mainroot.querySelectorAll("input.tpnode:checked").length > 0;
+          mainroot.querySelectorAll("input.tpnode")[0].indeterminate = checkedCount > 0 && checkedCount > mainroot.querySelectorAll("input.tpnode:checked").length;
+      }
     }
   }
 
