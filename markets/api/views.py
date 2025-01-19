@@ -14,7 +14,7 @@ from markets.decorators import on_exception_returns_response
 from markets.models import SvgSchema, Market, TradePlaceType, TradeSpecType, TradePlace, TradeSector, GlobalObservation
 from markets.tasks import st_restore_db_consistency
 from redis import Redis
-from .serializers import SchemeSerializer, TradePlaceTypeSerializer, TradeSpecTypeSerializer, TradePlaceSerializerO, TradePlaceSerializerS, TradeSectorSerializer, TradePlaceSerializerSec
+from .serializers import SchemeSerializer, TradePlaceTypeSerializer, TradeSpecTypeSerializer, TradeSectorSerializer
 from ..business.booking import get_outlets_in_booking, BookingError, book_outlet, unbook_all
 from ..enums import Observation, OutletState
 
@@ -102,28 +102,6 @@ class TakeSchemeOutletsStateView(APIView):
                 query = apply_filter(query, f_name, f_body)
         query = query.values('location_number', leg_field)
         return Response({str(r['location_number']): int(r[leg_field]) for r in query})
-
-
-class TakeSchemeOutletsListView(ListAPIView):
-    permission_classes = [AllowAny]
-    legends = [TradePlaceSerializerO, TradePlaceSerializerS, TradePlaceSerializerSec]
-
-    @on_exception_returns_response(HttpResponseBadRequest)
-    def post(self, request, *args, **kwargs):
-        return super().get(request, *args, **kwargs)
-
-    def get_queryset(self):
-        scheme_pk = int(self.kwargs['scheme_pk'])
-        scheme = SvgSchema.objects.get(pk=scheme_pk)
-        queryset = scheme.outlets.all()
-        if self.request.data:
-            for f_name, f_body in self.request.data.items():
-                queryset = apply_filter(queryset, f_name, f_body)
-        return queryset
-
-    def get_serializer_class(self):
-        legend = int(self.kwargs['legend']) % len(self.legends)
-        return self.legends[legend]
 
 
 # -- Info --
