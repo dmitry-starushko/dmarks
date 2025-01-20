@@ -158,12 +158,30 @@ class PV_OutletTableView(APIView):
         lambda o: o.trade_spec_type_id_act.roof_color_css,
         lambda o: o.location_sector.roof_color_css,
     ]
+    columns = {
+        0: 'location_number',
+        1: 'trade_spec_type_id_act__type_name',
+        2: 'trade_place_type__type_name',
+        3: 'price',
+    }
 
     @on_exception_returns_response(HttpResponseBadRequest)
     def post(self, request, scheme_pk: int, legend: int):
+        ordering = []
+        match request.data:
+            case str(params):
+                for chunk in params.split(','):
+                    key, val = tuple(chunk.split(':', 1))
+                    match int(key), val.strip():
+                        case col, 'a' | 'A' if col in self.columns:
+                            ordering.append(self.columns[col])
+                        case col, 'd' | 'D' if col in self.columns:
+                            ordering.append(f'-{self.columns[col]}')
+                        case _: raise ValueError(f'Ошибка: {(key, val)}')
+            case None: pass
+            case _: raise ValueError(f'Недопустимый параметр: {request.data}')
         legend = legend % len(self.legends)
-        scheme = SvgSchema.objects.get(pk=scheme_pk)
-        ordering = ['-trade_place_type__type_name', 'location_number']
+        scheme = SvgSchema.objects.defer('svg_schema').get(pk=scheme_pk)
         queryset = scheme.outlets.select_related('trade_place_type', 'trade_spec_type_id_act').order_by(*ordering)
         outlets = [{
             'number': r.location_number,
