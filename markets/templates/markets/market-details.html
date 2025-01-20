@@ -206,7 +206,7 @@ const v3d = new View3D( {# -----------------------------------------------------
 const update_outlet_table = () => { {# ---------------------------------------- Loading outlet table partial view --- #}
     document.getElementById("mkdetails-scheme-header").innerText = current.scheme_name;
     const args = {scheme_pk: current.scheme_pk, legend: current.legend};
-    dj_load_partial_view("partial_outlet_table", args, {}).then(
+    dj_load_partial_view("partial_outlet_table", args, "2:a,0:d,1:a,3:d").then(
         html => { document.getElementById("mkdetails-tp-tab").innerHTML = html; }
     );
 };

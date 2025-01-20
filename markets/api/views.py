@@ -8,13 +8,13 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from django.http.response import JsonResponse, HttpResponseBadRequest, HttpResponse
-from markets.business.search_and_filters import apply_filter, filter_markets, filter_outlets
+from markets.business.search_and_filters import filter_markets, filter_outlets
 from markets.business.actions import restore_db_consistency
 from markets.decorators import on_exception_returns_response
 from markets.models import SvgSchema, Market, TradePlaceType, TradeSpecType, TradePlace, TradeSector, GlobalObservation
 from markets.tasks import st_restore_db_consistency
 from redis import Redis
-from .serializers import SchemeSerializer, TradePlaceTypeSerializer, TradeSpecTypeSerializer, TradePlaceSerializerO, TradePlaceSerializerS, TradeSectorSerializer, TradePlaceSerializerSec
+from .serializers import TradePlaceTypeSerializer, TradeSpecTypeSerializer, TradeSectorSerializer
 from ..business.booking import get_outlets_in_booking, BookingError, book_outlet, unbook_all
 from ..enums import Observation, OutletState
 
@@ -27,25 +27,7 @@ except ModuleNotFoundError:
 redis = Redis(host=settings.REDIS_HOST, port=settings.REDIS_PORT, db=settings.REDIS_DB)
 
 
-# -- Markets API ----------------------------------------------------------------------------------
-
-
-class TakeMarketSchemesListView(ListAPIView):
-    permission_classes = [AllowAny]
-    serializer_class = SchemeSerializer
-
-    @on_exception_returns_response(HttpResponseBadRequest)
-    def get(self, request, *args, **kwargs):
-        return super().get(request, *args, **kwargs)
-
-    def get_queryset(self):
-        market_pk = int(self.kwargs['market_pk'])
-        market = Market.objects.get(pk=market_pk)
-        return market.schemes.all()
-
-
 # -- Scheme API --
-
 
 class TakeSchemeGltfView(APIView):
     permission_classes = [AllowAny]
@@ -87,43 +69,18 @@ class TakeSchemeOutletsStateView(APIView):
     def get(self, _, scheme_pk: int, legend: int):
         legend %= len(self.legends)
         leg_field = self.legends[legend]
-        scheme = SvgSchema.objects.get(pk=scheme_pk)
+        scheme = SvgSchema.objects.defer('svg_schema').get(pk=scheme_pk)
         query = scheme.outlets.values('location_number', leg_field)
         return Response({str(r['location_number']): int(r[leg_field]) for r in query})
 
     @on_exception_returns_response(HttpResponseBadRequest, 'scheme_pk')
-    def post(self, request, scheme_pk: int, legend: int):
+    def post(self, _, scheme_pk: int, legend: int):
         legend %= len(self.legends)
         leg_field = self.legends[legend]
-        scheme = SvgSchema.objects.get(pk=scheme_pk)
+        scheme = SvgSchema.objects.defer('svg_schema').get(pk=scheme_pk)
         query = scheme.outlets.all()
-        if request.data:
-            for f_name, f_body in request.data.items():
-                query = apply_filter(query, f_name, f_body)
         query = query.values('location_number', leg_field)
         return Response({str(r['location_number']): int(r[leg_field]) for r in query})
-
-
-class TakeSchemeOutletsListView(ListAPIView):
-    permission_classes = [AllowAny]
-    legends = [TradePlaceSerializerO, TradePlaceSerializerS, TradePlaceSerializerSec]
-
-    @on_exception_returns_response(HttpResponseBadRequest)
-    def post(self, request, *args, **kwargs):
-        return super().get(request, *args, **kwargs)
-
-    def get_queryset(self):
-        scheme_pk = int(self.kwargs['scheme_pk'])
-        scheme = SvgSchema.objects.get(pk=scheme_pk)
-        queryset = scheme.outlets.all()
-        if self.request.data:
-            for f_name, f_body in self.request.data.items():
-                queryset = apply_filter(queryset, f_name, f_body)
-        return queryset
-
-    def get_serializer_class(self):
-        legend = int(self.kwargs['legend']) % len(self.legends)
-        return self.legends[legend]
 
 
 # -- Info --
@@ -146,15 +103,10 @@ class TakeURLsView(APIView):
     @on_exception_returns_response(HttpResponseBadRequest)
     def post(request):
         data = request.data
-        market_pk = int(data['market_pk']) if 'market_pk' in data else None
         scheme_pk = int(data['scheme_pk']) if 'scheme_pk' in data else None
         legend = int(data['legend']) if 'legend' in data else None
         response = {}
-        response |= {'url_market_schemes': reverse('api:markets_take_schemes', kwargs={'market_pk': market_pk})} \
-            if market_pk is not None else {}
         response |= {'url_scheme_outlets_state': reverse('api:schemes_take_outlets_state', kwargs={'scheme_pk': scheme_pk, 'legend': legend})} \
-            if scheme_pk is not None and legend is not None else {}
-        response |= {'url_scheme_outlets_list': reverse('api:schemes_take_outlets_list', kwargs={'scheme_pk': scheme_pk, 'legend': legend})} \
             if scheme_pk is not None and legend is not None else {}
         response |= {'url_scheme_gltf': reverse('api:schemes_take_gltf', kwargs={'scheme_pk': scheme_pk})} \
             if scheme_pk is not None else {}
@@ -206,15 +158,31 @@ class PV_OutletTableView(APIView):
         lambda o: o.trade_spec_type_id_act.roof_color_css,
         lambda o: o.location_sector.roof_color_css,
     ]
+    columns = {
+        0: 'location_number',
+        1: 'trade_spec_type_id_act__type_name',
+        2: 'trade_place_type__type_name',
+        3: 'price',
+    }
 
     @on_exception_returns_response(HttpResponseBadRequest)
     def post(self, request, scheme_pk: int, legend: int):
+        ordering = []
+        match request.data:
+            case str(params):
+                for chunk in params.split(','):
+                    key, val = tuple(chunk.split(':', 1))
+                    match int(key), val.strip():
+                        case col, 'a' | 'A' if col in self.columns:
+                            ordering.append(self.columns[col])
+                        case col, 'd' | 'D' if col in self.columns:
+                            ordering.append(f'-{self.columns[col]}')
+                        case _: raise ValueError(f'Ошибка: {(key, val)}')
+            case None: pass
+            case _: raise ValueError(f'Недопустимый параметр: {request.data}')
         legend = legend % len(self.legends)
-        scheme = SvgSchema.objects.get(pk=scheme_pk)
-        queryset = scheme.outlets.select_related('trade_place_type', 'trade_spec_type_id_act')
-        if self.request.data:
-            for f_name, f_body in self.request.data.items():
-                queryset = apply_filter(queryset, f_name, f_body)
+        scheme = SvgSchema.objects.defer('svg_schema').get(pk=scheme_pk)
+        queryset = scheme.outlets.select_related('trade_place_type', 'trade_spec_type_id_act').order_by(*ordering)
         outlets = [{
             'number': r.location_number,
             'specialization': r.trade_spec_type_id_act,
@@ -225,7 +193,7 @@ class PV_OutletTableView(APIView):
         return render(request, 'markets/partials/outlet-table.html', {
             'title': scheme.floor,
             'outlets': outlets,
-            'hash': f'{hash((scheme_pk, legend))})'
+            'hash': f'{hash((scheme_pk, legend, ">".join(ordering)))})'
         })
 
 
