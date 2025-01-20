@@ -69,7 +69,7 @@ class TakeSchemeOutletsStateView(APIView):
     def get(self, _, scheme_pk: int, legend: int):
         legend %= len(self.legends)
         leg_field = self.legends[legend]
-        scheme = SvgSchema.objects.get(pk=scheme_pk)
+        scheme = SvgSchema.objects.defer('svg_schema').get(pk=scheme_pk)
         query = scheme.outlets.values('location_number', leg_field)
         return Response({str(r['location_number']): int(r[leg_field]) for r in query})
 
@@ -77,7 +77,7 @@ class TakeSchemeOutletsStateView(APIView):
     def post(self, _, scheme_pk: int, legend: int):
         legend %= len(self.legends)
         leg_field = self.legends[legend]
-        scheme = SvgSchema.objects.get(pk=scheme_pk)
+        scheme = SvgSchema.objects.defer('svg_schema').get(pk=scheme_pk)
         query = scheme.outlets.all()
         query = query.values('location_number', leg_field)
         return Response({str(r['location_number']): int(r[leg_field]) for r in query})
