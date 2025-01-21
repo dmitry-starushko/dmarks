@@ -26,5 +26,7 @@ whitenoise~=6.7.0
 reportlab~=4.2.5
 svglib~=1.5.1
 uvicorn~=0.32.1
+drf-spectacular~=0.28.0
+drf-spectacular[sidecar]~=0.28.0
 
 
