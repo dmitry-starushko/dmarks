@@ -1,5 +1,6 @@
 from django.conf import settings
 from django.http import HttpResponseBadRequest
+from drf_spectacular.utils import extend_schema
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -78,6 +79,7 @@ class MarketOutletsCRUDView(APIView):
         })
 
 
+@extend_schema(exclude=True)
 class MarketSchemesCRUDView(APIView):
     permission_classes = settings.EXT_API_PERMISSIONS
 
@@ -110,6 +112,7 @@ class MarketSchemesCRUDView(APIView):
         })
 
 
+@extend_schema(exclude=True)
 class MarketImagesCRUDView(APIView):
     permission_classes = settings.EXT_API_PERMISSIONS
 
@@ -142,6 +145,7 @@ class MarketImagesCRUDView(APIView):
         })
 
 
+@extend_schema(exclude=True)
 class MarketPhonesCRUDView(APIView):
     permission_classes = settings.EXT_API_PERMISSIONS
 
@@ -174,6 +178,7 @@ class MarketPhonesCRUDView(APIView):
         })
 
 
+@extend_schema(exclude=True)
 class MarketEmailsCRUDView(APIView):
     permission_classes = settings.EXT_API_PERMISSIONS
 
@@ -308,6 +313,7 @@ class NotificationsCRUDView(APIView):
 
 # TODO kill Dummy1C
 
+@extend_schema(exclude=True)
 class Dummy1C(APIView):
     permission_classes = [AllowAny]
 

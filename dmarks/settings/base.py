@@ -83,6 +83,7 @@ SPECTACULAR_SETTINGS = {
     'DESCRIPTION': 'API сайта Рынки Донбасса - Интерактивные карты',
     'VERSION': '1.0.0',
     'SERVE_INCLUDE_SCHEMA': False,
+    "PREPROCESSING_HOOKS": ["extapi.openapi.preprocessing_filter_spec"],
 }
 
 AUTH_PASSWORD_VALIDATORS = [
