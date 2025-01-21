@@ -87,6 +87,7 @@
                 {% if user.confirmed %}
                 <a href="#" class="search" title="Поиск" id="search-btn"><i class="bi bi-search"></i></a>
                 {% endif %}
+                <a href="#" class="search" title="Поиск" id="search-btn"><i class="bi bi-search"></i></a>
                 <a class="sign-in" title="Выход" onclick="document.getElementById('basic-logout-form').submit();"><form id="basic-logout-form" method="post" action="{% url 'renter:logout' %}">{% csrf_token %}<i class="bi bi-box-arrow-left"></i></form></a>
                 {% else %}
                 <a class="sign-in" title="Авторизация" onclick="window.location=`{% url 'renter:login' %}?next=${window.location.pathname}`;"><i class="bi bi-box-arrow-in-right"></i></a>

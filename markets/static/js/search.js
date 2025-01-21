@@ -230,9 +230,13 @@ window.setup_outlet_search = () => {
 
       /*children.checked = checkedCount > 0;
       children.checked = true;*/
+
       root.querySelectorAll("input.tpnode")[0].checked = root.querySelectorAll("ul")[0].querySelectorAll("input.tpnode:checked").length > 0;
       root.querySelectorAll("input.tpnode")[0].indeterminate = checkedCount > 0 && checkedCount > root.querySelectorAll("ul")[0].querySelectorAll("input.tpnode:checked").length;
+
+
       if(mainroot !== null) {
+          console.log(mainroot.querySelectorAll("input.tpnode:checked").length + ' - ' + mainroot.querySelectorAll("input.tpnode").length);
           mainroot.querySelectorAll("input.tpnode")[0].checked = mainroot.querySelectorAll("input.tpnode:checked").length > 0;
           mainroot.querySelectorAll("input.tpnode")[0].indeterminate = checkedCount > 0 && checkedCount > mainroot.querySelectorAll("input.tpnode:checked").length;
       }
