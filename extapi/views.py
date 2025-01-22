@@ -1,10 +1,12 @@
 from django.conf import settings
 from django.http import HttpResponseBadRequest
-from drf_spectacular.utils import extend_schema, inline_serializer
+from drf_spectacular.types import OpenApiTypes
+from drf_spectacular.utils import extend_schema
 from rest_framework import fields
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from rest_framework.views import APIView
+from extapi.openapi import oapi_market_serializer, oapi_result
 from markets.business.confirmation import set_user_confirmed
 from markets.business.crud_entities import create_market, update_market, get_market, delete_market, create_market_outlets, get_market_outlets, update_market_outlets, delete_market_outlets, \
     create_market_schemes, get_market_schemes, update_market_schemes, delete_market_schemes, create_market_images, get_market_images, update_market_images, delete_market_images, create_market_phones, \
@@ -18,38 +20,14 @@ from markets.models import DmUser
 
 class MarketCRUDView(APIView):
     permission_classes = settings.EXT_API_PERMISSIONS
-    serializer = inline_serializer('Описание рынка', {
-                'market_name': fields.CharField(required=True, help_text='Название рынка'),
-                'additional_name': fields.CharField(required=True, help_text='Дополнительное название рынка'),
-                'market_type': fields.CharField(required=True, help_text='Тип рынка (по справочнику)'),
-                'branch': fields.CharField(required=True, help_text='Отделение'),
-                'profitability': fields.CharField(required=True, help_text='Категория рентабельности рынка (по справочнику)'),
-                'market_area': fields.FloatField(required=True, help_text='Площадь рынка'),
-                'schedule': fields.CharField(required=True, help_text='График работы рынка, текст с разметкой markdown'),
-                'ads': fields.CharField(required=True, help_text='Рекламный текст, с разметкой markdown'),
-                'infr': inline_serializer('Инфраструктура', {
-                    'fire_protection': fields.CharField(required=True, help_text='Тип противопожарной защиты (по справочнику)'),  # str(infr_fire_protection),
-                    'parking': fields.CharField(required=True, help_text='Тип противопожарной защиты (по справочнику)'),  # int(infr_parking),
-                    'entrance': fields.CharField(required=True, help_text='Тип противопожарной защиты (по справочнику)'),  # int(infr_entrance),
-                    'restroom': fields.CharField(required=True, help_text='Тип противопожарной защиты (по справочнику)'),  # int(infr_restroom),
-                    'storage':  fields.CharField(required=True, help_text='Тип противопожарной защиты (по справочнику)'),  # int(infr_storage),
-                    'water_pipes': fields.CharField(required=True, help_text='Тип противопожарной защиты (по справочнику)'),  # bool(infr_water_pipes),
-                    'sewerage': fields.CharField(required=True, help_text='Тип противопожарной защиты (по справочнику)'),  # bool(infr_sewerage),
-                    'sewerage_type': fields.CharField(required=True, help_text='Тип противопожарной защиты (по справочнику)'),  # str(infr_sewerage_type)
-                }),
-                'geo': inline_serializer('Расположение', {
-                    'lat': fields.FloatField(required=True, help_text='Географическая широта'),  # float(lat),
-                    'lng': fields.FloatField(required=True, help_text='Географическая долгота'),  # float(lng),
-                    'city': fields.CharField(required=True, help_text='Тип противопожарной защиты (по справочнику)'),  # str(geo_city),
-                    'district': fields.CharField(required=True, help_text='Тип противопожарной защиты (по справочнику)'),  # str(geo_district),
-                    'street': fields.CharField(required=True, help_text='Тип противопожарной защиты (по справочнику)'),  # str(geo_street),
-                    'street_type': fields.CharField(required=True, help_text='Тип противопожарной защиты (по справочнику)'),  # str(geo_street_type),
-                    'house': fields.CharField(required=True, help_text='Тип противопожарной защиты (по справочнику)'),  # str(geo_house),
-                    'index': fields.CharField(required=True, help_text='Тип противопожарной защиты (по справочнику)'),  # str(geo_index)
-                }),
-            }, many=True)
 
-    @extend_schema(description='Создает рынок с кодом mid.', request={'application/json': serializer})
+    @extend_schema(
+        description='Создает рынок с кодом mid.',
+        request={'application/json': oapi_market_serializer(True, '_create_market')},
+        responses={
+            (200, 'application/json'): oapi_result(fields.BooleanField(help_text='Результат'), '_create_market'),
+            (400, 'application/json'): OpenApiTypes.ANY,
+        })
     @on_exception_returns_response(HttpResponseBadRequest)
     def post(self, request, mid):
         result = create_market(mid, request.data)
@@ -57,13 +35,26 @@ class MarketCRUDView(APIView):
             'result': result
         })
 
+    @extend_schema(
+        description='Возвращает информацию о рынке с кодом mid.',
+        responses={
+            (200, 'application/json'): oapi_result(oapi_market_serializer(True, '_get_market'), '_get_market'),
+            (400, 'application/json'): OpenApiTypes.ANY,
+        })
     @on_exception_returns_response(HttpResponseBadRequest)
-    def get(self, request, mid):
+    def get(self, _, mid):
         result = get_market(mid)
         return Response({
             'result': result
         })
 
+    @extend_schema(
+        description='Изменяет данные рынка с кодом mid.',
+        request={'application/json': oapi_market_serializer(False, '_update_market')},
+        responses={
+            (200, 'application/json'): oapi_result(fields.BooleanField(help_text='Результат'), '_update_market'),
+            (400, 'application/json'): OpenApiTypes.ANY,
+        })
     @on_exception_returns_response(HttpResponseBadRequest)
     def put(self, request, mid):
         result = update_market(mid, request.data)
@@ -71,8 +62,14 @@ class MarketCRUDView(APIView):
             'result': result
         })
 
+    @extend_schema(
+        description='Удаляет рынок с кодом mid и все относящиеся к нему торговые места.',
+        responses={
+            (200, 'application/json'): oapi_result(fields.BooleanField(help_text='Результат'), '_delete_market'),
+            (400, 'application/json'): OpenApiTypes.ANY,
+        })
     @on_exception_returns_response(HttpResponseBadRequest)
-    def delete(self, request, mid):
+    def delete(self, _, mid):
         result = delete_market(mid)
         return Response({
             'result': result
