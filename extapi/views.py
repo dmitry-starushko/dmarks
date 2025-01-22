@@ -6,7 +6,7 @@ from rest_framework import fields
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from extapi.openapi import oapi_market_serializer, oapi_result, oapi_outlet_serializer
+from extapi.openapi import oapi_market_serializer, oapi_result, oapi_outlet_serializer, oapi_notification_serializer
 from markets.business.confirmation import set_user_confirmed
 from markets.business.crud_entities import create_market, update_market, get_market, delete_market, create_market_outlets, get_market_outlets, update_market_outlets, delete_market_outlets, \
     create_market_schemes, get_market_schemes, update_market_schemes, delete_market_schemes, create_market_images, get_market_images, update_market_images, delete_market_images, create_market_phones, \
@@ -121,9 +121,9 @@ class MarketOutletsCRUDView(APIView):
         })
 
     @extend_schema(
-        description='Удаляет торговые места рынка с кодом mid. Номера удаляемых торговых мест передается в теле запроса как список строк. OpenAPI не позволяет вызвать этот метод.',
+        description='Удаляет торговые места рынка с кодом mid. Номера удаляемых торговых мест передаются в теле запроса как список строк. OpenAPI не позволяет вызвать этот метод.',
         responses={
-            (200, 'application/json'): oapi_result(fields.BooleanField(help_text='Результат'), '_delete_market'),
+            (200, 'application/json'): oapi_result(fields.BooleanField(help_text='Результат'), '_delete_outlets'),
             (400, 'application/json'): OpenApiTypes.ANY,
         })
     @on_exception_returns_response(HttpResponseBadRequest)
@@ -347,6 +347,13 @@ class UserModeratedView(APIView):
 class UserRentedOutletsView(APIView):
     permission_classes = settings.EXT_API_PERMISSIONS
 
+    @extend_schema(
+        description='Помещает торговые места в арендный список пользователя с ИНН = itn. В теле запроса передается список номеров торговых мест.',
+        request={'application/json': list[str]},
+        responses={
+            (200, 'application/json'): oapi_result(fields.BooleanField(help_text='Результат'), '_post_rents'),
+            (400, 'application/json'): OpenApiTypes.ANY,
+        })
     @on_exception_returns_response(HttpResponseBadRequest)
     def post(self, request, itn):
         result = rent_outlets(DmUser.objects.get(aux_data__itn=itn), request.data)
@@ -354,6 +361,12 @@ class UserRentedOutletsView(APIView):
             'result': result
         })
 
+    @extend_schema(
+        description='Возвращает список торговых мест в арендном списке пользователя с ИНН = itn.',
+        responses={
+            (200, 'application/json'): oapi_result(fields.ListField(child=fields.CharField(), help_text='Список номеров торговых мест'), '_get_rents'),
+            (400, 'application/json'): OpenApiTypes.ANY,
+        })
     @on_exception_returns_response(HttpResponseBadRequest)
     def get(self, request, itn):
         result = get_outlets_in_renting(DmUser.objects.get(aux_data__itn=itn))
@@ -361,6 +374,13 @@ class UserRentedOutletsView(APIView):
             'result': result
         })
 
+    @extend_schema(
+        description='Помещает торговые места в арендный список пользователя с ИНН = itn. В теле запроса передается список номеров торговых мест.',
+        request={'application/json': list[str]},
+        responses={
+            (200, 'application/json'): oapi_result(fields.BooleanField(help_text='Результат'), '_put_rents'),
+            (400, 'application/json'): OpenApiTypes.ANY,
+        })
     @on_exception_returns_response(HttpResponseBadRequest)
     def put(self, request, itn):
         result = rent_outlets(DmUser.objects.get(aux_data__itn=itn), request.data)
@@ -368,6 +388,12 @@ class UserRentedOutletsView(APIView):
             'result': result
         })
 
+    @extend_schema(
+        description='Удаляет торговые места bp арендного списка пользователя с ИНН = itn. В теле запроса передается список номеров торговых мест. OpenAPI не позволяет вызвать этот метод.',
+        responses={
+            (200, 'application/json'): oapi_result(fields.BooleanField(help_text='Результат'), '_delete_rents'),
+            (400, 'application/json'): OpenApiTypes.ANY,
+        })
     @on_exception_returns_response(HttpResponseBadRequest)
     def delete(self, request, itn):
         result = unrent_outlets(DmUser.objects.get(aux_data__itn=itn), request.data)
@@ -379,6 +405,13 @@ class UserRentedOutletsView(APIView):
 class NotificationsCRUDView(APIView):
     permission_classes = settings.EXT_API_PERMISSIONS
 
+    @extend_schema(
+        description='Создает уведомления в Личном Кабинете. Если ИНН пользователя не указан в URL, создаются общие уведомления, иначе -- адресные.',
+        request={'application/json': oapi_notification_serializer(True, '_post_notifications')},
+        responses={
+            (200, 'application/json'): oapi_result(fields.ListField(child=fields.IntegerField(), help_text='Список идентификаторов созданных сообщений'), '_post_notifications'),
+            (400, 'application/json'): OpenApiTypes.ANY,
+        })
     @on_exception_returns_response(HttpResponseBadRequest)
     def post(self, request, itn=None):
         result = create_notifications(itn, request.data)
@@ -386,6 +419,26 @@ class NotificationsCRUDView(APIView):
             'result': result
         })
 
+    @extend_schema(
+        description='Создает уведомления в Личном Кабинете. Если ИНН пользователя не указан в URL, создаются общие уведомления, иначе -- адресные.',
+        request={'application/json': oapi_notification_serializer(True, '_put_notifications')},
+        responses={
+            (200, 'application/json'): oapi_result(fields.ListField(child=fields.IntegerField(), help_text='Список идентификаторов созданных сообщений'), '_put_notifications'),
+            (400, 'application/json'): OpenApiTypes.ANY,
+        })
+    @on_exception_returns_response(HttpResponseBadRequest)
+    def put(self, request, itn=None):
+        result = create_notifications(itn, request.data)
+        return Response({
+            'result': result
+        })
+
+    @extend_schema(
+        description='Возвращает существующие уведомления. Если ИНН пользователя не указан в URL, возвращаются общие уведомления, иначе -- адресные.',
+        responses={
+            (200, 'application/json'): oapi_result(oapi_notification_serializer(False, '_get_notifications'), '_get_notifications'),
+            (400, 'application/json'): OpenApiTypes.ANY,
+        })
     @on_exception_returns_response(HttpResponseBadRequest)
     def get(self, request, itn=None):
         result = get_notifications(itn)
@@ -393,6 +446,12 @@ class NotificationsCRUDView(APIView):
             'result': result
         })
 
+    @extend_schema(
+        description='Удаляет уведомления. Идентификаторы удаляемых уведомлений передаются в теле запроса как список целых. OpenAPI не позволяет вызвать этот метод.',
+        responses={
+            (200, 'application/json'): oapi_result(fields.BooleanField(help_text='Результат'), '_delete_notifications'),
+            (400, 'application/json'): OpenApiTypes.ANY,
+        })
     @on_exception_returns_response(HttpResponseBadRequest)
     def delete(self, request, itn=None):
         result = delete_notifications(itn, request.data)

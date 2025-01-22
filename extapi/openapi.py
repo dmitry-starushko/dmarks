@@ -10,10 +10,6 @@ def preprocessing_filter_spec(endpoints):
     return filtered
 
 
-def oapi_result(result, suffix: str = ''):
-    return inline_serializer(f'Result{suffix}', {'result': result})
-
-
 def oapi_market_serializer(create: bool, suffix: str = ''):
     return inline_serializer(f'Market_description{suffix}', {
         'market_name': fields.CharField(required=create, help_text='Название рынка'),
@@ -78,3 +74,20 @@ def oapi_outlet_serializer(create: bool, suffix: str = ''):
             'shopwindow': fields.BooleanField(required=create, help_text='Наличие витрин'),
         })
     }, many=True)
+
+
+def oapi_notification_serializer(create: bool, suffix: str = ''):
+    return inline_serializer(f'Notification_description{suffix}', {
+        'published': fields.CharField(required=True, help_text='Дата публикации в формате YYYY-MM-DD'),
+        'unpublished': fields.CharField(required=True, help_text='Дата снятия с публикации в формате YYYY-MM-DD'),
+        'calendar_event': fields.BooleanField(required=True, help_text='Флаг календарного события. Если true, уведомление отображается в Календаре Личного Кабинета'),
+        'question_uuid': fields.UUIDField(required=False, allow_null=False, help_text='UUID вопроса. Если указан, пользователь может ответить Да/Нет на уведомление, см. Спецификации API РД'),
+        'type': fields.CharField(required=True, help_text='Тип уведомления: info | warn | alrt'),
+        'text': fields.CharField(required=True, help_text='Текст уведомления с разметкой markdown'),
+    } | ({} if create else {
+        'read': fields.BooleanField(required=True, help_text='Признак прочтения уведомления'),
+    }), many=True)
+
+
+def oapi_result(result, suffix: str = ''):
+    return inline_serializer(f'Result{suffix}', {'result': result})
