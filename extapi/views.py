@@ -1,12 +1,12 @@
 from django.conf import settings
 from django.http import HttpResponseBadRequest
 from drf_spectacular.types import OpenApiTypes
-from drf_spectacular.utils import extend_schema
+from drf_spectacular.utils import extend_schema, inline_serializer
 from rest_framework import fields
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from extapi.openapi import oapi_market_serializer, oapi_result
+from extapi.openapi import oapi_market_serializer, oapi_result, oapi_outlet_serializer
 from markets.business.confirmation import set_user_confirmed
 from markets.business.crud_entities import create_market, update_market, get_market, delete_market, create_market_outlets, get_market_outlets, update_market_outlets, delete_market_outlets, \
     create_market_schemes, get_market_schemes, update_market_schemes, delete_market_schemes, create_market_images, get_market_images, update_market_images, delete_market_images, create_market_phones, \
@@ -79,6 +79,13 @@ class MarketCRUDView(APIView):
 class MarketOutletsCRUDView(APIView):
     permission_classes = settings.EXT_API_PERMISSIONS
 
+    @extend_schema(
+        description='Создает торговые места для рынка с кодом mid.',
+        request={'application/json': oapi_outlet_serializer(True, '_create_outlets')},
+        responses={
+            (200, 'application/json'): oapi_result(fields.BooleanField(help_text='Результат'), '_create_outlets'),
+            (400, 'application/json'): OpenApiTypes.ANY,
+        })
     @on_exception_returns_response(HttpResponseBadRequest)
     def post(self, request, mid):
         result = create_market_outlets(mid, request.data)
@@ -86,6 +93,12 @@ class MarketOutletsCRUDView(APIView):
             'result': result
         })
 
+    @extend_schema(
+        description='Возвращает информацию о торговых местах рынка с кодом mid.',
+        responses={
+            (200, 'application/json'): oapi_result(oapi_outlet_serializer(True, '_get_outlets'), '_get_outlets'),
+            (400, 'application/json'): OpenApiTypes.ANY,
+        })
     @on_exception_returns_response(HttpResponseBadRequest)
     def get(self, request, mid):
         result = get_market_outlets(mid)
@@ -93,6 +106,13 @@ class MarketOutletsCRUDView(APIView):
             'result': result
         })
 
+    @extend_schema(
+        description='Изменяет данные торговых мест рынка с кодом mid.',
+        request={'application/json': oapi_outlet_serializer(False, '_update_outlets')},
+        responses={
+            (200, 'application/json'): oapi_result(fields.BooleanField(help_text='Результат'), '_update_outlets'),
+            (400, 'application/json'): OpenApiTypes.ANY,
+        })
     @on_exception_returns_response(HttpResponseBadRequest)
     def put(self, request, mid):
         result = update_market_outlets(mid, request.data)
@@ -100,6 +120,12 @@ class MarketOutletsCRUDView(APIView):
             'result': result
         })
 
+    @extend_schema(
+        description='Удаляет торговые места рынка с кодом mid. Номера удаляемых торговых мест передается в теле запроса как список строк. OpenAPI не позволяет вызвать этот метод.',
+        responses={
+            (200, 'application/json'): oapi_result(fields.BooleanField(help_text='Результат'), '_delete_market'),
+            (400, 'application/json'): OpenApiTypes.ANY,
+        })
     @on_exception_returns_response(HttpResponseBadRequest)
     def delete(self, request, mid):
         result = delete_market_outlets(mid, request.data)
@@ -243,6 +269,13 @@ class MarketEmailsCRUDView(APIView):
 class UserConfirmedView(APIView):
     permission_classes = settings.EXT_API_PERMISSIONS
 
+    @extend_schema(
+        description='Устанавливает значение флага верификации для пользователя с ИНН = itn. Сброс флага приводит к дальнейшей невалидности ИНН пользователя и необходимости повторной подачи заявки на верификацию.',
+        request={'application/json': bool},
+        responses={
+            (200, 'application/json'): oapi_result(fields.BooleanField(help_text='Результат'), '_set_confirmed'),
+            (400, 'application/json'): OpenApiTypes.ANY,
+        })
     @on_exception_returns_response(HttpResponseBadRequest)
     def post(self, request, itn):
         result = set_user_confirmed(DmUser.objects.get(aux_data__itn=itn), request.data)
@@ -250,6 +283,13 @@ class UserConfirmedView(APIView):
             'result': result
         })
 
+    @extend_schema(
+        description='Устанавливает значение флага верификации для пользователя с ИНН = itn. Сброс флага приводит к дальнейшей невалидности ИНН пользователя и необходимости повторной подачи заявки на верификацию.',
+        request={'application/json': bool},
+        responses={
+            (200, 'application/json'): oapi_result(fields.BooleanField(help_text='Результат'), '_update_confirmed'),
+            (400, 'application/json'): OpenApiTypes.ANY,
+        })
     @on_exception_returns_response(HttpResponseBadRequest)
     def put(self, request, itn):
         result = set_user_confirmed(DmUser.objects.get(aux_data__itn=itn), request.data)
@@ -257,9 +297,48 @@ class UserConfirmedView(APIView):
             'result': result
         })
 
+    @extend_schema(
+        description='Возвращает значение флага верификации для пользователя с ИНН = itn',
+        request={'application/json': bool},
+        responses={
+            (200, 'application/json'): oapi_result(fields.BooleanField(help_text='Результат, значение флага'), '_get_confirmed'),
+            (400, 'application/json'): OpenApiTypes.ANY,
+        })
     @on_exception_returns_response(HttpResponseBadRequest)
-    def get(self, request, itn):
+    def get(self, _, itn):
         result = DmUser.objects.get(aux_data__itn=itn).confirmed
+        return Response({
+            'result': result
+        })
+
+
+class UserModeratedView(APIView):
+    permission_classes = settings.EXT_API_PERMISSIONS
+
+    @extend_schema(
+        description='Устанавливает значение флага модерации промо-данных для пользователя с ИНН = itn.',
+        request={'application/json': bool},
+        responses={
+            (200, 'application/json'): oapi_result(fields.BooleanField(help_text='Результат'), '_set_moderated'),
+            (400, 'application/json'): OpenApiTypes.ANY,
+        })
+    @on_exception_returns_response(HttpResponseBadRequest)
+    def post(self, request, itn):
+        result = set_promo_data_moderated(DmUser.objects.get(aux_data__itn=itn), request.data)
+        return Response({
+            'result': result
+        })
+
+    @extend_schema(
+        description='Устанавливает значение флага модерации промо-данных для пользователя с ИНН = itn.',
+        request={'application/json': bool},
+        responses={
+            (200, 'application/json'): oapi_result(fields.BooleanField(help_text='Результат'), '_update_moderated'),
+            (400, 'application/json'): OpenApiTypes.ANY,
+        })
+    @on_exception_returns_response(HttpResponseBadRequest)
+    def put(self, request, itn):
+        result = set_promo_data_moderated(DmUser.objects.get(aux_data__itn=itn), request.data)
         return Response({
             'result': result
         })
@@ -292,24 +371,6 @@ class UserRentedOutletsView(APIView):
     @on_exception_returns_response(HttpResponseBadRequest)
     def delete(self, request, itn):
         result = unrent_outlets(DmUser.objects.get(aux_data__itn=itn), request.data)
-        return Response({
-            'result': result
-        })
-
-
-class UserModeratedView(APIView):
-    permission_classes = settings.EXT_API_PERMISSIONS
-
-    @on_exception_returns_response(HttpResponseBadRequest)
-    def post(self, request, itn):
-        result = set_promo_data_moderated(DmUser.objects.get(aux_data__itn=itn), request.data)
-        return Response({
-            'result': result
-        })
-
-    @on_exception_returns_response(HttpResponseBadRequest)
-    def put(self, request, itn):
-        result = set_promo_data_moderated(DmUser.objects.get(aux_data__itn=itn), request.data)
         return Response({
             'result': result
         })
