@@ -1,6 +1,7 @@
 from django.conf import settings
 from django.http import HttpResponseBadRequest
-from drf_spectacular.utils import extend_schema
+from drf_spectacular.utils import extend_schema, inline_serializer
+from rest_framework import fields
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -17,7 +18,38 @@ from markets.models import DmUser
 
 class MarketCRUDView(APIView):
     permission_classes = settings.EXT_API_PERMISSIONS
+    serializer = inline_serializer('Описание рынка', {
+                'market_name': fields.CharField(required=True, help_text='Название рынка'),
+                'additional_name': fields.CharField(required=True, help_text='Дополнительное название рынка'),
+                'market_type': fields.CharField(required=True, help_text='Тип рынка (по справочнику)'),
+                'branch': fields.CharField(required=True, help_text='Отделение'),
+                'profitability': fields.CharField(required=True, help_text='Категория рентабельности рынка (по справочнику)'),
+                'market_area': fields.FloatField(required=True, help_text='Площадь рынка'),
+                'schedule': fields.CharField(required=True, help_text='График работы рынка, текст с разметкой markdown'),
+                'ads': fields.CharField(required=True, help_text='Рекламный текст, с разметкой markdown'),
+                'infr': inline_serializer('Инфраструктура', {
+                    'fire_protection': fields.CharField(required=True, help_text='Тип противопожарной защиты (по справочнику)'),  # str(infr_fire_protection),
+                    'parking': fields.CharField(required=True, help_text='Тип противопожарной защиты (по справочнику)'),  # int(infr_parking),
+                    'entrance': fields.CharField(required=True, help_text='Тип противопожарной защиты (по справочнику)'),  # int(infr_entrance),
+                    'restroom': fields.CharField(required=True, help_text='Тип противопожарной защиты (по справочнику)'),  # int(infr_restroom),
+                    'storage':  fields.CharField(required=True, help_text='Тип противопожарной защиты (по справочнику)'),  # int(infr_storage),
+                    'water_pipes': fields.CharField(required=True, help_text='Тип противопожарной защиты (по справочнику)'),  # bool(infr_water_pipes),
+                    'sewerage': fields.CharField(required=True, help_text='Тип противопожарной защиты (по справочнику)'),  # bool(infr_sewerage),
+                    'sewerage_type': fields.CharField(required=True, help_text='Тип противопожарной защиты (по справочнику)'),  # str(infr_sewerage_type)
+                }),
+                'geo': inline_serializer('Расположение', {
+                    'lat': fields.FloatField(required=True, help_text='Географическая широта'),  # float(lat),
+                    'lng': fields.FloatField(required=True, help_text='Географическая долгота'),  # float(lng),
+                    'city': fields.CharField(required=True, help_text='Тип противопожарной защиты (по справочнику)'),  # str(geo_city),
+                    'district': fields.CharField(required=True, help_text='Тип противопожарной защиты (по справочнику)'),  # str(geo_district),
+                    'street': fields.CharField(required=True, help_text='Тип противопожарной защиты (по справочнику)'),  # str(geo_street),
+                    'street_type': fields.CharField(required=True, help_text='Тип противопожарной защиты (по справочнику)'),  # str(geo_street_type),
+                    'house': fields.CharField(required=True, help_text='Тип противопожарной защиты (по справочнику)'),  # str(geo_house),
+                    'index': fields.CharField(required=True, help_text='Тип противопожарной защиты (по справочнику)'),  # str(geo_index)
+                }),
+            }, many=True)
 
+    @extend_schema(description='Создает рынок с кодом mid.', request={'application/json': serializer})
     @on_exception_returns_response(HttpResponseBadRequest)
     def post(self, request, mid):
         result = create_market(mid, request.data)
