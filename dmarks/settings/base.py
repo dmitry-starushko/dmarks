@@ -80,7 +80,7 @@ REST_FRAMEWORK = {
 
 SPECTACULAR_SETTINGS = {
     'TITLE': 'DMarks API',
-    'DESCRIPTION': 'API сайта Рынки Донбасса - Интерактивные карты',
+    'DESCRIPTION': 'API сайта «Рынки Донбасса - Интерактивные карты»',
     'VERSION': '1.0.0',
     'SERVE_INCLUDE_SCHEMA': False,
     "PREPROCESSING_HOOKS": ["extapi.openapi.preprocessing_filter_spec"],

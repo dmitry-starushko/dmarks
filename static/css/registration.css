@@ -5,7 +5,7 @@ body {
     flex-flow: column;
     align-items: center;
     justify-content: center;
-    background-image: url("/static/bitmaps/bkgs/bkg_001.webp");
+    background-image: linear-gradient(to top, #002f33b0, #002f3325), url("/static/bitmaps/bkgs/bkg_001.webp");
     background-attachment: fixed;
 
     a {
