@@ -7,6 +7,7 @@ from markets.business.logging import dlog_info
 from markets.tasks import st_moderate_promo_data
 from renter.forms.business_card import BusinessCardForm
 from renter.forms.registration import RegistrationForm
+from django.contrib.auth import views as auth_views, forms as auth_forms
 
 
 class RenterView(LoginRequiredMixin, View):
@@ -51,13 +52,28 @@ class RenterView(LoginRequiredMixin, View):
         return redirect('renter:renter')
 
 
+class AuthenticationForm(auth_forms.AuthenticationForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['username'].label = 'Телефон'
+
+
+class LoginView(auth_views.LoginView):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args,**kwargs)
+        self.authentication_form = AuthenticationForm
+
+
 class RegistrationView(View):
     @property
     def template_name(self):
         return 'registration/register.html'
 
     def get(self, request):
-        return render(request, self.template_name, {'form': RegistrationForm()})
+        form = RegistrationForm()
+        form.fields['phone'].label = 'Телефон'
+        form.fields['email'].label = 'Адрес электронной почты'
+        return render(request, self.template_name, {'form': form})
 
     def post(self, request):
         form = RegistrationForm(request.POST)
