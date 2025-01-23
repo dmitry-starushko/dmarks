@@ -16,7 +16,7 @@ def init_confirmation(user: DmUser):
     if not hasattr(user, 'aux_data'):
         raise ConfirmationError('Для начала процесса валидации необходимо указать дополнительные персональные данные')
     if user.aux_data.usr_le_extract is None:
-        raise ConfirmationError('Отсутствует выписка из ЕГРЮЛ')
+        raise ConfirmationError('Отсутствует выписка из ЕГРЮЛ/ЕГРИП')
     # if user.aux_data.passport_image is None:
     #     raise ConfirmationError('Отсутствует скан паспорта')
     dlog_info(user, f'Пользователь {user.phone} инициировал процедуру верификации (ИНН: {user.aux_data.itn})')
