@@ -140,6 +140,9 @@ toggleItem(document.querySelectorAll('.buttons-tab'));
 
 /***** sorting table ******/
 
+
+
+
 /*function compareValues(a, b) {
   // return -1/0/1 based on what you "know" a and b
   // are here. Numbers, text, some custom case-insensitive
