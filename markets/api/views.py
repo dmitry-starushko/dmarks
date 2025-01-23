@@ -170,14 +170,16 @@ class PV_OutletTableView(APIView):
         ordering = []
         match request.data:
             case str(params):
-                for chunk in params.split(','):
-                    key, val = tuple(chunk.split(':', 1))
-                    match int(key), val.strip():
-                        case col, 'a' | 'A' if col in self.columns:
-                            ordering.append(self.columns[col])
-                        case col, 'd' | 'D' if col in self.columns:
-                            ordering.append(f'-{self.columns[col]}')
-                        case _: raise ValueError(f'Ошибка: {(key, val)}')
+                params = params.strip()
+                if params:
+                    for chunk in params.split(','):
+                        key, val = tuple(chunk.split(':', 1))
+                        match int(key), val.strip():
+                            case col, 'a' | 'A' if col in self.columns:
+                                ordering.append(self.columns[col])
+                            case col, 'd' | 'D' if col in self.columns:
+                                ordering.append(f'-{self.columns[col]}')
+                            case _: raise ValueError(f'Ошибка: {(key, val)}')
             case None: pass
             case _: raise ValueError(f'Недопустимый параметр: {request.data}')
         legend = legend % len(self.legends)
