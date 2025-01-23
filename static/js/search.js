@@ -84,7 +84,6 @@ window.setup_outlet_search = () => {
     const priceInput = document.querySelectorAll(".search-tp-price-inputs input");
     const range = document.querySelector(".search-tp-price-slider .search-tp-price-progress");
     let priceGap = 1;
-    //alert((minVal / rangeInput[0].max) * 100 + "%");
     const initMin = parseInt(priceInput[0].value);
     const initMax = parseInt(priceInput[1].value);
     range.style.left = (initMin / rangeInput[0].max) * 100 + "%";
@@ -200,48 +199,28 @@ window.setup_outlet_search = () => {
     }
 
     var loccheckboxes = document.querySelectorAll('input.tploc');
-    console.log(loccheckboxes.length);
-    /*checkall = document.getElementById('option');*/
 
   for (var i = 0; i < loccheckboxes.length; i++) {
       loccheckboxes[i].onclick = function(e) {
 
-      //var root = e.target.closest("input.tpparent").querySelectorAll("input.tpnode:checked");
       var root = e.target.closest("li.parent");
-      //console.log(root);
-
-      /*var checkedCount = document.querySelectorAll('input.subOption:checked').length;
-
-      checkall.checked = checkedCount > 0;
-      checkall.indeterminate = checkedCount > 0 && checkedCount < checkboxes.length;*/
-
-      /*var children = loccheckboxes[i].querySelectorAll("input[type='checkbox']");*/
-
+      var mainroot = root.closest('ul').closest("li.parent");
       var children = e.target.closest("li").querySelectorAll("input.tpnode");
-      //var children = root.querySelectorAll("ul")[0].querySelectorAll("input.tpnode");
-      /*var children = e.target.children;*/
-      /*console.log(e.target);*/
       var checkedCount = root.querySelectorAll("ul")[0].querySelectorAll("input.tpnode").length;
-      /*console.log(checkedCount + ' - ' + root.querySelectorAll("ul")[0].querySelectorAll("input.tpnode:checked").length);*/
+
       for (var i = 0; i < children.length; i++) {
             children[i].checked = this.checked;
         }
 
-      /*children.checked = checkedCount > 0;
-      children.checked = true;*/
       root.querySelectorAll("input.tpnode")[0].checked = root.querySelectorAll("ul")[0].querySelectorAll("input.tpnode:checked").length > 0;
-      root.querySelectorAll("input.tpnode")[0].indeterminate = checkedCount > 0 && checkedCount > root.querySelectorAll("ul")[0].querySelectorAll("input.tpnode:checked").length;
+      root.querySelectorAll("input.tpnode")[0].indeterminate = root.querySelectorAll("ul")[0].querySelectorAll("input.tpnode:checked").length > 0 && checkedCount > root.querySelectorAll("ul")[0].querySelectorAll("input.tpnode:checked").length;
+
+      if(mainroot !== null) {
+          mainroot.querySelectorAll("input.tploc")[0].checked = mainroot.querySelectorAll("input.tpnode:checked").length > 0;
+          mainroot.querySelectorAll("input.tploc")[0].indeterminate = mainroot.querySelectorAll("input.tpnode:checked").length > 0 && mainroot.querySelectorAll("input.tpnode").length > mainroot.querySelectorAll("input.tpnode:checked").length;
+      }
     }
   }
 
     window.outlet_filters.setup_listeners();
 };
-
-/**** Locality TreeView *****/
-
-  /*checkall.onclick = function() {
-    for (var i = 0; i < checkboxes.length; i++) {
-      checkboxes[i].checked = this.checked;
-    }
-  }*/
- /**** Locality TreeView *****/
