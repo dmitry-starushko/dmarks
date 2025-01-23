@@ -170,14 +170,16 @@ class PV_OutletTableView(APIView):
         ordering = []
         match request.data:
             case str(params):
-                for chunk in params.split(','):
-                    key, val = tuple(chunk.split(':', 1))
-                    match int(key), val.strip():
-                        case col, 'a' | 'A' if col in self.columns:
-                            ordering.append(self.columns[col])
-                        case col, 'd' | 'D' if col in self.columns:
-                            ordering.append(f'-{self.columns[col]}')
-                        case _: raise ValueError(f'Ошибка: {(key, val)}')
+                params = params.strip()
+                if params:
+                    for chunk in params.split(','):
+                        key, val = tuple(chunk.split(':', 1))
+                        match int(key), val.strip():
+                            case col, 'a' | 'A' if col in self.columns:
+                                ordering.append(self.columns[col])
+                            case col, 'd' | 'D' if col in self.columns:
+                                ordering.append(f'-{self.columns[col]}')
+                            case _: raise ValueError(f'Ошибка: {(key, val)}')
             case None: pass
             case _: raise ValueError(f'Недопустимый параметр: {request.data}')
         legend = legend % len(self.legends)
@@ -349,29 +351,23 @@ class PV_UserActionView(APIView):
 
     @on_exception_returns_response(HttpResponseBadRequest)
     def post(self, request):
+        render_message = lambda message: render(request, 'markets/partials/user/message.html', {'message': message})
         match request.data:
             # -- Бронирование ТМ --
             case {'action': 'book-outlet', 'outlet': str(number)}:
                 try:
                     book_outlet(request.user, TradePlace.objects.get(location_number=number))  # TODO messages from parameters
-                    return render(request, f'markets/partials/user/message.html', {
-                        'message': f'Запрос на бронирование торгового места №{number} принят в обработку. Ожидайте уведомлений.'
-                    })
+                    return render_message(f'Запрос на бронирование торгового места №{number} принят в обработку. Ожидайте уведомлений.')
                 except BookingError as e:
-                    return render(request, f'markets/partials/user/message.html', {'message': f'{e}'})
+                    return render_message(f'{e}')
 
             # -- Отмена бронирований --
             case {'action': 'unbook-all'}:
                 unbooked = unbook_all(request.user)
-                return render(request, f'markets/partials/user/message.html', {
-                    'message': f'Отменена заявка на бронирование торговых мест {', '.join(unbooked)}' if unbooked else 'Ни одна заявка на бронирование не была отменена'
-                })
+                return render_message(f'Отменена заявка на бронирование торговых мест {', '.join(unbooked)}' if unbooked else 'Ни одна заявка на бронирование не была отменена')
 
             # -- Что-то вне списка реализованных акций --
-            case _:
-                return render(request, f'markets/partials/user/message.html', {
-                    'message': 'К сожалению, данная операция еще не реализована. Обратитесь к службе технической поддержке сайта.'
-                })
+            case _: return render_message('К сожалению, данная операция еще не реализована. Обратитесь к службе технической поддержке сайта.')
 
 
 # -- Actions --------------------------------------------------------------------------------------

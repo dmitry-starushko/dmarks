@@ -100,7 +100,7 @@ class AuxUserData(DbItem):
     user = models.OneToOneField(DmUser, on_delete=models.CASCADE, related_name='aux_data')  # -- ассоциированный пользователь --
     confirmed = models.BooleanField(default=False)  # -- данные подтверждены администрацией --
     itn = models.CharField(max_length=12, unique=True, validators=[Validators.itn])  # -- ИНН --
-    usr_le_extract = models.OneToOneField(File, related_name='usr_le_extract', on_delete=models.SET_NULL, null=True)  # -- выписка из ЕСГРЮЛ, Unified State Register of Legal Entities --
+    usr_le_extract = models.OneToOneField(File, related_name='usr_le_extract', on_delete=models.SET_NULL, null=True)  # -- выписка из ЕГРЮЛ/ЕГРИП, Unified State Register of Legal Entities --
     passport_image = models.OneToOneField(File, related_name='passport_image', on_delete=models.SET_NULL, null=True)  # -- скан паспорта --
     promo_image = models.ImageField(upload_to='renters/%Y/%m/%d', null=True)  # картинка
     promo_text = models.TextField(max_length=2048, default='')  # промо-текст
