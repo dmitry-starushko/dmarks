@@ -489,7 +489,7 @@ class Dummy1C(APIView):
                 return Response(True)
 
     @on_exception_returns_response(HttpResponseBadRequest)
-    def get(self, request, operation):
+    def get(self, _, operation):
         match operation:
             case 'confirmation':
                 return Response(True)
