@@ -5,10 +5,10 @@
             <thead>
                 <tr><th colspan="5">{{title | default:"Без названия"}}</th></tr>
                 <tr>
-                    <th class="sort-th sort-asc">Номер</th>
-                    <th class="sort-th sort-desc">Специализация</th>
-                    <th class="sort-th sort-asc">Занятость</th>
-                    <th class="sort-th sort-desc">Цена аренды</th>
+                    <th class="sort-th sort-asc" sort="a" onclick="window.dispatchEvent(new CustomEvent('tp_header_clicked'));">Номер</th>
+                    <th class="sort-th sort-desc" sort="" onclick="window.dispatchEvent(new CustomEvent('tp_header_clicked'));">Специализация</th>
+                    <th class="sort-th sort-asc" sort="" onclick="window.dispatchEvent(new CustomEvent('tp_header_clicked'));">Занятость</th>
+                    <th class="sort-th sort-desc" sort="" onclick="window.dispatchEvent(new CustomEvent('tp_header_clicked'));">Цена аренды</th>
                 </tr>
             </thead>
             <tbody>

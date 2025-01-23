@@ -140,7 +140,30 @@ toggleItem(document.querySelectorAll('.buttons-tab'));
 
 /***** sorting table ******/
 
+var tableHeaderItems = document.querySelectorAll('td.sort-th');
 
+for (var i = 0; i < tableHeaderItems.length; i++) {
+      tableHeaderItems[i].onclick = function(e) {
+
+       alert(i + e.target.getAttribute("sort"));
+      /*var root = e.target.closest("li.parent");
+      var mainroot = root.closest('ul').closest("li.parent");
+      var children = e.target.closest("li").querySelectorAll("input.tpnode");
+      var checkedCount = root.querySelectorAll("ul")[0].querySelectorAll("input.tpnode").length;
+
+      for (var i = 0; i < children.length; i++) {
+            children[i].checked = this.checked;
+        }
+
+      root.querySelectorAll("input.tpnode")[0].checked = root.querySelectorAll("ul")[0].querySelectorAll("input.tpnode:checked").length > 0;
+      root.querySelectorAll("input.tpnode")[0].indeterminate = root.querySelectorAll("ul")[0].querySelectorAll("input.tpnode:checked").length > 0 && checkedCount > root.querySelectorAll("ul")[0].querySelectorAll("input.tpnode:checked").length;
+
+      if(mainroot !== null) {
+          mainroot.querySelectorAll("input.tploc")[0].checked = mainroot.querySelectorAll("input.tpnode:checked").length > 0;
+          mainroot.querySelectorAll("input.tploc")[0].indeterminate = mainroot.querySelectorAll("input.tpnode:checked").length > 0 && mainroot.querySelectorAll("input.tpnode").length > mainroot.querySelectorAll("input.tpnode:checked").length;
+      }*/
+    }
+  }
 
 
 /*function compareValues(a, b) {
