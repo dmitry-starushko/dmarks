@@ -158,16 +158,14 @@ class PV_OutletTableView(APIView):
         lambda o: o.trade_spec_type_id_act.roof_color_css,
         lambda o: o.location_sector.roof_color_css,
     ]
-    columns = {
-        0: 'location_number',
-        1: 'trade_spec_type_id_act__type_name',
-        2: 'trade_place_type__type_name',
-        3: 'price',
-    }
+    order_fields = ['location_number', 'trade_spec_type_id_act__type_name', 'trade_place_type__type_name', 'price']
+    column_count = len(order_fields)
 
     @on_exception_returns_response(HttpResponseBadRequest)
     def post(self, request, scheme_pk: int, legend: int):
+        order_map = {i: self.order_fields[i] for i in range(self.column_count)}
         ordering = []
+        sorting_classes = {}
         match request.data:
             case str(params):
                 params = params.strip()
@@ -175,10 +173,14 @@ class PV_OutletTableView(APIView):
                     for chunk in params.split(','):
                         key, val = tuple(chunk.split(':', 1))
                         match int(key), val.strip():
-                            case col, 'a' | 'A' if col in self.columns:
-                                ordering.append(self.columns[col])
-                            case col, 'd' | 'D' if col in self.columns:
-                                ordering.append(f'-{self.columns[col]}')
+                            case col, 'a' | 'A' if col in order_map:
+                                ordering.append(order_map[col])
+                                sorting_classes[f'sc_{col}'] = 'sort-asc'
+                                order_map.pop(col)
+                            case col, 'd' | 'D' if col in order_map:
+                                ordering.append(f'-{order_map[col]}')
+                                sorting_classes[f'sc_{col}'] = 'sort-desc'
+                                order_map.pop(col)
                             case _: raise ValueError(f'Ошибка: {(key, val)}')
             case None: pass
             case _: raise ValueError(f'Недопустимый параметр: {request.data}')
@@ -196,7 +198,7 @@ class PV_OutletTableView(APIView):
             'title': scheme.floor,
             'outlets': outlets,
             'hash': f'{hash((scheme_pk, legend, ">".join(ordering)))})'
-        })
+        } | sorting_classes)
 
 
 class PV_OutletDetailView(APIView):

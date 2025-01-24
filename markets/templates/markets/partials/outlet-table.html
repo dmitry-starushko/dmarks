@@ -5,10 +5,10 @@
             <thead>
                 <tr><th colspan="5">{{title | default:"Без названия"}}</th></tr>
                 <tr>
-                    <th class="sort-th sort-asc" sort="" onclick="window.dispatchEvent(new CustomEvent('tp_header_clicked', { detail: 0 }));">Номер</th>
-                    <th class="sort-th sort-desc" sort="" onclick="window.dispatchEvent(new CustomEvent('tp_header_clicked', { detail: 1 }));">Специализация</th>
-                    <th class="sort-th sort-asc" sort="" onclick="window.dispatchEvent(new CustomEvent('tp_header_clicked', { detail: 2 }));">Занятость</th>
-                    <th class="sort-th sort-desc" sort="" onclick="window.dispatchEvent(new CustomEvent('tp_header_clicked', { detail: 3 }));">Цена аренды</th>
+                    <th class="sort-th{% if sc_0 %} {{sc_0}}{% endif %}" onclick="window.dispatchEvent(new CustomEvent('tp_header_clicked', { detail: 0 }));">Номер</th>
+                    <th class="sort-th{% if sc_1 %} {{sc_1}}{% endif %}" onclick="window.dispatchEvent(new CustomEvent('tp_header_clicked', { detail: 1 }));">Специализация</th>
+                    <th class="sort-th{% if sc_2 %} {{sc_2}}{% endif %}" onclick="window.dispatchEvent(new CustomEvent('tp_header_clicked', { detail: 2 }));">Занятость</th>
+                    <th class="sort-th{% if sc_3 %} {{sc_3}}{% endif %}" onclick="window.dispatchEvent(new CustomEvent('tp_header_clicked', { detail: 3 }));">Цена аренды</th>
                 </tr>
             </thead>
             <tbody>
