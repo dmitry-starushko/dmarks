@@ -9,7 +9,7 @@
                     {% with city_n=forloop.counter %}
                     <input class="css-treeview-check" type="checkbox" id="tploc-{{city_n}}" checked/>
                     <label for="tploc-{{city_n}}">
-                        <input class="tploc tpparent" type="checkbox" id="option"/>
+                        <input class="tploc tpparent" type="checkbox" data-flag="outlet-filter" id="option"/>
                         {{city}}
                     </label>
                     <ul>
@@ -18,7 +18,7 @@
                             {% with dist_n=forloop.counter %}
                             <input class="css-treeview-check" type="checkbox" id="tploc-{{city_n}}-{{dist_n}}" checked/>
                             <label for="tploc-{{city_n}}-{{dist_n}}">
-                                <input class="tploc tpnode" type="checkbox"/>
+                                <input class="tploc tpnode" type="checkbox" data-flag="outlet-filter"/>
                                 {{dist}}
                             </label>
                             <ul>

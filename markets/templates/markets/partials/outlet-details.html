@@ -28,7 +28,7 @@
     <ul class="tree">
           <li>
             <details open>
-              <summary>Детали</summary>
+              <summary>Торговое место №{{outlet.location_number}}</summary>
               <ul>
                 <li>
                   <details open>
@@ -43,7 +43,7 @@
                 </li>
                 <li>
                   <details open>
-                    <summary>Благоустройство и оборуование</summary>
+                    <summary>Благоустройство и оборудование</summary>
                     <ul>
                         <li>Электричество: <strong>{{outlet.impr_electricity | yesno:'есть,нет,неизвестно'}}</strong></li>
                         <li>Теплоснабжение: <strong>{{outlet.impr_heat_supply | yesno:'есть,нет,неизвестно'}}</strong></li>
@@ -60,7 +60,7 @@
                 </li>
                   <li>
                     <details open>
-                        <summary>Месторасположение ТМ</summary>
+                        <summary>Месторасположение</summary>
                         <ul>
                             <li>Сектор: <strong>{{outlet.location_sector}}</strong></li>
                             <li>Этаж: <strong>{{outlet.scheme.floor | default:'Не указано'}}</strong></li>

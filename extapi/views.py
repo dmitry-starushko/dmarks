@@ -270,7 +270,8 @@ class UserConfirmedView(APIView):
     permission_classes = settings.EXT_API_PERMISSIONS
 
     @extend_schema(
-        description='Устанавливает значение флага верификации для пользователя с ИНН = itn. Сброс флага приводит к дальнейшей невалидности ИНН пользователя и необходимости повторной подачи заявки на верификацию.',
+        description='Устанавливает значение флага верификации для пользователя с ИНН = itn.\n'
+                    'Сброс флага приводит к дальнейшей невалидности ИНН пользователя и необходимости повторной подачи заявки на верификацию.',
         request={'application/json': bool},
         responses={
             (200, 'application/json'): oapi_result(fields.BooleanField(help_text='Результат'), '_set_confirmed'),
@@ -284,7 +285,8 @@ class UserConfirmedView(APIView):
         })
 
     @extend_schema(
-        description='Устанавливает значение флага верификации для пользователя с ИНН = itn. Сброс флага приводит к дальнейшей невалидности ИНН пользователя и необходимости повторной подачи заявки на верификацию.',
+        description='Устанавливает значение флага верификации для пользователя с ИНН = itn.\n'
+                    'Сброс флага приводит к дальнейшей невалидности ИНН пользователя и необходимости повторной подачи заявки на верификацию.',
         request={'application/json': bool},
         responses={
             (200, 'application/json'): oapi_result(fields.BooleanField(help_text='Результат'), '_update_confirmed'),
@@ -348,20 +350,6 @@ class UserRentedOutletsView(APIView):
     permission_classes = settings.EXT_API_PERMISSIONS
 
     @extend_schema(
-        description='Помещает торговые места в арендный список пользователя с ИНН = itn. В теле запроса передается список номеров торговых мест.',
-        request={'application/json': list[str]},
-        responses={
-            (200, 'application/json'): oapi_result(fields.BooleanField(help_text='Результат'), '_post_rents'),
-            (400, 'application/json'): OpenApiTypes.ANY,
-        })
-    @on_exception_returns_response(HttpResponseBadRequest)
-    def post(self, request, itn):
-        result = rent_outlets(DmUser.objects.get(aux_data__itn=itn), request.data)
-        return Response({
-            'result': result
-        })
-
-    @extend_schema(
         description='Возвращает список торговых мест в арендном списке пользователя с ИНН = itn.',
         responses={
             (200, 'application/json'): oapi_result(fields.ListField(child=fields.CharField(), help_text='Список номеров торговых мест'), '_get_rents'),
@@ -375,7 +363,25 @@ class UserRentedOutletsView(APIView):
         })
 
     @extend_schema(
-        description='Помещает торговые места в арендный список пользователя с ИНН = itn. В теле запроса передается список номеров торговых мест.',
+        description='Помещает торговые места в арендный список пользователя с ИНН = itn. '
+                    'В теле запроса передается список номеров торговых мест. '
+                    'Статус торговых мест изменяется на RENTED.',
+        request={'application/json': list[str]},
+        responses={
+            (200, 'application/json'): oapi_result(fields.BooleanField(help_text='Результат'), '_post_rents'),
+            (400, 'application/json'): OpenApiTypes.ANY,
+        })
+    @on_exception_returns_response(HttpResponseBadRequest)
+    def post(self, request, itn):
+        result = rent_outlets(DmUser.objects.get(aux_data__itn=itn), request.data)
+        return Response({
+            'result': result
+        })
+
+    @extend_schema(
+        description='Помещает торговые места в арендный список пользователя с ИНН = itn. '
+                    'В теле запроса передается список номеров торговых мест. '
+                    'Статус торговых мест изменяется на RENTED.',
         request={'application/json': list[str]},
         responses={
             (200, 'application/json'): oapi_result(fields.BooleanField(help_text='Результат'), '_put_rents'),
@@ -483,7 +489,7 @@ class Dummy1C(APIView):
                 return Response(True)
 
     @on_exception_returns_response(HttpResponseBadRequest)
-    def get(self, request, operation):
+    def get(self, _, operation):
         match operation:
             case 'confirmation':
                 return Response(True)
