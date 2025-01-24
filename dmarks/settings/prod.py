@@ -33,9 +33,9 @@ TELEBOT_ID = os.environ.get('TELEBOT')
 EXT_URL = {
     'booking': 'http://web:8000/extapi/dummy1c/booking/',
     'confirmation': 'http://web:8000/extapi/dummy1c/confirmation/',
+    'market-info': 'http://web:8000/extapi/dummy1c/market-info/',
     'reg-card': 'http://web:8000/extapi/dummy1c/regcard/',
     'answers': 'http://web:8000/extapi/dummy1c/answers/',
-    'market-info': 'http://web:8000/extapi/dummy1c/market-info/',
     'moderation': 'http://web:8000/extapi/dummy1c/moderation/',
 }
 
