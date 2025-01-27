@@ -4,9 +4,9 @@ from django.conf import settings
 from django.core.exceptions import ValidationError
 from django.db import transaction
 from django.db.models import Max, Min
-from markets.enums import Observation, LogRecordKind
+from markets.enums import Observation, LogRecordKind, OutletState
 from markets.decorators import globally_lonely_action
-from markets.models import TradePlace, SvgSchema, RdcError, Market, GlobalObservation, Notification, LogRecord
+from markets.models import TradePlace, SvgSchema, RdcError, Market, GlobalObservation, Notification, LogRecord, TradePlaceType
 from markets.validators import Validators
 
 try:  # To avoid deploy problems
@@ -49,14 +49,11 @@ def restore_db_consistency():
                             Validators.outlet_number(path_id)
                         except ValidationError:
                             err_list += [f'Номер ТМ в SVG не соответствует формату: <{path_id}>']
-                        tps = [tp for tp in TradePlace.objects.filter(location_number=path_id)]
-                        if not tps:
+                        try:
+                            tp = TradePlace.objects.get(location_number=path_id)
+                        except TradePlace.DoesNotExist:
                             err_list += [f'ТМ <{path_id}> не найдено в БД']
-                        elif len(tps) > 1:
-                            tp_ids = ', '.join([f'#{tp.id}' for tp in tps])
-                            err_list += [f'В БД имеется более одного ТМ с номером <{path_id}>: {tp_ids}']
                         else:
-                            tp = tps[0]
                             if sch.market_id != tp.market_id:
                                 err_list += [f'ТМ #{tp.id} <{path_id}> относится к другому рынку "{tp.market}"']
                             elif tp.scheme is not None:
@@ -66,16 +63,14 @@ def restore_db_consistency():
                                 tp.save()
                     else:
                         err_list += [f'Номер ТМ не указан в SVG']
-        tps = [tp for tp in TradePlace.objects.all()]
-        for tp in tps:
+        for tp in TradePlace.objects.all():
             print(f'Обрабатывается {tp}')
+            if tp.rented_by is None and tp.trade_place_type.type_name == OutletState.RENTED:
+                tp.trade_place_type = TradePlaceType.objects.get_or_create(type_name=OutletState.UNKNOWN)[0]
+                tp.save()
             errors[f'{tp}'] = (err_list := [])
             if tp.scheme_id is None:
                 err_list += [f'ТМ не привязано к схеме: scheme_id = {tp.scheme_id}']
-            try:
-                Validators.outlet_number(tp.location_number)
-            except ValidationError:
-                err_list += [f'Номер ТМ не соответствует формату: <{tp.location_number}>']
 
         RdcError.objects.all().delete()
         for key, value in errors.items():
