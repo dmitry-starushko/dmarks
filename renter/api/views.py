@@ -152,10 +152,11 @@ class SendAnswerView(APIView):
             case {'question_uuid': str(uuid), 'answer': bool(answer)}:
                 ntf = user.notifications.get(question_uuid=uuid)
                 st_deliver_answer.delay(user.itn, uuid, answer)
-                ntf.text += f'\n\n> *Вы ответили: «{'Да' if answer else 'Нет'}»*'
+                yes_no = f'«{'Да' if answer else 'Нет'}»'
+                ntf.text += f'\n\n_```Вы ответили: {yes_no}```_'
                 ntf.question_uuid = None
                 ntf.save()
-                dlog_info(user, f'Пользователь {user.phone} ответил {'Да' if answer else 'Нет'} на вопрос {uuid}')
+                dlog_info(user, f'Пользователь {user.phone} ответил {yes_no} на вопрос {uuid}')
             case _: raise ValueError(data)
         return Response({'result': True})
 
