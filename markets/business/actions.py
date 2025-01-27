@@ -41,8 +41,8 @@ def restore_db_consistency():
                 svg3dtm.transmutate(sch.svg_schema)
             except Exception as e:
                 err_list += [f'Не удалось построить 3D модель: {e}']
-            tit = tree.iter()
-            for node in tit:
+            svg_iterator = tree.iter()
+            for node in svg_iterator:
                 if node.tag.endswith('path') and 'class' in node.attrib and node.attrib['class'] == 'outlet':
                     if 'id' in node.attrib:
                         path_id = node.attrib['id']
@@ -72,13 +72,10 @@ def restore_db_consistency():
             errors[f'{tp}'] = (err_list := [])
             if tp.scheme_id is None:
                 err_list += [f'ТМ не привязано к схеме: scheme_id = {tp.scheme_id}']
-
         errors = [f'{key}: {err}' for key, value in errors.items() for err in value]
         with httpx.Client() as client:
             try:
-                client.post(settings.EXT_URL['check-results'],
-                            headers={'Content-Type': 'application/json'},
-                            json=errors)
+                client.post(settings.EXT_URL['check-results'], headers={'Content-Type': 'application/json'}, json=errors)
             except httpx.TransportError as e:
                 print(f'Ошибка отправки результатов диагностики: {e}')
             else:
