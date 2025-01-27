@@ -474,8 +474,8 @@ class SelfDiagnosisView(APIView):
     @extend_schema(
         description='Запускает процедуру диагностики и коррекции БД сайта. Результаты процедуры передаются в соответствующий метод API РД, см. Спецификации',
         responses={
-            (200, 'application/json'): str,
-            (400, 'application/json'): str,
+            (200, 'application/json'): oapi_result(fields.CharField(help_text='Сообщение'), '_self_diagnosis'),
+            (400, 'application/json'): OpenApiTypes.ANY,
         })
     @on_exception_returns_response(HttpResponseBadRequest)
     def get(self, _):
@@ -483,7 +483,9 @@ class SelfDiagnosisView(APIView):
             raise RuntimeWarning('Процедура диагностики выполняется, дождитесь её завершения')
         else:
             st_restore_db_consistency.delay()
-            return Response('Процедура диагностики запущена.')
+            return Response({
+                'result': 'Процедура диагностики запущена.'
+            })
 
 
 # TODO kill Dummy1C
