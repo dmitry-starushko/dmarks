@@ -16,6 +16,8 @@ from markets.business.moderation import set_promo_data_moderated
 from markets.business.renting import rent_outlets, get_outlets_in_renting, unrent_outlets
 from markets.decorators import on_exception_returns_response
 from markets.models import DmUser
+from markets.business.actions import restore_db_consistency
+from markets.tasks import st_restore_db_consistency
 
 
 class MarketCRUDView(APIView):
@@ -464,6 +466,24 @@ class NotificationsCRUDView(APIView):
         return Response({
             'result': result
         })
+
+
+class SelfDiagnosisView(APIView):
+    permission_classes = settings.EXT_API_PERMISSIONS
+
+    @extend_schema(
+        description='Запускает процедуру диагностики и коррекции БД сайта. Результаты процедуры передаются в соответствующий метод API РД, см. Спецификации',
+        responses={
+            (200, 'application/json'): str,
+            (400, 'application/json'): str,
+        })
+    @on_exception_returns_response(HttpResponseBadRequest)
+    def get(self, _):
+        if restore_db_consistency.launched():
+            raise RuntimeWarning('Процедура диагностики выполняется, дождитесь её завершения')
+        else:
+            st_restore_db_consistency.delay()
+            return Response('Процедура диагностики запущена.')
 
 
 # TODO kill Dummy1C
