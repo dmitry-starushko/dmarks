@@ -1,4 +1,5 @@
 import datetime
+import httpx
 from xml.etree import ElementTree as Et
 from django.conf import settings
 from django.core.exceptions import ValidationError
@@ -72,10 +73,16 @@ def restore_db_consistency():
             if tp.scheme_id is None:
                 err_list += [f'ТМ не привязано к схеме: scheme_id = {tp.scheme_id}']
 
-        RdcError.objects.all().delete()
-        for key, value in errors.items():
-            for err in value:
-                RdcError.objects.create(object=key, text=err)
+        errors = [f'{key}: {err}' for key, value in errors.items() for err in value]
+        with httpx.Client() as client:
+            try:
+                client.post(settings.EXT_URL['check-results'],
+                            headers={'Content-Type': 'application/json'},
+                            json=errors)
+            except httpx.TransportError as e:
+                print(f'Ошибка отправки результатов диагностики: {e}')
+            else:
+                print(f'Результаты диагностики отправлены серверу')
 
 
 @globally_lonely_action(None)

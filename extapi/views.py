@@ -507,6 +507,8 @@ class Dummy1C(APIView):
                 return Response(True)
             case 'moderation':
                 return Response(True)
+            case 'check':
+                return Response(True)
 
     @on_exception_returns_response(HttpResponseBadRequest)
     def get(self, _, operation):
@@ -537,6 +539,8 @@ class Dummy1C(APIView):
                 })
             case 'moderation':
                 return Response(True)
+            case 'check':
+                return Response(True)
 
     @on_exception_returns_response(HttpResponseBadRequest)
     def delete(self, request, operation):
@@ -552,4 +556,6 @@ class Dummy1C(APIView):
             case 'market-info':
                 return Response(True)
             case 'moderation':
+                return Response(True)
+            case 'check':
                 return Response(True)
