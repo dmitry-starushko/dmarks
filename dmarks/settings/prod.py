@@ -1,5 +1,4 @@
 from rest_framework.permissions import IsAdminUser
-from markets.enums import LogRecordKind
 from .base import *
 
 DEBUG = False
