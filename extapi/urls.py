@@ -11,6 +11,7 @@ urlpatterns = [
     path('markets/<str:mid>/phones/', views.MarketPhonesCRUDView.as_view(), name='market_phones_crud'),
     path('markets/<str:mid>/emails/', views.MarketEmailsCRUDView.as_view(), name='market_emails_crud'),
     # --
+    path('users/itns/', views.UsersITNsView.as_view(), name='users_itns'),
     path('users/<str:itn>/confirmed/', views.UserConfirmedView.as_view(), name='user_confirmed'),
     path('users/<str:itn>/rented-outlets/', views.UserRentedOutletsView.as_view(), name='user_rented_outlets'),
     path('users/<str:itn>/moderated/', views.UserModeratedView.as_view(), name='user_moderated'),
