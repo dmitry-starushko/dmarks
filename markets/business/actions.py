@@ -69,9 +69,6 @@ def restore_db_consistency():
             if tp.rented_by is not None and tp.trade_place_type.type_name != OutletState.RENTED:
                 tp.trade_place_type = TradePlaceType.objects.get_or_create(type_name=OutletState.RENTED)[0]
                 tp.save()
-            elif tp.trade_place_type.type_name == OutletState.UNKNOWN:  # TODO kill this branch, this is single-shot action
-                tp.trade_place_type = TradePlaceType.objects.get_or_create(type_name=OutletState.RENTED)[0]
-                tp.save()
             errors[f'{tp}'] = (err_list := [])
             if tp.scheme_id is None:
                 err_list += [f'ТМ не привязано к схеме: scheme_id = {tp.scheme_id}']
