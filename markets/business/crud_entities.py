@@ -183,8 +183,8 @@ def delete_market(market_id: str):
 def create_market_outlets(market_id: str, data):
     market = Market.objects.get(market_id=market_id)
     with transaction.atomic():
-        for olt in data:
-            match olt:
+        for outlet_data in data:
+            match outlet_data:
                 case {
                     'location_number': str(location_number),
                     'location_row': str(location_row),
@@ -221,7 +221,6 @@ def create_market_outlets(market_id: str, data):
                      and meas_area >= 0.0 \
                      and 0 <= impr_internet_type_id <= 2 \
                      and trade_place_type in OutletState \
-                     and trade_place_type != OutletState.RENTED \
                      and location_number.startswith(market_id):
                     Validators.outlet_number(location_number)
                     market.trade_places.create(
@@ -250,7 +249,7 @@ def create_market_outlets(market_id: str, data):
                         impr_fridge=impr_fridge,
                         impr_shopwindow=impr_shopwindow
                     )
-                case _: raise ValueError(olt)
+                case _: raise ValueError(outlet_data)
         return True
 
 
@@ -303,8 +302,8 @@ def update_market_outlets(market_id: str, data):
                         case 'trade_type', str(trade_type): r.trade_type = TradeType.objects.get_or_create(type_name=trade_type)[0]
                         case 'trade_place_type', str(trade_place_type) if trade_place_type in OutletState:
                             match r.rented_by, trade_place_type:
-                                case None, tpt if tpt != OutletState.RENTED: r.trade_place_type = TradePlaceType.objects.get_or_create(type_name=tpt)[0]
-                                case rby, OutletState.RENTED if rby is not None: r.trade_place_type = TradePlaceType.objects.get_or_create(type_name=OutletState.RENTED)[0]
+                                case None, _: r.trade_place_type = TradePlaceType.objects.get_or_create(type_name=trade_place_type)[0]
+                                case _, OutletState.RENTED: r.trade_place_type = TradePlaceType.objects.get_or_create(type_name=OutletState.RENTED)[0]
                                 case _: raise ValueError(f'Статус ТМ {r.location_number} не может быть изменен на {trade_place_type}: ТМ {'не арендовано' if r.rented_by is None else 'арендовано'}')
                         case 'trade_spec_type_id_act', str(trade_spec_type_id_act): r.trade_spec_type_id_act = TradeSpecType.objects.get_or_create(type_name=trade_spec_type_id_act)[0]
                         case 'trade_spec_type_id_rec', str(trade_spec_type_id_rec): r.trade_spec_type_id_rec = TradeSpecType.objects.get_or_create(type_name=trade_spec_type_id_rec)[0]

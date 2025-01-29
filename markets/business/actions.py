@@ -66,10 +66,10 @@ def restore_db_consistency():
                         err_list += [f'Номер ТМ не указан в SVG']
         for tp in TradePlace.objects.all():
             print(f'Обрабатывается {tp}')
-            if tp.rented_by is None and tp.trade_place_type.type_name == OutletState.RENTED:
-                tp.trade_place_type = TradePlaceType.objects.get_or_create(type_name=OutletState.UNKNOWN)[0]
+            if tp.rented_by is not None and tp.trade_place_type.type_name != OutletState.RENTED:
+                tp.trade_place_type = TradePlaceType.objects.get_or_create(type_name=OutletState.RENTED)[0]
                 tp.save()
-            elif tp.rented_by is not None and tp.trade_place_type.type_name != OutletState.RENTED:
+            elif tp.trade_place_type.type_name == OutletState.UNKNOWN:  # TODO kill this branch, this is single-shot action
                 tp.trade_place_type = TradePlaceType.objects.get_or_create(type_name=OutletState.RENTED)[0]
                 tp.save()
             errors[f'{tp}'] = (err_list := [])
