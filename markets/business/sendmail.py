@@ -21,4 +21,7 @@ def send_email(subject, body, attachment_path=None):
             mime_obj.add_header('Content-Disposition', f'attachment; filename="{os.path.basename(attachment_path)}"')
             email.attach(mime_obj)
 
-    email.send()
+    try:
+        email.send()
+    except Exception as e:
+        print(e)
