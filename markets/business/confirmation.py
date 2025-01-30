@@ -22,7 +22,7 @@ def init_confirmation(user: DmUser):
     dlog_info(user, f'Пользователь {user.phone} инициировал процедуру верификации (ИНН: {user.aux_data.itn})')
     with httpx.Client() as client:
         try:
-            res = client.post(settings.EXT_URL['confirmation'].format(user=user.aux_data.itn),
+            res = client.post(settings.URLS_1C_API['confirmation'].format(user=user.aux_data.itn),
                               headers={'Content-Type': 'application/json'},
                               json={
                                   'first-name': user.first_name,

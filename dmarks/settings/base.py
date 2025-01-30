@@ -164,5 +164,16 @@ LOG_TTL_DAYS = {
     LogRecordKind.FATAL: LOG_TTL_DAYS_DEFAULT,
 }
 
+USE_1C_API = False
 
+AUTH_1C_API = ''
 
+URLS_1C_API = {
+    'booking': 'http://localhost:8000/extapi/dummy1c/booking/',
+    'confirmation': 'http://localhost:8000/extapi/dummy1c/confirmation/',
+    'reg-card': 'http://localhost:8000/extapi/dummy1c/regcard/',
+    'answers': 'http://localhost:8000/extapi/dummy1c/answers/',
+    'market-info': 'http://localhost:8000/extapi/dummy1c/market-info/',
+    'moderation': 'http://localhost:8000/extapi/dummy1c/moderation/',
+    'check-results': 'http://localhost:8000/extapi/dummy1c/check/',
+}

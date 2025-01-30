@@ -75,7 +75,7 @@ def restore_db_consistency():
         errors = [f'{key}: {err}' for key, value in errors.items() for err in value]
         with httpx.Client() as client:
             try:
-                client.post(settings.EXT_URL['check-results'], headers={'Content-Type': 'application/json'}, json=errors)
+                client.post(settings.URLS_1C_API['check-results'], headers={'Content-Type': 'application/json'}, json=errors)
             except httpx.TransportError as e:
                 print(f'Ошибка отправки результатов диагностики: {e}')
             else:
