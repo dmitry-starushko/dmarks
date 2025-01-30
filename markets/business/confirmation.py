@@ -23,7 +23,7 @@ def init_confirmation(user: DmUser):
     with httpx.Client() as client:
         try:
             res = client.post(settings.URLS_1C_API['confirmation'].format(user=user.aux_data.itn),
-                              headers={'Content-Type': 'application/json'},
+                              headers={'Content-Type': 'application/json'} | ({'Authorization': settings.AUTH_1C_API} if settings.AUTH_1C_API else {}),
                               json={
                                   'first-name': user.first_name,
                                   'last-name': user.last_name,

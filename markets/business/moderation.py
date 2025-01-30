@@ -12,7 +12,7 @@ def moderate_promo_data(itn: str):
     with httpx.Client() as client:
         try:
             res = client.post(settings.URLS_1C_API['moderation'].format(user=itn),
-                              headers={'Content-Type': 'application/json'},
+                              headers={'Content-Type': 'application/json'} | ({'Authorization': settings.AUTH_1C_API} if settings.AUTH_1C_API else {}),
                               json={'text': user.promo_text, 'image': user.promo_image.url if user.promo_image else ''})
             if res.is_error:
                 ilog(user.id, f'Запрос на модерацию промо-данных пользователя {itn} не доставлен: ответ сервера {res.status_code}', LogRecordKind.ERROR)

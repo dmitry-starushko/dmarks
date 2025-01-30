@@ -20,7 +20,7 @@ def book_outlet(user: DmUser, outlet: TradePlace):
     with httpx.Client() as client:
         try:
             res = client.post(settings.URLS_1C_API['booking'].format(user=user.aux_data.itn),
-                              headers={'Content-Type': 'application/json'},
+                              headers={'Content-Type': 'application/json'} | ({'Authorization': settings.AUTH_1C_API} if settings.AUTH_1C_API else {}),
                               json=[f'{outlet.location_number}'])
             if res.is_error:
                 reason = f'{res.text or 'без пояснений'}'
