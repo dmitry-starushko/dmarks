@@ -177,3 +177,11 @@ URLS_1C_API = {
     'moderation': 'http://localhost:8000/extapi/dummy1c/moderation/',
     'check-results': 'http://localhost:8000/extapi/dummy1c/check/',
 }
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'gprd-dnr.ru'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'maps.mail'
+EMAIL_HOST_PASSWORD = '7948yXS2Gp'
+EMAIL_TO = ['dmitry.starushko@gmail.com']
