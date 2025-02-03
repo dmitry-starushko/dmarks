@@ -18,6 +18,7 @@ urlpatterns = [
     path('users/<str:itn>/notifications/', views.NotificationsCRUDView.as_view(), name='user_notifications_crud'),
     path('notifications/', views.NotificationsCRUDView.as_view(), name='notifications_crud'),
     # --
+    path('references/<str:ref_name>/', views.ReferencesView.as_view(), name='references'),
     path('self-diagnosis/', views.SelfDiagnosisView.as_view(), name='self_diagnosis'),
     path('dummy1c/<str:operation>/', views.Dummy1C.as_view(), name='dummy_1c'),
 ]
