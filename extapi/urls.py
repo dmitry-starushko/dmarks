@@ -11,11 +11,14 @@ urlpatterns = [
     path('markets/<str:mid>/phones/', views.MarketPhonesCRUDView.as_view(), name='market_phones_crud'),
     path('markets/<str:mid>/emails/', views.MarketEmailsCRUDView.as_view(), name='market_emails_crud'),
     # --
+    path('users/itns/', views.UsersITNsView.as_view(), name='users_itns'),
     path('users/<str:itn>/confirmed/', views.UserConfirmedView.as_view(), name='user_confirmed'),
     path('users/<str:itn>/rented-outlets/', views.UserRentedOutletsView.as_view(), name='user_rented_outlets'),
     path('users/<str:itn>/moderated/', views.UserModeratedView.as_view(), name='user_moderated'),
     path('users/<str:itn>/notifications/', views.NotificationsCRUDView.as_view(), name='user_notifications_crud'),
     path('notifications/', views.NotificationsCRUDView.as_view(), name='notifications_crud'),
     # --
+    path('references/<str:ref_name>/', views.ReferencesView.as_view(), name='references'),
+    path('self-diagnosis/', views.SelfDiagnosisView.as_view(), name='self_diagnosis'),
     path('dummy1c/<str:operation>/', views.Dummy1C.as_view(), name='dummy_1c'),
 ]

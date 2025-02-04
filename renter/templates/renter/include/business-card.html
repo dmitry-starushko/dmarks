@@ -1,7 +1,14 @@
+{% load static %}
 {% if business_card %}
 <form class="business-card" method="post" enctype="multipart/form-data">
 {% csrf_token %}
 {{business_card.as_div}}
+{% if user.promo_image %}
+<div>
+    <label for="promo-image-link">Сейчас:</label>
+    <a id="promo-image-link" href="{{user.promo_image.url}}" target="_blank" title="Перейти"><img src="{% static 'svg/icons/file-image.svg' %}" style="height:3rem;"/></a>
+</div>
+{% endif %}
 <input type="submit" title="Сохранить" value="Сохранить визитную карточку">
 {% if user.promo_text or user.promo_image %}
 <div>

@@ -1,7 +1,7 @@
 from django.conf import settings
 from django.http import HttpResponseBadRequest
 from drf_spectacular.types import OpenApiTypes
-from drf_spectacular.utils import extend_schema, inline_serializer
+from drf_spectacular.utils import extend_schema, OpenApiParameter
 from rest_framework import fields
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
@@ -15,7 +15,9 @@ from markets.business.crud_entities import create_market, update_market, get_mar
 from markets.business.moderation import set_promo_data_moderated
 from markets.business.renting import rent_outlets, get_outlets_in_renting, unrent_outlets
 from markets.decorators import on_exception_returns_response
-from markets.models import DmUser
+from markets.models import DmUser, AuxUserData, TradePlaceType, LocalityType, MarketFireProtection, MarketProfitability, MarketType, StreetType, TradeSector, TradeSpecType, TradeType
+from markets.business.actions import restore_db_consistency
+from markets.tasks import st_restore_db_consistency
 
 
 class MarketCRUDView(APIView):
@@ -266,6 +268,23 @@ class MarketEmailsCRUDView(APIView):
         })
 
 
+class UsersITNsView(APIView):
+    permission_classes = settings.EXT_API_PERMISSIONS
+
+    @extend_schema(
+        description='Возвращает список ИНН пользователей, зарегистрированных на сайте',
+        responses={
+            (200, 'application/json'): oapi_result(fields.ListField(child=fields.CharField(), help_text='Список ИНН'), '_get_itns'),
+            (400, 'application/json'): OpenApiTypes.ANY,
+        })
+    @on_exception_returns_response(HttpResponseBadRequest)
+    def get(self, _):
+        result = [v['itn'] for v in AuxUserData.objects.values('itn')]
+        return Response({
+            'result': result
+        })
+
+
 class UserConfirmedView(APIView):
     permission_classes = settings.EXT_API_PERMISSIONS
 
@@ -301,7 +320,6 @@ class UserConfirmedView(APIView):
 
     @extend_schema(
         description='Возвращает значение флага верификации для пользователя с ИНН = itn',
-        request={'application/json': bool},
         responses={
             (200, 'application/json'): oapi_result(fields.BooleanField(help_text='Результат, значение флага'), '_get_confirmed'),
             (400, 'application/json'): OpenApiTypes.ANY,
@@ -466,6 +484,60 @@ class NotificationsCRUDView(APIView):
         })
 
 
+class ReferencesView(APIView):
+    permission_classes = settings.EXT_API_PERMISSIONS
+
+    ref_map = {
+        'fire-protection-types': (MarketFireProtection, 'fp_name'),
+        'locality-types': (LocalityType, 'type_name'),
+        'market-types': (MarketType, 'type_name'),
+        'occupancy-types': (TradePlaceType, 'type_name'),
+        'outlet-types': (TradeType, 'type_name'),
+        'profitability-categories': (MarketProfitability, 'profitability_name'),
+        'sector-names': (TradeSector, 'sector_name'),
+        'specialization-types': (TradeSpecType, 'type_name'),
+        'street-types': (StreetType, 'type_name'),
+    }
+
+    @extend_schema(
+        description='Возвращает список значений в справочнике',
+        parameters=[OpenApiParameter(name='ref_name', type=str, location='path', description=f'Одно из значений: {' | '.join(ref_map.keys())}')],
+        responses={
+            (200, 'application/json'): oapi_result(fields.ListField(child=fields.CharField(), help_text='Список значений'), '_get_references'),
+            (400, 'application/json'): OpenApiTypes.ANY,
+        })
+    @on_exception_returns_response(HttpResponseBadRequest)
+    def get(self, _, ref_name):
+        if ref_name in self.ref_map:
+            manager, field = self.ref_map[ref_name]
+            result = [v[field] for v in manager.objects.order_by(field).values(field)]
+            return Response({
+                'result': result
+            })
+        raise ValueError(ref_name)
+
+
+
+class SelfDiagnosisView(APIView):
+    permission_classes = settings.EXT_API_PERMISSIONS
+
+    @extend_schema(
+        description='Запускает процедуру диагностики и коррекции БД сайта. Результаты процедуры передаются в соответствующий метод API РД, см. Спецификации',
+        responses={
+            (200, 'application/json'): oapi_result(fields.CharField(help_text='Сообщение'), '_self_diagnosis'),
+            (400, 'application/json'): OpenApiTypes.ANY,
+        })
+    @on_exception_returns_response(HttpResponseBadRequest)
+    def get(self, _):
+        if restore_db_consistency.launched():
+            raise RuntimeWarning('Процедура диагностики выполняется, дождитесь её завершения')
+        else:
+            st_restore_db_consistency.delay()
+            return Response({
+                'result': 'Процедура диагностики запущена.'
+            })
+
+
 # TODO kill Dummy1C
 
 @extend_schema(exclude=True)
@@ -486,6 +558,8 @@ class Dummy1C(APIView):
             case 'market-info':
                 return Response(True)
             case 'moderation':
+                return Response(True)
+            case 'check':
                 return Response(True)
 
     @on_exception_returns_response(HttpResponseBadRequest)
@@ -517,6 +591,8 @@ class Dummy1C(APIView):
                 })
             case 'moderation':
                 return Response(True)
+            case 'check':
+                return Response(True)
 
     @on_exception_returns_response(HttpResponseBadRequest)
     def delete(self, request, operation):
@@ -532,4 +608,6 @@ class Dummy1C(APIView):
             case 'market-info':
                 return Response(True)
             case 'moderation':
+                return Response(True)
+            case 'check':
                 return Response(True)

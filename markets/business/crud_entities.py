@@ -14,7 +14,7 @@ def create_market(market_id: str, data):
             'market_type': str(market_type),
             'branch': str(branch),
             'profitability': str(profitability),
-            'market_area': float(market_area),
+            'market_area': float(market_area) | int(market_area),
             'schedule': str(schedule),
             'ads': str(ads),
             'infr': {
@@ -28,8 +28,8 @@ def create_market(market_id: str, data):
                 'sewerage_type': str(infr_sewerage_type)
             },
             'geo': {
-                'lat': float(lat),
-                'lng': float(lng),
+                'lat': float(lat) | int(lat),
+                'lng': float(lng) | int(lng),
                 'city': str(geo_city),
                 'district': str(geo_district),
                 'street': str(geo_street),
@@ -126,7 +126,7 @@ def update_market(market_id: str, data):
                 case 'market_type', str(market_type): market.market_type = MarketType.objects.get_or_create(type_name=market_type)[0]
                 case 'branch', str(branch): market.branch = branch
                 case 'profitability', str(profitability): market.profitability = MarketProfitability.objects.get_or_create(profitability_name=profitability)[0]
-                case 'market_area', float(market_area) if market_area >= 0.0: market.market_area = market_area
+                case 'market_area', float(market_area) | int(market_area) if market_area >= 0.0: market.market_area = market_area
                 case 'schedule', str(schedule): market.schedule = schedule
                 case 'ads', str(ads): market.ads = ads
                 case 'infr', {**infr}:
@@ -155,8 +155,8 @@ def update_market(market_id: str, data):
                         case _: pass
                     for g_key, g_value in geo.items():
                         match g_key, g_value:
-                            case 'lat', float(lat) if -90.0 <= lat <= 90.0: market.lat = lat
-                            case 'lng', float(lng) if -180.0 <= lng <= 180.0: market.lng = lng
+                            case 'lat', float(lat) | int(lat) if -90.0 <= lat <= 90.0: market.lat = lat
+                            case 'lng', float(lng) | int(lng) if -180.0 <= lng <= 180.0: market.lng = lng
                             case 'street', str(geo_street): market.geo_street = geo_street
                             case 'street_type', str(geo_street_type): market.geo_street_type = StreetType.objects.get_or_create(type_name=geo_street_type)[0]
                             case 'house', str(geo_house): market.geo_house = geo_house
@@ -183,12 +183,12 @@ def delete_market(market_id: str):
 def create_market_outlets(market_id: str, data):
     market = Market.objects.get(market_id=market_id)
     with transaction.atomic():
-        for olt in data:
-            match olt:
+        for outlet_data in data:
+            match outlet_data:
                 case {
                     'location_number': str(location_number),
                     'location_row': str(location_row),
-                    'price': float(price),
+                    'price': float(price) | int(price),
                     'street_vending': bool(street_vending),
                     'trade_type': str(trade_type),
                     'trade_place_type': str(trade_place_type),
@@ -196,10 +196,10 @@ def create_market_outlets(market_id: str, data):
                     'trade_spec_type_id_rec': str(trade_spec_type_id_rec),
                     'location_sector': str(location_sector),
                     'meas': {
-                        'area': float(meas_area),
-                        'length': float(meas_length),
-                        'height': float(meas_height),
-                        'width': float(meas_width)
+                        'area': float(meas_area) | int(meas_area),
+                        'length': float(meas_length) | int(meas_length),
+                        'height': float(meas_height) | int(meas_height),
+                        'width': float(meas_width) | int(meas_width)
                     },
                     'impr': {
                         'electricity': bool(impr_electricity),
@@ -249,7 +249,7 @@ def create_market_outlets(market_id: str, data):
                         impr_fridge=impr_fridge,
                         impr_shopwindow=impr_shopwindow
                     )
-                case _: raise ValueError(olt)
+                case _: raise ValueError(outlet_data)
         return True
 
 
@@ -297,24 +297,24 @@ def update_market_outlets(market_id: str, data):
                     match key, value:
                         case 'location_number', _: pass
                         case 'location_row', str(location_row): r.location_row = location_row
-                        case 'price', float(price) if price >= 0.0: r.price = price
+                        case 'price', float(price) | int(price) if price >= 0.0: r.price = price
                         case 'street_vending', bool(street_vending): r.street_vending = street_vending
                         case 'trade_type', str(trade_type): r.trade_type = TradeType.objects.get_or_create(type_name=trade_type)[0]
                         case 'trade_place_type', str(trade_place_type) if trade_place_type in OutletState:
                             match r.rented_by, trade_place_type:
                                 case None, _: r.trade_place_type = TradePlaceType.objects.get_or_create(type_name=trade_place_type)[0]
                                 case _, OutletState.RENTED: r.trade_place_type = TradePlaceType.objects.get_or_create(type_name=OutletState.RENTED)[0]
-                                case _: raise ValueError(f'Статус ТМ {r.location_number} не может быть изменен на {trade_place_type}: ТМ арендовано')
+                                case _: raise ValueError(f'Статус ТМ {r.location_number} не может быть изменен на {trade_place_type}: ТМ {'не арендовано' if r.rented_by is None else 'арендовано'}')
                         case 'trade_spec_type_id_act', str(trade_spec_type_id_act): r.trade_spec_type_id_act = TradeSpecType.objects.get_or_create(type_name=trade_spec_type_id_act)[0]
                         case 'trade_spec_type_id_rec', str(trade_spec_type_id_rec): r.trade_spec_type_id_rec = TradeSpecType.objects.get_or_create(type_name=trade_spec_type_id_rec)[0]
                         case 'location_sector', str(location_sector): r.location_sector = TradeSector.objects.get_or_create(sector_name=location_sector)[0]
                         case 'meas', {**meas}:
                             for m_key, m_value in meas.items():
                                 match m_key, m_value:
-                                    case 'area', float(meas_area) if meas_area >= 0.0: r.meas_area = meas_area
-                                    case 'length', float(meas_length) if meas_length >= 0.0: r.meas_length = meas_length
-                                    case 'height', float(meas_height) if meas_height >= 0.0: r.meas_height = meas_height
-                                    case 'width', float(meas_width) if meas_width >= 0.0: r.meas_width = meas_width
+                                    case 'area', float(meas_area) | int(meas_area) if meas_area >= 0.0: r.meas_area = meas_area
+                                    case 'length', float(meas_length) | int(meas_length) if meas_length >= 0.0: r.meas_length = meas_length
+                                    case 'height', float(meas_height) | int(meas_height) if meas_height >= 0.0: r.meas_height = meas_height
+                                    case 'width', float(meas_width) | int(meas_width) if meas_width >= 0.0: r.meas_width = meas_width
                                     case _: raise ValueError((m_key, m_value))
                         case 'impr', {**impr}:
                             for i_key, i_value in impr.items():

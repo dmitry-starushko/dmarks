@@ -73,7 +73,7 @@ REST_FRAMEWORK = {
     ],
     'DEFAULT_THROTTLE_RATES': {
         'anon': '10000/day',
-        'user': '10000/day'
+        'user': '10000/day',
     },
     'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
 }
@@ -164,5 +164,24 @@ LOG_TTL_DAYS = {
     LogRecordKind.FATAL: LOG_TTL_DAYS_DEFAULT,
 }
 
+USE_1C_API = False
 
+AUTH_1C_API = ''
 
+URLS_1C_API = {
+    'booking': 'http://localhost:8000/extapi/dummy1c/booking/',
+    'confirmation': 'http://localhost:8000/extapi/dummy1c/confirmation/',
+    'reg-card': 'http://localhost:8000/extapi/dummy1c/regcard/',
+    'answers': 'http://localhost:8000/extapi/dummy1c/answers/',
+    'market-info': 'http://localhost:8000/extapi/dummy1c/market-info/',
+    'moderation': 'http://localhost:8000/extapi/dummy1c/moderation/',
+    'check-results': 'http://localhost:8000/extapi/dummy1c/check/',
+}
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'mail.gprd-dnr.ru'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'maps.mail@gprd-dnr.ru'
+EMAIL_HOST_PASSWORD = '7948yXS2Gp'
+EMAIL_TO = ['dmitry.starushko@gmail.com']

@@ -226,6 +226,27 @@
     /*border: 1px solid black;*/
 }
 
+.table-tp th.sort-asc:after,
+.table-tp th.sort-desc:after{
+    content: ' ';
+    position: relative;
+    left: 20px;
+    border: 7px solid transparent;
+}
+.table-tp th.sort-asc:after{
+    top: 15px;
+    border-top-color: #707070;
+}
+.table-tp th.sort-desc:after{
+    bottom: 10px;
+    border-bottom-color: #707070;
+}
+.table-tp th.sort-asc,
+.table-tp th.sort-desc{
+    padding-left: 20px;
+    cursor: pointer;
+}
+
 .table-tp > tbody > tr {
     cursor: pointer;
     /*border: 1px solid black;*/

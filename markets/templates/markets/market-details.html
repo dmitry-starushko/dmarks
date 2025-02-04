@@ -67,6 +67,7 @@ import { View3D } from "view3d";
                           <details open>
                             <summary>Дополнительная информация о рынке</summary>
                             <ul>
+                                <li>Категория рентабельности: <strong>{{market.profitability}}</strong></li>
                                 {% for key,value in aux_info.items %}
                                 <li>{{key}}: <strong>{{value}}</strong></li>
                                 {% endfor %}

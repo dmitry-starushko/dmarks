@@ -70,7 +70,7 @@ class PV_NotificationsView(APIView):
     permission_classes = [IsAuthenticated]
 
     @on_exception_returns_response(HttpResponseBadRequest)
-    def post(self, request, year: int, month: int, day: int, calendar: bool):
+    def post(self, request, year: int, month: int, day: int, calendar: int):
         date = f'{year}-{month}-{day}'
         calendar = bool(calendar)
         notifications = Notification.objects.filter(user__isnull=True, calendar_event=calendar, published__lte=date, unpublished__gt=date)
@@ -152,10 +152,11 @@ class SendAnswerView(APIView):
             case {'question_uuid': str(uuid), 'answer': bool(answer)}:
                 ntf = user.notifications.get(question_uuid=uuid)
                 st_deliver_answer.delay(user.itn, uuid, answer)
-                ntf.text += f'\n\n> *Вы ответили: «{'Да' if answer else 'Нет'}»*'
+                yes_no = f'«{'Да' if answer else 'Нет'}»'
+                ntf.text += f'\n\n_```Вы ответили: {yes_no}```_'
                 ntf.question_uuid = None
                 ntf.save()
-                dlog_info(user, f'Пользователь {user.phone} ответил {'Да' if answer else 'Нет'} на вопрос {uuid}')
+                dlog_info(user, f'Пользователь {user.phone} ответил {yes_no} на вопрос {uuid}')
             case _: raise ValueError(data)
         return Response({'result': True})
 
