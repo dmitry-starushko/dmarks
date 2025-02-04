@@ -61,7 +61,7 @@ class AuthenticationForm(auth_forms.AuthenticationForm):
 
 class LoginView(auth_views.LoginView):
     def __init__(self, *args, **kwargs):
-        super().__init__(*args,**kwargs)
+        super().__init__(*args, **kwargs)
         self.authentication_form = AuthenticationForm
 
 
