@@ -80,7 +80,7 @@ class RegistrationView(View):
     def post(self, request):
         form = RegistrationForm(request.POST)
         if form.is_valid():
-            if (sms_code_uuid := request.COOKIES.get('sms_code_uuid', '?')) == '?':
+            if (sms_code_uuid := request.COOKIES.get('sms_code_uuid', '@')) == '@':
                 sms_code_uuid = send_sms_code(form.cleaned_data['phone'])
             sms_code = form.cleaned_data['sms_code']
             if not (sms_code and check_sms_code(sms_code, sms_code_uuid)):
