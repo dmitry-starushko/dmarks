@@ -265,7 +265,7 @@ window.addEventListener("tp_header_clicked", async (e) => { {# -----------------
     console.log(e.detail);
     const tableHeaderItems = document.querySelectorAll('.sort-th');
 
-    current.sort_table = "";
+    //current.sort_table = "";
     for (var i = 0; i < tableHeaderItems.length; i++) {
       if(i == e.detail) {
         tableHeaderItems[i].setAttribute("sort", nextSort(tableHeaderItems[i].getAttribute("sort")));
@@ -276,7 +276,7 @@ window.addEventListener("tp_header_clicked", async (e) => { {# -----------------
 
     }
     current.sort_table = current.sort_table.slice(0, -1);
-    //alert(current.sort_table);
+    alert(current.sort_table);
     update_outlet_table();
 });
 

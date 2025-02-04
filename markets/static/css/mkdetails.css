@@ -226,6 +226,10 @@
     /*border: 1px solid black;*/
 }
 
+.table-tp th.sort-th {
+    cursor: pointer;
+}
+
 .table-tp th.sort-asc:after,
 .table-tp th.sort-desc:after{
     content: ' ';
@@ -244,7 +248,7 @@
 .table-tp th.sort-asc,
 .table-tp th.sort-desc{
     padding-left: 20px;
-    cursor: pointer;
+    /*cursor: pointer;*/
 }
 
 .table-tp > tbody > tr {
