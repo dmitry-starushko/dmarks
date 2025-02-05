@@ -1,6 +1,5 @@
 import httpx
 from django.conf import settings
-
 from markets.decorators import on_exception_returns
 from markets.enums import FUS
 from markets.models import DmUser
