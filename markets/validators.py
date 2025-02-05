@@ -2,13 +2,13 @@ from django.core.validators import RegexValidator
 
 
 class Validators:
-    CSS = '^#[\\da-fA-F]{6}$'
-    HEX = '^0x[\\da-fA-F]{1,6}$'
-    ONM = '^\\d{9}[а-яё]{0,1}$'
-    MID = '^\\d{3}$'
-    POC = '^\\d{5,6}$'
-    ITN = '^((?:\\d{10})|(?:\\d{12}))$'
-    PNE = '^\\+\\d{1,3}\\(\\d{3}\\)\\d{3}-\\d{2}-\\d{2}$'
+    CSS = r'^#[\da-fA-F]{6}$'
+    HEX = r'^0x[\da-fA-F]{1,6}$'
+    ONM = r'^\d{9}[а-яё]{0,1}$'
+    MID = r'^\d{3}$'
+    POC = r'^\d{5,6}$'
+    ITN = r'^((?:\d{10})|(?:\d{12}))$'
+    PNE = r'^\+\d{1,3}\(\d{3}\)\d{3}-\d{2}-\d{2}$'
 
     @staticmethod
     def _rxv(rx: str):
