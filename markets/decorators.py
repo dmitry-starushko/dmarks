@@ -1,6 +1,7 @@
 from redis import Redis
 from django.conf import settings
 from threading import Lock
+from functools import wraps
 
 redis = Redis(host=settings.REDIS_HOST, port=settings.REDIS_PORT, db=settings.REDIS_DB)
 
@@ -11,6 +12,7 @@ def on_exception_returns_response(response_class, name=None):
     def decorator(function):
         qln = function.__qualname__
 
+        @wraps(function)
         def proxy(*args, **kwargs):
             fail_flag = f'{qln}:{name}:{kwargs[name]}:failed' if name is not None and name in kwargs else None
             try:
@@ -30,6 +32,7 @@ def on_exception_returns_response(response_class, name=None):
 
 def on_exception_returns(result):
     def decorator(function):
+        @wraps(function)
         def proxy(*args, **kwargs):
             try:
                 return function(*args, **kwargs)
@@ -50,6 +53,7 @@ def globally_lonely_action(return_if_busy=None):
             with gla_lock:
                 return redis.exists(gla_name)
 
+        @wraps(function)
         def proxy(*args, **kwargs):
             with gla_lock:
                 if not redis.set(name=gla_name, value=1, ex=1800, nx=True):
