@@ -9,6 +9,7 @@ from renter.forms.business_card import BusinessCardForm
 from renter.forms.registration import RegistrationForm
 from django.contrib.auth import views as auth_views, forms as auth_forms
 from django import forms as dj_forms
+from renter.sms import send_sms_code, check_sms_code
 
 
 class RenterView(LoginRequiredMixin, View):
@@ -61,7 +62,7 @@ class AuthenticationForm(auth_forms.AuthenticationForm):
 
 class LoginView(auth_views.LoginView):
     def __init__(self, *args, **kwargs):
-        super().__init__(*args,**kwargs)
+        super().__init__(*args, **kwargs)
         self.authentication_form = AuthenticationForm
 
 
@@ -79,11 +80,16 @@ class RegistrationView(View):
     def post(self, request):
         form = RegistrationForm(request.POST)
         if form.is_valid():
-            if form.cleaned_data['sms_code'] != '12345':
+            if (sms_code_uuid := request.COOKIES.get('sms_code_uuid', '@')) == '@':
+                sms_code_uuid = send_sms_code(form.cleaned_data['phone'])
+            sms_code = form.cleaned_data['sms_code']
+            if not (sms_code and check_sms_code(sms_code, sms_code_uuid)):
                 for f in ('phone', 'email', 'first_name', 'last_name', 'password', 'password2'):
                     form.fields[f].widget = dj_forms.HiddenInput()
                 form.fields['sms_code'].widget = dj_forms.TextInput()
-                return render(request, self.template_name, {'form': form})
+                response = render(request, self.template_name, {'form': form})
+                response.set_cookie('sms_code_uuid', sms_code_uuid)
+                return response
             new_user = form.save(commit=False)
             new_user.set_password(form.cleaned_data['password'])
             new_user.save()

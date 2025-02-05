@@ -8,7 +8,7 @@ import re
 class RegistrationForm(forms.ModelForm):
     password = forms.CharField(label='Пароль', widget=forms.PasswordInput)
     password2 = forms.CharField(label='Повторите пароль', widget=forms.PasswordInput)
-    sms_code = forms.CharField(label='Код подтверждения из СМС', required=False, widget=forms.HiddenInput)
+    sms_code = forms.CharField(initial='', label='Введите код подтверждения из SMS', required=False, widget=forms.HiddenInput)
 
     class Meta:
         model = DmUser
