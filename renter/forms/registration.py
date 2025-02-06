@@ -14,6 +14,11 @@ class RegistrationForm(forms.ModelForm):
         model = DmUser
         fields = ['phone', 'first_name', 'last_name', 'email']
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['phone'].label = 'Телефон'
+        self.fields['email'].label = 'Адрес электронной почты'
+
     def clean_phone(self):
         cd = self.cleaned_data
         try:
