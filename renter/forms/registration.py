@@ -16,8 +16,8 @@ class RegistrationForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.fields['phone'].label = 'Телефон'
-        self.fields['email'].label = 'Адрес электронной почты'
+        for key, val in {'phone': 'Телефон', 'email': 'Адрес электронной почты'}.items():
+            self.fields[key].label = val
 
     def clean_phone(self):
         cd = self.cleaned_data
@@ -34,10 +34,10 @@ class RegistrationForm(forms.ModelForm):
             raise forms.ValidationError('Пароли не совпадают')
         if len(password) < 8:
             raise forms.ValidationError('Пароль должен содержать не менее 8 символов')
-        if re.search('\\d', password) is None:
+        if re.search(r'\d', password) is None:
             raise forms.ValidationError('Пароль должен содержать хотя бы одну цифру')
-        if re.search('[A-ZА-ЯЁ]', password) is None:
+        if re.search(r'[A-ZА-ЯЁ]', password) is None:
             raise forms.ValidationError('Пароль должен содержать хотя бы одну заглавную букву')
-        if re.search('[a-zа-яё]', password) is None:
+        if re.search(r'[a-zа-яё]', password) is None:
             raise forms.ValidationError('Пароль должен содержать хотя бы одну строчную букву')
         return password
