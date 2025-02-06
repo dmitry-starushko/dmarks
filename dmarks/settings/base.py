@@ -185,3 +185,13 @@ EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'maps.mail@gprd-dnr.ru'
 EMAIL_HOST_PASSWORD = '7948yXS2Gp'
 EMAIL_TO = ['dmitry.starushko@gmail.com']
+
+
+USE_SMS_API = False
+
+AUTH_SMS_API = 'Basic MTA4NTM6VGo0bVBUM0FFVHZ1cHZsSU9Pa1pBdQ=='
+
+URLS_SMS_API = {
+    'send': 'https://direct.i-dgtl.ru/api/v1/verifier/send',
+    'confirmation': 'https://direct.i-dgtl.ru/api/v1/verifier/check',
+}
