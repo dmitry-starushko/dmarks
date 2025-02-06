@@ -67,6 +67,8 @@ class LoginView(auth_views.LoginView):
 
 
 class RegistrationView(View):
+    COOKIE_NAME = 'dm_sms_code_uuid'
+
     @property
     def template_name(self):
         return 'registration/register.html'
@@ -75,12 +77,14 @@ class RegistrationView(View):
         form = RegistrationForm()
         form.fields['phone'].label = 'Телефон'
         form.fields['email'].label = 'Адрес электронной почты'
-        return render(request, self.template_name, {'form': form})
+        response = render(request, self.template_name, {'form': form})
+        response.delete_cookie(self.COOKIE_NAME)
+        return response
 
     def post(self, request):
         form = RegistrationForm(request.POST)
         if form.is_valid():
-            if (sms_code_uuid := request.COOKIES.get('sms_code_uuid', '@')) == '@':
+            if (sms_code_uuid := request.COOKIES.get(self.COOKIE_NAME, '@')) == '@':
                 sms_code_uuid = send_sms_code(form.cleaned_data['phone'])
             sms_code = form.cleaned_data['sms_code']
             if not (sms_code and check_sms_code(sms_code, sms_code_uuid)):
@@ -88,7 +92,7 @@ class RegistrationView(View):
                     form.fields[f].widget = dj_forms.HiddenInput()
                 form.fields['sms_code'].widget = dj_forms.TextInput()
                 response = render(request, self.template_name, {'form': form})
-                response.set_cookie('sms_code_uuid', sms_code_uuid)
+                response.set_cookie(self.COOKIE_NAME, sms_code_uuid)
                 return response
             new_user = form.save(commit=False)
             new_user.set_password(form.cleaned_data['password'])
