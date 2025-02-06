@@ -73,16 +73,21 @@ class RegistrationView(View):
     def template_name(self):
         return 'registration/register.html'
 
-    def get(self, request):
-        form = RegistrationForm()
+    @staticmethod
+    def update_form_labels(form):
         form.fields['phone'].label = 'Телефон'
         form.fields['email'].label = 'Адрес электронной почты'
+
+    def get(self, request):
+        form = RegistrationForm()
+        self.update_form_labels(form)
         response = render(request, self.template_name, {'form': form})
         response.delete_cookie(self.COOKIE_NAME)
         return response
 
     def post(self, request):
         form = RegistrationForm(request.POST)
+        self.update_form_labels(form)
         if form.is_valid():
             if (sms_code_uuid := request.COOKIES.get(self.COOKIE_NAME, '@')) == '@':
                 sms_code_uuid = send_sms_code(form.cleaned_data['phone'])
