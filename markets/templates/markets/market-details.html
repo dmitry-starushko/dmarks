@@ -187,7 +187,7 @@ const current = {
     scheme_name: "{{outlet.scheme.floor | default:'Уровень без названия'}}",
     outlet_number: "{{outlet.location_number}}",
     legend: 0,
-    sort_table: "",
+    sort_table: ""
 };
 {% elif market.schemes.exists %}
 const current = {
@@ -195,7 +195,7 @@ const current = {
     scheme_name: "{{market.schemes.first.floor | default:'Уровень без названия'}}",
     outlet_number: null,
     legend: 0,
-    sort_table: "",
+    sort_table: ""
 };
 {% endif %}
 {% if outlet or market.schemes.exists %}
@@ -206,14 +206,15 @@ const v3d = new View3D( {# -----------------------------------------------------
         v3d.set_ready_signal(null);
         window.dispatchEvent(new CustomEvent("outlet_clicked", { detail: { id: current.outlet_number } }));
     } : null);
-const re_click = () => {
-    window.dispatchEvent(new CustomEvent("outlet_clicked", { detail: { id: current.outlet_number }}));
-};
+const re_click = () => { window.dispatchEvent(new CustomEvent("outlet_clicked", { detail: { id: current.outlet_number }})); };
 const update_outlet_table = (on_update=re_click) => { {# ---------------------------------------- Loading outlet table partial view --- #}
+    if(update_outlet_table.abort_controller) update_outlet_table.abort_controller.abort('obsolete');
+    update_outlet_table.abort_controller = new AbortController();
     document.getElementById("mkdetails-scheme-header").innerText = current.scheme_name;
     const args = {scheme_pk: current.scheme_pk, legend: current.legend};
-    dj_load_partial_view("partial_outlet_table", args, current.sort_table).then(
+    dj_load_partial_view("partial_outlet_table", args, current.sort_table, update_outlet_table.abort_controller.signal).then(
         html => {
+            update_outlet_table.abort_controller = null;
             document.getElementById("mkdetails-tp-tab").innerHTML = html;
             if(on_update) on_update();
         }
