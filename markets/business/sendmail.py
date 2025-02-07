@@ -5,12 +5,12 @@ from django.conf import settings
 import os
 
 
-def send_email(subject, body, attachment_path=None):
+def send_email(send_to, subject, body, attachment_path=None):
     email = EmailMessage(
         subject=subject,
         body=body,
         from_email=settings.EMAIL_HOST_USER,
-        to=settings.EMAIL_TO
+        to=send_to
     )
 
     if attachment_path and os.path.exists(attachment_path):
