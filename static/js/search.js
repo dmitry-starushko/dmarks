@@ -37,8 +37,11 @@ searchinput.onkeyup = () => {
         globalTimeout = setTimeout(() => {
             globalTimeout = null;
             document.querySelector(".search-market-top > img").classList.add("pulsation");
-            dj_load_partial_view("partial_filtered_markets", {}, {search_text: text})
+            if(searchinput.abort_controller) searchinput.abort_controller.abort('obsolete');
+            searchinput.abort_controller = new AbortController();
+            dj_load_partial_view("partial_filtered_markets", {}, {search_text: text}, searchinput.abort_controller.signal)
                 .then(html => {
+                    searchinput.abort_controller = null;
                     search_result.innerHTML = html;
                     document.querySelector(".search-market-top > img").classList.remove("pulsation");
                 });

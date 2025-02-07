@@ -221,8 +221,13 @@ const update_outlet_table = (on_update=re_click) => { {# -----------------------
     );
 };
 const update_legend_body = () => { {# ------------------------------------------ Loading legend body partial view --- #}
-    dj_load_partial_view("partial_legend_body", {legend: current.legend}, {}).then(
-        html => { document.getElementById("legend-body-container").innerHTML = html; }
+    if(update_legend_body.abort_controller) update_legend_body.abort_controller.abort('obsolete');
+    update_legend_body.abort_controller = new AbortController();
+    dj_load_partial_view("partial_legend_body", {legend: current.legend}, {}, update_legend_body.signal).then(
+        html => {
+            update_legend_body.abort_controller = null;
+            document.getElementById("legend-body-container").innerHTML = html;
+        }
     );
 };
 const nextSort = (unit) => {
@@ -237,11 +242,19 @@ const nextSort = (unit) => {
 window.addEventListener("outlet_pointed", (e) => { {# ---------------------------------------------- Outlet hover --- #} // TODO !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     console.log(`pointed: ${e.detail.id}`);
 });
+const update_outlet_details = (oid) => {
+    if(update_outlet_details.abort_controller) update_outlet_details.abort_controller.abort('obsolete');
+    update_outlet_details.abort_controller = new AbortController();
+    dj_load_partial_view("partial_outlet_detail", {outlet_number: oid}, {}, update_outlet_details.abort_controller.signal).then(
+        html => {
+            update_outlet_details.abort_controller = null;
+            document.getElementById("outlet-info").innerHTML = html;
+        }
+    );
+};
 window.addEventListener("outlet_clicked", async (e) => { {# ---------------------------------------- Outlet click --- #}
     if(e.detail.id) {
-        dj_load_partial_view("partial_outlet_detail", {outlet_number: e.detail.id}, {}).then(
-            html => {document.getElementById("outlet-info").innerHTML = html;}
-        );
+        update_outlet_details(e.detail.id);
         for (const tr of document.querySelectorAll('tr.table-tp-row')) {
             tr.classList.remove('selected');
             tr.classList.add(tr.getElementsByTagName('td')[0].textContent === e.detail.id ? 'selected' : 'clean');
