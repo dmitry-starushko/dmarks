@@ -188,7 +188,6 @@ const current = {
     outlet_number: "{{outlet.location_number}}",
     legend: 0,
     sort_table: "",
-    //sort_state = ["", "", "", ""]
 };
 {% elif market.schemes.exists %}
 const current = {
@@ -197,7 +196,6 @@ const current = {
     outlet_number: null,
     legend: 0,
     sort_table: "",
-    //sort_state = ["", "", "", ""]
 };
 {% endif %}
 {% if outlet or market.schemes.exists %}
@@ -226,7 +224,6 @@ const update_legend_body = () => { {# ------------------------------------------
         html => { document.getElementById("legend-body-container").innerHTML = html; }
     );
 };
-
 const nextSort = (unit) => {
   const sort = {
     'a': () => { return 'd'; },
@@ -234,10 +231,8 @@ const nextSort = (unit) => {
     '': () => { return 'a'; },
     'default': () => { return 'a' }
   };
-  // we return the Object literal's function invoked
   return (sort[unit] || sort['default'])();
 }
-
 window.addEventListener("outlet_pointed", (e) => { {# ---------------------------------------------- Outlet hover --- #} // TODO !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     console.log(`pointed: ${e.detail.id}`);
 });
