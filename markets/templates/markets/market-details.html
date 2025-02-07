@@ -187,7 +187,8 @@ const current = {
     scheme_name: "{{outlet.scheme.floor | default:'Уровень без названия'}}",
     outlet_number: "{{outlet.location_number}}",
     legend: 0,
-    sort_table: "2:d,0:d,1:a,3:d"
+    sort_table: "",
+    //sort_state = ["", "", "", ""]
 };
 {% elif market.schemes.exists %}
 const current = {
@@ -195,7 +196,8 @@ const current = {
     scheme_name: "{{market.schemes.first.floor | default:'Уровень без названия'}}",
     outlet_number: null,
     legend: 0,
-    sort_table: "2:d,0:d,1:a,3:d"
+    sort_table: "",
+    //sort_state = ["", "", "", ""]
 };
 {% endif %}
 {% if outlet or market.schemes.exists %}
@@ -262,22 +264,15 @@ window.addEventListener("market_storey_changed", (e) => { {# -------------------
 });
 
 window.addEventListener("tp_header_clicked", async (e) => { {# ---------------------------------------- TradePlace table header click --- #}
-
-    console.log(e.detail);
-    const tableHeaderItems = document.querySelectorAll('.sort-th');
-
-    //current.sort_table = "";
-    for (var i = 0; i < tableHeaderItems.length; i++) {
-      if(i == e.detail) {
-        tableHeaderItems[i].setAttribute("sort", nextSort(tableHeaderItems[i].getAttribute("sort")));
-        alert(nextSort(tableHeaderItems[i].getAttribute("sort")));
-        }
-      if(tableHeaderItems[i].getAttribute("sort"))
-        current.sort_table += i + ":" + tableHeaderItems[i].getAttribute("sort") + ",";
-
+    if(current.sort_table.includes(e.detail)) {
+        var sort_str = nextSort(current.sort_table.substring(current.sort_table.indexOf(e.detail + ':') + 2, current.sort_table.indexOf(e.detail + ':') + 3));
+        current.sort_table = current.sort_table.replace(current.sort_table.substring(current.sort_table.indexOf(e.detail + ':'), current.sort_table.indexOf(e.detail + ':') + 3), "");
+        if(sort_str)
+         current.sort_table += (current.sort_table.length === 0) ? e.detail + ":" + sort_str :  ',' + e.detail + ":" + sort_str;
     }
-    current.sort_table = current.sort_table.slice(0, -1);
-    alert(current.sort_table);
+    else
+        current.sort_table += (current.sort_table.length === 0) ? e.detail + ":" + nextSort() : ',' + e.detail + ":" + nextSort();
+    current.sort_table = current.sort_table.replace(/^,|,$/g,'').replace(/(.)\1+/g, '$1');
     update_outlet_table();
 });
 
