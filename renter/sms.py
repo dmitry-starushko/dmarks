@@ -18,7 +18,6 @@ def send_sms_code(phone: str) -> str:
 
 @on_exception_returns(False)
 def check_sms_code(code: str, uuid: str) -> bool:
-    print(code, uuid)
     with httpx.Client() as client:
         res = client.post(settings.URLS_SMS_API['confirmation'],
                           headers={'Content-Type': 'application/json'} | ({'Authorization': settings.AUTH_SMS_API} if settings.AUTH_SMS_API else {}),
