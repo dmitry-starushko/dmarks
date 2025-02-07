@@ -164,10 +164,7 @@ LOG_TTL_DAYS = {
     LogRecordKind.FATAL: LOG_TTL_DAYS_DEFAULT,
 }
 
-USE_1C_API = False
-
 AUTH_1C_API = ''
-
 URLS_1C_API = {
     'booking': 'http://localhost:8000/extapi/dummy1c/booking/',
     'confirmation': 'http://localhost:8000/extapi/dummy1c/confirmation/',
@@ -178,20 +175,15 @@ URLS_1C_API = {
     'check-results': 'http://localhost:8000/extapi/dummy1c/check/',
 }
 
+AUTH_SMS_API = 'Basic MTA4NTM6VGo0bVBUM0FFVHZ1cHZsSU9Pa1pBdQ=='
+URLS_SMS_API = {
+    'send': 'https://direct.i-dgtl.ru/api/v1/verifier/send',
+    'confirmation': 'https://direct.i-dgtl.ru/api/v1/verifier/check',
+}
+
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'mail.gprd-dnr.ru'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'maps.mail@gprd-dnr.ru'
 EMAIL_HOST_PASSWORD = '7948yXS2Gp'
-EMAIL_TO = ['dmitry.starushko@gmail.com']
-
-
-USE_SMS_API = False
-
-AUTH_SMS_API = 'Basic MTA4NTM6VGo0bVBUM0FFVHZ1cHZsSU9Pa1pBdQ=='
-
-URLS_SMS_API = {
-    'send': 'https://direct.i-dgtl.ru/api/v1/verifier/send',
-    'confirmation': 'https://direct.i-dgtl.ru/api/v1/verifier/check',
-}
