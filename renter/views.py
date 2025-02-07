@@ -86,7 +86,7 @@ class RegistrationView(View):
                 sms_code_uuid = send_sms_code(form.cleaned_data['phone'])
             sms_code = form.cleaned_data['sms_code']
             if not (sms_code and check_sms_code(sms_code, sms_code_uuid)):
-                for f in ('phone', 'email', 'first_name', 'last_name', 'password', 'password2'):
+                for f in ('phone', 'email', 'first_name', 'last_name', 'password', 'password2', 'confirm'):
                     form.fields[f].widget = dj_forms.HiddenInput()
                 form.fields['sms_code'].widget = dj_forms.TextInput()
                 response = render(request, self.template_name, {'form': form})

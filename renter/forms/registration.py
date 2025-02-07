@@ -8,6 +8,7 @@ import re
 class RegistrationForm(forms.ModelForm):
     password = forms.CharField(label='Пароль', widget=forms.PasswordInput)
     password2 = forms.CharField(label='Повторите пароль', widget=forms.PasswordInput)
+    confirm = forms.BooleanField(initial=False, label='Я соглашаюсь с политикой конфиденциальности данного сайта')
     sms_code = forms.CharField(initial='', label='Введите код подтверждения из SMS', required=False, widget=forms.HiddenInput)
 
     class Meta:
@@ -20,12 +21,18 @@ class RegistrationForm(forms.ModelForm):
             self.fields[key].label = val
 
     def clean_phone(self):
-        cd = self.cleaned_data
+        phone = self.cleaned_data['phone']
         try:
-            Validators.phone(cd['phone'])
+            Validators.phone(phone)
         except ValidationError:
             raise forms.ValidationError('Укажите номер телефона в формате +7(999)999-99-99')
-        return cd['phone']
+        return phone
+
+    def clean_confirm(self):
+        confirm = self.cleaned_data['confirm']
+        if not confirm:
+            raise forms.ValidationError('Ваше согласие необходимо для регистрации')
+        return confirm
 
     def clean_password2(self):
         cd = self.cleaned_data
