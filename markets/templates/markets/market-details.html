@@ -230,14 +230,9 @@ const update_legend_body = () => { {# ------------------------------------------
         }
     );
 };
-const nextSort = (unit) => {
-  const sort = {
-    'a': () => { return 'd'; },
-    'd': () => { return ''; },
-    '': () => { return 'a'; },
-    'default': () => { return 'a' }
-  };
-  return (sort[unit] || sort['default'])();
+const next_sort = (unit) => {
+    const sort = { "a": "d", "d": "", "": "a" };
+    return unit in sort ? sort[unit] : "a";
 }
 window.addEventListener("outlet_pointed", (e) => { {# ---------------------------------------------- Outlet hover --- #} // TODO !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     console.log(`pointed: ${e.detail.id}`);
@@ -279,13 +274,13 @@ window.addEventListener("market_storey_changed", (e) => { {# -------------------
 });
 window.addEventListener("tp_header_clicked", async (e) => { {# ---------------------------------------- TradePlace table header click --- #}
     if(current.sort_table.includes(e.detail)) {
-        var sort_str = nextSort(current.sort_table.substring(current.sort_table.indexOf(e.detail + ':') + 2, current.sort_table.indexOf(e.detail + ':') + 3));
+        var sort_str = next_sort(current.sort_table.substring(current.sort_table.indexOf(e.detail + ':') + 2, current.sort_table.indexOf(e.detail + ':') + 3));
         current.sort_table = current.sort_table.replace(current.sort_table.substring(current.sort_table.indexOf(e.detail + ':'), current.sort_table.indexOf(e.detail + ':') + 3), "");
         if(sort_str)
          current.sort_table += (current.sort_table.length === 0) ? e.detail + ":" + sort_str :  ',' + e.detail + ":" + sort_str;
     }
     else
-        current.sort_table += (current.sort_table.length === 0) ? e.detail + ":" + nextSort() : ',' + e.detail + ":" + nextSort();
+        current.sort_table += (current.sort_table.length === 0) ? e.detail + ":" + next_sort() : ',' + e.detail + ":" + next_sort();
     current.sort_table = current.sort_table.replace(/^,|,$/g,'').replace(/(.)\1+/g, '$1');
     update_outlet_table();
 });
