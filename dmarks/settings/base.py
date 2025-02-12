@@ -178,7 +178,7 @@ URLS_1C_API = {
 AUTH_SMS_API = 'Basic MTA4NTM6VGo0bVBUM0FFVHZ1cHZsSU9Pa1pBdQ=='
 URLS_SMS_API = {
     'send': 'https://direct.i-dgtl.ru/api/v1/verifier/send',
-    'confirmation': 'https://direct.i-dgtl.ru/api/v1/verifier/check',
+    'check': 'https://direct.i-dgtl.ru/api/v1/verifier/check',
 }
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
