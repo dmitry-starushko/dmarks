@@ -16,7 +16,6 @@ async function dj_reverse(path_name, args) {
         }
     )).json();
 }
-
 async function dj_load_partial_view(path_name, args, body, signal) {
     const url = await dj_reverse(`{{namespace}}:${path_name}`, args);
     return await (await fetch(
@@ -34,7 +33,6 @@ async function dj_load_partial_view(path_name, args, body, signal) {
         }
     )).text();
 }
-
 async function dj_api_call(path_name, args, body, signal) {
     const url = await dj_reverse(`{{namespace}}:${path_name}`, args);
     return await (await fetch(

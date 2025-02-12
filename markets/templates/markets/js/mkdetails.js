@@ -2,7 +2,6 @@
     const resizer = document.getElementById('dragSlide');
     const leftSide = resizer.previousElementSibling;
     const rightSide = resizer.nextElementSibling;
-
     const resizerTP = document.getElementById('dragSlideTP');
 
     // The current position of mouse
@@ -74,9 +73,6 @@
     {
         mkdetailsinfo.style.display = "flex";
         sectionTabs.style.display = "none";
-        /*rightPanel.style.visibility = "hidden";
-        /*rightPanel.style.width = "0";
-        tabsSection.style.width = "100%";*/
     });
 
     document.getElementById('mkdetails-tp').addEventListener("click", () =>
@@ -94,18 +90,6 @@
         tpTab.style.display = "none";
         schemeTab.style.display = "flex";
     });
-
-
-    /*function ShowRightPanel() {
-            mkdetailsinfo.style.display = "none";
-            sectionTabs.style.display = "flex";
-            rightPanel.style.visibility = "visible";
-            rightPanel.style.width = "40%";
-            tabsSection.style.width = "60%";
-    };
-
-    document.getElementById('mkdetails-tp').onclick = ShowRightPanel;
-    document.getElementById('mkdetails-scheme').onclick = ShowRightPanel;*/
 
     document.querySelector("#mkdetails-fullscreen").addEventListener("click", function (event) {
       if (document.fullscreenElement) {
@@ -125,9 +109,7 @@ function toggleItem(elem) {
       for (var i = 0; i < elem.length; i++) {
         if (current != elem[i]) {
           elem[i].classList.remove('active');
-        } /*else if (current.classList.contains('active') === true) {
-          current.classList.remove('active');
-        }*/ else {
+        } else {
           current.classList.add('active')
         }
       }
@@ -144,155 +126,6 @@ var tableHeaderItems = document.querySelectorAll('td.sort-th');
 
 for (var i = 0; i < tableHeaderItems.length; i++) {
       tableHeaderItems[i].onclick = function(e) {
-
        alert(i + e.target.getAttribute("sort"));
-      /*var root = e.target.closest("li.parent");
-      var mainroot = root.closest('ul').closest("li.parent");
-      var children = e.target.closest("li").querySelectorAll("input.tpnode");
-      var checkedCount = root.querySelectorAll("ul")[0].querySelectorAll("input.tpnode").length;
-
-      for (var i = 0; i < children.length; i++) {
-            children[i].checked = this.checked;
-        }
-
-      root.querySelectorAll("input.tpnode")[0].checked = root.querySelectorAll("ul")[0].querySelectorAll("input.tpnode:checked").length > 0;
-      root.querySelectorAll("input.tpnode")[0].indeterminate = root.querySelectorAll("ul")[0].querySelectorAll("input.tpnode:checked").length > 0 && checkedCount > root.querySelectorAll("ul")[0].querySelectorAll("input.tpnode:checked").length;
-
-      if(mainroot !== null) {
-          mainroot.querySelectorAll("input.tploc")[0].checked = mainroot.querySelectorAll("input.tpnode:checked").length > 0;
-          mainroot.querySelectorAll("input.tploc")[0].indeterminate = mainroot.querySelectorAll("input.tpnode:checked").length > 0 && mainroot.querySelectorAll("input.tpnode").length > mainroot.querySelectorAll("input.tpnode:checked").length;
-      }*/
     }
   }
-
-
-/*function compareValues(a, b) {
-  // return -1/0/1 based on what you "know" a and b
-  // are here. Numbers, text, some custom case-insensitive
-  // and natural number ordering, etc. That's up to you.
-  // A typical "do whatever JS would do" is:
-  return (a<b) ? -1 : (a>b) ? 1 : 0;
-}
-
-function sortTable(colnum) {
-  // get all the rows in this table:
-  let rows = Array.from(table.querySelectorAll(`tr`));
-
-  // but ignore the heading row:
-  rows = rows.slice(1);
-
-  // set up the queryselector for getting the indicated
-  // column from a row, so we can compare using its value:
-  let qs = `td:nth-child(${colnum})`;
-
-  // and then just... sort the rows:
-  rows.sort( (r1,r2) => {
-    // get each row's relevant column
-    let t1 = r1.querySelector(qs);
-    let t2 = r2.querySelector(qs);
-
-    // and then effect sorting by comparing their content:
-    return compareValues(t1.textContent,t2.textContent);
-  });
-
-  // and then the magic part that makes the sorting appear on-page:
-  rows.forEach(row => table.appendChild(row));
-}
-
-const table = document.getElementById('mkdetails-tp-table');
-if (table !== null) {
-    table.querySelectorAll('.sort-th').forEach((th, position) => {
-    alert('123');
-      th.addEventListener('click', evt => sortTable(position));
-    });
-}*/
-
-/*const headers = table.querySelectorAll('.sort-th');
-const tableBody = table.querySelector('tbody');
-const rows = tableBody.querySelectorAll('tr');
-
-// Track sort directions
-const directions = Array.from(headers).map(function (header) {
-    return '';
-});
-
-// Transform the content of given cell in given column
-const transform = function (index, content) {
-    // Get the data type of column
-    const type = headers[index].getAttribute('data-type');
-    switch (type) {
-        case 'number':
-            return parseFloat(content);
-        case 'string':
-        default:
-            return content;
-    }
-};
-
-const sortColumn = function (index) {
-    // Get the current direction
-    const direction = directions[index] || 'asc';
-
-    // A factor based on the direction
-    const multiplier = direction === 'asc' ? 1 : -1;
-
-    const newRows = Array.from(rows);
-
-    newRows.sort(function (rowA, rowB) {
-        const cellA = rowA.querySelectorAll('td')[index].innerHTML;
-        const cellB = rowB.querySelectorAll('td')[index].innerHTML;
-
-        const a = transform(index, cellA);
-        const b = transform(index, cellB);
-
-        switch (true) {
-            case a > b:
-                return 1 * multiplier;
-            case a < b:
-                return -1 * multiplier;
-            case a === b:
-                return 0;
-        }
-    });
-
-    // Remove old rows
-    [].forEach.call(rows, function (row) {
-        tableBody.removeChild(row);
-    });
-
-    // Reverse the direction
-    directions[index] = direction === 'asc' ? 'desc' : 'asc';
-
-    // Append new row
-    newRows.forEach(function (newRow) {
-        tableBody.appendChild(newRow);
-    });
-};
-
-[].forEach.call(headers, function (header, index) {
-    header.addEventListener('click', function () {
-        sortColumn(index);
-    });
-});*/
-
-/*var mkdetailtabs = document.querySelectorAll('.buttons-tab')
-for (i = 0; i < mkdetailtabs.length; i++) {
-  mkdetailtabs[i].addEventListener('click', function(e) {
-  alert('213');
-      var current = this;
-      for (var i = 0; i < mkdetailtabs.length; i++) {
-        if (current != mkdetailtabs[i]) {
-          mkdetailtabs[i].classList.remove('active');
-        } else if (current.classList.contains('active') === true) {
-          current.classList.remove('active');
-        } else {
-          current.classList.add('active')
-        }
-      }
-      e.preventDefault();
-  });
-}*/
-
-/*document.querySelectorAll('.buttons-tab').addEventListener("click", function (event) {
-  toggleItem(event);
-});*/
