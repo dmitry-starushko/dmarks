@@ -299,6 +299,11 @@
     width: 100%;
 }
 
+.mkdetails-tp-header {
+    display: flex;
+    justify-content: space-between;
+}
+
 .mkdetails-tp-header-block {
     border: 1px solid black;
     background-color: #ccc;
@@ -307,6 +312,10 @@
     width: 100%;
 }
 
+
+#mkdetails-tp-pointed{
+    padding-right: 5px;
+}
 
 /**** right tp panel***/
 
