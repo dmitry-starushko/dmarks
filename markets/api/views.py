@@ -374,6 +374,8 @@ class PV_UserActionView(APIView):
 
 # -- Actions --------------------------------------------------------------------------------------
 
+# TODO kill it
+
 class RestoreDatabaseConsistencyView(APIView):
     permission_classes = [AllowAny]
 

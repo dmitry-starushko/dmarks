@@ -37,30 +37,6 @@ var markerLayerText = new ol.layer.Vector({
             crossOrigin: "anonymous"
           }),
     style: function(feature) {
-{% comment %}
-//            style = style = new ol.style.Style({
-//            image: new ol.style.RegularShape({
-//                fill: new ol.style.Fill({
-//                  color: '#3399CC'
-//                }),
-//                stroke: new ol.style.Stroke({
-//                  color: '#fff'
-//                }),
-//                radius: 60 / Math.SQRT2,
-//                radius2: 30,
-//                points: 4,
-//                angle: 0,
-//                scale: [1, 0.5],
-//              }),
-//            text: new ol.style.Text({
-//                text: feature.get('label'),
-//                fill: new ol.style.Fill({
-//                  color: '#fff'
-//                })
-//              })
-//          });
-//          return style;
-{% endcomment %}
             style = new ol.style.Style({
             image: new ol.style.RegularShape({
                 fill: new ol.style.Fill({
