@@ -238,8 +238,7 @@ const next_sort = (unit) => {
     const sort = { "a": "d", "d": "", "": "a" };
     return unit in sort ? sort[unit] : "a";
 }
-window.addEventListener("outlet_pointed", (e) => { {# ---------------------------------------------- Outlet hover --- #} // TODO !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-    //console.log(`pointed: ${e.detail.id}`);
+window.addEventListener("outlet_pointed", (e) => { {# ---------------------------------------------- Outlet hover --- #}
     tp_pointed.innerText = (e.detail.id === null) ? '' : '№' + e.detail.id;
 });
 const update_outlet_details = (oid) => {
