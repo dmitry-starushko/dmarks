@@ -64,15 +64,3 @@ class ContactsView(View, BasicContextProvider):
             'data': data,
             'help_id': 300,
         })
-
-
-class Scheme3DView(View, BasicContextProvider):
-    @property
-    def template_name(self):
-        return 'markets/scheme3d.html'
-
-    @on_exception_returns_response(HttpResponseBadRequest)
-    def get(self, request, scheme_pk):
-        return render(request, self.template_name, self.basic_context(request) | {
-            'scheme_pk': scheme_pk
-        })
