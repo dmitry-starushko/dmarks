@@ -67,6 +67,8 @@
     var tpTab = document.getElementById('mkdetails-tp-tab');
     var schemeTab = document.getElementById('mkdetails-scheme-tab');
     var sectionTabs = document.getElementById('mkdetails-section-tabs');
+    var mkdetailscontent = document.getElementById('market-details-content');
+    var mkdetailsection = document.getElementById('market-details-section');
 
 
     document.getElementById('mkdetails-info').addEventListener("click", () =>
@@ -91,15 +93,73 @@
         schemeTab.style.display = "flex";
     });
 
-    document.querySelector("#mkdetails-fullscreen").addEventListener("click", function (event) {
+    const fullscr = () => {
       if (document.fullscreenElement) {
         // If there is a fullscreen element, exit full screen.
+        mkdetailscontent.style.minHeight = "calc(100vh - 300px)";
+        mkdetailsection.style.padding = "20px 0";
         document.exitFullscreen();
         return;
       }
       // Make the .element div fullscreen.
-      document.querySelector(".market-details-section").requestFullscreen();
+      mkdetailsection.requestFullscreen();
+      mkdetailsection.style.padding = "0";
+      mkdetailscontent.style.minHeight = "90%";
+    }
+
+    document.querySelector("#mkdetails-fullscreen").addEventListener("click", function (event) {
+        fullscr();
+      /*if (document.fullscreenElement) {
+        // If there is a fullscreen element, exit full screen.
+        mkdetailscontent.style.minHeight = "calc(100vh - 300px)";
+        mkdetailsection.style.padding = "20px 0";
+        document.exitFullscreen();
+        return;
+      }
+      // Make the .element div fullscreen.
+      mkdetailsection.requestFullscreen();
+      mkdetailsection.style.padding = "0";
+      mkdetailscontent.style.minHeight = "90%";*/
     });
+
+    /*document.addEventListener("fullscreenchange", function (event) {
+        if (event.keyCode === 27) {
+            alert('555');
+        }
+        //alert('6');
+    });*/
+
+    /*if (document.addEventListener) {
+        document.addEventListener('fullscreenchange', fullscr, false);
+        document.addEventListener('mozfullscreenchange', fullscr, false);
+        document.addEventListener('MSFullscreenChange', fullscr, false);
+        document.addEventListener('webkitfullscreenchange', fullscr, false);
+        }*/
+
+
+//document.addEventListener("fullscreenchange", alert('www'));
+/*document.addEventListener('webkitfullscreenchange', alert('www'));
+document.addEventListener('mozfullscreenchange', alert('www'));
+document.addEventListener('MSFullscreenChange', alert('www'));*/
+
+    /** Checks for keypresses on the dom */
+/*document.addEventListener("keydown", function (event) {
+    if (event.keyCode === 27) {
+    alert('555');
+    }
+    alert(event.keyCode);
+});*/
+
+/*document.addEventListener(
+  "keydown",
+  (e) => {
+    if (e.key === "Enter") {
+      //alert(e.key);
+    }
+    alert(e.key);
+  },
+  false,
+);*/
 
 
 function toggleItem(elem) {

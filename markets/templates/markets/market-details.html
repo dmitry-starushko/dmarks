@@ -15,14 +15,14 @@ import { View3D } from "view3d";
 {% endblock %}
 {% block title %}{{block.super}}: {{market.mk_full_name}}{% endblock %}
 {% block content %}
-<section class="market-details-section">
+<section class="market-details-section" id="market-details-section">
     <div class="market-details-section-title"><h3>{{market.mk_full_name}}</h3></div>
     <div class="market-details-section-buttons">
         <button class="buttons-tab" id="mkdetails-info"><i class="bi bi-info-circle"></i>ИНФОРМАЦИЯ</button>
         <button class="buttons-tab" id="mkdetails-tp"><i class="bi bi-list-ul"></i>ТОРГОВЫЕ МЕСТА</button>
         <button class="buttons-tab" id="mkdetails-scheme"><i class="bi bi-circle-square"></i>СХЕМА</button>
     </div>
-    <div class="market-details-content">
+    <div class="market-details-content" id="market-details-content">
         <div class="mkdetails-section-info section-block" id="mkdetails-section-info">
             <div class="mkdetails-section-info-main">
                 <div class="mkdetails-info-title">

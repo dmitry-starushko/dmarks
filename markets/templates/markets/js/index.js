@@ -1,66 +1,5 @@
 {% load thumbnail %}
 
-var markerLayer = new ol.layer.Vector({
-    title: "MarketPoint1",
-    visible: true,
-    minResolution: 5,
-    source: new ol.source.Vector({
-            format: new ol.format.GeoJSON(),
-            url: 'https://maps.donmarkets.ru/index.php?r=api/getmarkets'
-          }),
-    style: function(feature) {
-            style = new ol.style.Style({
-            image: new ol.style.Icon({
-                src: 'https://maps.donmarkets.ru/imgs/baloon.png'
-            }),
-          });
-          return style;
-        }
-});
-
-var markerLayerText = new ol.layer.Vector({
-    title: "MarketPointText",
-    visible: true,
-    maxResolution: 5,
-    source: new ol.source.Vector({
-            format: new ol.format.GeoJSON(),
-            url: 'https://maps.donmarkets.ru/index.php?r=api/getmarkets',
-            crossOrigin: "anonymous"
-          }),
-    style: function(feature) {
-            style = new ol.style.Style({
-            image: new ol.style.RegularShape({
-                fill: new ol.style.Fill({
-                  color: 'rgba(51, 153, 204, 0.5)'
-                }),
-                stroke: new ol.style.Stroke({
-                  color: '#fff',
-                  width: 1
-                }),
-                radius: 50 / Math.SQRT2,
-                radius2: 50,
-                points: 4,
-                angle: 0,
-                scale: [1, 0.5],
-              }),
-            text: new ol.style.Text({
-                text: feature.get('label').replace("(","\n("),
-                font: 'bold 11px Arial, Verdana, Helvetica, sans-serif',
-                fill: new ol.style.Fill({
-                  color: '#FFF'
-                }),
-                stroke: new ol.style.Stroke({
-                  color: '#848484',
-                  lineCap: 'round',
-                  lineJoin: 'round',
-                  width: 8,
-                }),
-              })
-          });
-          return style;
-        }
-});
-
 var view = new ol.View({
        projection: 'EPSG:4326',
        center: [37.902, 48.038],
@@ -79,7 +18,6 @@ var map = new ol.Map({
              crossOrigin: null
           })
        }),
-       markerLayer
      ],
      target: 'map',
      controls: ol.control.defaults.defaults({
@@ -112,6 +50,7 @@ map.addOverlay(mappopupOverlay);
 function createMarker(position, title, text, img, url, id) {
  const marker = document.getElementById("map-marker").cloneNode(true);
  marker.name = 'mrk' + id;
+ marker.title = title;
  const markerOverlay = new ol.Overlay({
    element: marker,
    positioning: "bottom-center",
@@ -126,6 +65,7 @@ function createMarker(position, title, text, img, url, id) {
     document.querySelectorAll('.map-marker').forEach(e => e.classList.remove('active'));
 	mappopupOverlay.setPosition(position);
     mappopup.querySelector("#popup-market-card-title").textContent = title;
+    mappopup.querySelector("#popup-market-card-title").title = title;
     mappopup.querySelector("#popup-market-card-text").textContent = text;
     mappopup.querySelector("#popup-market-img").setAttribute('src', img);
     mappopup.querySelector("#popup-market-url").setAttribute('href', url);
@@ -191,7 +131,7 @@ var toggle = function (elem, timing) {
 
 {% for item in items %}
 createMarker(["{{item.lng}}".replace(',', '.'), "{{item.lat}}".replace(',', '.')],
-            '{{item.mk_full_name | truncatechars:32}}',
+            '{{item.mk_full_name}}',
             '{{item.mk_full_address}}',
             '{% thumbnail item.image 100x100 crop %}',
             "{% url 'markets:market_details' mpk=item.id show='info' %}",
