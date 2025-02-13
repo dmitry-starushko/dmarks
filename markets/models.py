@@ -791,18 +791,6 @@ class GlobalObservation(DbItem):
         return f'{self.key}'
 
 
-class RdcError(DbItem):  # -- Errors detected by Restore Database Consistency procedure
-    object = models.CharField(max_length=250)  # -- источник --
-    text = models.TextField()  # -- проблема --
-
-    class Meta:
-        verbose_name = "Ошибка"
-        verbose_name_plural = "Ошибки"
-
-    def __str__(self):
-        return f'Ошибка "{self.id}"'
-
-
 class StuffAction(DbItem):  # -- Stuff actions in admin panel
     title = models.CharField(max_length=64)  # -- название --
     link = models.URLField(max_length=512, default="")  # -- ссылка --

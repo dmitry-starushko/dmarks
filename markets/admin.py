@@ -77,12 +77,6 @@ class GlobalObservationAdmin(admin.ModelAdmin):
     search_fields = ['key']
 
 
-@admin.register(RdcError)
-class RdcErrorAdmin(admin.ModelAdmin):
-    list_display = ['object', 'text', 'created_at']
-    list_filter = ['object']
-
-
 @admin.register(StuffAction)
 class StuffActionAdmin(admin.ModelAdmin):
     list_display = ['action', 'description']
