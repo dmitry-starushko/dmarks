@@ -7,7 +7,7 @@ from django.db import transaction
 from django.db.models import Max, Min
 from markets.enums import Observation, LogRecordKind, OutletState
 from markets.decorators import globally_lonely_action
-from markets.models import TradePlace, SvgSchema, RdcError, Market, GlobalObservation, Notification, LogRecord, TradePlaceType
+from markets.models import TradePlace, SvgSchema, Market, GlobalObservation, Notification, LogRecord, TradePlaceType
 from markets.validators import Validators
 
 try:  # To avoid deploy problems

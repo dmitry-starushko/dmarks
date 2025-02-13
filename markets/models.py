@@ -1,4 +1,5 @@
 import base64
+import datetime
 from decimal import Decimal
 from django.contrib.auth.base_user import BaseUserManager
 from django.contrib.auth.models import AbstractUser
@@ -8,6 +9,9 @@ from django.conf import settings
 from django.db.models import Index, Q, F
 from markets.enums import OutletState, FUS, NotificationType, LogRecordKind
 from markets.validators import Validators
+from datetime import datetime, timezone, timedelta
+
+mtz = timezone(timedelta(hours=3))
 
 
 class DbItem(models.Model):
@@ -16,6 +20,14 @@ class DbItem(models.Model):
 
     class Meta:
         abstract: bool = True
+
+    @property
+    def created_at_mt(self):
+        return self.created_at.astimezone(mtz).strftime('%Y-%m-%d %H:%M:%S МСК')
+
+    @property
+    def updated_at_mt(self):
+        return self.updated_at.astimezone(mtz).strftime('%Y-%m-%d %H:%M:%S МСК')
 
 
 # -- DmUser ---------------------------------------------------------------------------------------
@@ -777,18 +789,6 @@ class GlobalObservation(DbItem):
 
     def __str__(self):
         return f'{self.key}'
-
-
-class RdcError(DbItem):  # -- Errors detected by Restore Database Consistency procedure
-    object = models.CharField(max_length=250)  # -- источник --
-    text = models.TextField()  # -- проблема --
-
-    class Meta:
-        verbose_name = "Ошибка"
-        verbose_name_plural = "Ошибки"
-
-    def __str__(self):
-        return f'Ошибка "{self.id}"'
 
 
 class StuffAction(DbItem):  # -- Stuff actions in admin panel
