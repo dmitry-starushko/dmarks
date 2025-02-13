@@ -133,7 +133,7 @@ class DownloadLogView(APIView):
     def get(self, request):
         content = BytesIO()
         for r in request.user.log_records.order_by('-created_at'):
-            content.write(f'{r.created_at} | {r.kind:8} | {r.text}\n'.encode())
+            content.write(f'{r.created_at_mt} | {r.kind:8} | {r.text}\n'.encode())
         content.seek(0)
         response = FileResponse(content)
         response['Content-Type'] = 'application/x-binary'

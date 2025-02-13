@@ -186,7 +186,7 @@ class ContactEmailAdmin(admin.ModelAdmin):
 
 @admin.register(LogRecord)
 class LogRecordAdmin(admin.ModelAdmin):
-    list_display = ['created_at', 'user', 'kind', 'text']
+    list_display = ['created_at_mt', 'user', 'kind', 'text']
     list_filter = ['user']
     readonly_fields = ['created_at', 'user', 'kind', 'text']
     ordering = ['-created_at']
