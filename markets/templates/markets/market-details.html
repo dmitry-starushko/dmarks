@@ -6,12 +6,13 @@
 {{block.super}}
 <link href="{% static 'css/mkdetails.css' %}" rel="stylesheet">
 <link href="{% static 'css/v3d.css' %}" rel="stylesheet">
-<link href="{% static 'css/mklevel.css' %}" rel="stylesheet">
 <link href="{% static 'css/outlet-adv.css' %}" rel="stylesheet">
+<link href="{% static 'css/storey-dialog.css' %}" rel="stylesheet">
 {% endblock %}
 {% block dom-loaded-scripts-imports %}
 {{block.super}}
 import { View3D } from "view3d";
+import { StoreyDialog } from "storey-dialog";
 {% endblock %}
 {% block title %}{{block.super}}: {{market.mk_full_name}}{% endblock %}
 {% block content %}
@@ -138,9 +139,11 @@ import { View3D } from "view3d";
                         <a href="#" class="" title="Полоэкранный режим" id="mkdetails-fullscreen">
                             <img src="{% static 'svg/icons/fullscreen.svg' %}" alt="Полоэкранный режим"/>
                         </a>
-                        <a href="#" class="" title="Выбор этажа" id="mk-level">
+                        {% if market.schemes.count > 1 %}
+                        <a href="#" class="" title="Выбор этажа" id="mk-level" onclick="window.storey_dialog.toggle();">
                             <img src="{% static 'svg/icons/layers.svg' %}" alt="Выбор этажа"/>
                         </a>
+                        {% endif %}
                         <a href="#" class="" title="Выбор легенды" onclick="window.dispatchEvent(new CustomEvent('next_legend'));">
                             <img src="{% static 'svg/icons/crosshairs-gps.svg' %}" alt="Выбор легенды"/>
                         </a>
@@ -162,27 +165,14 @@ import { View3D } from "view3d";
         </div>
     </div>
 </section>
-{# -- Choose Markets Level Window -- #}
-<div id="market-level-window" class="modal-mklevel">
- <!-- Modal content -->
-  <div class="modal-content-mklevel">
-      <div class="modal-header-mklevel">
-        <span class="close">&times;</span>
-        <h4>{{market}} - выбор уровня</h4>
-      </div>
-      <div class="modal-body-mklevel">
-          {% for sch in market.schemes.all %}
-              <div class="mklevel-row" onclick="window.dispatchEvent(new CustomEvent('market_storey_changed', { detail: { scheme_pk: {{sch.id | stringformat:'d'}}, scheme_name: '{{sch.floor | default:'Уровень без названия'}}' } }));">
-                  {{forloop.counter}}) {{sch.floor|default:'Уровень без названия'}}
-              </div>
-          {% endfor %}
-      </div>
-    </div>
-</div>
+{% endblock %}
+{% block dialogs %}
+{{block.super}}
+{% include 'markets/include/storey-dialog.html' with dialog_id='storey-dialog' title=market storeys=market.schemes.all %}
 {% endblock %}
 {% block dom-loaded-scripts %}
 {{block.super}}
-{% include 'markets/js/mklevel.js' %}
+window.storey_dialog = new StoreyDialog("storey-dialog");
 {% include 'markets/js/mkdetails.js' %}
 {% if outlet %} {# -------------------------------------------------------------------------------- Current state --- #}
 const current = {

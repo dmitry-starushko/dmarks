@@ -1,0 +1,77 @@
+:root {
+    --STRDColorB: #90909080;
+    --STRDColorF: #00bcd4;
+    --STRDFont: "Geologica", sans-serif;
+    --STRDFontWeight: 200;
+    --STRDFontSize: 14pt;
+    --STRDFontSizePara: 11pt;
+}
+
+.storey-dialog {
+    background: var(--STRDColorB);
+    border: thin solid var(--STRDColorF);
+    padding: 1rem;
+    outline: none;
+    opacity: 0;
+    box-shadow: 0px 2rem 3rem rgba(0, 0, 0, 0.25);
+    transition-property: opacity;
+    transition-duration: 400ms;
+    transition-timing-function: ease-in-out;
+
+    font-size: var(--STRDFontSize);
+    font-variation-settings: "wght" var(--STRDFontWeight);
+    font-weight: var(--STRDFontWeight);
+    font-family: var(--STRDFont);
+    overflow: clip;
+
+    >main {
+        max-height: calc(90vh - 3rem);
+        max-width: min(calc(70vw - 3rem), 1440px);
+        display: flex;
+        flex-flow: column;
+        align-items: center;
+        margin: 0;
+
+        >header {
+            padding: 1rem;
+            width: 100%;
+            background: var(--STRDColorF);
+            display: flex;
+            flex-flow: row;
+            align-items: center;
+
+            >p {
+                color: white;
+                padding:0;
+                margin: 0;
+                flex: 1 1 100%;
+            }
+        }
+
+        section {
+            width: 100%;
+            background: white;
+            border: thin solid var(--STRDColorF);
+            padding: 1rem;
+            overflow: auto;
+            scrollbar-width: thin;
+            font-size: var(--STRDFontSizePara);
+            outline: none;
+
+            >div {
+                cursor: pointer;
+                padding: 0.5rem;
+
+                &:hover {
+                    color: white;
+                    background: black;
+                }
+                span {
+                    display: inline-block;
+                    min-width: 1rem;
+                    max-width: 1rem;
+                }
+            }
+        }
+    }
+}
