@@ -2,13 +2,13 @@
 <dialog id="{{dialog_id}}" class="storey-dialog">
   <main>
     <header>
-      <p>Выберите уровень для {{title}}&nbsp;</p>
+      <p>{{title}}:&nbsp;уровни&nbsp;&nbsp;</p>
       <img src="{% static 'svg/icons/close-circle-outline-white.svg' %}" onclick="window.storey_dialog.toggle();"/>
     </header>
     <section class="content">
       {% for s in storeys %}
       <div onclick="window.dispatchEvent(new CustomEvent('market_storey_changed', { detail: { scheme_pk: {{s.id | stringformat:'d'}}, scheme_name: '{{s.floor | default:'Уровень без названия'}}' } }));window.storey_dialog.toggle();">
-        {{forloop.counter}}) {{s.floor|default:'Уровень без названия'}}
+        <span>{{forloop.counter}})</span> {{s.floor|default:'Уровень без названия'}}
       </div>
       {% endfor %}
     </section>

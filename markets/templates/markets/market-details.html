@@ -139,9 +139,11 @@ import { StoreyDialog } from "storey-dialog";
                         <a href="#" class="" title="Полоэкранный режим" id="mkdetails-fullscreen">
                             <img src="{% static 'svg/icons/fullscreen.svg' %}" alt="Полоэкранный режим"/>
                         </a>
+                        {% if market.schemes.count > 1 %}
                         <a href="#" class="" title="Выбор этажа" id="mk-level" onclick="window.storey_dialog.toggle();">
                             <img src="{% static 'svg/icons/layers.svg' %}" alt="Выбор этажа"/>
                         </a>
+                        {% endif %}
                         <a href="#" class="" title="Выбор легенды" onclick="window.dispatchEvent(new CustomEvent('next_legend'));">
                             <img src="{% static 'svg/icons/crosshairs-gps.svg' %}" alt="Выбор легенды"/>
                         </a>
