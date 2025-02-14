@@ -211,7 +211,7 @@ const v3d = new View3D( {# -----------------------------------------------------
         window.dispatchEvent(new CustomEvent("outlet_clicked", { detail: { id: current.outlet_number } }));
     } : null);
 const re_click = () => { window.dispatchEvent(new CustomEvent("outlet_clicked", { detail: { id: current.outlet_number }})); };
-const update_outlet_table = (on_update=re_click) => { {# ---------------------------------------- Loading outlet table partial view --- #}
+const update_outlet_table = (on_update=re_click) => { {# ---------------------- Loading outlet table partial view --- #}
     if(update_outlet_table.abort_controller) update_outlet_table.abort_controller.abort('obsolete');
     update_outlet_table.abort_controller = new AbortController();
     document.getElementById("mkdetails-scheme-header").innerText = current.scheme_name;
@@ -276,7 +276,7 @@ window.addEventListener("market_storey_changed", (e) => { {# -------------------
     current.scheme_name = e.detail.scheme_name;
     update_outlet_table();
 });
-window.addEventListener("tp_header_clicked", async (e) => { {# ---------------------------------------- TradePlace table header click --- #}
+window.addEventListener("tp_header_clicked", async (e) => { {# -------------------- TradePlace table header click --- #}
     if(current.sort_table.includes(e.detail)) {
         var sort_str = next_sort(current.sort_table.substring(current.sort_table.indexOf(e.detail + ':') + 2, current.sort_table.indexOf(e.detail + ':') + 3));
         current.sort_table = current.sort_table.replace(current.sort_table.substring(current.sort_table.indexOf(e.detail + ':'), current.sort_table.indexOf(e.detail + ':') + 3), "");
@@ -288,7 +288,7 @@ window.addEventListener("tp_header_clicked", async (e) => { {# -----------------
     current.sort_table = current.sort_table.replace(/^,|,$/g,'').replace(/(.)\1+/g, '$1');
     update_outlet_table();
 });
-update_outlet_table(null); {# ---------------------------------------------------------------------------- Initiation --- #}
+update_outlet_table(null); {# ------------------------------------------------------------------------ Initiation --- #}
 update_legend_body();
 if(tab_map.has("{{show_tab}}")) window.setTimeout(()=>{ document.getElementById(tab_map.get("{{show_tab}}")).click(); });
 {% endif %}
