@@ -6,7 +6,6 @@
 {{block.super}}
 <link href="{% static 'css/mkdetails.css' %}" rel="stylesheet">
 <link href="{% static 'css/v3d.css' %}" rel="stylesheet">
-<link href="{% static 'css/mklevel.css' %}" rel="stylesheet">
 <link href="{% static 'css/outlet-adv.css' %}" rel="stylesheet">
 <link href="{% static 'css/storey-dialog.css' %}" rel="stylesheet">
 {% endblock %}
@@ -164,23 +163,6 @@ import { StoreyDialog } from "storey-dialog";
         </div>
     </div>
 </section>
-{# -- Choose Markets Level Window -- #}
-<div id="market-level-window" class="modal-mklevel">
- <!-- Modal content -->
-  <div class="modal-content-mklevel">
-      <div class="modal-header-mklevel">
-        <span class="close">&times;</span>
-        <h4>{{market}} - выбор уровня</h4>
-      </div>
-      <div class="modal-body-mklevel">
-          {% for sch in market.schemes.all %}
-              <div class="mklevel-row" onclick="window.dispatchEvent(new CustomEvent('market_storey_changed', { detail: { scheme_pk: {{sch.id | stringformat:'d'}}, scheme_name: '{{sch.floor | default:'Уровень без названия'}}' } }));">
-                  {{forloop.counter}}) {{sch.floor|default:'Уровень без названия'}}
-              </div>
-          {% endfor %}
-      </div>
-    </div>
-</div>
 {% endblock %}
 {% block dialogs %}
 {{block.super}}
@@ -189,7 +171,6 @@ import { StoreyDialog } from "storey-dialog";
 {% block dom-loaded-scripts %}
 {{block.super}}
 window.storey_dialog = new StoreyDialog("storey-dialog");
-{#% include 'markets/js/mklevel.js' %#}
 {% include 'markets/js/mkdetails.js' %}
 {% if outlet %} {# -------------------------------------------------------------------------------- Current state --- #}
 const current = {
