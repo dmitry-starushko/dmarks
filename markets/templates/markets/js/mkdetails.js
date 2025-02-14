@@ -96,7 +96,7 @@
     const fullscr = () => {
       if (document.fullscreenElement) {
         // If there is a fullscreen element, exit full screen.
-        mkdetailscontent.style.minHeight = "calc(100vh - 300px)";
+        mkdetailscontent.style.minHeight = "calc(100vh - 300px)";*/
         mkdetailsection.style.padding = "20px 0";
         document.exitFullscreen();
         return;
