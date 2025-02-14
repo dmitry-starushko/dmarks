@@ -10,5 +10,6 @@
         ,"view3d": "{% static 'js/view3d.module.js' %}"
         ,"user-actions": "{% static 'js/user-actions.module.js' %}"
         ,"help-dialog": "{% static 'js/help-dialog.module.js' %}"
+        ,"storey-dialog": "{% static 'js/storey-dialog.module.js' %}"
     }
 }</script>
