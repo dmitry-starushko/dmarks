@@ -232,15 +232,19 @@ const next_sort = (unit) => {
 window.addEventListener("outlet_pointed", (e) => { {# ---------------------------------------------- Outlet hover --- #}
     tp_pointed.innerText = (e.detail.id === null) ? '' : '№' + e.detail.id;
 });
-const update_outlet_details = (oid) => {
-    if(update_outlet_details.abort_controller) update_outlet_details.abort_controller.abort('obsolete');
-    update_outlet_details.abort_controller = new AbortController();
-    dj_load_partial_view("partial_outlet_detail", {outlet_number: oid}, {}, update_outlet_details.abort_controller.signal).then(
-        html => {
-            update_outlet_details.abort_controller = null;
-            document.getElementById("outlet-info").innerHTML = html;
-        }
-    );
+const update_outlet_details = (olt_num) => {
+    if(olt_num) {
+        if(update_outlet_details.abort_controller) update_outlet_details.abort_controller.abort('obsolete');
+        update_outlet_details.abort_controller = new AbortController();
+        dj_load_partial_view("partial_outlet_detail", {outlet_number: olt_num}, {}, update_outlet_details.abort_controller.signal).then(
+            html => {
+                update_outlet_details.abort_controller = null;
+                document.getElementById("outlet-info").innerHTML = html;
+            }
+        );
+    } else {
+        document.getElementById("outlet-info").innerHTML = "";
+    }
 };
 window.addEventListener("outlet_clicked", async (e) => { {# ---------------------------------------- Outlet click --- #}
     var i = 0;
@@ -276,7 +280,7 @@ window.addEventListener("outlet_clicked", async (e) => { {# --------------------
     });*/
 
 });
-window.addEventListener("next_legend", (_) => { {# ---------------------------------------------- Legend changing --- #}
+window.addEventListener("next_legend", () => { {# ---------------------------------------------- Legend changing --- #}
     current.legend++;
     update_outlet_table();
     update_legend_body();
@@ -284,17 +288,19 @@ window.addEventListener("next_legend", (_) => { {# -----------------------------
 window.addEventListener("market_storey_changed", (e) => { {# ----------------------------- Market storey changing --- #}
     current.scheme_pk = e.detail.scheme_pk;
     current.scheme_name = e.detail.scheme_name;
+    current.outlet_number = null;
     update_outlet_table();
 });
 window.addEventListener("tp_header_clicked", async (e) => { {# -------------------- TradePlace table header click --- #}
     if(current.sort_table.includes(e.detail)) {
         var sort_str = next_sort(current.sort_table.substring(current.sort_table.indexOf(e.detail + ':') + 2, current.sort_table.indexOf(e.detail + ':') + 3));
         current.sort_table = current.sort_table.replace(current.sort_table.substring(current.sort_table.indexOf(e.detail + ':'), current.sort_table.indexOf(e.detail + ':') + 3), "");
-        if(sort_str)
-         current.sort_table += (current.sort_table.length === 0) ? e.detail + ":" + sort_str :  ',' + e.detail + ":" + sort_str;
+        if(sort_str) {
+            current.sort_table += (current.sort_table.length === 0) ? `${e.detail}:${sort_str}` : `,${e.detail}:${sort_str}`;
+        }
+    } else {
+        current.sort_table += (current.sort_table.length === 0) ? `${e.detail}:${next_sort()}` : `,${e.detail}:${next_sort()}`;
     }
-    else
-        current.sort_table += (current.sort_table.length === 0) ? e.detail + ":" + next_sort() : ',' + e.detail + ":" + next_sort();
     current.sort_table = current.sort_table.replace(/^,|,$/g,'').replace(/(.)\1+/g, '$1');
     update_outlet_table();
 });
