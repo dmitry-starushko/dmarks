@@ -193,6 +193,7 @@ const current = {
 {% endif %}
 {% if outlet or market.schemes.exists %}
 const tp_pointed = document.getElementById("mkdetails-tp-pointed");
+const mk_tp_tab = document.getElementById("mkdetails-tp-tab");
 
 const tab_map = new Map([["info", "mkdetails-info"], ["outlets", "mkdetails-tp"], ["scheme","mkdetails-scheme"]]);
 const v3d = new View3D( {# ------------------------------------------------------------------------------ 3D View --- #}
@@ -247,23 +248,19 @@ const update_outlet_details = (olt_num) => {
     }
 };
 window.addEventListener("outlet_clicked", async (e) => { {# ---------------------------------------- Outlet click --- #}
-    var i = 0;
-    var tp_table_rows = document.getElementById("mkdetails-tp-table").querySelectorAll("tr");
+    var tp_table_rows = document.querySelectorAll('tr.table-tp-row');
     if(e.detail.id) {
         update_outlet_details(e.detail.id);
-        for (const tr of document.querySelectorAll('tr.table-tp-row')) {
+        for (const tr of tp_table_rows) {
             tr.classList.remove('selected');
             tr.classList.add(tr.getElementsByTagName('td')[0].textContent === e.detail.id ? 'selected' : 'clean');
-            //console.log(i);
-            if(tr.getElementsByTagName('td')[0].textContent === e.detail.id)
+            if(mk_tp_tab.style.visibility === 'hidden' && tr.getElementsByTagName('td')[0].textContent === e.detail.id)
             {
-                //console.log(i);
-                tp_table_rows[i].scrollIntoView({
-                    behavior: 'smooth',
+                tr.scrollIntoView({
+                    behavior: 'auto',
                     block: 'center'
                 });
             }
-            i += 1;
         }
     } else {
         document.getElementById("outlet-info").innerHTML = "";
@@ -272,19 +269,14 @@ window.addEventListener("outlet_clicked", async (e) => { {# --------------------
         }
     }
     current.outlet_number = e.detail.id;
-    //var tp_table_rows = document.getElementById("mkdetails-tp-table").querySelectorAll("tr");
-    //tp_table_rows.scrollToRow({index: 10});
-    /*tp_table_rows[2].scrollIntoView({
-    	behavior: 'smooth',
-        block: 'nearest'
-    });*/
-
 });
+
 window.addEventListener("next_legend", () => { {# ---------------------------------------------- Legend changing --- #}
     current.legend++;
     update_outlet_table();
     update_legend_body();
 });
+
 window.addEventListener("market_storey_changed", (e) => { {# ----------------------------- Market storey changing --- #}
     current.scheme_pk = e.detail.scheme_pk;
     current.scheme_name = e.detail.scheme_name;
