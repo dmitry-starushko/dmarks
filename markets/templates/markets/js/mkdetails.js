@@ -81,7 +81,9 @@
     {
         mkdetailsinfo.style.display = "none";
         sectionTabs.style.display = "flex";
-        tpTab.style.display = "flex";
+        //tpTab.style.display = "flex";
+        tpTab.style.visibility = "visible";
+        tpTab.style.width = "60%";
         schemeTab.style.display = "none";
     });
 
@@ -89,7 +91,9 @@
     {
         mkdetailsinfo.style.display = "none";
         sectionTabs.style.display = "flex";
-        tpTab.style.display = "none";
+        //tpTab.style.display = "none";
+        tpTab.style.visibility = "hidden";
+        tpTab.style.width = "0";
         schemeTab.style.display = "flex";
     });
 
@@ -179,13 +183,3 @@ function toggleItem(elem) {
 }
 
 toggleItem(document.querySelectorAll('.buttons-tab'));
-
-/***** sorting table ******/
-
-var tableHeaderItems = document.querySelectorAll('td.sort-th');
-
-for (var i = 0; i < tableHeaderItems.length; i++) {
-      tableHeaderItems[i].onclick = function(e) {
-       alert(i + e.target.getAttribute("sort"));
-    }
-  }

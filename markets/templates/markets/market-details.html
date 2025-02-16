@@ -193,6 +193,7 @@ const current = {
 {% endif %}
 {% if outlet or market.schemes.exists %}
 const tp_pointed = document.getElementById("mkdetails-tp-pointed");
+
 const tab_map = new Map([["info", "mkdetails-info"], ["outlets", "mkdetails-tp"], ["scheme","mkdetails-scheme"]]);
 const v3d = new View3D( {# ------------------------------------------------------------------------------ 3D View --- #}
     "v3d", "{% url 'api:info_take_urls' %}", current.scheme_pk, 0, {{parm_3d_ground_color}}, {{parm_3d_decoration_color}}, {{parm_3d_decoration_opacity}}, window,
@@ -242,11 +243,23 @@ const update_outlet_details = (oid) => {
     );
 };
 window.addEventListener("outlet_clicked", async (e) => { {# ---------------------------------------- Outlet click --- #}
+    var i = 0;
+    var tp_table_rows = document.getElementById("mkdetails-tp-table").querySelectorAll("tr");
     if(e.detail.id) {
         update_outlet_details(e.detail.id);
         for (const tr of document.querySelectorAll('tr.table-tp-row')) {
             tr.classList.remove('selected');
             tr.classList.add(tr.getElementsByTagName('td')[0].textContent === e.detail.id ? 'selected' : 'clean');
+            //console.log(i);
+            if(tr.getElementsByTagName('td')[0].textContent === e.detail.id)
+            {
+                //console.log(i);
+                tp_table_rows[i].scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'center'
+                });
+            }
+            i += 1;
         }
     } else {
         document.getElementById("outlet-info").innerHTML = "";
@@ -255,6 +268,13 @@ window.addEventListener("outlet_clicked", async (e) => { {# --------------------
         }
     }
     current.outlet_number = e.detail.id;
+    //var tp_table_rows = document.getElementById("mkdetails-tp-table").querySelectorAll("tr");
+    //tp_table_rows.scrollToRow({index: 10});
+    /*tp_table_rows[2].scrollIntoView({
+    	behavior: 'smooth',
+        block: 'nearest'
+    });*/
+
 });
 window.addEventListener("next_legend", (_) => { {# ---------------------------------------------- Legend changing --- #}
     current.legend++;

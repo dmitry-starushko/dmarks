@@ -26,13 +26,14 @@
 
 .market-details-content
 {
-    height: 100%;
+    height: 83%;
     /*display: flex;*/
     background-color: var(--section-bg);
     /*max-height: -moz-calc(100vh - 300px); /* Firefox */
     /*max-height: -webkit-calc(100vh - 300px); /* Chrome, Safari */
     /*max-height: calc(100vh - 300px); /* IE9+ and future browsers */
 }
+
 
 .market-details-section-title {
   /*flex: 1;*/
@@ -208,6 +209,10 @@
     align-self: flex-start;
 }
 
+.table-tp > thead > tr > th {
+    background: #ddd;
+}
+
 .table-tp > thead > tr > th, .table-tp > tbody > tr >td {
     border-right: var(--border);
     border-bottom: var(--border);
@@ -301,7 +306,7 @@
 .mkdetails-tp-section-info-main {
     /*padding: 5px;*/
     overflow-y: scroll;
-    /*height: 97%;*/
+    height: 100%;
     width: 100%;
 }
 
