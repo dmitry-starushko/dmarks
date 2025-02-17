@@ -17,10 +17,14 @@
     max-height: -moz-calc(100vh - 100px); /* Firefox */
     max-height: -webkit-calc(100vh - 100px); /* Chrome, Safari */
     max-height: calc(100vh - 100px); /* IE9+ and future browsers */
+    min-height: -moz-calc(100vh - 110px); /* Firefox */
+    min-height: -webkit-calc(100vh - 110px); /* Chrome, Safari */
+    min-height: calc(100vh - 110px); /* IE9+ and future browsers */
 }
 
 .market-details-section:fullscreen {
     padding: 0;
+    min-height: 100%;
 }
 
 

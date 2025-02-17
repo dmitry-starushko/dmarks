@@ -102,13 +102,14 @@
         // If there is a fullscreen element, exit full screen.
         /*mkdetailscontent.style.minHeight = "calc(100vh - 300px)";
         mkdetailsection.style.padding = "20px 0";*/
+        mkdetailscontent.style.minHeight = "80%";
         document.exitFullscreen();
         return;
       }
       // Make the .element div fullscreen.
       mkdetailsection.requestFullscreen();
-      /*mkdetailsection.style.padding = "0";
-      mkdetailscontent.style.minHeight = "90%";*/
+      /*mkdetailsection.style.padding = "0";*/
+      mkdetailscontent.style.minHeight = "90%";
     }
 
     document.querySelector("#mkdetails-fullscreen").addEventListener("click", function (event) {
