@@ -1,5 +1,4 @@
 import base64
-import datetime
 from decimal import Decimal
 from django.contrib.auth.base_user import BaseUserManager
 from django.contrib.auth.models import AbstractUser
@@ -9,7 +8,7 @@ from django.conf import settings
 from django.db.models import Index, Q, F
 from markets.enums import OutletState, FUS, NotificationType, LogRecordKind
 from markets.validators import Validators
-from datetime import datetime, timezone, timedelta
+from datetime import timezone, timedelta
 
 mtz = timezone(timedelta(hours=3))
 
