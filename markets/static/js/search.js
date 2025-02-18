@@ -5,6 +5,13 @@ var globalTimeout = null;
 var min_symbols = 3;
 var closebtn = document.getElementById("search-close");
 const search_result = document.getElementById("search-market-result");
+const outlet_search_result = document.getElementById("outlet-search-result");
+
+const clear_search_controls = () => {
+    searchinput.value = "";
+    search_result.innerHTML = "";
+    outlet_search_result.innerHTML = "";
+};
 
 if (searchbtn !== null) {
     searchbtn.onclick = function() {
@@ -12,6 +19,7 @@ if (searchbtn !== null) {
             document.getElementById("outlet-search-top").innerHTML=html;
             window.setup_outlet_search();
         });
+        clear_search_controls();
         searchwindow.style.display = "block";
         searchinput.focus();
     }
@@ -19,6 +27,7 @@ if (searchbtn !== null) {
 
 closebtn.onclick = function() {
   searchwindow.style.display = "none";
+  window.setTimeout(clear_search_controls);
 }
 
 window.onclick = function(event) {
