@@ -37,7 +37,7 @@ URLS_1C_API = {
     'answers': 'http://192.168.90.15/Arenda_Test/hs/user-answers/{user}/',
     'moderation': 'http://192.168.90.15/Arenda_Test/hs/moderate-card/{user}/',
     'market-info': 'http://192.168.90.15/Arenda_Test/hs/market-details/{market}/',
-    'check-results': 'http://web:8000/extapi/dummy1c/check/',
+    'check-results': 'http://192.168.90.15/Arenda_Test/hs/check/',
 }
 
 EXT_API_PERMISSIONS = [IsAdminUser]
