@@ -1,15 +1,15 @@
 :root {
-    --HDColorB: #90909080;
-    --HDColorF: #00bcd4;
-    --HDFont: "Geologica", sans-serif;
-    --HDFontWeight: 100;
-    --HDFontSize: 14pt;
-    --HDFontSizePara: 11pt;
+    --STRDColorB: #90909080;
+    --STRDColorF: #00bcd4;
+    --STRDFont: "Geologica", sans-serif;
+    --STRDFontWeight: 200;
+    --STRDFontSize: 14pt;
+    --STRDFontSizePara: 11pt;
 }
 
 .storey-dialog {
-    background: var(--HDColorB);
-    border: thin solid var(--HDColorF);
+    background: var(--STRDColorB);
+    border: thin solid var(--STRDColorF);
     padding: 1rem;
     outline: none;
     opacity: 0;
@@ -18,10 +18,10 @@
     transition-duration: 400ms;
     transition-timing-function: ease-in-out;
 
-    font-size: var(--HDFontSize);
-    font-variation-settings: "wght" var(--HDFontWeight);
-    font-weight: var(--HDFontWeight);
-    font-family: var(--HDFont);
+    font-size: var(--STRDFontSize);
+    font-variation-settings: "wght" var(--STRDFontWeight);
+    font-weight: var(--STRDFontWeight);
+    font-family: var(--STRDFont);
     overflow: clip;
 
     >main {
@@ -35,7 +35,7 @@
         >header {
             padding: 1rem;
             width: 100%;
-            background: var(--HDColorF);
+            background: var(--STRDColorF);
             display: flex;
             flex-flow: row;
             align-items: center;
@@ -49,16 +49,28 @@
         }
 
         section {
+            width: 100%;
             background: white;
-            border: thin solid var(--HDColorF);
+            border: thin solid var(--STRDColorF);
             padding: 1rem;
             overflow: auto;
             scrollbar-width: thin;
-            font-size: var(--HDFontSizePara);
+            font-size: var(--STRDFontSizePara);
             outline: none;
 
-            img {
-                max-width: 100%;
+            >div {
+                cursor: pointer;
+                padding: 0.5rem;
+
+                &:hover {
+                    color: white;
+                    background: black;
+                }
+                span {
+                    display: inline-block;
+                    min-width: 1rem;
+                    max-width: 1rem;
+                }
             }
         }
     }
