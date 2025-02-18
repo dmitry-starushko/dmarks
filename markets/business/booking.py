@@ -19,7 +19,7 @@ def book_outlet(user: DmUser, outlet: TradePlace):
     dlog_info(user, f'Пользователь {user.phone} инициировал заявку на бронирование ТМ {outlet.location_number}')
     with httpx.Client() as client:
         try:
-            res = client.post(settings.URLS_1C_API['booking'].format(user=user.aux_data.itn),
+            res = client.post(settings.URLS_1C_API['booking'].format(user=user.itn),
                               headers={'Content-Type': 'application/json'} | ({'Authorization': settings.AUTH_1C_API} if settings.AUTH_1C_API else {}),
                               json=[f'{outlet.location_number}'])
             if res.is_error:
@@ -38,7 +38,7 @@ def get_outlets_in_booking(user: DmUser):
     if not user.confirmed:
         raise RuntimeError(FUS.UNV)
     with httpx.Client() as client:
-        res = client.get(settings.URLS_1C_API['booking'].format(user=user.aux_data.itn),
+        res = client.get(settings.URLS_1C_API['booking'].format(user=user.itn),
                          headers={'Authorization': settings.AUTH_1C_API} if settings.AUTH_1C_API else {})
         if res.is_error:
             raise RuntimeError(FUS.SRE)
@@ -55,7 +55,7 @@ def unbook_all(user: DmUser):
     dlog_info(user, f'Пользователь {user.phone} запросил аннулирование всех запросов на бронирование ТМ')
     with httpx.Client() as client:
         try:
-            res = client.delete(settings.URLS_1C_API['booking'].format(user=user.aux_data.itn),
+            res = client.delete(settings.URLS_1C_API['booking'].format(user=user.itn),
                                 headers={'Authorization': settings.AUTH_1C_API} if settings.AUTH_1C_API else {})
             if res.is_error:
                 reason = f'{res.text or 'без пояснений'}'

@@ -30,14 +30,13 @@ CELERY_BROKER_URL = f'pyamqp://guest@rabbit'
 TELEBOT_ID = os.environ.get('TELEBOT')
 
 AUTH_1C_API = 'Basic UkQzRDoxMjM0NQ=='
-
 URLS_1C_API = {
-    'booking': 'http://web:8000/extapi/dummy1c/booking/',
+    'booking': 'http://192.168.90.15/Arenda_Test/hs/reserve/{user}/',
     'confirmation': 'http://192.168.90.15/Arenda_Test/hs/Ver/',
-    'market-info': 'http://web:8000/extapi/dummy1c/market-info/',
-    'reg-card': 'http://web:8000/extapi/dummy1c/regcard/',
-    'answers': 'http://web:8000/extapi/dummy1c/answers/',
-    'moderation': 'http://web:8000/extapi/dummy1c/moderation/',
+    'reg-card': 'http://192.168.90.15/Arenda_Test/hs/register-card/{user}/',
+    'answers': 'http://192.168.90.15/Arenda_Test/hs/user-answers/{user}/',
+    'moderation': 'http://192.168.90.15/Arenda_Test/hs/moderate-card/{user}/',
+    'market-info': 'http://192.168.90.15/Arenda_Test/hs/market-details/{market}/',
     'check-results': 'http://web:8000/extapi/dummy1c/check/',
 }
 

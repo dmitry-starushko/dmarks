@@ -19,17 +19,17 @@ def init_confirmation(user: DmUser):
         raise ConfirmationError('Отсутствует выписка из ЕГРЮЛ/ЕГРИП')
     # if user.aux_data.passport_image is None:
     #     raise ConfirmationError('Отсутствует скан паспорта')
-    dlog_info(user, f'Пользователь {user.phone} инициировал процедуру верификации (ИНН: {user.aux_data.itn})')
+    dlog_info(user, f'Пользователь {user.phone} инициировал процедуру верификации (ИНН: {user.itn})')
     with httpx.Client() as client:
         try:
-            res = client.post(settings.URLS_1C_API['confirmation'].format(user=user.aux_data.itn),
+            res = client.post(settings.URLS_1C_API['confirmation'].format(user=user.itn),
                               headers={'Content-Type': 'application/json'} | ({'Authorization': settings.AUTH_1C_API} if settings.AUTH_1C_API else {}),
                               json={
                                   'first-name': user.first_name,
                                   'last-name': user.last_name,
                                   'phone': user.phone,
                                   'email': user.email,
-                                  'itn': user.aux_data.itn,
+                                  'itn': user.itn,
                                   'usrle': user.aux_data.usr_le_extract.as_dictionary,
                                   # 'passport': user.aux_data.passport_image.as_dictionary,
                               })

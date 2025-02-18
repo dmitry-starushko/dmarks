@@ -1,7 +1,7 @@
 <div class="reg-card">
     {% if user.confirmed %}
     <label>Вы прошли процедуру верификации.</label>
-    <label>ИНН: {{user.aux_data.itn}}</label>
+    <label>ИНН: {{user.itn}}</label>
     {% for key, val in reg_card.items %}
     <label>{{key}}: {{val}}</label>
     {% endfor %}
