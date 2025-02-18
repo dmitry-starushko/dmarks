@@ -83,7 +83,6 @@ body {
   color: var(--default-color);
   background-color: var(--background-color);
   font-family: var(--default-font);
-  /*background-attachment: fixed;*/
 }
 
 a {
@@ -111,26 +110,18 @@ h6 {
 /******* Main block ********/
 
 .main-body {
-    /*display: flex;*/
     height: 100%;
 }
 
 .leftSidebar {
     width: 270px;
     height: 100%;
-    /*padding: 5px 15px 5px 15px;*/
-
     position: fixed;
     background-color: var(--background-color-leftsidebar);
     border-right: 1px solid #ccc;
     display: flex;
     flex-direction: column;
-    /*transform: translateX(-160px);*/
-    /* put it below the parent */
-    /*z-index: -1;*/
-    /* give it a transition */
     transition: transform .3s ease-out;
-    /*transition: ease-in-out 0.3s;*/
 }
 
 .leftSidebar display-none{
@@ -154,9 +145,6 @@ h6 {
 }
 
 .leftSidebar > a:hover {
-    /*color: var(--color-items-leftsidebar);*/
-    /*color: color-mix(in srgb, var(--color-items-leftsidebar), transparent 25%);*/
-    /*filter: invert(85%) sepia(6%) saturate(1102%) hue-rotate(178deg) brightness(99%) contrast(92%);*/
     text-decoration: none;
     background-color: var(--background-color-items-leftsidebar);
 }
@@ -166,11 +154,8 @@ h6 {
     filter: invert(90%) sepia(6%) saturate(1102%) hue-rotate(178deg) brightness(99%) contrast(92%);
 }
 
-.leftSidebar > a > img:hover {
-    /*filter: invert(80%) sepia(6%) saturate(1102%) hue-rotate(178deg) brightness(99%) contrast(92%);*/
-}
 
-.leftSidebar.display-none > a > span, .leftSidebar.display-none > .username {
+.leftSidebar.display-none a > span, .leftSidebar.display-none > .username {
      display: none;
 }
 
@@ -178,11 +163,8 @@ h6 {
      margin-top: auto;
      display: flex;
      padding: 15px 15px 25px 15px;
-     /*align-items: center;*/
-
      a, form {
          display: flex;
-         /*flex-direction: column;*/
          align-items: center;
          width: 100%;
              img {
@@ -209,6 +191,29 @@ h6 {
        color: var(--background-color-items-leftsidebar);
      }
 }
+
+.leftSidebar.display-none > .last-lsb-item {
+    flex-direction: column;
+    width: auto;
+    padding: 0;
+    a, form {
+        padding: 5px 0;
+        flex-direction: column;
+        span {
+            display: none;
+        }
+        form button {
+         padding: 0;
+        }
+    }
+    img {
+        width: 30px;
+    }
+    a:hover {
+        background-color: var(--background-color-items-leftsidebar);
+    }
+}
+
 
 #main {
     margin-left: 270px;
