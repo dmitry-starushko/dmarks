@@ -15,9 +15,26 @@ from markets.business.crud_entities import create_market, update_market, get_mar
 from markets.business.moderation import set_promo_data_moderated
 from markets.business.renting import rent_outlets, get_outlets_in_renting, unrent_outlets
 from markets.decorators import on_exception_returns_response
-from markets.models import DmUser, AuxUserData, TradePlaceType, LocalityType, MarketFireProtection, MarketProfitability, MarketType, StreetType, TradeSector, TradeSpecType, TradeType
+from markets.models import DmUser, AuxUserData, TradePlaceType, LocalityType, MarketFireProtection, MarketProfitability, MarketType, StreetType, TradeSector, TradeSpecType, TradeType, Market
 from markets.business.actions import restore_db_consistency
 from markets.tasks import st_restore_db_consistency
+
+
+class MarketMIDsView(APIView):
+    permission_classes = settings.EXT_API_PERMISSIONS
+
+    @extend_schema(
+        description='Возвращает список кодов рынков в БД сайта',
+        responses={
+            (200, 'application/json'): oapi_result(fields.ListField(child=fields.CharField(), help_text='Список кодов'), '_get_mids'),
+            (400, 'application/json'): OpenApiTypes.ANY,
+        })
+    @on_exception_returns_response(HttpResponseBadRequest)
+    def get(self, _):
+        result = [v['market_id'] for v in Market.objects.values('market_id')]
+        return Response({
+            'result': result
+        })
 
 
 class MarketCRUDView(APIView):
@@ -268,7 +285,7 @@ class MarketEmailsCRUDView(APIView):
         })
 
 
-class UsersITNsView(APIView):
+class UserITNsView(APIView):
     permission_classes = settings.EXT_API_PERMISSIONS
 
     @extend_schema(
