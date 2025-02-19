@@ -166,13 +166,13 @@ LOG_TTL_DAYS = {
 
 AUTH_1C_API = ''
 URLS_1C_API = {
-    'booking': 'http://localhost:8000/extapi/dummy1c/booking/',
-    'confirmation': 'http://localhost:8000/extapi/dummy1c/confirmation/',
-    'reg-card': 'http://localhost:8000/extapi/dummy1c/regcard/',
-    'answers': 'http://localhost:8000/extapi/dummy1c/answers/',
-    'market-info': 'http://localhost:8000/extapi/dummy1c/market-info/',
-    'moderation': 'http://localhost:8000/extapi/dummy1c/moderation/',
-    'check-results': 'http://localhost:8000/extapi/dummy1c/check/',
+    'booking': 'http://localhost:8000/extapi/stub-1c/booking/',
+    'confirmation': 'http://localhost:8000/extapi/stub-1c/confirmation/',
+    'reg-card': 'http://localhost:8000/extapi/stub-1c/regcard/',
+    'answers': 'http://localhost:8000/extapi/stub-1c/answers/',
+    'market-info': 'http://localhost:8000/extapi/stub-1c/market-info/',
+    'moderation': 'http://localhost:8000/extapi/stub-1c/moderation/',
+    'check-results': 'http://localhost:8000/extapi/stub-1c/check/',
 }
 
 AUTH_SMS_API = 'Basic MTA4NTM6VGo0bVBUM0FFVHZ1cHZsSU9Pa1pBdQ=='

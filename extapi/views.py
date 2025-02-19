@@ -554,9 +554,8 @@ class SelfDiagnosisView(APIView):
             })
 
 
-# TODO kill Dummy1C
 @extend_schema(exclude=True)
-class Dummy1C(APIView):
+class Stub_1C_View(APIView):
     permission_classes = [AllowAny]
 
     @on_exception_returns_response(HttpResponseBadRequest)
