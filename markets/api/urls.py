@@ -20,6 +20,4 @@ urlpatterns = [
     path('partial/legend-body/<int:legend>/', views.PV_LegendBodyView.as_view(), name='partial_legend_body'),
     path('partial/help-content/<int:hid>/', views.PV_HelpContentView.as_view(), name='partial_help_content'),
     path('partial/user-action/', views.PV_UserActionView.as_view(), name='partial_user_action'),
-    # --
-    path('run/restore-db-consistency/', views.RestoreDatabaseConsistencyView.as_view(), name='run_restore_db_consistency'),
 ]

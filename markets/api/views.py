@@ -358,7 +358,7 @@ class PV_UserActionView(APIView):
             # -- Бронирование ТМ --
             case {'action': 'book-outlet', 'outlet': str(number)}:
                 try:
-                    book_outlet(request.user, TradePlace.objects.get(location_number=number))  # TODO messages from parameters
+                    book_outlet(request.user, TradePlace.objects.get(location_number=number))
                     return render_message(f'Запрос на бронирование торгового места №{number} принят в обработку. Ожидайте уведомлений.')
                 except BookingError as e:
                     return render_message(f'{e}')
@@ -370,27 +370,3 @@ class PV_UserActionView(APIView):
 
             # -- Что-то вне списка реализованных акций --
             case _: return render_message('К сожалению, данная операция еще не реализована. Обратитесь к службе технической поддержке сайта.')
-
-
-# -- Actions --------------------------------------------------------------------------------------
-
-# TODO kill it
-
-class RestoreDatabaseConsistencyView(APIView):
-    permission_classes = [AllowAny]
-
-    @staticmethod
-    @on_exception_returns_response(HttpResponseBadRequest)
-    def get(_):
-        if restore_db_consistency.launched():
-            return Response({
-                "status": "action in progress",
-                "comment": "this is very, very long action, be patient, admin!"
-            })
-        else:
-            st_restore_db_consistency.delay()
-            return Response({
-                "status": "launched in background",
-                "comment": "this is very long action, be patient, please..."
-            })
-
