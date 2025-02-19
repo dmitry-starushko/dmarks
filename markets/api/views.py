@@ -9,10 +9,8 @@ from rest_framework.views import APIView
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from django.http.response import JsonResponse, HttpResponseBadRequest, HttpResponse
 from markets.business.search_and_filters import filter_markets, filter_outlets
-from markets.business.actions import restore_db_consistency
 from markets.decorators import on_exception_returns_response
 from markets.models import SvgSchema, Market, TradePlaceType, TradeSpecType, TradePlace, TradeSector, GlobalObservation
-from markets.tasks import st_restore_db_consistency
 from redis import Redis
 from .serializers import TradePlaceTypeSerializer, TradeSpecTypeSerializer, TradeSectorSerializer
 from ..business.booking import get_outlets_in_booking, BookingError, book_outlet, unbook_all

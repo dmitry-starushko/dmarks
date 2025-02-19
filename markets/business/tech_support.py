@@ -13,7 +13,6 @@ def send_message_to_ts(from_name, cids, message):
     if bot_id:
         si = Telegram(bot_id).send_message(set(cids), f'{from_name}:\n{message}')
         msg_ids = set()
-        redis.keys();
         for cid in si:
             if si[cid] and si[cid]['ok']:
                 msg_ids.add(si[cid]['result']['message_id'])
