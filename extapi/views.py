@@ -534,7 +534,6 @@ class ReferencesView(APIView):
         raise ValueError(ref_name)
 
 
-
 class SelfDiagnosisView(APIView):
     permission_classes = settings.EXT_API_PERMISSIONS
 
@@ -556,7 +555,6 @@ class SelfDiagnosisView(APIView):
 
 
 # TODO kill Dummy1C
-
 @extend_schema(exclude=True)
 class Dummy1C(APIView):
     permission_classes = [AllowAny]
