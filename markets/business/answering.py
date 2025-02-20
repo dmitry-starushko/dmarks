@@ -5,7 +5,7 @@ from markets.enums import LogRecordKind
 
 
 def deliver_answer(itn: str | None, question_uuid: str, answer: bool):
-    with httpx.Client() as client:
+    with httpx.Client(timeout=settings.TIMEOUT_1C_API) as client:
         try:
             res = client.post(settings.URLS_1C_API['answers'].format(user=itn or '0000000000'),
                               headers={'Content-Type': 'application/json'} | ({'Authorization': settings.AUTH_1C_API} if settings.AUTH_1C_API else {}),

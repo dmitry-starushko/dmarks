@@ -9,7 +9,7 @@ from markets.models import DmUser
 def get_reg_card(user: DmUser):
     if not user.confirmed:
         raise RuntimeError(FUS.UNV)
-    with httpx.Client() as client:
+    with httpx.Client(timeout=settings.TIMEOUT_1C_API) as client:
         res = client.get(settings.URLS_1C_API['reg-card'].format(user=user.itn),
                          headers={'Authorization': settings.AUTH_1C_API} if settings.AUTH_1C_API else {})
         if res.is_error:
@@ -27,7 +27,7 @@ def get_reg_card(user: DmUser):
 
 @on_exception_returns(dict())
 def get_market_info(mid: str):
-    with httpx.Client() as client:
+    with httpx.Client(timeout=settings.TIMEOUT_1C_API) as client:
         res = client.get(settings.URLS_1C_API['market-info'].format(market=mid),
                          headers={'Authorization': settings.AUTH_1C_API} if settings.AUTH_1C_API else {})
         if res.is_error:

@@ -165,6 +165,7 @@ LOG_TTL_DAYS = {
 }
 
 AUTH_1C_API = ''
+TIMEOUT_1C_API = 1.0
 URLS_1C_API = {
     'booking': 'http://localhost:8000/extapi/stub-1c/booking/',
     'confirmation': 'http://localhost:8000/extapi/stub-1c/confirmation/',
