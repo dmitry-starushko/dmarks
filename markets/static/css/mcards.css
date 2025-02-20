@@ -1,7 +1,6 @@
 .main-map-section {
     width: 100%;
     overflow: inherit;
-    /*height: 80vh;*/
 }
 
 /*--------------------------------------------------------------
@@ -10,11 +9,6 @@
 .main-map {
     padding: 5px;
     width: 100%;
-    /*height: 100vh;
-    height: 60vh;*/
-    /*height: -moz-calc(100% - 200px); /* Firefox */
-    /*height: -webkit-calc(100% - 200px); /* Chrome, Safari */
-    /*height: calc(100% - 200px); /* IE9+ and future browsers */
 }
 
 #map {
@@ -40,55 +34,7 @@
   height: -moz-calc(100vh - 240px); /* Firefox */
   height: -webkit-calc(100vh - 240px); /* Chrome, Safari */
   height: calc(100vh - 240px); /* IE9+ and future browsers */
-  /*grid-auto-rows: 5rem;
-  gap: 0.25rem;*/
-  /*bottom: 0;*/
-   /*max-height: -moz-calc(100% - 150px); /* Firefox */
-    /*max-height: -webkit-calc(100% - 150px); /* Chrome, Safari */
-    /*max-height: calc(100% - 150px); /* IE9+ and future browsers */
 }
-
-/*@media screen and (min-height: 1201px) {
-    .section-block {
-      height: 80vh;
-    }
-}
-
-@media screen and (max-height: 1200px) {
-    .section-block {
-      height: 80vh;
-    }
-}
-
-@media screen and (max-height: 1100px) {
-    .section-block {
-      height: 75vh;
-    }
-}
-
-@media screen and (max-height: 1000px) {
-    .section-block {
-      height: 70vh;
-    }
-}
-
-@media screen and (max-height: 800px) {
-    .section-block {
-      height: 68vh;
-    }
-}
-
-@media screen and (max-height: 700px) {
-    .section-block {
-        height: 60vh;
-    }
-}
-
-@media screen and (max-height: 600px) {
-    .section-block {
-        height: 50vh;
-    }
-}*/
 
 .market-card {
    flex: 0 0 24%;
@@ -104,21 +50,8 @@
 
 .market-card:hover {
   border-color: color-mix(in srgb, var(--card-border-hover-color), transparent 50%);
-  /*transform: translateY(-5px);*/
-  /*transform: scale(1.1);*/
   box-shadow: 0px 2px 15px rgba(0, 0, 0, 0.4);
 }
-
-/* Responsive media queries */
-
-/*@media screen and (max-width: 1100px) {
-  .market-card {
-    width: 40%;
-  }
-  .market-card {
-    flex: 0 1 48%;
-  }
-}*/
 
 @media screen and (max-width: 720px) {
   .market-cards {
@@ -141,11 +74,9 @@
   padding: 5px 10px;
   font-weight: bold;
   font-size: 0.9em;
-    /*width: 100px;*/
-    white-space: nowrap;
+  white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  /*max-height: 2em;*/
 }
 
 .market-card-body {
@@ -187,7 +118,6 @@
   display: flex;
   align-items: center;
   justify-content: end;
-  /*width: 100%;*/
   position: absolute;
   right: 5px;
   bottom: 5px;
@@ -268,41 +198,14 @@
 
 /* Responsive media queries */
 
-/*@media screen and (max-width: 1100px) {
-  .popup-market-card {
-    width: 40%;
-  }
-  .market-card {
-    flex: 0 1 48%;
-  }
-}
-
-@media screen and (max-width: 720px) {
-  .market-cards {
-    width: 100%;
-  }
-
-  .heading {
-    padding: 20px;
-    font-size: 30px;
-  }
-
-  .market-card {
-    flex: 0 1 100%;
-  }
-}*/
-
-
 .popup-market-card-title {
   text-align: left;
   padding: 5px 10px;
   font-weight: bold;
   font-size: 0.9em;
-    /*width: 100px;*/
-    white-space: nowrap;
+  white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  /*max-height: 2em;*/
 }
 
 .popup-market-card-body {
