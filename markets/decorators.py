@@ -25,6 +25,7 @@ def on_exception_returns_response(response_class, name=None):
                 response = response_class()
                 response.content = str(e)
                 return response
+
         proxy.__doc__ = qln
         return proxy
     return decorator
@@ -32,12 +33,16 @@ def on_exception_returns_response(response_class, name=None):
 
 def on_exception_returns(result):
     def decorator(function):
+        qln = function.__qualname__
+
         @wraps(function)
         def proxy(*args, **kwargs):
             try:
                 return function(*args, **kwargs)
             except Exception as e:
                 return result
+
+        proxy.__doc__ = qln
         return proxy
     return decorator
 
@@ -63,8 +68,9 @@ def globally_lonely_action(return_if_busy=None):
             finally:
                 with gla_lock:
                     redis.delete(gla_name)
-        proxy.launched = launched
+
         proxy.__doc__ = qln
+        proxy.launched = launched
         return proxy
     return decorator
 

@@ -8,7 +8,7 @@
                     <th class="sort-th{% if sc_0 %} {{sc_0}}{% endif %}" onclick="window.dispatchEvent(new CustomEvent('tp_header_clicked', { detail: 0 }));">Номер</th>
                     <th class="sort-th{% if sc_1 %} {{sc_1}}{% endif %}" onclick="window.dispatchEvent(new CustomEvent('tp_header_clicked', { detail: 1 }));">Специализация</th>
                     <th class="sort-th{% if sc_2 %} {{sc_2}}{% endif %}" onclick="window.dispatchEvent(new CustomEvent('tp_header_clicked', { detail: 2 }));">Занятость</th>
-                    <th class="sort-th{% if sc_3 %} {{sc_3}}{% endif %}" onclick="window.dispatchEvent(new CustomEvent('tp_header_clicked', { detail: 3 }));">Цена аренды</th>
+                    <th class="sort-th{% if sc_3 %} {{sc_3}}{% endif %}" onclick="window.dispatchEvent(new CustomEvent('tp_header_clicked', { detail: 3 }));">Тип</th>
                 </tr>
             </thead>
             <tbody>
@@ -17,7 +17,7 @@
                 <td><div style="color:{{tp.color_css}}">{{tp.number}}</div></td>
                 <td>{{tp.specialization}}</td>
                 <td>{{tp.occupation}}</td>
-                <td>{{tp.price}}</td>
+                <td>{{tp.type}}</td>
             </tr>
             {% endfor %}
             </tbody>

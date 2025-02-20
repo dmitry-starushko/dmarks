@@ -269,7 +269,17 @@ class StreetType(models.Model):
         return f'{self.type_name}'
 
 
-class TradePlaceType(models.Model):
+class CSSWRMixin:
+    @property
+    def wall_color_css(self):
+        return f'#{self.wall_color[2:]}'
+
+    @property
+    def roof_color_css(self):
+        return f'#{self.roof_color[2:]}'
+
+
+class TradePlaceType(CSSWRMixin, models.Model):
     type_name_choices = {
         OutletState.UNKNOWN: FUS.NS,
         OutletState.AVAILABLE_FOR_BOOKING: 'Свободно',
@@ -306,16 +316,8 @@ class TradePlaceType(models.Model):
     def __str__(self):
         return f'{self.get_type_name_display()}'
 
-    @property
-    def wall_color_css(self):
-        return f'#{hex(int(self.wall_color, 16))[2:]}'
 
-    @property
-    def roof_color_css(self):
-        return f'#{hex(int(self.roof_color, 16))[2:]}'
-
-
-class TradeSector(models.Model):
+class TradeSector(CSSWRMixin, models.Model):
     sector_name = models.CharField(unique=True, db_comment='Наименование сектора рынка')
     color = models.CharField(max_length=7, default='#ffffff', validators=[Validators.css_color], db_comment='Цвет в формате #ffffff')
     wall_color = models.CharField(max_length=8, default='0xffffff', validators=[Validators.hex], db_comment='Цвет стен ТМ в формате 0xffffff, для 3D')
@@ -344,16 +346,8 @@ class TradeSector(models.Model):
     def __str__(self):
         return f'{self.sector_name}'
 
-    @property
-    def wall_color_css(self):
-        return f'#{hex(int(self.wall_color, 16))[2:]}'
 
-    @property
-    def roof_color_css(self):
-        return f'#{hex(int(self.roof_color, 16))[2:]}'
-
-
-class TradeSpecType(models.Model):
+class TradeSpecType(CSSWRMixin, models.Model):
     type_name = models.CharField(unique=True, db_comment='Наименование типа специализации торгового места')
     color = models.CharField(max_length=7, default='#ffffff', validators=[Validators.css_color], db_comment='Цвет в формате #ffffff')
     wall_color = models.CharField(max_length=8, default='0xffffff', validators=[Validators.hex], db_comment='Цвет стен ТМ в формате 0xffffff, для 3D')
@@ -381,14 +375,6 @@ class TradeSpecType(models.Model):
 
     def __str__(self):
         return f'{self.type_name}'
-
-    @property
-    def wall_color_css(self):
-        return f'#{hex(int(self.wall_color, 16))[2:]}'
-
-    @property
-    def roof_color_css(self):
-        return f'#{hex(int(self.roof_color, 16))[2:]}'
 
 
 class TradeType(models.Model):

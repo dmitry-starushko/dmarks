@@ -9,10 +9,8 @@ from rest_framework.views import APIView
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from django.http.response import JsonResponse, HttpResponseBadRequest, HttpResponse
 from markets.business.search_and_filters import filter_markets, filter_outlets
-from markets.business.actions import restore_db_consistency
 from markets.decorators import on_exception_returns_response
 from markets.models import SvgSchema, Market, TradePlaceType, TradeSpecType, TradePlace, TradeSector, GlobalObservation
-from markets.tasks import st_restore_db_consistency
 from redis import Redis
 from .serializers import TradePlaceTypeSerializer, TradeSpecTypeSerializer, TradeSectorSerializer
 from ..business.booking import get_outlets_in_booking, BookingError, book_outlet, unbook_all
@@ -158,7 +156,7 @@ class PV_OutletTableView(APIView):
         lambda o: o.trade_spec_type_id_act.roof_color_css,
         lambda o: o.location_sector.roof_color_css,
     ]
-    order_fields = ['location_number', 'trade_spec_type_id_act__type_name', 'trade_place_type__type_name', 'price']
+    order_fields = ['location_number', 'trade_spec_type_id_act__type_name', 'trade_place_type__type_name', 'trade_type__type_name']
     column_count = len(order_fields)
 
     @on_exception_returns_response(HttpResponseBadRequest)
@@ -186,12 +184,12 @@ class PV_OutletTableView(APIView):
             case _: raise ValueError(f'Недопустимый параметр: {request.data}')
         legend = legend % len(self.legends)
         scheme = SvgSchema.objects.defer('svg_schema').get(pk=scheme_pk)
-        queryset = scheme.outlets.select_related('trade_place_type', 'trade_spec_type_id_act').order_by(*ordering)
+        queryset = scheme.outlets.select_related('trade_place_type', 'trade_spec_type_id_act', 'trade_type').order_by(*ordering)
         outlets = [{
             'number': r.location_number,
             'specialization': r.trade_spec_type_id_act,
             'occupation': r.trade_place_type,
-            'price': r.price,
+            'type': r.trade_type,
             'color_css': self.legends[legend](r)
         } for r in queryset]
         return render(request, 'markets/partials/outlet-table.html', {
@@ -358,7 +356,7 @@ class PV_UserActionView(APIView):
             # -- Бронирование ТМ --
             case {'action': 'book-outlet', 'outlet': str(number)}:
                 try:
-                    book_outlet(request.user, TradePlace.objects.get(location_number=number))  # TODO messages from parameters
+                    book_outlet(request.user, TradePlace.objects.get(location_number=number))
                     return render_message(f'Запрос на бронирование торгового места №{number} принят в обработку. Ожидайте уведомлений.')
                 except BookingError as e:
                     return render_message(f'{e}')
@@ -370,27 +368,3 @@ class PV_UserActionView(APIView):
 
             # -- Что-то вне списка реализованных акций --
             case _: return render_message('К сожалению, данная операция еще не реализована. Обратитесь к службе технической поддержке сайта.')
-
-
-# -- Actions --------------------------------------------------------------------------------------
-
-# TODO kill it
-
-class RestoreDatabaseConsistencyView(APIView):
-    permission_classes = [AllowAny]
-
-    @staticmethod
-    @on_exception_returns_response(HttpResponseBadRequest)
-    def get(_):
-        if restore_db_consistency.launched():
-            return Response({
-                "status": "action in progress",
-                "comment": "this is very, very long action, be patient, admin!"
-            })
-        else:
-            st_restore_db_consistency.delay()
-            return Response({
-                "status": "launched in background",
-                "comment": "this is very long action, be patient, please..."
-            })
-

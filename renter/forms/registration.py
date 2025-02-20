@@ -10,6 +10,7 @@ class RegistrationForm(forms.ModelForm):
     password2 = forms.CharField(label='Повторите пароль', widget=forms.PasswordInput)
     confirm = forms.BooleanField(initial=False, label='Я соглашаюсь с политикой конфиденциальности данного сайта')
     sms_code = forms.CharField(initial='', label='Введите код подтверждения из SMS', required=False, widget=forms.HiddenInput)
+    phone_pattern = '+7(999)999-99-99'
 
     class Meta:
         model = DmUser
@@ -17,15 +18,25 @@ class RegistrationForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        for key, val in {'phone': 'Телефон', 'email': 'Адрес электронной почты'}.items():
+        for key, val in {
+            'phone': 'Телефон',
+            'email': 'Адрес электронной почты'
+        }.items():
             self.fields[key].label = val
+        for key, val in {
+            'phone': self.phone_pattern,
+            'first_name': 'Имя',
+            'last_name': 'Фамилия',
+            'email': 'address@domain.ext'
+        }.items():
+            self.fields[key].widget.attrs['placeholder'] = val
 
     def clean_phone(self):
         phone = self.cleaned_data['phone']
         try:
             Validators.phone(phone)
         except ValidationError:
-            raise forms.ValidationError('Укажите номер телефона в формате +7(999)999-99-99')
+            raise forms.ValidationError(f'Укажите номер телефона в формате {self.phone_pattern}')
         return phone
 
     def clean_confirm(self):

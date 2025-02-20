@@ -142,7 +142,7 @@
     </a>
     <div id="preloader"></div> {# -- Preloader -- #}
     {% include 'markets/include/search-market.html' %} {# -- Search Window -- #}
-    {% block extern-body-scripts %} <!-- TODO переместить в блок dom-loaded-scripts -->
+    {% block extern-body-scripts %}
     <script src="{% static 'js/main.js' %}"></script>
     <script src="{% static 'js/search.js' %}"></script>
     {% endblock %}

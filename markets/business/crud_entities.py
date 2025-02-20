@@ -281,7 +281,7 @@ def get_market_outlets(market_id: str):
             'internet': olt.impr_internet,
             'internet_type_id': olt.impr_internet_type_id,
             'add_equipment': olt.impr_add_equipment,
-            'fridge':olt.impr_fridge,
+            'fridge': olt.impr_fridge,
             'shopwindow': olt.impr_shopwindow
         }
     } for olt in market.trade_places.select_related('trade_type', 'trade_place_type', 'trade_spec_type_id_act', 'trade_spec_type_id_rec', 'location_sector')]

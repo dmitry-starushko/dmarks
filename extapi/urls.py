@@ -21,5 +21,5 @@ urlpatterns = [
     # --
     path('references/<str:ref_name>/', views.ReferencesView.as_view(), name='references'),
     path('self-diagnosis/', views.SelfDiagnosisView.as_view(), name='self_diagnosis'),
-    path('dummy1c/<str:operation>/', views.Dummy1C.as_view(), name='dummy_1c'),
+    path('stub-1c/<str:operation>/', views.Stub_1C_View.as_view(), name='stub_1c'),
 ]
