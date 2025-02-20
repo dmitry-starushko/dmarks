@@ -1,6 +1,6 @@
 {% load cache %}
 {% cache 300 market_detail_outlet_table hash %}
-    <div class="mkdetails-tp-section-info-main">
+    <div class="mkdetails-tp-section-info-main" id="mkdetails-tp-section-info-main">
         <table class="table-tp table-bordered" id="mkdetails-tp-table">
             <thead>
                 <tr><th colspan="5">{{title | default:"Без названия"}}</th></tr>

@@ -67,8 +67,9 @@
     var tpTab = document.getElementById('mkdetails-tp-tab');
     var schemeTab = document.getElementById('mkdetails-scheme-tab');
     var sectionTabs = document.getElementById('mkdetails-section-tabs');
-    var mkdetailscontent = document.getElementById('market-details-content');
+    /*var mkdetailscontent = document.getElementById('market-details-content');
     var mkdetailsection = document.getElementById('market-details-section');
+    var mkdetailtpinfomain = document.getElementById('mkdetails-tp-section-info-main');*/
 
 
     document.getElementById('mkdetails-info').addEventListener("click", () =>
@@ -83,7 +84,9 @@
         sectionTabs.style.display = "flex";
         tpTab.style.visibility = "visible";
         tpTab.style.width = "60%";
-        schemeTab.style.display = "none";
+        schemeTab.style.visibility = "hidden";
+        schemeTab.style.width = "0";
+        //schemeTab.style.display = "none";
     });
 
     document.getElementById('mkdetails-scheme').addEventListener("click", () =>
@@ -92,10 +95,12 @@
         sectionTabs.style.display = "flex";
         tpTab.style.visibility = "hidden";
         tpTab.style.width = "0";
-        schemeTab.style.display = "flex";
+        schemeTab.style.visibility = "visible";
+        schemeTab.style.width = "60%";
+        //schemeTab.style.display = "flex";
     });
 
-    const fullscr = () => {
+    /*const fullscr = () => {
       if (document.fullscreenElement) {
         // If there is a fullscreen element, exit full screen.
         mkdetailscontent.style.minHeight = "80%";
@@ -103,13 +108,15 @@
         return;
       }
       // Make the .element div fullscreen.
-      mkdetailsection.requestFullscreen();
       mkdetailscontent.style.minHeight = "90%";
+      mkdetailtpinfomain.style.minHeight = "100%";
+      mkdetailsection.requestFullscreen();
+
     }
 
     document.querySelector("#mkdetails-fullscreen").addEventListener("click", function (event) {
         fullscr();
-    });
+    });*/
 
 
 function toggleItem(elem) {

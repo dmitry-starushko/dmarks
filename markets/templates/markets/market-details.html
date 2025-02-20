@@ -299,5 +299,21 @@ window.addEventListener("tp_header_clicked", async (e) => { {# -----------------
 update_outlet_table(null); {# ------------------------------------------------------------------------ Initiation --- #}
 update_legend_body();
 if(tab_map.has("{{show_tab}}")) window.setTimeout(()=>{ document.getElementById(tab_map.get("{{show_tab}}")).click(); });
+
+document.querySelector("#mkdetails-fullscreen").addEventListener("click", function (event) {
+    /*var mkdetailscontent = document.getElementById('market-details-content');
+    var mkdetailsection = document.getElementById('market-details-section');*/
+    var mkdetailtpinfomain = document.getElementById('mkdetails-tp-section-info-main');
+
+    if (document.fullscreenElement) {
+        // If there is a fullscreen element, exit full screen.
+        document.exitFullscreen();
+        return;
+      }
+      // Make the .element div fullscreen.
+      mkdetailtpinfomain.style.height = "100%";
+      mkdetailsection.requestFullscreen();
+});
+
 {% endif %}
 {% endblock %}
