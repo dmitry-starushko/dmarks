@@ -13,9 +13,9 @@
 
 #map {
     width: 100%;
-    height: -moz-calc(100vh - 250px); /* Firefox */
-    height: -webkit-calc(100vh - 250px); /* Chrome, Safari */
-    height: calc(100vh - 250px); /* IE9+ and future browsers */
+    height: -moz-calc(100vh - 235px); /* Firefox */
+    height: -webkit-calc(100vh - 235px); /* Chrome, Safari */
+    height: calc(100vh - 235px); /* IE9+ and future browsers */
 }
 
 /*--------------------------------------------------------------
