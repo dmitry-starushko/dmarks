@@ -69,9 +69,7 @@ body {
   font-family: var(--default-font);
   background: linear-gradient(to top, #002f33b0, #002f3325), url("/static/bitmaps/bkgs/bkg_001.webp");
   background-attachment: fixed;
-  /*height: 100%;
-  padding:0;
-  margin: 0;*/
+  * { font-family: "Geologica" !important; }
 }
 
 a {
