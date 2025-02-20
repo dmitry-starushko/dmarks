@@ -20,7 +20,7 @@ def init_confirmation(user: DmUser):
     # if user.aux_data.passport_image is None:
     #     raise ConfirmationError('Отсутствует скан паспорта')
     dlog_info(user, f'Пользователь {user.phone} инициировал процедуру верификации (ИНН: {user.itn})')
-    with httpx.Client() as client:
+    with httpx.Client(timeout=settings.TIMEOUT_1C_API) as client:
         try:
             res = client.post(settings.URLS_1C_API['confirmation'].format(user=user.itn),
                               headers={'Content-Type': 'application/json'} | ({'Authorization': settings.AUTH_1C_API} if settings.AUTH_1C_API else {}),

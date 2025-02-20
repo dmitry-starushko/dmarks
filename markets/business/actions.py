@@ -73,7 +73,7 @@ def restore_db_consistency():
             if tp.scheme_id is None:
                 err_list += [f'ТМ не привязано к схеме: scheme_id = {tp.scheme_id}']
         errors = [f'{key}: {err}' for key, value in errors.items() for err in value]
-        with httpx.Client() as client:
+        with httpx.Client(timeout=settings.TIMEOUT_1C_API) as client:
             try:
                 client.post(settings.URLS_1C_API['check-results'],
                             headers={'Content-Type': 'application/json'} | ({'Authorization': settings.AUTH_1C_API} if settings.AUTH_1C_API else {}),

@@ -862,10 +862,7 @@ footer {
 section,
 .section {
   color: var(--default-color);
-  /*background-color: var(--background-color);*/
-  padding: 20px 0 0 0;
-  /*scroll-margin-top: 90px;
-  overflow: clip;*/
+  padding: 20px 0;
 }
 
 @media (max-width: 1199px) {
