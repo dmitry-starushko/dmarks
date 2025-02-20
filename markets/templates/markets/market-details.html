@@ -303,14 +303,17 @@ if(tab_map.has("{{show_tab}}")) window.setTimeout(()=>{ document.getElementById(
 document.querySelector("#mkdetails-fullscreen").addEventListener("click", function (event) {
     var mkdetailsection = document.getElementById('market-details-section');
     var mkdetailtpinfomain = document.getElementById('mkdetails-tp-section-info-main');
+    var v3d = document.getElementById('v3d');
 
     if (document.fullscreenElement) {
         // If there is a fullscreen element, exit full screen.
         document.exitFullscreen();
+        v3d.style.height = "calc(100vh - 320px)";
         return;
       }
       // Make the .element div fullscreen.
       mkdetailtpinfomain.style.height = "100%";
+      v3d.style.height = "100%";
       mkdetailsection.requestFullscreen();
 });
 

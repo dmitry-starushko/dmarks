@@ -100,24 +100,6 @@
         //schemeTab.style.display = "flex";
     });
 
-    /*const fullscr = () => {
-      if (document.fullscreenElement) {
-        // If there is a fullscreen element, exit full screen.
-        mkdetailscontent.style.minHeight = "80%";
-        document.exitFullscreen();
-        return;
-      }
-      // Make the .element div fullscreen.
-      mkdetailscontent.style.minHeight = "90%";
-      mkdetailtpinfomain.style.minHeight = "100%";
-      mkdetailsection.requestFullscreen();
-
-    }
-
-    document.querySelector("#mkdetails-fullscreen").addEventListener("click", function (event) {
-        fullscr();
-    });*/
-
 
 function toggleItem(elem) {
   for (var i = 0; i < elem.length; i++) {
