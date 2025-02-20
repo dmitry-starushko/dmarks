@@ -156,7 +156,7 @@ class PV_OutletTableView(APIView):
         lambda o: o.trade_spec_type_id_act.roof_color_css,
         lambda o: o.location_sector.roof_color_css,
     ]
-    order_fields = ['location_number', 'trade_spec_type_id_act__type_name', 'trade_place_type__type_name', 'price']
+    order_fields = ['location_number', 'trade_spec_type_id_act__type_name', 'trade_place_type__type_name', 'trade_type__type_name']
     column_count = len(order_fields)
 
     @on_exception_returns_response(HttpResponseBadRequest)
@@ -184,12 +184,12 @@ class PV_OutletTableView(APIView):
             case _: raise ValueError(f'Недопустимый параметр: {request.data}')
         legend = legend % len(self.legends)
         scheme = SvgSchema.objects.defer('svg_schema').get(pk=scheme_pk)
-        queryset = scheme.outlets.select_related('trade_place_type', 'trade_spec_type_id_act').order_by(*ordering)
+        queryset = scheme.outlets.select_related('trade_place_type', 'trade_spec_type_id_act', 'trade_type').order_by(*ordering)
         outlets = [{
             'number': r.location_number,
             'specialization': r.trade_spec_type_id_act,
             'occupation': r.trade_place_type,
-            'price': r.price,
+            'type': r.trade_type,
             'color_css': self.legends[legend](r)
         } for r in queryset]
         return render(request, 'markets/partials/outlet-table.html', {
