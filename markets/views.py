@@ -8,19 +8,24 @@ from markets.models import Market, Contact
 
 
 class BasicContextProvider:
-    @staticmethod
-    def basic_context(request):
+    def basic_context(self, request, model=None):
         return {
-            'page_title': 'Рынки Донбасса',
+            'page_title': f'Рынки Донбасса - {self.subtitle(model)}',
             'body_class': 'index-page',
             'user': request.user,
         }
+
+    def subtitle(self, _):
+        return ''
 
 
 class IndexView(View, BasicContextProvider):
     @property
     def template_name(self):
         return 'markets/index.html'
+
+    def subtitle(self, _):
+        return 'Все рынки'
 
     def get(self, request, mpk: int | None = None):
         return render(request, self.template_name, self.basic_context(request) | {
@@ -35,11 +40,14 @@ class MarketDetailsView(View, BasicContextProvider):
     def template_name(self):
         return 'markets/market-details.html'
 
+    def subtitle(self, model):
+        return model.mk_full_name
+
     @on_exception_returns_response(HttpResponseBadRequest)
     def get(self, request, mpk, show: str, outlet: str | None = None):
         market_model = Market.objects.get(pk=mpk)
         outlet_model = market_model.trade_places.get(location_number=str(outlet)) if outlet is not None else None
-        return render(request, self.template_name, self.basic_context(request) | {
+        return render(request, self.template_name, self.basic_context(request, market_model) | {
             'market': market_model,
             'aux_info': get_market_info(market_model.market_id),
             'show_tab': show,
@@ -52,6 +60,9 @@ class ContactsView(View, BasicContextProvider):
     @property
     def template_name(self):
         return 'markets/contacts.html'
+
+    def subtitle(self, _):
+        return "Контакты"
 
     @on_exception_returns_response(HttpResponseBadRequest)
     def get(self, request):
