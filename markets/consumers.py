@@ -29,7 +29,6 @@ class ChatConsumer(WebsocketConsumer):
     def receive(self, text_data=None, bytes_data=None):
         text_data_json = json.loads(text_data)
         message = text_data_json['message']
-        # self.send(text_data=json.dumps({'message': f'Вы написали мне: "{message}". Лучшие специалисты планеты уже обдумывают Вашу проблему! Продолжайте наблюдение.'}))
         st_send_message_to_ts.delay(self.group_name, list(self.ts_cids), message)
 
     def message_from_ts(self, event):
