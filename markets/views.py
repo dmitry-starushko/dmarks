@@ -78,7 +78,7 @@ class ContactsView(View, BasicContextProvider):
         return 'markets/contacts.html'
 
     def pg_title(self, _):
-        return "Контакты. ЦИС интерактивных карт территорий рынков"
+        return 'Контакты. ЦИС интерактивных карт территорий рынков'
 
     @on_exception_returns_response(HttpResponseBadRequest)
     def get(self, request):
