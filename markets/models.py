@@ -479,16 +479,16 @@ class Market(models.Model):
         return settings.DISP_RE.sub(' ', self.additional_name).strip()
 
     @property
+    def mk_full_name(self):
+        return f'Рынок {self.mk_market_name}{f' ({self.mk_additional_name})' if self.mk_additional_name else ''}'
+
+    @property
     def mk_geo_full_address(self):
         return f'{self.geo_city.locality_type} {self.geo_city}, {self.geo_street_type} {self.geo_street}, {self.geo_house}'
 
     @property
     def mk_geo_index(self):
         return settings.DISP_RE.sub(' ', self.geo_index).strip()
-
-    @property
-    def mk_full_name(self):
-        return f'Рынок {self.mk_market_name}{f' ({self.mk_additional_name})' if self.mk_additional_name else ''}'
 
     @property
     def mk_full_address(self):
