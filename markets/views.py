@@ -40,8 +40,8 @@ class MarketDetailsView(View, BasicContextProvider):
     def template_name(self):
         return 'markets/market-details.html'
 
-    def subtitle(self, model):
-        return model.mk_full_name
+    def subtitle(self, market_model):
+        return market_model.mk_full_name
 
     @on_exception_returns_response(HttpResponseBadRequest)
     def get(self, request, mpk, show: str, outlet: str | None = None):
