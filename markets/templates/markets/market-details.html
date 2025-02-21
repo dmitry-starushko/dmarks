@@ -14,9 +14,6 @@
 import { View3D } from "view3d";
 import { StoreyDialog } from "storey-dialog";
 {% endblock %}
-{% block title %}{{block.super}}{{market.mk_full_name}} ({{market.market_type}}) {% endblock %}
-{% block description %}{{block.super}}Аренда и бронирование онлайн торговых мест {{market.mk_full_name}} ({{market.market_type}}), г.{{market.geo_city}}{% endblock %}
-{% block og_title %}{{block.super}}{{market.mk_full_name}} ({{market.market_type}}) {% endblock %}
 {% block content %}
 <section class="market-details-section" id="market-details-section">
     <div class="market-details-section-title"><h3>{{market.mk_full_name}}</h3></div>
