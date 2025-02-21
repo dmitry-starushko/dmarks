@@ -270,13 +270,11 @@ window.addEventListener("outlet_clicked", async (e) => { {# --------------------
     }
     current.outlet_number = e.detail.id;
 });
-
 window.addEventListener("next_legend", () => { {# ---------------------------------------------- Legend changing --- #}
     current.legend++;
     update_outlet_table();
     update_legend_body();
 });
-
 window.addEventListener("market_storey_changed", (e) => { {# ----------------------------- Market storey changing --- #}
     current.scheme_pk = e.detail.scheme_pk;
     current.scheme_name = e.detail.scheme_name;
@@ -298,24 +296,19 @@ window.addEventListener("tp_header_clicked", async (e) => { {# -----------------
 });
 update_outlet_table(null); {# ------------------------------------------------------------------------ Initiation --- #}
 update_legend_body();
-if(tab_map.has("{{show_tab}}")) window.setTimeout(()=>{ document.getElementById(tab_map.get("{{show_tab}}")).click(); });
-
-document.querySelector("#mkdetails-fullscreen").addEventListener("click", function (event) {
-    var mkdetailsection = document.getElementById('market-details-section');
-    var mkdetailtpinfomain = document.getElementById('mkdetails-tp-section-info-main');
-    var v3d = document.getElementById('v3d');
-
+if(tab_map.has("{{show_tab}}")) window.setTimeout(() => { document.getElementById(tab_map.get("{{show_tab}}")).click(); });
+document.querySelector("#mkdetails-fullscreen").addEventListener("click", () => {
+    const mk_detail_section = document.getElementById('market-details-section');
+    const mk_detail_tp_info_main = document.getElementById('mkdetails-tp-section-info-main');
+    const v3d = document.getElementById('v3d');
     if (document.fullscreenElement) {
-        // If there is a fullscreen element, exit full screen.
         document.exitFullscreen();
         v3d.style.height = "calc(100vh - 320px)";
         return;
-      }
-      // Make the .element div fullscreen.
-      mkdetailtpinfomain.style.height = "100%";
-      v3d.style.height = "100%";
-      mkdetailsection.requestFullscreen();
+    }
+    mk_detail_tp_info_main.style.height = "100%";
+    v3d.style.height = "100%";
+    mk_detail_section.requestFullscreen();
 });
-
 {% endif %}
 {% endblock %}
