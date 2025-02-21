@@ -11,7 +11,8 @@ class BasicContextProvider:
     @staticmethod
     def basic_context(request):
         return {
-            'page_title': 'Рынки Донбасса',
+            'page_title': '',
+            'page_description': 'Рынки Донбасса.',
             'body_class': 'index-page',
             'user': request.user,
         }
