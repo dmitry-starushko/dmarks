@@ -253,8 +253,7 @@ window.addEventListener("outlet_clicked", async (e) => { {# --------------------
         for (const tr of tp_table_rows) {
             tr.classList.remove('selected');
             tr.classList.add(tr.getElementsByTagName('td')[0].textContent === e.detail.id ? 'selected' : 'clean');
-            if(mk_tp_tab.style.visibility === 'hidden' && tr.getElementsByTagName('td')[0].textContent === e.detail.id)
-            {
+            if(mk_tp_tab.style.visibility === 'hidden' && tr.getElementsByTagName('td')[0].textContent === e.detail.id) {
                 tr.scrollIntoView({
                     behavior: 'auto',
                     block: 'center'
