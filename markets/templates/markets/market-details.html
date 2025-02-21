@@ -302,11 +302,11 @@ document.querySelector("#mkdetails-fullscreen").addEventListener("click", () => 
     if (document.fullscreenElement) {
         document.exitFullscreen();
         v3d.style.height = "calc(100vh - 320px)";
-        return;
+    } else {
+        mk_detail_tp_info_main.style.height = "100%";
+        v3d.style.height = "100%";
+        mk_detail_section.requestFullscreen();
     }
-    mk_detail_tp_info_main.style.height = "100%";
-    v3d.style.height = "100%";
-    mk_detail_section.requestFullscreen();
 });
 {% endif %}
 {% endblock %}
