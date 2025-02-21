@@ -23,3 +23,6 @@ CELERY_BROKER_URL = f'pyamqp://guest@{os.environ.get('RABBIT')}'
 TELEBOT_ID = os.environ.get('TELEBOT')
 
 EXT_API_PERMISSIONS = [AllowAny]
+
+HOST_URL = 'https://maps.donmarkets.ru/'
+
