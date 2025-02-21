@@ -1,5 +1,6 @@
 from collections import OrderedDict
 from django.conf import settings
+from django.core.files.storage import default_storage
 from django.http import HttpResponseBadRequest
 from django.views import View
 from django.shortcuts import render
@@ -11,21 +12,21 @@ from markets.models import Market, Contact
 class BasicContextProvider:
     def basic_context(self, request, model=None):
         return {
-            'page_title': f'{self.subtitle(model)}',
-            'page_description': f'{self.subdescr(model)}',
-            'page_image': f'{settings.HOST_URL}{self.img(model)}',
+            'page_title': f'{self.pg_title(model)}',
+            'og_description': f'{self.og_description(model)}',
+            'og_image': f'{settings.OG_HOST_URL}{self.og_image(model)}',
             'body_class': 'index-page',
             'user': request.user,
         }
 
-    def subtitle(self, _):
+    def pg_title(self, _):
         return ''
 
-    def subdescr(self, _):
-        return f'Цифровая информационная система интерактивных карт территорий рынков ГП «Рынки Донбасса». Онлайн аренда и бронирование торговых мест'
+    def og_description(self, _):
+        return f'Цифровая информационная система интерактивных карт территорий рынков ГП «Рынки Донбасса». Онлайн бронирование торговых мест'
 
-    def img(self, _):
-        return 'def-mk-img.webp'
+    def og_image(self, _):
+        return default_storage.url(settings.DEF_MK_IMG)
 
 
 class IndexView(View, BasicContextProvider):
@@ -33,7 +34,7 @@ class IndexView(View, BasicContextProvider):
     def template_name(self):
         return 'markets/index.html'
 
-    def subtitle(self, _):
+    def pg_title(self, _):
         return 'ЦИС интерактивных карт территорий рынков ГП «Рынки Донбасса»'
 
     def get(self, request, mpk: int | None = None):
@@ -49,14 +50,14 @@ class MarketDetailsView(View, BasicContextProvider):
     def template_name(self):
         return 'markets/market-details.html'
 
-    def subtitle(self, market_model):
+    def pg_title(self, market_model):
         return f'{market_model.mk_full_name} ({market_model.market_type}). Рынки Донбасса'
 
-    def subdescr(self, market_model):
-        return f'Рынки Донбасса. Аренда и бронирование онлайн торговых мест {market_model.mk_full_name} ({market_model.market_type}), г. {market_model.geo_city}'
+    def og_description(self, market_model):
+        return f'Рынки Донбасса. Онлайн бронирование торговых мест {market_model.mk_full_name} ({market_model.market_type}), г. {market_model.geo_city}'
 
-    def img(self, market_model):
-        return market_model.image
+    def og_image(self, market_model):
+        return default_storage.url(market_model.image)
 
     @on_exception_returns_response(HttpResponseBadRequest)
     def get(self, request, mpk, show: str, outlet: str | None = None):
@@ -76,7 +77,7 @@ class ContactsView(View, BasicContextProvider):
     def template_name(self):
         return 'markets/contacts.html'
 
-    def subtitle(self, _):
+    def pg_title(self, _):
         return "Контакты. ЦИС интерактивных карт территорий рынков"
 
     @on_exception_returns_response(HttpResponseBadRequest)

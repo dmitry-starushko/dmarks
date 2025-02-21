@@ -188,3 +188,6 @@ EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'maps.mail@gprd-dnr.ru'
 EMAIL_HOST_PASSWORD = '7948yXS2Gp'
+
+OG_HOST_URL = 'http://localhost:8000'
+

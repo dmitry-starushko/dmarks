@@ -24,5 +24,4 @@ TELEBOT_ID = os.environ.get('TELEBOT')
 
 EXT_API_PERMISSIONS = [AllowAny]
 
-HOST_URL = 'https://maps.donmarkets.ru/'
 
