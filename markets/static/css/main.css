@@ -283,7 +283,6 @@ h6 {
     padding: 0;
     margin-left: auto;
     margin-right: 3em;
-    /*flex: 1.5 0 auto;*/
   }
 
   .nav-tabs {
@@ -322,10 +321,6 @@ h6 {
     line-height: 0;
     margin-left: 5px;
     transition: 0.3s;
-  }
-
-  .navmenu li:last-child a {
-    /*padding-right: 0;*/
   }
 
   .navmenu li:hover>a,
@@ -1535,13 +1530,6 @@ section,
 
 .team .team-member .social a+a {
   margin-left: 8px;
-}
-
-/*--------------------------------------------------------------
-# Starter Section Section
---------------------------------------------------------------*/
-.starter-section {
-  /* Add your styles here */
 }
 
 /*--------------------------------------------------------------
