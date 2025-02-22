@@ -40,7 +40,6 @@ import { StoreyDialog } from "storey-dialog";
                     {{market.ads | default:'*К сожалению, текст отсутствует*.' | markdown}}
                 </div>
             </div>
-
             <div class="mkdetails-section-info-slide" id="dragSlide"></div>
             <div class="mkdetails-section-info-detail">
                  <ul class="tree">
@@ -62,7 +61,6 @@ import { StoreyDialog } from "storey-dialog";
                             </ul>
                           </details>
                         </li>
-                        {% if aux_info %}
                         <li>
                           <details open>
                             <summary>Дополнительная информация о рынке</summary>
@@ -74,7 +72,6 @@ import { StoreyDialog } from "storey-dialog";
                             </ul>
                           </details>
                         </li>
-                        {% endif %}
                         <li>
                           <details open>
                             <summary>Информация о географическом расположении рынка</summary>
