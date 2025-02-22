@@ -18,6 +18,7 @@
     <link href="{% static 'css/help-dialog.css' %}" rel="stylesheet">
     <style>.help-dialog > main > header { width: calc(100% - 2rem) !important; }</style>
     <script src="{% static 'js/js.cookie.min.js' %}"></script> {# ------------------------------------------------------ Scripts #}
+    <script src="{% static 'js/copy-link.js' %}"></script>
     {% include 'markets/js/reverse.js' with namespace='renter-api' %}
     {% include 'renter/js/importmap.js' %}
     <script type="module">
@@ -54,6 +55,10 @@
       <a href="#business-card" class="lsb-item" title="Визитная карточка">
           <img src="{% static 'svg/icons/account-card-details.svg' %}" alt="Визитная карточка"/>
           <span>Визитная карточка</span>
+      </a>
+      <a href="#rented-outlet-links" class="lsb-item" title="Арендованные торговые места">
+          <img src="{% static 'svg/icons/format-list-bulleted.svg' %}" alt="Арендованные торговые места"/>
+          <span>Арендованные торговые места</span>
       </a>
       <a href="{% url 'renter-api:download_log' %}" class="lsb-item" title="История действий">
           <img src="{% static 'svg/icons/calendar-select.svg' %}" alt="История действий"/>
@@ -104,6 +109,10 @@
             <div class="main-block-item" id="business-card">
                 <h2>Визитная карточка</h2>
                 <div>{% include 'renter/include/business-card.html' %}</div>
+            </div>
+            <div class="main-block-item" id="rented-outlet-links">
+                <h2>Арендованные торговые места</h2>
+                <div>{% include 'renter/include/outlet-links.html' %}</div>
             </div>
         </div>
     </div>

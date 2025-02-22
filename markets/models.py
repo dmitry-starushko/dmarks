@@ -6,6 +6,7 @@ from django.core.validators import MinValueValidator, MaxValueValidator
 from django.db import models
 from django.conf import settings
 from django.db.models import Index, Q, F
+from django.urls import reverse
 from markets.enums import OutletState, FUS, NotificationType, LogRecordKind
 from markets.validators import Validators
 from datetime import timezone, timedelta
@@ -85,6 +86,14 @@ class DmUser(AbstractUser):
     @property
     def promo_enabled(self):
         return self.aux_data.promo_enabled if hasattr(self, 'aux_data') else None
+
+    @property
+    def rented_outlet_links(self) -> list[dict]:
+        return [{
+            'id': f'outlet-link-{r.location_number}',
+            'title': f'№{r.location_number}, {r.market.mk_full_name}',
+            'link': reverse('markets:market_details_outlet', kwargs={'mpk': r.market.id, 'show': 'scheme', 'outlet': r.location_number}),
+        } for r in self.rented_outlets.all()]
 
 
 class File(DbItem):

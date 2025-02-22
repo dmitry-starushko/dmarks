@@ -287,6 +287,24 @@ img.renter-ts-button {
     animation: pulse 5s infinite;
 }
 
+#rented-outlet-links {
+    * {
+        font-family: "Geologica" !important;
+        font-variation-settings: "wght" 200  !important;
+    }
+    label {
+        color: steelblue;
+    }
+    button {
+        height: fit-content;
+        width: fit-content;
+    }
+    img {
+        height: 1.25rem;
+        margin: 0.25rem;
+    }
+}
+
 @-webkit-keyframes pulse {
   0% {-webkit-box-shadow: 0 0 0 0 rgba(90, 153, 212, 0.4);}
   70% {-webkit-box-shadow: 0 0 0 20px rgba(90, 153, 212, 0);}

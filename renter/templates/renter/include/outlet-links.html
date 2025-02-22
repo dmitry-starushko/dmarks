@@ -1,0 +1,16 @@
+{% load static %}
+{% with links=user.rented_outlet_links %}
+{% if links %}
+{% for l in links %}
+<p>
+    <button title="Копировать ссылку" onclick="copy_absolute_url_by_id('{{l.id}}').catch(error => console.error(error.message));">
+        <img src="{% static 'svg/icons/content-copy.svg' %}" alt="Регистрационная карточка"/>
+    </button>
+    &nbsp;
+    <a id="{{l.id}}" href="{{l.link}}" target="_blank">{{l.title}}</a>
+</p>
+{% endfor %}
+{% else %}
+<label>Вы пока что не арендуете ни одного торгового места.</label>
+{% endif %}
+{% endwith %}
