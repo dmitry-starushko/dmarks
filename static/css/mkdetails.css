@@ -13,17 +13,6 @@
     height: 100%;
     display: flex;
     flex-direction: column;
-    /*max-height: -moz-calc(100vh - 100px); /* Firefox */
-    /*max-height: -webkit-calc(100vh - 100px); /* Chrome, Safari */
-    /*max-height: calc(100vh - 100px); /* IE9+ and future browsers */
-}
-
-@media screen and (min-height: 900px) {
-    .market-details-section {
-        /*min-height: -moz-calc(100vh - 110px); /* Firefox */
-        /*min-height: -webkit-calc(100vh - 110px); /* Chrome, Safari */
-        /*min-height: calc(100vh - 110px); /* IE9+ and future browsers */
-    }
 }
 
 .market-details-section:fullscreen {
@@ -35,18 +24,8 @@
 {
     height: 100%;
     min-height: 80%;
-    /*display: flex;*/
     background-color: var(--section-bg);
-    /*max-height: -moz-calc(100vh - 300px); /* Firefox */
-    /*max-height: -webkit-calc(100vh - 300px); /* Chrome, Safari */
-    /*max-height: calc(100vh - 300px); /* IE9+ and future browsers */
 }
-
-/*@media screen and (min-height: 1130px) {
-    .market-details-content {
-        height: 85%;
-    }
-}*/
 
 .market-details-section-title {
   text-align: center;
@@ -171,7 +150,6 @@
 }
 
 .mkdetails-short-info{
-    /*width: 50%;*/
     height: 100%;
     flex: 1;
     background-color: #8d8d8d;
@@ -299,7 +277,6 @@
 
 .mkdetails-tp-section-info-main {
     overflow-y: scroll;
-    /*height: 100%;*/
     height: calc(100vh - 299px);
     width: 100%;
 }
