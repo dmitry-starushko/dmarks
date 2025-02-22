@@ -13,8 +13,7 @@ var map = new ol.Map({
         new ol.layer.Tile({
           source: new ol.source.XYZ({
              url: 'https://opensm.donmarkets.ru/ru/{z}/{x}/{y}.png',
-             attributions:
-                '<a href="httsps://donmarkets.ru">Рынки Донбасса</a> карты' ,
+             attributions: '<a href="https://donmarkets.ru">Рынки Донбасса</a> карты' ,
              crossOrigin: null
           })
        }),
@@ -44,9 +43,6 @@ map.addOverlay(mappopupOverlay);
      document.querySelectorAll('.map-marker').forEach(e => e.classList.remove('active'));
  });
 
-
-// Функция создания маркеров
-// По клику на маркер, покажется попап
 function createMarker(position, title, text, img, url, id) {
  const marker = document.getElementById("map-marker").cloneNode(true);
  marker.name = 'mrk' + id;
@@ -75,7 +71,6 @@ function createMarker(position, title, text, img, url, id) {
     view.setCenter(mappopupOverlay.getPosition());
     event.target.classList.add("active");
  });
-
 }
 
 // Show an element
@@ -95,7 +90,6 @@ var show = function (elem, timing) {
 	var height = getHeight(); // Get the natural height
 	elem.style.height = height; // Update the max-height
 
-	// Once the transition is complete, remove the inline max-height so the content can scale responsively
 	window.setTimeout(function () {
 		elem.style.height = '';
 	}, timing);
@@ -120,12 +114,10 @@ var hide = function (elem, timing) {
 };
 
 var toggle = function (elem, timing) {
-	// If the element is visible, hide it
 	if (elem.classList.contains('is-visible')) {
 		hide(elem, timing);
 		return;
 	}
-	// Otherwise, show it
 	show(elem, timing);
 };
 

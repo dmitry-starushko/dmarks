@@ -9,7 +9,6 @@
 {% block header-scripts %}
 {{block.super}}
 <script src="{% static 'vendor/openlayer/ol.js' %}"></script>
-<!--script src="{% static 'js/map.js' %}"></script-->
 {% endblock %}
 {% block content %}
 {% include 'markets/include/mappopup.html' %}
@@ -41,18 +40,12 @@
                         <div class="market-card-title">
                             {{market.mk_full_name|truncatechars:31}}
                         </div>
-                        <!--div class="market-card-title">
-                            {{market.market_name|add:", "|add:market.additional_name }}
-                        </div-->
                         <div class="market-card-body">
                             <div class="market-card-img">
                                 {% thumbnail market.image 100x100 crop as thumb %}
                                 <a href="{% url 'markets:market_details' mpk=market.id show='info' %}">
                                     <img src="{{ thumb.url }}" />
                                 </a>
-
-                                <!--img src="{% thumbnail market.images.0 300x0 %}" /-->
-                                <!--img src="/static/bitmaps/imgs/m0001_130.jpg" /-->
                             </div>
                             <div class="market-card-content">
                                 <div class="market-card-text">{{market.geo_index}}, {{market.mk_geo_full_address}}</div>
