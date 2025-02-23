@@ -17,6 +17,7 @@ const def_fog_density = 0.001;
 const def_marker_color = 0xf46b12;
 const def_marker_metalness = 0.75;
 const def_marker_vdist = 1.0;
+const fps = 60.0;
 
 class View3D {
     constructor(parent_id,
@@ -41,6 +42,7 @@ class View3D {
         this._decoration_color = decoration_color;
         this._decoration_opacity = decoration_opacity;
         this._events_actl = new AbortController();
+        this._last_time = 0;
         this._csrf_token = Cookies.get('csrftoken');
         this.set_ready_signal(signal);
         this.__load_scene__(scheme_pk, legend);
@@ -194,36 +196,39 @@ class View3D {
     }
 
     __render_loop__(time) {
-        this._controls.update();
-        this._raycaster.setFromCamera(this._pointer, this._camera);
-        for(const tgt of this._targets) {
-            tgt.children.forEach(mesh => {
-                mesh.material.emissive.setHex(0);
-            });
+        if (time - this._last_time > 1000/fps) {
+            this._last_time = time;
+            this._controls.update();
+            this._raycaster.setFromCamera(this._pointer, this._camera);
+            for(const tgt of this._targets) {
+                tgt.children.forEach(mesh => {
+                    mesh.material.emissive.setHex(0);
+                });
+            }
+            const pointed = this._raycaster.intersectObjects(this._targets);
+            if(pointed.length) {
+                this._cursor.id_point = pointed[0].object.parent.userData.id;
+                pointed[0].object.parent.children.forEach(mesh => {
+                    mesh.material.emissive.setHex(def_emissive_color);
+                    mesh.material.emissiveIntensity = def_emissive_intensity;
+                    const bb = mesh.geometry.boundingBox;
+                    bb.getCenter(this._pointed_marker_position);
+                    this._pointed_marker_position.y = bb.max.y + def_marker_vdist;
+                });
+            } else {
+                this._cursor.id_point = null;
+            }
+            if(this._marker.visible) {
+                const f = 0.35;
+                this._marker.rotation.y = time / 300.0;
+                this._marker.position.set(
+                    this._marker.position.x * (1-f) + this._target_marker_position.x * f,
+                    this._marker.position.y * (1-f) + this._target_marker_position.y * f + 0.25 * Math.cos(time / 91.0),
+                    this._marker.position.z * (1-f) + this._target_marker_position.z * f
+                );
+            }
+            this._renderer.render(this._scene, this._camera);
         }
-        const pointed = this._raycaster.intersectObjects(this._targets);
-        if(pointed.length) {
-            this._cursor.id_point = pointed[0].object.parent.userData.id;
-            pointed[0].object.parent.children.forEach(mesh => {
-                mesh.material.emissive.setHex(def_emissive_color);
-                mesh.material.emissiveIntensity = def_emissive_intensity;
-                const bb = mesh.geometry.boundingBox;
-                bb.getCenter(this._pointed_marker_position);
-                this._pointed_marker_position.y = bb.max.y + def_marker_vdist;
-            });
-        } else {
-            this._cursor.id_point = null;
-        }
-        if(this._marker.visible) {
-            const f = 0.35;
-            this._marker.rotation.y = time / 300.0;
-            this._marker.position.set(
-                this._marker.position.x * (1-f) + this._target_marker_position.x * f,
-                this._marker.position.y * (1-f) + this._target_marker_position.y * f + 0.25 * Math.cos(time / 91.0),
-                this._marker.position.z * (1-f) + this._target_marker_position.z * f
-            );
-        }
-        this._renderer.render(this._scene, this._camera);
     }
 
     __setup_events__() {
