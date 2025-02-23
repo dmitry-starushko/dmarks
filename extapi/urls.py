@@ -22,7 +22,5 @@ urlpatterns = [
     # --
     path('references/<str:ref_name>/', views.ReferencesView.as_view(), name='references'),
     path('self-diagnosis/', views.SelfDiagnosisView.as_view(), name='self_diagnosis'),
-]
+] + ([path('stub-1c/<str:operation>/', views.Stub_1C_View.as_view(), name='stub_1c')] if settings.DEBUG else [])
 
-if settings.DEBUG:
-    urlpatterns += [path('stub-1c/<str:operation>/', views.Stub_1C_View.as_view(), name='stub_1c')]
