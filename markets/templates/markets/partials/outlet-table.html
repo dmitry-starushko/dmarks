@@ -1,9 +1,9 @@
 {% load cache %}
-{% cache 300 market_detail_outlet_table hash %}
+{#% cache 300 market_detail_outlet_table hash %#}
     <div class="mkdetails-tp-section-info-main" id="mkdetails-tp-section-info-main">
         <table class="table-tp table-bordered" id="mkdetails-tp-table">
             <thead>
-                <tr><th colspan="5">{{title | default:"Без названия"}}</th></tr>
+                <tr><th colspan="4">{{title | default:"Без названия"}}</th></tr>
                 <tr>
                     <th class="sort-th{% if sc_0 %} {{sc_0}}{% endif %}" onclick="window.dispatchEvent(new CustomEvent('tp_header_clicked', { detail: 0 }));">Номер</th>
                     <th class="sort-th{% if sc_1 %} {{sc_1}}{% endif %}" onclick="window.dispatchEvent(new CustomEvent('tp_header_clicked', { detail: 1 }));">Специализация</th>
@@ -14,7 +14,7 @@
             <tbody>
             {% for tp in outlets %}
             <tr onclick="window.dispatchEvent(new CustomEvent('outlet_clicked', { detail: { id: '{{tp.number}}' }}));" class="table-tp-row">
-                <td><div style="color:{{tp.color_css}}">{{tp.number}}</div></td>
+                <td style="color:{{tp.color_css}}">{{tp.number}}</td>
                 <td>{{tp.specialization}}</td>
                 <td>{{tp.occupation}}</td>
                 <td>{{tp.type}}</td>
@@ -23,4 +23,4 @@
             </tbody>
         </table>
     </div>
-{% endcache %}
+{#% endcache %#}
