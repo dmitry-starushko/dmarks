@@ -7,7 +7,7 @@ SECRET_KEY = 'QoJ?sX2.,VM=bUWhE>rzLNdUSj+y2CJ3FfZRqvhPx!exjzFaVNr<Q5LvaaavV=g>=?
 
 ALLOWED_HOSTS = ['*']
 
-CSRF_TRUSTED_ORIGINS = ['http://185.28.108.62/*']
+CSRF_TRUSTED_ORIGINS = ['https://maps.donmarkets.ru/*']
 
 ADMINS = [
     ('Dmitry', 'dmitry@gmail.com'),
