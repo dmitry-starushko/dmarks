@@ -150,6 +150,7 @@
 }
 
 .mkdetails-short-info{
+    /*width: 50%;*/
     height: 100%;
     flex: 1;
     background-color: #8d8d8d;
@@ -171,6 +172,7 @@
     width: 100%;
     border-collapse: separate;
     border-spacing: 0;
+    table-layout: fixed;
 }
 
 .table-tp > thead {
@@ -186,10 +188,14 @@
     background: #ddd;
 }
 
-.table-tp > thead > tr > th, .table-tp > tbody > tr >td {
+.table-tp > thead > tr > th,
+.table-tp > tbody > tr >td {
     border-right: var(--border);
     border-bottom: var(--border);
-    width: 25%;
+    width: calc(100% / 4);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .table-tp > th:first-child, .table-tp > td:first-child {
@@ -277,6 +283,7 @@
 
 .mkdetails-tp-section-info-main {
     overflow-y: scroll;
+    /*height: 100%;*/
     height: calc(100vh - 299px);
     width: 100%;
 }
