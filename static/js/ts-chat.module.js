@@ -11,7 +11,7 @@ class TsChat {
 
     compose_url(path) {
         const url = new URL(path, window.location.origin);
-        url.protocol = "ws";
+        url.protocol = "wss";
         return url;
     }
 
