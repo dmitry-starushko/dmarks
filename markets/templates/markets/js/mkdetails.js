@@ -67,6 +67,8 @@
         tpTab.style.width = "60%";
         schemeTab.style.visibility = "hidden";
         schemeTab.style.width = "0";
+        var tp_table_rows = document.querySelectorAll('tr.table-tp-row');
+        scrollItem(tp_table_rows);
     });
 
     document.getElementById('mkdetails-scheme').addEventListener("click", () => {
@@ -77,6 +79,17 @@
         schemeTab.style.visibility = "visible";
         schemeTab.style.width = "60%";
     });
+
+function scrollItem(rows){
+    for (const tr of rows) {
+        if(tr.classList.contains('selected')) {
+            tr.scrollIntoView({
+                behavior: 'auto',
+                block: 'center'
+            });
+        }
+    }
+}
 
 function toggleItem(elem) {
   for (var i = 0; i < elem.length; i++) {
