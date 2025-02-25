@@ -87,6 +87,7 @@ function scrollItem(rows){
                 behavior: 'auto',
                 block: 'center'
             });
+            break;
         }
     }
 }
