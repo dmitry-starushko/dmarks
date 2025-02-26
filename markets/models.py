@@ -760,7 +760,7 @@ class Parameter(DbItem):  # -- NG Parameters
 
 
 class MarketObservation(DbItem):
-    key = models.CharField(max_length=50)  # -- ключ --
+    key = models.CharField(max_length=50)  # --- ключ ---
     market = models.ForeignKey(Market, related_name="observations", on_delete=models.CASCADE)
     decimal = models.DecimalField(max_digits=12, decimal_places=2, default=Decimal(0.0))
 
