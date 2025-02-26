@@ -432,7 +432,7 @@ class Market(models.Model):
     geo_street_type = models.ForeignKey(StreetType, models.SET_DEFAULT, default=StreetType.default_pk, db_comment='Тип улицы - id')
     geo_street = models.CharField(max_length=64, default=FUS.NS, db_comment='Наименование улицы')
     geo_house = models.CharField(max_length=50, default=FUS.NS, db_comment='Дом')
-    geo_index = models.CharField(max_length=10, validators=[Validators.postal_code], default=FUS.NS, db_comment='Индекс')
+    geo_index = models.CharField(max_length=10, validators=[Validators.postal_code], default='000000', db_comment='Индекс')
     market_area = models.FloatField(default=0.0, db_comment='Общая площадь рынка')
 
     schedule = models.TextField(default=FUS.NS, db_column='shedule', db_comment='График работы')
