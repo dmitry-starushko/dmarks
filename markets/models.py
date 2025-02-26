@@ -501,7 +501,7 @@ class Market(models.Model):
 
     @property
     def mk_full_address(self):
-        return f'{self.mk_geo_index} {self.mk_geo_full_address}'
+        return f'{self.mk_geo_full_address}'
 
 
 class SvgSchema(models.Model):
