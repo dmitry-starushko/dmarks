@@ -1,5 +1,7 @@
 {% load aux_tags %}
 {% load static %}
+{% load cache %}
+{% cache 36000 help-210 %}
 {{"## Панель управления" | markdown}}
 {{"Панель управления предоставляет элементы управления, позволяющие изменять различные аспекты отображения информации о рынке." | markdown}}
 <figure><img src="{% static 'svg/icons/fullscreen.svg' %}" /></figure>
@@ -14,3 +16,4 @@
 <figcaption>{{"Кнопка *3D* переключает варианты проекции, используемые для изображения схемы рынка" | markdown}}</figcaption>
 <figure><img src="{% static 'svg/icons/question-mark-circle.svg' %}" /></figure>
 <figcaption>{{"Кнопка *Справка* позволяет прочитать эту справку." | markdown}}</figcaption>
+{% endcache %}
