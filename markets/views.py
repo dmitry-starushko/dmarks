@@ -14,7 +14,7 @@ class BasicContextProvider:
         return {
             'page_title': f'{self.pg_title(model)}',
             'og_description': f'{self.og_description(model)}',
-            'og_image': f'{settings.OG_HOST_URL}{self.og_image(model)}',
+            'og_image': f'{settings.SITE_ROOT}{self.og_image(model)}',
             'body_class': 'index-page',
             'user': request.user,
         }

@@ -44,4 +44,4 @@ EXT_API_PERMISSIONS = [IsAdminUser]
 
 LOG_KINDS = frozenset({k for k in LogRecordKind})
 
-OG_HOST_URL = 'https://maps.donmarkets.ru'
+SITE_ROOT = 'https://maps.donmarkets.ru'
