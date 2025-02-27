@@ -8,5 +8,6 @@ def parameters_processor(request):
         f'parm_{p.key}': mark_safe(p.value) for p in Parameter.objects.filter(preload=True)
     } | {
         'site_root': settings.SITE_ROOT,
-        'absolute_uri': f'{settings.SITE_ROOT}{request.path}'
+        'absolute_uri': f'{settings.SITE_ROOT}{request.path}',
+        'dm_email': settings.EMAIL_FROM
     }
