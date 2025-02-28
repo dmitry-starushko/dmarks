@@ -123,7 +123,6 @@
             font-variation-settings: "wght" var(--TSCFontWeight);
             &:focus {
                 outline: none;
-
             }
         }
     }
