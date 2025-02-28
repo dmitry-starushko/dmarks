@@ -154,7 +154,7 @@
     flex: 1;
     background-color: #8d8d8d;
     padding: 10px;
-    color: #fff;
+    color: white;
 }
 
 .mkdetails-big-info {
@@ -282,7 +282,7 @@
 
 .table-tp tr.selected {
     background-color: #535353;
-    color: #fff;
+    color: white;
 }
 
 
@@ -417,7 +417,7 @@
 
 .mkdetails-tp-section-info-detail-body-info-booking-button {
     background-color: #00bcd4;
-    color: #fff;
+    color: white;
     width: 100%;
     text-align: center;
     position: relative;
