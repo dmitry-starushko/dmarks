@@ -161,12 +161,15 @@
     width: 100%;
     flex: 2;
     background-color: #00b0c7;
-    color: #fff;
+    color: white;
     padding: 10px;
     height: 100%;
     overflow: auto;
     scrollbar-width: thin;
     text-align: justify;
+    p, h1, h2, h3, h4, h5, h6 {
+        color: white;
+    }
 }
 
 /*****table tm*******/
