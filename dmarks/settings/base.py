@@ -123,8 +123,6 @@ USE_THOUSAND_SEPARATOR = True
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-DISP_RE = re.compile(r'[^а-яА-ЯёЁ0-9.,«»()\-]+')
-
 REDIS_HOST = os.environ.get('REDIS_HOST')
 
 REDIS_PORT = os.environ.get('REDIS_PORT')

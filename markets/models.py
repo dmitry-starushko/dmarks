@@ -1,4 +1,5 @@
 import base64
+import re
 from decimal import Decimal
 from django.contrib.auth.base_user import BaseUserManager
 from django.contrib.auth.models import AbstractUser
@@ -12,6 +13,15 @@ from markets.validators import Validators
 from datetime import timezone, timedelta
 
 mtz = timezone(timedelta(hours=3))
+
+
+def fool_proof(text, replacement):
+    if not hasattr(fool_proof, "statics"):
+        fool_proof.statics = True
+        fool_proof.replacer = re.compile(r'[^а-яА-ЯёЁ0-9.,«»\- ]+')
+        fool_proof.checker = re.compile(r'[а-яА-ЯёЁ]{2,}')
+    text = fool_proof.replacer.sub('☒', text).strip()
+    return text if fool_proof.checker.search(text) else replacement
 
 
 class DbItem(models.Model):
@@ -481,15 +491,16 @@ class Market(models.Model):
 
     @property
     def mk_market_name(self):
-        return settings.DISP_RE.sub(' ', self.market_name).strip()
+        return fool_proof(self.market_name, 'без названия')
 
     @property
     def mk_additional_name(self):
-        return settings.DISP_RE.sub(' ', self.additional_name).strip()
+        return fool_proof(self.additional_name, '')
 
     @property
     def mk_full_name(self):
-        return f'Рынок {self.mk_market_name}{f' ({self.mk_additional_name})' if self.mk_additional_name else ''}'
+        add_name = self.mk_additional_name
+        return f'Рынок {self.mk_market_name}{f' ({add_name})' if add_name else ''}'
 
     @property
     def mk_geo_full_address(self):
@@ -497,7 +508,7 @@ class Market(models.Model):
 
     @property
     def mk_geo_index(self):
-        return settings.DISP_RE.sub(' ', self.geo_index).strip()
+        return self.geo_index
 
     @property
     def mk_full_address(self):
