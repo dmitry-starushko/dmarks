@@ -120,7 +120,7 @@ class ActionVerificationDataView(APIView):
                 )
                 try:
                     init_confirmation(request.user)
-                except ConfirmationError as e:
+                except ConfirmationError:
                     aux_data.delete()
                     response['Location'] += f'?message={urlsafe_base64_encode('Произошла ошибка обращения к серверу. Данные не были отправлены!'.encode('utf-8'))}'
             return response

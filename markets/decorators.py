@@ -39,7 +39,7 @@ def on_exception_returns(result):
         def proxy(*args, **kwargs):
             try:
                 return function(*args, **kwargs)
-            except Exception as e:
+            except Exception:
                 return result
 
         proxy.__doc__ = qln
