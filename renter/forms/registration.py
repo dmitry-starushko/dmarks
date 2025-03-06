@@ -27,7 +27,7 @@ class RegistrationForm(forms.ModelForm):
             'phone': self.phone_pattern,
             'first_name': 'Имя',
             'last_name': 'Фамилия',
-            'email': 'address@domain.ext'
+            'email': 'user@example.com'
         }.items():
             self.fields[key].widget.attrs['placeholder'] = val
 
