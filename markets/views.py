@@ -15,6 +15,7 @@ class BasicContextProvider:
             'page_title': f'{self.pg_title(model)}',
             'og_description': f'{self.og_description(model)}',
             'og_image': f'{settings.SITE_ROOT}{self.og_image(model)}',
+            'pg_canonical': f'{settings.SITE_ROOT}/{self.pg_canonical(model)}',
             'body_class': 'index-page',
             'user': request.user,
         }
@@ -27,6 +28,9 @@ class BasicContextProvider:
 
     def og_image(self, _):
         return default_storage.url(settings.DEF_MK_IMG)
+
+    def pg_canonical(self, _):
+        return ''
 
 
 class IndexView(View, BasicContextProvider):
@@ -59,6 +63,9 @@ class MarketDetailsView(View, BasicContextProvider):
     def og_image(self, market_model):
         return default_storage.url(market_model.image)
 
+    def pg_canonical(self, market_model):
+        return f'market-detail/{market_model.id}/info/'
+
     @on_exception_returns_response(HttpResponseBadRequest)
     def get(self, request, mpk, show: str, outlet: str | None = None):
         market_model = Market.objects.get(pk=mpk)
@@ -79,6 +86,9 @@ class ContactsView(View, BasicContextProvider):
 
     def pg_title(self, _):
         return 'Контакты. ЦИС интерактивных карт территорий рынков'
+
+    def pg_canonical(self, _):
+        return f'contacts/'
 
     @on_exception_returns_response(HttpResponseBadRequest)
     def get(self, request):
