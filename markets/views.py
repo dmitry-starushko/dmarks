@@ -88,7 +88,7 @@ class ContactsView(View, BasicContextProvider):
         return 'Контакты. ЦИС интерактивных карт территорий рынков'
 
     def pg_canonical(self, _):
-        return f'contacts/'
+        return 'contacts/'
 
     @on_exception_returns_response(HttpResponseBadRequest)
     def get(self, request):
