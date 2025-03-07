@@ -63,7 +63,7 @@ class MarketDetailsView(View, BasicContextProvider):
     def og_image(self, market_model):
         return default_storage.url(market_model.image)
 
-    def pg_canonical(self, market_model):
+    def pg_canonical(self, market_model):  # TODO use reverse() instead f-string
         return f'market-detail/{market_model.id}/info/'
 
     @on_exception_returns_response(HttpResponseBadRequest)
@@ -87,7 +87,7 @@ class ContactsView(View, BasicContextProvider):
     def pg_title(self, _):
         return 'Контакты. ЦИС интерактивных карт территорий рынков'
 
-    def pg_canonical(self, _):
+    def pg_canonical(self, _):  # TODO use reverse() instead direct string
         return 'contacts/'
 
     @on_exception_returns_response(HttpResponseBadRequest)
