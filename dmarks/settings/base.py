@@ -1,5 +1,6 @@
 import os
 from pathlib import Path
+import httpx
 from markets.enums import LogRecordKind
 
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
@@ -162,7 +163,6 @@ LOG_TTL_DAYS = {
 }
 
 AUTH_1C_API = ''
-TIMEOUT_1C_API = 1.0
 URLS_1C_API = {
     'booking': 'http://localhost:8000/extapi/stub-1c/booking/',
     'confirmation': 'http://localhost:8000/extapi/stub-1c/confirmation/',
@@ -172,6 +172,12 @@ URLS_1C_API = {
     'moderation': 'http://localhost:8000/extapi/stub-1c/moderation/',
     'check-results': 'http://localhost:8000/extapi/stub-1c/check/',
 }
+TIMEOUT_1C_API = httpx.Timeout(
+    connect=1.0,  # Таймаут подключения
+    read=3.0,     # Таймаут чтения данных
+    write=3.0,    # Таймаут записи данных
+    pool=1.0      # Таймаут ожидания подключения из пула
+)
 
 AUTH_SMS_API = 'Basic MTA4NTM6VGo0bVBUM0FFVHZ1cHZsSU9Pa1pBdQ=='
 URLS_SMS_API = {
