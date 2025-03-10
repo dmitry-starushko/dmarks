@@ -35,9 +35,9 @@
                     <summary>Физические параметры</summary>
                     <ul>
                         <li>Площадь: <strong>{{outlet.meas_area}}</strong></li>
-                        <li>Длина: <strong>{{outlet.meas_length}}</strong></li>
-                        <li>Ширина: <strong>{{outlet.meas_width}}</strong></li>
-                        <li>Высота: <strong>{{outlet.meas_height}}</strong></li>
+                        {% if outlet.meas_length %}<li>Длина: <strong>{{outlet.meas_length}}</strong></li>{% endif %}
+                        {% if outlet.meas_width %}<li>Ширина: <strong>{{outlet.meas_width}}</strong></li>{% endif %}
+                        {% if outlet.meas_height %}<li>Высота: <strong>{{outlet.meas_height}}</strong></li>{% endif %}
                     </ul>
                   </details>
                 </li>
