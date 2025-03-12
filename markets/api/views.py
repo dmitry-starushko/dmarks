@@ -252,6 +252,7 @@ class PV_FilteredOutletsView(APIView):
                     'state': o.trade_place_type,
                     'specialization': o.trade_spec_type_id_act,
                     'price': o.price,
+                    'type': o.trade_type,
                     'link_outlets': reverse('markets:market_details_outlet', kwargs={'mpk': o.market.id, 'show': 'outlets', 'outlet': o.location_number}),
                     'link_scheme': reverse('markets:market_details_outlet', kwargs={'mpk': o.market.id, 'show': 'scheme', 'outlet': o.location_number}),
                 }

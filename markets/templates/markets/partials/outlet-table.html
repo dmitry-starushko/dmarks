@@ -15,9 +15,9 @@
             {% for tp in outlets %}
             <tr onclick="window.dispatchEvent(new CustomEvent('outlet_clicked', { detail: { id: '{{tp.number}}' }}));" class="table-tp-row">
                 <td style="color:{{tp.color_css}}">{{tp.number}}</td>
-                <td>{{tp.specialization}}</td>
-                <td>{{tp.occupation}}</td>
-                <td>{{tp.type}}</td>
+                <td>{{tp.specialization | capfirst}}</td>
+                <td>{{tp.occupation | capfirst}}</td>
+                <td>{{tp.type | capfirst}}</td>
             </tr>
             {% endfor %}
             </tbody>

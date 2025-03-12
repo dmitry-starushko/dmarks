@@ -17,9 +17,9 @@
                                             <a href="{{detail.link_outlets}}" class="" title="Показать в списке"><img src="{% static 'svg/icons/format-list-bulleted.svg' %}" alt="Список торговых мест"/></a>
                                             <a href="{{detail.link_scheme}}" class="" title="Показать на схеме"><img src="{% static 'svg/icons/cube-outline.svg' %}" alt="Схема"/></a>
                                         </div>
-                                        <div class="tree-address tree-node-item tree-node-child">{{detail.state}}</div>
-                                        <div class="tree-tp-count tree-node-item tree-node-child">{{detail.specialization}}</div>
-                                        <div class="tree-tp-count tree-node-item tree-node-child">{{detail.price}} р</div>
+                                        <div class="tree-address tree-node-item tree-node-child">{{detail.state | capfirst}}</div>
+                                        <div class="tree-tp-count tree-node-item tree-node-child">{{detail.specialization | capfirst}}</div>
+                                        <div class="tree-tp-count tree-node-item tree-node-child">{{detail.type | truncatechars:16 | capfirst}}</div>
                                     </li>{% endfor %}
                                 </ul>{% endwith %}
                             </li>{% endfor %}
