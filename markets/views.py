@@ -58,7 +58,7 @@ class MarketDetailsView(View, BasicContextProvider):
         return f'{market_model.mk_full_name} ({market_model.market_type}). Рынки Донбасса'
 
     def og_description(self, market_model):
-        return f'Рынки Донбасса. Онлайн бронирование торговых мест {market_model.mk_full_name} ({market_model.market_type}), г. {market_model.geo_city}'
+        return f'Онлайн бронирование торговых мест {market_model.mk_full_name} ({market_model.market_type}), г. {market_model.geo_city}'
 
     def og_image(self, market_model):
         return default_storage.url(market_model.image)
