@@ -32,7 +32,9 @@ import { StoreyDialog } from "storey-dialog";
                     <div class="mkdetails-short-info">
                         Тип рынка: <strong>{{market.market_type}}</strong><br>
                         Внутренний код рынка: <strong>{{market.market_id}}</strong><br>
+                        {% if market.market_area %}
                         Общая площадь рынка: <strong>{{market.market_area}}</strong><br>
+                        {% endif %}
                         Отделение: <strong>{{market.branch | default:'Не указано'}}</strong><br>
                         График работы: <strong>{{market.schedule | default:"Не указано" | markdown}}</strong>
                     </div>
