@@ -239,11 +239,12 @@ class PV_FilteredMarketsView(APIView):
 
 class PV_FilteredOutletsView(APIView):
     permission_classes = [AllowAny]
+    joined_fields = ('market', 'trade_type', 'trade_place_type', 'trade_spec_type_id_act', 'market__geo_city', 'market__geo_district')
 
     @on_exception_returns_response(HttpResponseBadRequest)
     def post(self, request):
         context = OrderedDict()
-        outlets = filter_outlets(request.data or None).select_related('market', 'trade_place_type', 'trade_spec_type_id_act', 'market__geo_city', 'market__geo_district')
+        outlets = filter_outlets(request.data or None).select_related(*self.joined_fields)
         found = 0
         for o in outlets:
             try:
