@@ -17,8 +17,6 @@
     {% endif %}
 </div>
 {% endif %}
-{% endwith %}
-{% endwith %}
 <div class="mkdetails-tp-section-info-detail-body-info-descr">
     <p>Тип: <strong>{{outlet.trade_type}}</strong></p>
     <p>Занятость: <strong>{{outlet.trade_place_type}}</strong></p>
@@ -31,7 +29,7 @@
               <summary>Торговое место №{{outlet.location_number}}</summary>
               <ul>
                 <li>
-                  <details>
+                  <details{% if not promo_image and not promo_text %} open{% endif %}>
                     <summary>Физические параметры</summary>
                     <ul>
                         <li>Площадь: <strong>{{outlet.meas_area}}</strong></li>
@@ -42,7 +40,7 @@
                   </details>
                 </li>
                 <li>
-                  <details>
+                  <details{% if not promo_image and not promo_text %} open{% endif %}>
                     <summary>Благоустройство и оборудование</summary>
                     <ul>
                         <li>Электричество: <strong>{{outlet.impr_electricity | yesno:'есть,нет,неизвестно'}}</strong></li>
@@ -59,7 +57,7 @@
                   </details>
                 </li>
                   <li>
-                    <details>
+                    <details{% if not promo_image and not promo_text %} open{% endif %}>
                         <summary>Месторасположение</summary>
                         <ul>
                             <li>Сектор: <strong>{{outlet.location_sector}}</strong></li>
@@ -72,6 +70,8 @@
           </li>
         </ul>
 </div>
+{% endwith %}
+{% endwith %}
 </div>
 {% if afbk or unbk %}
 <div class="mkdetails-tp-section-info-detail-body-info-booking">
