@@ -31,7 +31,7 @@
               <summary>Торговое место №{{outlet.location_number}}</summary>
               <ul>
                 <li>
-                  <details open>
+                  <details>
                     <summary>Физические параметры</summary>
                     <ul>
                         <li>Площадь: <strong>{{outlet.meas_area}}</strong></li>
@@ -42,7 +42,7 @@
                   </details>
                 </li>
                 <li>
-                  <details open>
+                  <details>
                     <summary>Благоустройство и оборудование</summary>
                     <ul>
                         <li>Электричество: <strong>{{outlet.impr_electricity | yesno:'есть,нет,неизвестно'}}</strong></li>
@@ -59,7 +59,7 @@
                   </details>
                 </li>
                   <li>
-                    <details open>
+                    <details>
                         <summary>Месторасположение</summary>
                         <ul>
                             <li>Сектор: <strong>{{outlet.location_sector}}</strong></li>
